@@ -1,7 +1,7 @@
 # docker compose up -d redis redis-commander mongodb mysql postgres rabbitmq
 # version: '3.9'
 
-name : jobber
+name : kaj-bazar
 
 services:
   redis:
@@ -11,8 +11,8 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --loglevel warning
-    volumes:
-      - ./docker-volumes/cache:/data
+    # volumes:
+    #   - ./docker-volumes/cache:/data
 
   redis-commander:
     container_name: redis-commander
@@ -29,8 +29,8 @@ services:
     restart: always
     ports:
       - 27017:27017
-    volumes:
-      - ./docker-volumes/data:/data/db
+    # volumes:
+    #   - ./docker-volumes/data:/data/db
 
   mysql:
     container_name: mysql_container
@@ -38,35 +38,35 @@ services:
     # command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      - MYSQL_USER=jobber
-      - MYSQL_DATABASE=jobber_auth
+      - MYSQL_USER=kaj_bazar
+      - MYSQL_DATABASE=kaj_bazar_auth
       - MYSQL_ROOT_PASSWORD=api
       - MYSQL_PASSWORD=api
     ports:
       - "3306:3306"
-    volumes:
-      - ./docker-volumes/mysql:/var/lib/mysql
+    # volumes:
+    #   - ./docker-volumes/mysql:/var/lib/mysql
 
   postgres:
     container_name: postgres_container
     image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=jobber
+      - POSTGRES_USER=kaj_bazar
       - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=jobber_reviews
+      - POSTGRES_DB=kaj_bazar_reviews
     ports:
       - "5432:5432"
-    volumes:
-      - ./docker-volumes/postgres:/var/lib/postgresql
+    # volumes:
+    #   - ./docker-volumes/postgres:/var/lib/postgresql
 
   rabbitmq:
     container_name: rabbitmq_container
     image: rabbitmq:3.13-rc-management-alpine
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=jobber
-      - RABBITMQ_DEFAULT_PASS=jobberpass
+      - RABBITMQ_DEFAULT_USER=kaj_bazar
+      - RABBITMQ_DEFAULT_PASS=kaj_bazarpass
     ports:
       # AMQP protocol port
       - "5672:5672"
@@ -78,40 +78,40 @@ services:
   gateway:
     container_name: gateway_container
     build:
-      context: ../microservices/1-gateway-service
+      context: 1-gateway-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4000:4000
-    env_file: ../microservices/1-gateway-service/.env
+    env_file: 1-gateway-service/.env
     volumes:
-      - ../microservices/1-gateway-service:/app
+      - 1-gateway-service:/app
       - /app/node_modules
 
   notifications:
     container_name: notification_container
     build:
-      context: ../microservices/2-notification-service
+      context: 2-notification-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4001:4001
-    env_file: ../microservices/2-notification-service/.env
+    env_file: 2-notification-service/.env
     volumes:
-      - ../microservices/2-notification-service:/app
+      - 2-notification-service:/app
       - /app/node_modules
 
   auth:
     container_name: auth_container
     build:
-      context: ../microservices/3-auth-service
+      context: 3-auth-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4002:4002
-    env_file: ../microservices/3-auth-service/.env
+    env_file: 3-auth-service/.env
     volumes:
-      - ../microservices/3-auth-service:/app
+      - 3-auth-service:/app
       - /app/node_modules
 
     depends_on:
@@ -120,14 +120,14 @@ services:
   users:
     container_name: users_container
     build:
-      context: ../microservices/4-users-service
+      context: 4-users-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4003:4003
-    env_file: ../microservices/4-users-service/.env
+    env_file: 4-users-service/.env
     volumes:
-      - ../microservices/4-users-service:/app
+      - 4-users-service:/app
       - /app/node_modules
 
     depends_on:
@@ -136,14 +136,14 @@ services:
   gig:
     container_name: gig_container
     build:
-      context: ../microservices/5-gig-service
+      context: 5-gig-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4004:4004
-    env_file: ../microservices/5-gig-service/.env
+    env_file: 5-gig-service/.env
     volumes:
-      - ../microservices/5-gig-service:/app
+      - 5-gig-service:/app
       - /app/node_modules
 
     depends_on:
@@ -152,14 +152,14 @@ services:
   chat:
     container_name: chat_container
     build:
-      context: ../microservices/6-chat-service
+      context: 6-chat-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4005:4005
-    env_file: ../microservices/6-chat-service/.env
+    env_file: 6-chat-service/.env
     volumes:
-      - ../microservices/6-chat-service:/app
+      - 6-chat-service:/app
       - /app/node_modules
 
     depends_on:
@@ -168,14 +168,14 @@ services:
   order:
     container_name: order_container
     build:
-      context: ../microservices/7-order-service
+      context: 7-order-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4006:4006
-    env_file: ../microservices/7-order-service/.env
+    env_file: 7-order-service/.env
     volumes:
-      - ../microservices/7-order-service:/app
+      - 7-order-service:/app
       - /app/node_modules
 
     depends_on:
@@ -184,14 +184,14 @@ services:
   review:
     container_name: review_container 
     build:
-      context: ../microservices/8-review-service
+      context: 8-review-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4007:4007
-    env_file: ../microservices/8-review-service/.env
+    env_file: 8-review-service/.env
     volumes:
-      - ../microservices/8-review-service:/app
+      - 8-review-service:/app
       - /app/node_modules
 
     depends_on:
