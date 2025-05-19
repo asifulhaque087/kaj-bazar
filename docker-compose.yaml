@@ -85,7 +85,7 @@ services:
       - 4000:4000
     env_file: 1-gateway-service/.env
     volumes:
-      - 1-gateway-service:/app
+      - ./1-gateway-service:/app
       - /app/node_modules
 
   notifications:
@@ -98,7 +98,7 @@ services:
       - 4001:4001
     env_file: 2-notification-service/.env
     volumes:
-      - 2-notification-service:/app
+      - ./2-notification-service:/app
       - /app/node_modules
 
   auth:
@@ -111,7 +111,7 @@ services:
       - 4002:4002
     env_file: 3-auth-service/.env
     volumes:
-      - 3-auth-service:/app
+      - ./3-auth-service:/app
       - /app/node_modules
 
     depends_on:
@@ -127,7 +127,7 @@ services:
       - 4003:4003
     env_file: 4-users-service/.env
     volumes:
-      - 4-users-service:/app
+      - ./4-users-service:/app
       - /app/node_modules
 
     depends_on:
@@ -143,7 +143,7 @@ services:
       - 4004:4004
     env_file: 5-gig-service/.env
     volumes:
-      - 5-gig-service:/app
+      - ./5-gig-service:/app
       - /app/node_modules
 
     depends_on:
@@ -159,7 +159,7 @@ services:
       - 4005:4005
     env_file: 6-chat-service/.env
     volumes:
-      - 6-chat-service:/app
+      - ./6-chat-service:/app
       - /app/node_modules
 
     depends_on:
@@ -175,7 +175,7 @@ services:
       - 4006:4006
     env_file: 7-order-service/.env
     volumes:
-      - 7-order-service:/app
+      - ./7-order-service:/app
       - /app/node_modules
 
     depends_on:
@@ -191,7 +191,7 @@ services:
       - 4007:4007
     env_file: 8-review-service/.env
     volumes:
-      - 8-review-service:/app
+      - ./8-review-service:/app
       - /app/node_modules
 
     depends_on:
