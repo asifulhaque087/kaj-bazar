@@ -1,10 +1,9 @@
 import { config } from '@chat/config';
-import client, { Channel, Connection } from 'amqplib';
-
+import client, { Channel, ChannelModel } from 'amqplib';
 
 async function createConnection(): Promise<Channel | undefined> {
   try {
-    const connection: Connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
+    const connection: ChannelModel = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
     const channel: Channel = await connection.createChannel();
     console.log('Chat server connected to queue successfully...');
     closeConnection(channel, connection);
@@ -15,11 +14,11 @@ async function createConnection(): Promise<Channel | undefined> {
   }
 }
 
-function closeConnection(channel: Channel, connection: Connection): void {
+function closeConnection(channel: Channel, connection: ChannelModel): void {
   process.once('SIGINT', async () => {
     await channel.close();
     await connection.close();
   });
 }
 
-export { createConnection } ;
+export { createConnection };
