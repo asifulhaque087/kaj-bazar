@@ -1,5 +1,5 @@
 {
-  "name": "jobber-review",
+  "name": "review-service",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
