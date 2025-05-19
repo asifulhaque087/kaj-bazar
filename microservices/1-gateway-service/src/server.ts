@@ -44,8 +44,7 @@ export class GatewayServer {
     this.errorHandler(this.app);
     this.startServer(this.app);
 
-    console.log("server is running")
-
+    console.log('server is running');
   }
 
   private securityMiddleware(app: Application): void {
@@ -127,8 +126,12 @@ export class GatewayServer {
   private async startServer(app: Application): Promise<void> {
     try {
       const httpServer: http.Server = new http.Server(app);
-      const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
+
+      console.log('hello how are you');
+
+      const socketIO: Server = await this.createSocketIO(httpServer);
+
       this.socketIOConnections(socketIO);
     } catch (error) {
       console.log('error', 'GatewayService startServer() error method:', error);
