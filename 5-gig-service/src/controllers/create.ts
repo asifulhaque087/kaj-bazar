@@ -1,10 +1,10 @@
-import { getDocumentCount } from '@gig/elasticsearch';
 import { gigCreateSchema } from '@gig/schemes/gig';
 import { createGig } from '@gig/services/gig.service';
 import { BadRequestError, ISellerGig, uploads } from '@fvoid/shared-lib';
 import { UploadApiResponse } from 'cloudinary';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { GigModel } from '@gig/models/gig.schema';
 
 const gigCreate = async (req: Request, res: Response): Promise<void> => {
   const { error } = await Promise.resolve(gigCreateSchema.validate(req.body));
@@ -15,7 +15,7 @@ const gigCreate = async (req: Request, res: Response): Promise<void> => {
   if (!result.public_id) {
     throw new BadRequestError('File upload error. Try again.', 'Create gig() method');
   }
-  const count: number = await getDocumentCount('gigs');
+  const count: number = await GigModel.countDocuments();
   const gig: ISellerGig = {
     sellerId: req.body.sellerId,
     username: req.currentUser!.username,
