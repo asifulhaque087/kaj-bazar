@@ -68,11 +68,13 @@ services:
       - RABBITMQ_DEFAULT_USER=kaj_bazar
       - RABBITMQ_DEFAULT_PASS=kaj_bazarpass
     ports:
-      # AMQP protocol port
       - "5672:5672"
-      # Management UI
       - "15672:15672"
-
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # ==================================== Application==============================
 
   gateway:
@@ -101,6 +103,10 @@ services:
     volumes:
       - ./1-gateway-service:/app
       - /app/node_modules
+    
+    depends_on:
+      - chat
+      - order
 
   notifications:
     container_name: notification_container
@@ -120,6 +126,9 @@ services:
     volumes:
       - ./2-notification-service:/app
       - /app/node_modules
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   auth:
     container_name: auth_container
@@ -145,7 +154,10 @@ services:
       - ./3-auth-service:/app
       - /app/node_modules
     depends_on:
-      - mysql
+      mysql:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   users:
     container_name: users_container
@@ -170,9 +182,11 @@ services:
     volumes:
       - ./4-users-service:/app
       - /app/node_modules
-
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   gig:
     container_name: gig_container
@@ -197,9 +211,11 @@ services:
     volumes:
       - ./5-gig-service:/app
       - /app/node_modules
-
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   chat:
     container_name: chat_container
@@ -224,7 +240,10 @@ services:
       - ./6-chat-service:/app
       - /app/node_modules
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   order:
     container_name: order_container
@@ -251,7 +270,10 @@ services:
       - ./7-order-service:/app
       - /app/node_modules
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   review:
     container_name: review_container
@@ -277,4 +299,7 @@ services:
       - ./8-review-service:/app
       - /app/node_modules
     depends_on:
-      - postgres
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
