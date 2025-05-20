@@ -20,6 +20,10 @@ export default defineConfig({
     outDir: './build'
   },
   server: {
-    port: 3000
+    host: true, // <- important
+    port: 3000,
+    watch: {
+      usePolling: true // <- useful in Docker
+    }
   }
 });
