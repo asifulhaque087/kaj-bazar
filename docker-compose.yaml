@@ -1,7 +1,7 @@
 # docker compose up -d redis redis-commander mongodb mysql postgres rabbitmq
 # version: '3.9'
 
-name : kaj-bazar
+name: kaj-bazar
 
 services:
   redis:
@@ -73,7 +73,7 @@ services:
       # Management UI
       - "15672:15672"
 
-# ==================================== Application==============================
+  # ==================================== Application==============================
 
   gateway:
     container_name: gateway_container
@@ -83,7 +83,21 @@ services:
     restart: always
     ports:
       - 4000:4000
-    env_file: 1-gateway-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - SECRET_KEY_ONE=${SECRET_KEY_ONE}
+      - SECRET_KEY_TWO=${SECRET_KEY_TWO}
+      - CLIENT_URL=${CLIENT_URL}
+      - AUTH_BASE_URL=${AUTH_BASE_URL}
+      - USERS_BASE_URL=${USERS_BASE_URL}
+      - GIG_BASE_URL=${GIG_BASE_URL}
+      - MESSAGE_BASE_URL=${MESSAGE_BASE_URL}
+      - ORDER_BASE_URL=${ORDER_BASE_URL}
+      - REVIEW_BASE_URL=${REVIEW_BASE_URL}
+      - REDIS_HOST=${REDIS_HOST}
     volumes:
       - ./1-gateway-service:/app
       - /app/node_modules
@@ -96,7 +110,13 @@ services:
     restart: always
     ports:
       - 4001:4001
-    env_file: 2-notification-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - NODE_ENV=${NODE_ENV}
+      - CLIENT_URL=${CLIENT_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
     volumes:
       - ./2-notification-service:/app
       - /app/node_modules
@@ -109,11 +129,21 @@ services:
     restart: always
     ports:
       - 4002:4002
-    env_file: 3-auth-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - CLIENT_URL=${CLIENT_URL}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - MYSQL_DB=${AUTH_DB_URL}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
       - ./3-auth-service:/app
       - /app/node_modules
-
     depends_on:
       - mysql
 
@@ -125,7 +155,18 @@ services:
     restart: always
     ports:
       - 4003:4003
-    env_file: 4-users-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${USERS_DB_URL}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - REDIS_HOST=${REDIS_HOST}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
       - ./4-users-service:/app
       - /app/node_modules
@@ -141,7 +182,18 @@ services:
     restart: always
     ports:
       - 4004:4004
-    env_file: 5-gig-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${GIG_DB_URL}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - REDIS_HOST=${REDIS_HOST}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
       - ./5-gig-service:/app
       - /app/node_modules
@@ -157,11 +209,20 @@ services:
     restart: always
     ports:
       - 4005:4005
-    env_file: 6-chat-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${CHAT_DB_URL}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
       - ./6-chat-service:/app
       - /app/node_modules
-
     depends_on:
       - mongodb
 
@@ -173,26 +234,47 @@ services:
     restart: always
     ports:
       - 4006:4006
-    env_file: 7-order-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - CLIENT_URL=${CLIENT_URL}
+      - DATABASE_URL=${ORDER_DB_URL}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
       - ./7-order-service:/app
       - /app/node_modules
-
     depends_on:
       - mongodb
 
   review:
-    container_name: review_container 
+    container_name: review_container
     build:
       context: 8-review-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4007:4007
-    env_file: 8-review-service/.env
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - DATABASE_HOST=${REVIEW_DB_HOST}
+      - DATABASE_USER=${REVIEW_DB_USER}
+      - DATABASE_PASSWORD=${REVIEW_DB_PASSWORD}
+      - DATABASE_NAME=${REVIEW_DB_NAME}
+      - CLUSTER_TYPE=${REVIEW_DB_CLUSTER_TYPE}
+      - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
+      - JWT_TOKEN=${JWT_TOKEN}
+      - NODE_ENV=${NODE_ENV}
+      - API_GATEWAY_URL=${API_GATEWAY_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
     volumes:
       - ./8-review-service:/app
       - /app/node_modules
-
     depends_on:
       - postgres
