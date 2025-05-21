@@ -12,16 +12,19 @@ import { StatusCodes } from 'http-status-codes';
 export async function create(req: Request, res: Response): Promise<void> {
   const { count } = req.params;
   const usernames: string[] = [];
-  for(let i = 0; i < parseInt(count, 10); i++) {
+  for (let i = 0; i < parseInt(count, 10); i++) {
     const username: string = generateUsername('', 0, 12);
     usernames.push(firstLetterUppercase(username));
   }
 
-  for(let i = 0; i < usernames.length; i++) {
+  for (let i = 0; i < usernames.length; i++) {
     const username = usernames[i];
     const email = faker.internet.email();
     const password = 'qwerty';
     const country = faker.location.country();
+    const browserName = faker.internet.userAgent();
+    const deviceType = faker.helpers.arrayElement(['desktop', 'mobile', 'tablet']);
+
     const profilePicture = faker.image.urlPicsumPhotos();
     const checkIfUserExist: IAuthDocument | undefined = await getUserByUsernameOrEmail(username, email);
     if (checkIfUserExist) {
@@ -36,6 +39,8 @@ export async function create(req: Request, res: Response): Promise<void> {
       profilePublicId,
       password,
       country,
+      browserName,
+      deviceType,
       profilePicture,
       emailVerificationToken: randomCharacters,
       emailVerified: sample([0, 1])
