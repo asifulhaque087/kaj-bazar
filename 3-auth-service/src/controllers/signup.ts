@@ -2,7 +2,7 @@ import crypto from 'crypto';
 
 import { signupSchema } from '@auth/schemes/signup';
 import { createAuthUser, getUserByUsernameOrEmail, signToken } from '@auth/services/auth.service';
-import { BadRequestError, IAuthDocument, IEmailMessageDetails, firstLetterUppercase, lowerCase, } from '@fvoid/shared-lib';
+import { BadRequestError, IAuthDocument, IEmailMessageDetails, firstLetterUppercase, lowerCase, uploads } from '@fvoid/shared-lib';
 import { Request, Response } from 'express';
 import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
@@ -11,8 +11,7 @@ import { publishDirectMessage } from '@auth/queues/auth.producer';
 import { authChannel } from '@auth/server';
 import { StatusCodes } from 'http-status-codes';
 
-
-import cloudinary, { UploadApiErrorResponse, } from 'cloudinary';
+// import cloudinary, { UploadApiErrorResponse } from 'cloudinary';
 
 // export function uploads(
 //   file: string,
@@ -37,46 +36,36 @@ import cloudinary, { UploadApiErrorResponse, } from 'cloudinary';
 //   });
 // }
 
-
-export function uploads(
-  file: string,
-  public_id?: string,
-  overwrite?: boolean,
-  invalidate?: boolean
-): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
-  return new Promise((resolve) => {
-    cloudinary.v2.uploader.upload(
-      file,
-      {
-        public_id,
-        overwrite,
-        invalidate,
-        resource_type: 'auto' // zip, images
-      },
-      (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
-        if (error) resolve(error);
-        resolve(result);
-      }
-    );
-  });
-}
-
-
-
-
-
-
-
-
+// export function uploads(
+//   file: string,
+//   public_id?: string,
+//   overwrite?: boolean,
+//   invalidate?: boolean
+// ): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
+//   return new Promise((resolve) => {
+//     cloudinary.v2.uploader.upload(
+//       file,
+//       {
+//         public_id,
+//         overwrite,
+//         invalidate,
+//         resource_type: 'auto' // zip, images
+//       },
+//       (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+//         if (error) resolve(error);
+//         resolve(result);
+//       }
+//     );
+//   });
+// }
 
 export async function create(req: Request, res: Response): Promise<void> {
-
+  console.log('hello from signup ');
 
   const { error } = await Promise.resolve(signupSchema.validate(req.body));
   if (error?.details) {
     throw new BadRequestError(error.details[0].message, 'SignUp create() method error');
   }
-
 
   const { username, email, password, country, profilePicture, browserName, deviceType } = req.body;
   const checkIfUserExist: IAuthDocument | undefined = await getUserByUsernameOrEmail(username, email);
@@ -84,13 +73,10 @@ export async function create(req: Request, res: Response): Promise<void> {
     throw new BadRequestError('Invalid credentials. Email or Username', 'SignUp create() method error');
   }
 
-
-
   const profilePublicId = uuidV4();
-  const uploadResult: UploadApiResponse = await uploads(profilePicture, `${profilePublicId}`, true, true) as UploadApiResponse;
+  const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
 
-
-  console.log("this is calling");
+  console.log('this is calling');
 
   if (!uploadResult.public_id) {
     throw new BadRequestError('File upload error. Try again', 'SignUp create() method error');
@@ -108,7 +94,7 @@ export async function create(req: Request, res: Response): Promise<void> {
     browserName,
     deviceType
   } as IAuthDocument;
-  const result: IAuthDocument = await createAuthUser(authData) as IAuthDocument;
+  const result: IAuthDocument = (await createAuthUser(authData)) as IAuthDocument;
   const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
   const messageDetails: IEmailMessageDetails = {
     receiverEmail: result.email,

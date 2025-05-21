@@ -19,6 +19,9 @@ export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument
       createdAt: result.dataValues.createdAt!,
       type: 'auth'
     };
+
+    console.log("from crete auth user service")
+
     await publishDirectMessage(
       authChannel,
       'jobber-buyer-update',
