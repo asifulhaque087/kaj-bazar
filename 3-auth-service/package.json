@@ -21,7 +21,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
     "@faker-js/faker": "^8.2.0",
-    "@fvoid/shared-lib": "^1.0.6",
+    "@fvoid/shared-lib": "^1.0.8",
     "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",
