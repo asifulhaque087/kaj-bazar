@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
-    "@fvoid/shared-lib": "^1.0.6",
+    "@fvoid/shared-lib": "^1.0.8",
     "@socket.io/redis-adapter": "^8.2.1",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
