@@ -7,8 +7,9 @@ import { sign } from 'jsonwebtoken';
 import { omit } from 'lodash';
 import { Model, Op } from 'sequelize';
 
-
 export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument | undefined> {
+  console.log('data is ', data);
+
   try {
     const result: Model = await AuthModel.create(data);
     const messageDetails: IAuthBuyerMessageDetails = {
@@ -20,7 +21,7 @@ export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument
       type: 'auth'
     };
 
-    console.log("from crete auth user service")
+    console.log('from crete auth user service');
 
     await publishDirectMessage(
       authChannel,
@@ -38,12 +39,12 @@ export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument
 
 export async function getAuthUserById(authId: number): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { id: authId },
       attributes: {
         exclude: ['password']
       }
-    }) as Model;
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -52,11 +53,11 @@ export async function getAuthUserById(authId: number): Promise<IAuthDocument | u
 
 export async function getUserByUsernameOrEmail(username: string, email: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: {
-        [Op.or]: [{ username: firstLetterUppercase(username)}, { email: lowerCase(email)}]
-      },
-    }) as Model;
+        [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }]
+      }
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -65,9 +66,9 @@ export async function getUserByUsernameOrEmail(username: string, email: string):
 
 export async function getUserByUsername(username: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
-      where: { username: firstLetterUppercase(username) },
-    }) as Model;
+    const user: Model = (await AuthModel.findOne({
+      where: { username: firstLetterUppercase(username) }
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -76,9 +77,9 @@ export async function getUserByUsername(username: string): Promise<IAuthDocument
 
 export async function getUserByEmail(email: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
-      where: { email: lowerCase(email) },
-    }) as Model;
+    const user: Model = (await AuthModel.findOne({
+      where: { email: lowerCase(email) }
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -87,12 +88,12 @@ export async function getUserByEmail(email: string): Promise<IAuthDocument | und
 
 export async function getAuthUserByVerificationToken(token: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { emailVerificationToken: token },
       attributes: {
         exclude: ['password']
       }
-    }) as Model;
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -101,11 +102,11 @@ export async function getAuthUserByVerificationToken(token: string): Promise<IAu
 
 export async function getAuthUserByPasswordToken(token: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: {
-        [Op.and]: [{ passwordResetToken: token}, { passwordResetExpires: { [Op.gt]: new Date() }}]
-      },
-    }) as Model;
+        [Op.and]: [{ passwordResetToken: token }, { passwordResetExpires: { [Op.gt]: new Date() } }]
+      }
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -114,11 +115,11 @@ export async function getAuthUserByPasswordToken(token: string): Promise<IAuthDo
 
 export async function getAuthUserByOTP(otp: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: {
-        [Op.and]: [{ otp }, { otpExpiration: { [Op.gt]: new Date() }}]
-      },
-    }) as Model;
+        [Op.and]: [{ otp }, { otpExpiration: { [Op.gt]: new Date() } }]
+      }
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     console.error(error);
@@ -128,13 +129,15 @@ export async function getAuthUserByOTP(otp: string): Promise<IAuthDocument | und
 export async function updateVerifyEmailField(authId: number, emailVerified: number, emailVerificationToken?: string): Promise<void> {
   try {
     await AuthModel.update(
-    !emailVerificationToken ?  {
-        emailVerified
-      } : {
-        emailVerified,
-        emailVerificationToken
-      },
-      { where: { id: authId }},
+      !emailVerificationToken
+        ? {
+            emailVerified
+          }
+        : {
+            emailVerified,
+            emailVerificationToken
+          },
+      { where: { id: authId } }
     );
   } catch (error) {
     console.error(error);
@@ -148,7 +151,7 @@ export async function updatePasswordToken(authId: number, token: string, tokenEx
         passwordResetToken: token,
         passwordResetExpires: tokenExpiration
       },
-      { where: { id: authId }},
+      { where: { id: authId } }
     );
   } catch (error) {
     console.error(error);
@@ -163,14 +166,20 @@ export async function updatePassword(authId: number, password: string): Promise<
         passwordResetToken: '',
         passwordResetExpires: new Date()
       },
-      { where: { id: authId }},
+      { where: { id: authId } }
     );
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function updateUserOTP(authId: number, otp: string, otpExpiration: Date, browserName: string, deviceType: string): Promise<void> {
+export async function updateUserOTP(
+  authId: number,
+  otp: string,
+  otpExpiration: Date,
+  browserName: string,
+  deviceType: string
+): Promise<void> {
   try {
     await AuthModel.update(
       {
@@ -179,7 +188,7 @@ export async function updateUserOTP(authId: number, otp: string, otpExpiration: 
         ...(browserName.length > 0 && { browserName }),
         ...(deviceType.length > 0 && { deviceType })
       },
-      { where: { id: authId }}
+      { where: { id: authId } }
     );
   } catch (error) {
     console.error(error);
