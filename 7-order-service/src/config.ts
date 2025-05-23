@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import cloudinary from 'cloudinary';
+import { configureCloudinary } from '@fvoid/shared-lib';
 
 dotenv.config({});
 
@@ -47,10 +47,10 @@ class Config {
   }
 
   public cloudinaryConfig(): void {
-    cloudinary.v2.config({
-      cloud_name: this.CLOUD_NAME,
-      api_key: this.CLOUD_API_KEY,
-      api_secret: this.CLOUD_API_SECRET
+    configureCloudinary({
+      cloud_name: config.CLOUD_NAME,
+      api_key: config.CLOUD_API_KEY,
+      api_secret: config.CLOUD_API_SECRET
     });
   }
 }
