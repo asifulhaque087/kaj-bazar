@@ -11,57 +11,7 @@ import { publishDirectMessage } from '@auth/queues/auth.producer';
 import { authChannel } from '@auth/server';
 import { StatusCodes } from 'http-status-codes';
 
-// import cloudinary, { UploadApiErrorResponse } from 'cloudinary';
-
-// export function uploads(
-//   file: string,
-//   public_id?: string,
-//   overwrite?: boolean,
-//   invalidate?: boolean
-// ): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
-//   return new Promise((resolve) => {
-//     cloudinary.v2.uploader.upload(
-//       file,
-//       {
-//         public_id,
-//         overwrite,
-//         invalidate,
-//         resource_type: 'auto' // zip, images, etc.
-//       },
-//       (error, result) => {
-//         if (error) return resolve(error);
-//         return resolve(result);
-//       }
-//     );
-//   });
-// }
-
-// export function uploads(
-//   file: string,
-//   public_id?: string,
-//   overwrite?: boolean,
-//   invalidate?: boolean
-// ): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
-//   return new Promise((resolve) => {
-//     cloudinary.v2.uploader.upload(
-//       file,
-//       {
-//         public_id,
-//         overwrite,
-//         invalidate,
-//         resource_type: 'auto' // zip, images
-//       },
-//       (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
-//         if (error) resolve(error);
-//         resolve(result);
-//       }
-//     );
-//   });
-// }
-
 export async function create(req: Request, res: Response): Promise<void> {
-  console.log('hello from signup ');
-
   const { error } = await Promise.resolve(signupSchema.validate(req.body));
   if (error?.details) {
     throw new BadRequestError(error.details[0].message, 'SignUp create() method error');
@@ -75,8 +25,6 @@ export async function create(req: Request, res: Response): Promise<void> {
 
   const profilePublicId = uuidV4();
   const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
-
-  console.log('this is calling');
 
   if (!uploadResult.public_id) {
     throw new BadRequestError('File upload error. Try again', 'SignUp create() method error');
