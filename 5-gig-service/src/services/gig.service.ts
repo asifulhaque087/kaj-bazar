@@ -196,7 +196,6 @@
 //   seedData
 // };
 
-
 import { ISellerDocument, ISellerGig, IReviewMessageDetails, IRatingTypes } from '@fvoid/shared-lib';
 import { GigModel } from '@gig/models/gig.schema';
 import { publishDirectMessage } from '@gig/queues/gig.producer';
@@ -205,15 +204,18 @@ import { faker } from '@faker-js/faker';
 import { sample } from 'lodash';
 
 const getGigById = async (gigId: string): Promise<ISellerGig | null> => {
-  return await GigModel.findById(gigId).lean();
+  // return await GigModel.findById(gigId).lean();
+  return await GigModel.findById(gigId);
 };
 
 const getSellerGigs = async (sellerId: string): Promise<ISellerGig[]> => {
-  return await GigModel.find({ sellerId, active: true }).lean();
+  // return await GigModel.find({ sellerId, active: true }).lean();
+  return await GigModel.find({ sellerId, active: true });
 };
 
 const getSellerPausedGigs = async (sellerId: string): Promise<ISellerGig[]> => {
-  return await GigModel.find({ sellerId, active: false }).lean();
+  // return await GigModel.find({ sellerId, active: false }).lean();
+  return await GigModel.find({ sellerId, active: false })
 };
 
 const createGig = async (gig: ISellerGig): Promise<ISellerGig> => {
@@ -267,11 +269,7 @@ const updateGig = async (gigId: string, gigData: ISellerGig): Promise<ISellerGig
 };
 
 const updateActiveGigProp = async (gigId: string, gigActive: boolean): Promise<ISellerGig | null> => {
-  const document = await GigModel.findOneAndUpdate(
-    { _id: gigId },
-    { $set: { active: gigActive } },
-    { new: true }
-  ).exec();
+  const document = await GigModel.findOneAndUpdate({ _id: gigId }, { $set: { active: gigActive } }, { new: true }).exec();
 
   return document;
 };
@@ -282,7 +280,7 @@ const updateGigReview = async (data: IReviewMessageDetails): Promise<void> => {
     '2': 'two',
     '3': 'three',
     '4': 'four',
-    '5': 'five',
+    '5': 'five'
   };
   const ratingKey: string = ratingTypes[`${data.rating}`];
 
@@ -293,7 +291,7 @@ const updateGigReview = async (data: IReviewMessageDetails): Promise<void> => {
         ratingsCount: 1,
         ratingSum: data.rating,
         [`ratingCategories.${ratingKey}.value`]: data.rating,
-        [`ratingCategories.${ratingKey}.count`]: 1,
+        [`ratingCategories.${ratingKey}.count`]: 1
       }
     },
     { new: true, upsert: true }
@@ -311,19 +309,13 @@ const seedData = async (sellers: ISellerDocument[], count: string): Promise<void
     'Data',
     'Business'
   ];
-  const expectedDelivery: string[] = [
-    '1 Day Delivery',
-    '2 Days Delivery',
-    '3 Days Delivery',
-    '4 Days Delivery',
-    '5 Days Delivery',
-  ];
+  const expectedDelivery: string[] = ['1 Day Delivery', '2 Days Delivery', '3 Days Delivery', '4 Days Delivery', '5 Days Delivery'];
   const randomRatings = [
     { sum: 20, count: 4 },
     { sum: 10, count: 2 },
     { sum: 20, count: 4 },
     { sum: 15, count: 3 },
-    { sum: 5, count: 1 },
+    { sum: 5, count: 1 }
   ];
 
   for (let i = 0; i < sellers.length; i++) {
@@ -343,18 +335,13 @@ const seedData = async (sellers: ISellerDocument[], count: string): Promise<void
       categories: `${sample(categories)}`,
       subCategories: [faker.commerce.department(), faker.commerce.department(), faker.commerce.department()],
       description: faker.lorem.sentences({ min: 2, max: 4 }),
-      tags: [
-        faker.commerce.product(),
-        faker.commerce.product(),
-        faker.commerce.product(),
-        faker.commerce.product()
-      ],
+      tags: [faker.commerce.product(), faker.commerce.product(), faker.commerce.product(), faker.commerce.product()],
       price: parseInt(faker.commerce.price({ min: 20, max: 30, dec: 0 })),
       coverImage: faker.image.urlPicsumPhotos(),
       expectedDelivery: `${sample(expectedDelivery)}`,
       sortId: parseInt(count, 10) + i + 1,
       ratingsCount: (i + 1) % 4 === 0 ? rating!.count : 0,
-      ratingSum: (i + 1) % 4 === 0 ? rating!.sum : 0,
+      ratingSum: (i + 1) % 4 === 0 ? rating!.sum : 0
     };
 
     console.log(`***SEEDING GIG*** - ${i + 1} of ${count}`);
@@ -362,17 +349,4 @@ const seedData = async (sellers: ISellerDocument[], count: string): Promise<void
   }
 };
 
-export {
-  getGigById,
-  getSellerGigs,
-  getSellerPausedGigs,
-  createGig,
-  deleteGig,
-  updateGig,
-  updateActiveGigProp,
-  updateGigReview,
-  seedData
-};
-
-
-
+export { getGigById, getSellerGigs, getSellerPausedGigs, createGig, deleteGig, updateGig, updateActiveGigProp, updateGigReview, seedData };

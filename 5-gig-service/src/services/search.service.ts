@@ -4,10 +4,15 @@ import { IPaginateProps, ISearchResult } from '@fvoid/shared-lib';
 
 // Search gigs by sellerId and active status
 const gigsSearchBySellerId = async (searchQuery: string, active: boolean): Promise<ISearchResult> => {
+  // const gigs = await GigModel.find({
+  //   sellerId: new RegExp(searchQuery, 'i'),
+  //   active
+  // }).lean();
+
   const gigs = await GigModel.find({
     sellerId: new RegExp(searchQuery, 'i'),
     active
-  }).lean();
+  });
 
   const total = await GigModel.countDocuments({
     sellerId: new RegExp(searchQuery, 'i'),
@@ -54,8 +59,9 @@ const gigsSearch = async (
 
   const sortDirection = type === 'forward' ? 1 : -1;
 
-  const gigs = await GigModel.find(query).sort({ sortId: sortDirection, _id: sortDirection }).skip(Number(from)).limit(size).lean();
+  // const gigs = await GigModel.find(query).sort({ sortId: sortDirection, _id: sortDirection }).skip(Number(from)).limit(size).lean();
 
+  const gigs = await GigModel.find(query).sort({ sortId: sortDirection, _id: sortDirection }).skip(Number(from)).limit(size);
   const total = await GigModel.countDocuments(query);
 
   return {
@@ -71,7 +77,8 @@ const gigsSearchByCategory = async (searchQuery: string): Promise<ISearchResult>
     categories: new RegExp(searchQuery, 'i')
   };
 
-  const gigs = await GigModel.find(query).limit(10).lean();
+  // const gigs = await GigModel.find(query).limit(10).lean();
+  const gigs = await GigModel.find(query).limit(10);
   const total = await GigModel.countDocuments(query);
 
   return {
@@ -82,7 +89,8 @@ const gigsSearchByCategory = async (searchQuery: string): Promise<ISearchResult>
 
 // Get similar gigs based on a given gig
 const getMoreGigsLikeThis = async (gigId: string): Promise<ISearchResult> => {
-  const baseGig = await GigModel.findById(gigId).lean();
+  // const baseGig = await GigModel.findById(gigId).lean();
+  const baseGig = await GigModel.findById(gigId);
   if (!baseGig) return { total: 0, hits: [] };
 
   const query = {
@@ -91,7 +99,8 @@ const getMoreGigsLikeThis = async (gigId: string): Promise<ISearchResult> => {
     $or: [{ categories: { $in: baseGig.categories } }, { subCategories: { $in: baseGig.subCategories } }, { tags: { $in: baseGig.tags } }]
   };
 
-  const gigs = await GigModel.find(query).limit(5).lean();
+  // const gigs = await GigModel.find(query).limit(5).lean();
+  const gigs = await GigModel.find(query).limit(5);
   const total = await GigModel.countDocuments(query);
 
   return {

@@ -6,7 +6,8 @@ import { sortBy } from 'lodash';
 import { GigModel } from '@gig/models/gig.schema';
 
 async function getGigById(gigId: string): Promise<ISellerGig | null> {
-  const gig = await GigModel.findById(gigId).lean(); // or remove .lean() for full Mongoose doc
+  // const gig = await GigModel.findById(gigId).lean(); // or remove .lean() for full Mongoose doc
+  const gig = await GigModel.findById(gigId); // or remove .lean() for full Mongoose doc
   return gig;
 }
 
