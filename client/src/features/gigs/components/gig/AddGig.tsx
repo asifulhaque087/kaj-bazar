@@ -71,7 +71,7 @@ const AddGig: FC = (): ReactElement => {
   const navigate: NavigateFunction = useNavigate();
   const dispatch = useAppDispatch();
   const { sellerId } = useParams();
-  const [schemaValidation] = useGigSchema({ schema: gigInfoSchema, gigInfo });
+  const [schemaValidation, validationErrors] = useGigSchema({ schema: gigInfoSchema, gigInfo });
   const [createGig, { isLoading }] = useCreateGigMutation();
 
   const handleFileChange = async (event: ChangeEvent): Promise<void> => {
@@ -90,6 +90,7 @@ const AddGig: FC = (): ReactElement => {
   const onCreateGig = async (): Promise<void> => {
     try {
       const editor: Quill | undefined = reactQuillRef?.current?.editor;
+
       // In React, it is not recommended to mutate objects directly. It is better to update with useState method.
       // The reason it is not recommended is because if the object is mutated directly,
       // 1) React is not able to keep track of the change
@@ -100,7 +101,10 @@ const AddGig: FC = (): ReactElement => {
       // Also, we are not updating the property inside the onChange method because editor?.getText() causes too many rerender errors.
       // The only option we have right now is to directly mutate the gigInfo useState object.
       gigInfo.description = editor?.getText().trim() as string;
+
       const isValid: boolean = await schemaValidation();
+
+      console.log('create gig click', validationErrors);
       if (isValid) {
         const gig: ICreateGig = {
           profilePicture: `${authUser.profilePicture}`,

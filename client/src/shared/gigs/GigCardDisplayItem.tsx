@@ -37,6 +37,8 @@ const GigCardDisplayItem: FC<IGigCardItems> = ({ gig, linkTarget, showEditIcon }
     });
   }, [authUser.username, gig.username]);
 
+  console.log('from GigCardDisplayItem ', gig);
+
   return (
     <div className="rounded">
       <div className="mb-8 flex cursor-pointer flex-col gap-2">
