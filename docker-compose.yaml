@@ -157,6 +157,7 @@ services:
     restart: always
     ports:
       - 4002:4002
+      - 4983:4983
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
