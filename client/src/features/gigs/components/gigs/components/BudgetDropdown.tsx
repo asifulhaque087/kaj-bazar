@@ -93,8 +93,11 @@ const BudgetDropdown: FC = (): ReactElement => {
                 className="rounded bg-sky-500 px-4 py-2 text-sm font-bold text-white hover:bg-sky-400"
                 onClick={() => {
                   const updatedSearchParams: URLSearchParams = new URLSearchParams(searchParams.toString());
-                  updatedSearchParams.set('minPrice', selectedBudget.minPrice);
-                  updatedSearchParams.set('maxPrice', selectedBudget.maxPrice);
+
+
+
+                  updatedSearchParams.set('minprice', selectedBudget.minPrice ? selectedBudget.minPrice : '0');
+                  updatedSearchParams.set('maxprice', selectedBudget.maxPrice);
                   setSearchParams(updatedSearchParams);
                   setToggleDropdown(false);
                   saveToLocalStorage('filterApplied', JSON.stringify(true));

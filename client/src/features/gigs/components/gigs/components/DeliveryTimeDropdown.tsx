@@ -48,19 +48,19 @@ const DeliveryTimeDropdown: FC = (): ReactElement => {
                     <div className="flex h-5 items-center">
                       <TextInput
                         checked={time.value === selectedTime}
-                        id="selectedTime"
+                        id={`delivery-${time.value}`}
                         name="selectedTime"
                         type="radio"
-                        value={selectedTime}
+                        value={time.value} // use the correct value here
                         className="dark:focus:ring-blue-sky-500 h-4 w-4 bg-gray-100 text-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700"
-                        onChange={(event: ChangeEvent) => {
+                        onChange={(event: ChangeEvent<Element>) => {
                           setSelectedTime((event.target as HTMLInputElement).value);
                         }}
                       />
                     </div>
                     <div className="ml-2 text-sm ">
-                      <label htmlFor="helper-radio-4" className="font-medium text-slate-950">
-                        <div>{time.label}</div>
+                      <label htmlFor={`delivery-${time.value}`} className="font-medium text-slate-950">
+                        {time.label}
                       </label>
                     </div>
                   </div>
