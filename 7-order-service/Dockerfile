@@ -1,24 +1,30 @@
-FROM node:21-alpine3.18 as builder
+FROM node:21-alpine3.18 as base
 
-WORKDIR /app
-COPY package*.json ./
-COPY tsconfig.json ./
-COPY .npmrc ./
-COPY src ./src
-RUN npm install -g npm@latest
-RUN npm ci && npm run build
+# Stage 1: Build Staff
 
-FROM node:21-alpine3.18
+FROM base as builder
 
-WORKDIR /app
-RUN apk add --no-cache curl
-COPY package*.json ./
-COPY tsconfig.json ./
-COPY .npmrc ./
-RUN npm install -g pm2 npm@latest
-RUN npm ci --production
-COPY --from=builder /app/build ./build
+WORKDIR /home/build
 
-EXPOSE 4006
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+
+# Stage 2: Runner
+
+FROM base as runner
+
+WORKDIR /home/app
+
+COPY --from=builder /home/build/build build/
+COPY --from=builder /home/build/package*.json .
+
+RUN npm install --omit=dev
 
 CMD [ "npm", "run", "start" ]
+
