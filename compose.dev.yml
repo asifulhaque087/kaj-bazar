@@ -1,7 +1,7 @@
 # docker compose up -d redis redis-commander mongodb mysql postgres rabbitmq
 # version: '3.9'
 
-name: kaj-bazar
+name: kaj-bazar-dev
 
 services:
   redis:
