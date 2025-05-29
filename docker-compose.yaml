@@ -158,6 +158,7 @@ services:
     ports:
       - 4002:4002
       - 4983:4983
+      - 5555:5555
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
