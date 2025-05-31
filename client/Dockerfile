@@ -3,7 +3,7 @@ FROM node:21-alpine3.18 as builder
 WORKDIR /app
 COPY package*.json ./
 COPY tsconfig*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
 # Bundle app source
 RUN npm run build

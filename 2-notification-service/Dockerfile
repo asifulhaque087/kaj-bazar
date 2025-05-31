@@ -1,8 +1,8 @@
-FROM node:21-alpine3.18 as base
+FROM node:21-alpine3.18 AS base
 
 # Stage 1: Build Staff
 
-FROM base as builder
+FROM base AS builder
 
 WORKDIR /home/build
 
@@ -17,7 +17,7 @@ RUN npm run build
 
 # Stage 2: Runner
 
-FROM base as runner
+FROM base AS runner
 
 WORKDIR /home/app
 
@@ -27,4 +27,5 @@ COPY --from=builder /home/build/package*.json .
 RUN npm install --omit=dev
 
 CMD [ "npm", "run", "start" ]
+
 
