@@ -1,5 +1,7 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
+import { combineReducers, configureStore, } from '@reduxjs/toolkit';
+// import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
+// import { ToolkitStore } from '@reduxjs/toolkit'; // Corrected import
+
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { Reducer } from 'redux';
@@ -42,7 +44,7 @@ export const rootReducers: Reducer<RootState> = (state, action) => {
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 
-export const store: ToolkitStore = configureStore({
+export const store:any = configureStore({
   devTools: true,
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
