@@ -25,6 +25,8 @@ WORKDIR /home/app
 COPY --from=builder /home/build/build build/
 COPY --from=builder /home/build/package*.json .
 
+RUN npm install -g pm2
+
 RUN npm install --omit=dev
 
 EXPOSE 4000
