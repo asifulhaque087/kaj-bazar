@@ -11,7 +11,7 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
     steps:
-      - name : Transfer code
+      - name: Transfer code
         uses: actions/checkout@v2
 
       - name: Log in to Docker Hub
@@ -29,7 +29,7 @@ jobs:
           context: ./3-auth-service
           file: ./3-auth-service/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-auth:latest 
+          tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-auth:latest
 
   # deploy:
   #   runs-on: ubuntu-latest
@@ -44,15 +44,15 @@ jobs:
   #         script: |
   #           # Navigate to your project directory on the VPS
   #           cd /path/to/your/project
-            
+
   #           # Pull the latest Docker images (this will pull the 'latest' tag)
   #           # If you used a specific tag (e.g., commit SHA), you might need to update your docker-compose.yml
   #           # or dynamically inject the tag here. For 'latest', this is simpler.
 
   #           docker compose pull auth
-            
+
   #           # Restart the services to use the new images
   #           docker-compose up -d --no-deps --build auth
-            
+
   #           # Optional: Clean up old Docker images to save space
   #           docker image prune -f
