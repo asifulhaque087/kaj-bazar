@@ -63,7 +63,15 @@ export class GatewayServer {
     app.use(hpp());
     app.use(helmet());
 
-    app.use(cors());
+    app.use(
+      cors({
+        origin: '*', // This accepts requests from any origin
+        credentials: true, // Keep this if you need cookies/auth headers
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      })
+    );
+
+    // app.use(cors());
 
     console.log('the client url is ', config.CLIENT_URL);
 
