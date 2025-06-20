@@ -18,4 +18,4 @@ yarn-error.log*
 docker-volumes
 
 # lock files
-package-lock.json
+# package-lock.json
