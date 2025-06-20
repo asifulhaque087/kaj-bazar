@@ -24,9 +24,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Generate .env for Vite
+      - name: Generate .env.production for Vite
         run: |
-          cat <<EOF > ./client/.env
+          cat <<EOF > ./client/.env.production
           VITE_NODE_ENV=${{ secrets.KAJ_BAZAR_VITE_NODE_ENV }}
           VITE_BASE_ENDPOINT=${{ secrets.KAJ_BAZAR_VITE_BASE_ENDPOINT }}
           VITE_CLIENT_ENDPOINT=${{ secrets.KAJ_BAZAR_VITE_CLIENT_ENDPOINT }}
