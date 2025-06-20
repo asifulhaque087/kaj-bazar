@@ -3,6 +3,8 @@ import { getDataFromSessionStorage } from 'src/shared/utils/utils.service';
 
 const BASE_ENDPOINT = import.meta.env.VITE_BASE_ENDPOINT;
 
+console.log('Base url is ', BASE_ENDPOINT);
+
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_ENDPOINT}/api/gateway/v1`,
   prepareHeaders: (headers) => {
