@@ -19,7 +19,9 @@ export async function create(req: Request, res: Response): Promise<void> {
 
   for (let i = 0; i < usernames.length; i++) {
     const username = usernames[i];
-    const email = i == 2 ? 'aaron_streich@yahoo.com' : faker.internet.email();
+    // const email = i == 2 ? 'aaron_streich@yahoo.com' : i == 10 ? 'seller@gmail.com' : faker.internet.email();
+
+    const email = i == 2 ? 'joker@yahoo.com' : i == 10 ? 'batman@gmail.com' : i + 1 + faker.internet.email();
     const password = 'qwerty';
     const country = faker.location.country();
     const browserName = faker.internet.userAgent();
