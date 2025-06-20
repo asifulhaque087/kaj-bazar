@@ -8,6 +8,7 @@ WORKDIR /home/build
 
 COPY package*.json .
 
+# RUN npm install
 RUN npm ci
 
 COPY . .
@@ -26,7 +27,8 @@ COPY --from=builder /home/build/package*.json .
 
 RUN npm install -g pm2
 
-RUN npm install --omit=dev
+# RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 CMD [ "npm", "run", "start" ]
 
