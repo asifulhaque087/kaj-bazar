@@ -63,25 +63,15 @@ export class GatewayServer {
     app.use(hpp());
     app.use(helmet());
 
+    console.log('the client url is ', config.CLIENT_URL);
+
     app.use(
       cors({
-        origin: '*', // This accepts requests from any origin
-        credentials: true, // Keep this if you need cookies/auth headers
+        origin: config.CLIENT_URL,
+        credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       })
     );
-
-    // app.use(cors());
-
-    console.log('the client url is ', config.CLIENT_URL);
-
-    // app.use(
-    //   cors({
-    //     origin: config.CLIENT_URL,
-    //     credentials: true,
-    //     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    //   })
-    // );
 
     app.use((req: Request, _res: Response, next: NextFunction) => {
       if (req.session?.jwt) {
