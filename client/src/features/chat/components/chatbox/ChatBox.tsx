@@ -12,8 +12,10 @@ import useChatScrollToBottom from '../../hooks/useChatScrollToBottom';
 import { IChatBoxProps, IConversationDocument, IMessageDocument } from '../../interfaces/chat.interface';
 import { useGetConversationQuery, useGetMessagesQuery, useSaveChatMessageMutation } from '../../services/chat.service';
 import ChatBoxSkeleton from './ChatBoxSkeleton';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const ChatBox: FC<IChatBoxProps> = ({ seller, buyer, gigId, onClose }): ReactElement => {
+  const navigate: NavigateFunction = useNavigate();
   const authUser = useAppSelector((state: IReduxState) => state.authUser);
   const [message, setMessage] = useState<string>('');
   const conversationIdRef = useRef<string>(`${generateRandomNumber(15)}`);
@@ -64,6 +66,8 @@ const ChatBox: FC<IChatBoxProps> = ({ seller, buyer, gigId, onClose }): ReactEle
       const response: IResponse = await saveChatMessage(messageBody).unwrap();
       setMessage('');
       conversationIdRef.current = `${response.conversationId}`;
+      navigate(`/inbox/${authUser.username}/${conversationIdRef.current}`);
+      // /inbox/:username/:conversationId
     } catch (error) {
       showErrorToast('Error sending message.');
     }
