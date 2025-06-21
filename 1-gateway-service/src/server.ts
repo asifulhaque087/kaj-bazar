@@ -40,15 +40,16 @@ export class GatewayServer {
     this.securityMiddleware(this.app);
     this.standardMiddleware(this.app);
     this.routesMiddleware(this.app);
-    // this.startElasticSearch();
     this.errorHandler(this.app);
     this.startServer(this.app);
 
-    console.log('server is running');
+    // console.log('server is running');
   }
 
   private securityMiddleware(app: Application): void {
-    console.log('node env is from secure middle', config.NODE_ENV);
+    console.log('node env from secure middleware is = ', config.NODE_ENV);
+    console.log(`secret key one = ${config.SECRET_KEY_ONE}`)
+    console.log(`secret key two = ${config.SECRET_KEY_TWO}`)
 
     app.set('trust proxy', 1);
     app.use(
@@ -56,16 +57,16 @@ export class GatewayServer {
         name: 'session',
         keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 3600000,
-        secure: config.NODE_ENV !== 'development',
-        ...(config.NODE_ENV !== 'development' && {
-          sameSite: 'none'
-        })
+        // secure: config.NODE_ENV !== 'development',
+        // ...(config.NODE_ENV !== 'development' && {
+        //   sameSite: 'none'
+        // })
       })
     );
     app.use(hpp());
     app.use(helmet());
 
-    console.log('the client url is ', config.CLIENT_URL);
+    console.log('the client url is = ', config.CLIENT_URL);
 
     app.use(
       cors({
@@ -76,6 +77,9 @@ export class GatewayServer {
     );
 
     app.use((req: Request, _res: Response, next: NextFunction) => {
+      console.log('@@@@@@@@@@@@@ Bearer Middleware @@@@@@@@@@@');
+      console.log('setting Bearer is = ', req.session);
+      console.log(' and the url is = ', req.url);
       if (req.session?.jwt) {
         axiosAuthInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
         axiosBuyerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
@@ -98,10 +102,6 @@ export class GatewayServer {
   private routesMiddleware(app: Application): void {
     appRoutes(app);
   }
-
-  // private startElasticSearch(): void {
-  //   elasticSearch.checkConnection();
-  // }
 
   private errorHandler(app: Application): void {
     app.use('*', (req: Request, res: Response, next: NextFunction) => {
@@ -133,7 +133,7 @@ export class GatewayServer {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
 
-      console.log('hello how are you');
+      // console.log('hello how are you');
 
       const socketIO: Server = await this.createSocketIO(httpServer);
 

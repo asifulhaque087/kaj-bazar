@@ -5,10 +5,11 @@ import { verify } from 'jsonwebtoken';
 
 class AuthMiddleware {
   public verifyUser(req: Request, _res: Response, next: NextFunction): void {
-    console.log('====================================');
+    console.log('================ Auth Middleware ====================');
     console.log('entered verify user ', req.url);
 
     console.log('node env is ', config.NODE_ENV);
+
 
     console.log('session from client ', req.session);
     console.log('jwt from client first', req.session?.jwt);

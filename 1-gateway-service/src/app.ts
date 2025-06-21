@@ -4,7 +4,7 @@ import { redisConnection } from '@gateway/redis/redis.connection';
 
 class Application {
   public initialize(): void {
-    console.log('project init');
+    // console.log('project init');
     const app: Express = express();
     const server: GatewayServer = new GatewayServer(app);
     server.start();
