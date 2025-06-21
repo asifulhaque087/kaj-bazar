@@ -48,6 +48,8 @@ export class GatewayServer {
   }
 
   private securityMiddleware(app: Application): void {
+    console.log('node env is from secure middle', config.NODE_ENV);
+
     app.set('trust proxy', 1);
     app.use(
       cookieSession({

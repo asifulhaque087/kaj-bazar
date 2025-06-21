@@ -8,6 +8,7 @@ class AuthMiddleware {
     console.log('====================================');
     console.log('entered verify user ', req.url);
 
+    console.log('node env is ', config.NODE_ENV);
 
     console.log('session from client ', req.session);
     console.log('jwt from client first', req.session?.jwt);
