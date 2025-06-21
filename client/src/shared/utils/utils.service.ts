@@ -105,6 +105,8 @@ export const deleteFromLocalStorage = (key: string): void => {
 };
 
 export const applicationLogout = (dispatch: Dispatch, navigate: NavigateFunction) => {
+  console.log('user is logging out');
+
   const loggedInUsername: string = getDataFromSessionStorage('loggedInuser');
   dispatch(logout({}));
   if (loggedInUsername) {
