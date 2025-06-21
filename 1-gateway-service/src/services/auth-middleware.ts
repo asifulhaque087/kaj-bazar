@@ -5,6 +5,7 @@ import { verify } from 'jsonwebtoken';
 
 class AuthMiddleware {
   public verifyUser(req: Request, _res: Response, next: NextFunction): void {
+    console.log('====================================');
     console.log('entered verify user ', req.url);
 
     if (!req.session?.jwt) {
