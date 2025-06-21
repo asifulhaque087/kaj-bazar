@@ -1,7 +1,7 @@
 import './index.scss';
 
 // import { init } from '@elastic/apm-rum';
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Persistor, persistStore } from 'redux-persist';
@@ -20,11 +20,11 @@ const persistor: Persistor = persistStore(store);
 // });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>
+  // </React.StrictMode>
 );
