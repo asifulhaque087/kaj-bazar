@@ -8,11 +8,16 @@ class AuthMiddleware {
     console.log('====================================');
     console.log('entered verify user ', req.url);
 
+
+    console.log('session from client ', req.session);
+    console.log('jwt from client first', req.session?.jwt);
+    console.log('jwt from config first', config.JWT_TOKEN);
+
     if (!req.session?.jwt) {
       throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService verifyUser() method error');
     }
 
-    console.log('jwt from client ', !req.session?.jwt);
+    console.log('jwt from client ', req.session?.jwt);
     console.log('jwt from config', config.JWT_TOKEN);
 
     try {
