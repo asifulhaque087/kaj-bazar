@@ -48,8 +48,8 @@ export class GatewayServer {
 
   private securityMiddleware(app: Application): void {
     console.log('node env from secure middleware is = ', config.NODE_ENV);
-    console.log(`secret key one = ${config.SECRET_KEY_ONE}`)
-    console.log(`secret key two = ${config.SECRET_KEY_TWO}`)
+    console.log(`secret key one = ${config.SECRET_KEY_ONE}`);
+    console.log(`secret key two = ${config.SECRET_KEY_TWO}`);
 
     app.set('trust proxy', 1);
     app.use(
@@ -57,6 +57,8 @@ export class GatewayServer {
         name: 'session',
         keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 3600000,
+        secure: true,
+        sameSite: 'none'
         // secure: config.NODE_ENV !== 'development',
         // ...(config.NODE_ENV !== 'development' && {
         //   sameSite: 'none'
@@ -72,7 +74,8 @@ export class GatewayServer {
       cors({
         origin: config.CLIENT_URL,
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization']
       })
     );
 
