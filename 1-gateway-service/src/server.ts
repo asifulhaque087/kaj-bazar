@@ -10,7 +10,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { StatusCodes } from 'http-status-codes';
 import { config } from '@gateway/config';
-// import { elasticSearch } from '@gateway/elasticsearch';
 import { appRoutes } from '@gateway/routes';
 import { axiosAuthInstance } from '@gateway/services/api/auth.service';
 import { axiosBuyerInstance } from '@gateway/services/api/buyer.service';
@@ -72,7 +71,8 @@ export class GatewayServer {
 
     app.use(
       cors({
-        origin: config.CLIENT_URL,
+        // origin: config.CLIENT_URL,
+        origin: 'https://www.kaj-bazar.duckdns.org',
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization']
