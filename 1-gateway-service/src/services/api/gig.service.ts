@@ -74,7 +74,9 @@ class GigService {
   // new
 
   async getGigs(query: string, from: string, size: string, type: string): Promise<AxiosResponse> {
-    const response: AxiosResponse = await axiosGigInstance.get(`/search/gig/${from}/${size}/${type}?${query}`);
+    console.log(query);
+    // const response: AxiosResponse = await axiosGigInstance.get(`/gig/search/gig/${from}/${size}/${type}?${query}`);
+    const response: AxiosResponse = await axiosGigInstance.get(`/search/gig/${from}/${size}/${type}?query=graphics`);
     return response;
   }
 
@@ -82,7 +84,6 @@ class GigService {
     const response: AxiosResponse = await axiosGigInstance.get(`/search/gig/${gigId}`);
     return response;
   }
-
 }
 
 export const gigService: GigService = new GigService();

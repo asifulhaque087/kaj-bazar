@@ -52,13 +52,36 @@ export class GatewayCache {
     }
   }
 
+  // public async removeLoggedInUserFromCache(key: string, value: string): Promise<string[]> {
+  //   try {
+  //     if (!this.client.isOpen) {
+  //       await this.client.connect();
+  //     }
+  //     await this.client.LREM(key, 1, value);
+  //     console.log(`User ${value} removed`);
+  //     const response: string[] = await this.client.LRANGE(key, 0, -1);
+  //     return response;
+  //   } catch (error) {
+  //     console.log('error', 'GatewayService Cache removeLoggedInUserFromCache() method error:', error);
+  //     return [];
+  //   }
+  // }
+
   public async removeLoggedInUserFromCache(key: string, value: string): Promise<string[]> {
     try {
       if (!this.client.isOpen) {
         await this.client.connect();
       }
+
+      // Debugging logs
+      if (typeof key !== 'string' || typeof value !== 'string') {
+        console.error('Invalid argument type:', { key, value });
+        return [];
+      }
+
       await this.client.LREM(key, 1, value);
       console.log(`User ${value} removed`);
+
       const response: string[] = await this.client.LRANGE(key, 0, -1);
       return response;
     } catch (error) {

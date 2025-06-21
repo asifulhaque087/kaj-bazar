@@ -106,7 +106,7 @@ export const authApi = api.injectEndpoints({
     }),
     getAuthGigsByCategory: build.query<IResponse, { query: string; from: string; size: string; type: string }>({
       // query: ({ query, from, size, type }) => `auth/search/gig/${from}/${size}/${type}?${query}`,
-      query: ({ query, from, size, type }) => `gig/search/gig/${from}/${size}/${type}?${query}`,
+      query: ({ query, from, size, type }) => `gig/search/${from}/${size}/${type}?${query}`,
       providesTags: ['Auth']
     }),
     getAuthGigById: build.query<IResponse, string>({
