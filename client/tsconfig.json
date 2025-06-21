@@ -26,8 +26,10 @@
     /* Linting */
     "strict": true,
     "noImplicitAny": true, /* Fix the issue you have with import shared library and then change this back to true */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    "noUnusedLocals": false,
+    // "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*"],

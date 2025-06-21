@@ -1,6 +1,6 @@
 import { config } from '@gateway/config';
 import { GatewayCache } from '@gateway/redis/gateway.cache';
-import { IMessageDocument, IOrderDocument, IOrderNotifcation} from '@fvoid/shared-lib';
+import { IMessageDocument, IOrderDocument, IOrderNotifcation } from '@fvoid/shared-lib';
 import { Server, Socket } from 'socket.io';
 import { io, Socket as SocketClient } from 'socket.io-client';
 
@@ -58,8 +58,13 @@ export class SocketIOAppHandler {
       chatSocketClient.connect();
     });
 
-    chatSocketClient.on('connect_error', (error: Error) => {
-      console.log('error', 'ChatService socket connection error:', error);
+    // chatSocketClient.on('connect_error', (error: Error) => {
+    //   console.log('error', 'ChatService socket connection error:', error);
+    //   chatSocketClient.connect();
+    // });
+
+    chatSocketClient.on('connect_error', () => {
+      console.log('error', 'ChatService socket connection error:');
       chatSocketClient.connect();
     });
 
@@ -88,8 +93,13 @@ export class SocketIOAppHandler {
       orderSocketClient.connect();
     });
 
-    orderSocketClient.on('connect_error', (error: Error) => {
-      console.log('error', 'OrderService socket connection error:', error);
+    // orderSocketClient.on('connect_error', (error: Error) => {
+    //   console.log('error', 'OrderService socket connection error:', error);
+    //   orderSocketClient.connect();
+    // });
+
+    orderSocketClient.on('connect_error', () => {
+      console.log('error', 'OrderService socket connection error:');
       orderSocketClient.connect();
     });
 
