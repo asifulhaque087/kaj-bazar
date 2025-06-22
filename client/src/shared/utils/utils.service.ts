@@ -105,18 +105,18 @@ export const deleteFromLocalStorage = (key: string): void => {
 };
 
 export const applicationLogout = (dispatch: Dispatch, navigate: NavigateFunction) => {
-  console.log('user is logging out');
+  // console.log('user is logging out');
 
-  // const loggedInUsername: string = getDataFromSessionStorage('loggedInuser');
-  // dispatch(logout({}));
-  // if (loggedInUsername) {
-  //   dispatch(authApi.endpoints.removeLoggedInUser.initiate(`${loggedInUsername}`, { track: false }) as never);
-  // }
-  // dispatch(api.util.resetApiState());
-  // dispatch(authApi.endpoints.logout.initiate() as never);
-  // saveToSessionStorage(JSON.stringify(false), JSON.stringify(''));
-  // deleteFromLocalStorage('becomeASeller');
-  // navigate('/');
+  const loggedInUsername: string = getDataFromSessionStorage('loggedInuser');
+  dispatch(logout({}));
+  if (loggedInUsername) {
+    dispatch(authApi.endpoints.removeLoggedInUser.initiate(`${loggedInUsername}`, { track: false }) as never);
+  }
+  dispatch(api.util.resetApiState());
+  dispatch(authApi.endpoints.logout.initiate() as never);
+  saveToSessionStorage(JSON.stringify(false), JSON.stringify(''));
+  deleteFromLocalStorage('becomeASeller');
+  navigate('/');
 };
 
 export const isFetchBaseQueryError = (error: unknown): boolean => {
