@@ -1,7 +1,7 @@
 import { IBuyerDocument, ISellerDocument } from '@fvoid/shared-lib';
 import { Channel, ConsumeMessage, Replies } from 'amqplib';
 import { createConnection } from '@users/queues/connection';
-import { createBuyer, updateBuyerPurchasedGigsProp } from '@users/services/buyer.service';
+import { createBuyer, removeBuyers, updateBuyerPurchasedGigsProp } from '@users/services/buyer.service';
 import {
   getRandomSellers,
   updateSellerCancelledJobsProp,
@@ -11,7 +11,6 @@ import {
   updateTotalGigsCount
 } from '@users/services/seller.service';
 import { publishDirectMessage } from '@users/queues/user.producer';
-
 
 const consumeBuyerDirectMessage = async (channel: Channel): Promise<void> => {
   try {
@@ -37,6 +36,8 @@ const consumeBuyerDirectMessage = async (channel: Channel): Promise<void> => {
           createdAt
         };
         await createBuyer(buyer);
+      } else if (type === 'remove-auth') {
+        await removeBuyers();
       } else {
         const { buyerId, purchasedGigs } = JSON.parse(msg!.content.toString());
         await updateBuyerPurchasedGigsProp(buyerId, purchasedGigs, type);

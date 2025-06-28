@@ -7,6 +7,30 @@ import { sign } from 'jsonwebtoken';
 import { omit } from 'lodash';
 import { Model, Op } from 'sequelize';
 
+export async function removeAuthUsers(): Promise<string | undefined> {
+  try {
+    await AuthModel.destroy({
+      where: {},
+      truncate: true
+    });
+
+    const messageDetails: IAuthBuyerMessageDetails = {
+      type: 'remove-auth'
+    };
+
+    await publishDirectMessage(
+      authChannel,
+      'jobber-buyer-update',
+      'user-buyer',
+      JSON.stringify(messageDetails),
+      'Buyer details sent to buyer service.'
+    );
+    return 'remove all auth and buyers';
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument | undefined> {
   console.log('data is ', data);
 

@@ -215,7 +215,13 @@ const getSellerGigs = async (sellerId: string): Promise<ISellerGig[]> => {
 
 const getSellerPausedGigs = async (sellerId: string): Promise<ISellerGig[]> => {
   // return await GigModel.find({ sellerId, active: false }).lean();
-  return await GigModel.find({ sellerId, active: false })
+  return await GigModel.find({ sellerId, active: false });
+};
+
+const removeGigs = async (): Promise<string> => {
+  await GigModel.deleteMany();
+
+  return 'all gigs removed';
 };
 
 const createGig = async (gig: ISellerGig): Promise<ISellerGig> => {
@@ -299,6 +305,10 @@ const updateGigReview = async (data: IReviewMessageDetails): Promise<void> => {
 };
 
 const seedData = async (sellers: ISellerDocument[], count: string): Promise<void> => {
+  // remove all the gigs
+
+  await removeGigs();
+
   const categories: string[] = [
     'Graphics & Design',
     'Digital Marketing',
@@ -306,6 +316,7 @@ const seedData = async (sellers: ISellerDocument[], count: string): Promise<void
     'Video & Animation',
     'Music & Audio',
     'Programming & Tech',
+    'Photography',
     'Data',
     'Business'
   ];
@@ -348,5 +359,67 @@ const seedData = async (sellers: ISellerDocument[], count: string): Promise<void
     await createGig(gig);
   }
 };
+
+// const seedData = async (sellers: ISellerDocument[], count: string): Promise<void> => {
+//   await removeGigs();
+
+//   const categories: string[] = [
+//     'Graphics & Design',
+//     'Digital Marketing',
+//     'Writing & Translation',
+//     'Video & Animation',
+//     'Music & Audio',
+//     'Programming & Tech',
+//     'Data',
+//     'Business'
+//   ];
+
+//   const expectedDelivery: string[] = ['1 Day Delivery', '2 Days Delivery', '3 Days Delivery', '4 Days Delivery', '5 Days Delivery'];
+
+//   const randomRatings = [
+//     { sum: 20, count: 4 },
+//     { sum: 10, count: 2 },
+//     { sum: 20, count: 4 },
+//     { sum: 15, count: 3 },
+//     { sum: 5, count: 1 }
+//   ];
+
+//   // Shuffle categories to assign each once at the beginning
+//   const shuffledCategories = [...categories].sort(() => Math.random() - 0.5);
+
+//   for (let i = 0; i < sellers.length; i++) {
+//     const sellerDoc = sellers[i];
+//     const title = `I will ${faker.word.words(5)}`;
+//     const basicTitle = faker.commerce.productName();
+//     const basicDescription = faker.commerce.productDescription();
+//     const rating = sample(randomRatings);
+
+//     // First N sellers get each category exactly once
+//     const category = i < shuffledCategories.length ? shuffledCategories[i] : sample(categories);
+
+//     const gig: ISellerGig = {
+//       profilePicture: sellerDoc.profilePicture,
+//       sellerId: sellerDoc._id,
+//       email: sellerDoc.email,
+//       username: sellerDoc.username,
+//       title: title.length <= 80 ? title : title.slice(0, 80),
+//       basicTitle: basicTitle.length <= 40 ? basicTitle : basicTitle.slice(0, 40),
+//       basicDescription: basicDescription.length <= 100 ? basicDescription : basicDescription.slice(0, 100),
+//       categories: category!,
+//       subCategories: [faker.commerce.department(), faker.commerce.department(), faker.commerce.department()],
+//       description: faker.lorem.sentences({ min: 2, max: 4 }),
+//       tags: [faker.commerce.product(), faker.commerce.product(), faker.commerce.product(), faker.commerce.product()],
+//       price: parseInt(faker.commerce.price({ min: 20, max: 30, dec: 0 })),
+//       coverImage: faker.image.urlPicsumPhotos(),
+//       expectedDelivery: sample(expectedDelivery)!,
+//       sortId: parseInt(count, 10) + i + 1,
+//       ratingsCount: (i + 1) % 4 === 0 ? rating!.count : 0,
+//       ratingSum: (i + 1) % 4 === 0 ? rating!.sum : 0
+//     };
+
+//     console.log(`***SEEDING GIG*** - ${i + 1} of ${count}`);
+//     await createGig(gig);
+//   }
+// };
 
 export { getGigById, getSellerGigs, getSellerPausedGigs, createGig, deleteGig, updateGig, updateActiveGigProp, updateGigReview, seedData };

@@ -4,33 +4,41 @@ import mongoose from 'mongoose';
 import { updateBuyerIsSellerProp } from '@users/services/buyer.service';
 
 const getSellerById = async (sellerId: string): Promise<ISellerDocument | null> => {
-  const seller: ISellerDocument | null = await SellerModel.findOne({ _id: new mongoose.Types.ObjectId(sellerId) }).exec() as ISellerDocument;
+  const seller: ISellerDocument | null = (await SellerModel.findOne({
+    _id: new mongoose.Types.ObjectId(sellerId)
+  }).exec()) as ISellerDocument;
   return seller;
 };
 
 const getSellerByUsername = async (username: string): Promise<ISellerDocument | null> => {
-  const seller: ISellerDocument | null = await SellerModel.findOne({ username }).exec() as ISellerDocument;
+  const seller: ISellerDocument | null = (await SellerModel.findOne({ username }).exec()) as ISellerDocument;
   return seller;
 };
 
 const getSellerByEmail = async (email: string): Promise<ISellerDocument | null> => {
-  const seller: ISellerDocument | null = await SellerModel.findOne({ email }).exec() as ISellerDocument;
+  const seller: ISellerDocument | null = (await SellerModel.findOne({ email }).exec()) as ISellerDocument;
   return seller;
 };
 
 const getRandomSellers = async (size: number): Promise<ISellerDocument[]> => {
-  const sellers: ISellerDocument[] = await SellerModel.aggregate([{ $sample: { size }}]);
+  const sellers: ISellerDocument[] = await SellerModel.aggregate([{ $sample: { size } }]);
   return sellers;
 };
 
 const createSeller = async (sellerData: ISellerDocument): Promise<ISellerDocument> => {
-  const createdSeller: ISellerDocument = await SellerModel.create(sellerData) as ISellerDocument;
+  const createdSeller: ISellerDocument = (await SellerModel.create(sellerData)) as ISellerDocument;
   await updateBuyerIsSellerProp(`${createdSeller.email}`);
   return createdSeller;
 };
 
+const removeSellers = async (): Promise<string> => {
+  await SellerModel.deleteMany();
+
+  return 'remove all sellers';
+};
+
 const updateSeller = async (sellerId: string, sellerData: ISellerDocument): Promise<ISellerDocument> => {
-  const updatedSeller: ISellerDocument = await SellerModel.findOneAndUpdate(
+  const updatedSeller: ISellerDocument = (await SellerModel.findOneAndUpdate(
     { _id: sellerId },
     {
       $set: {
@@ -50,7 +58,7 @@ const updateSeller = async (sellerId: string, sellerData: ISellerDocument): Prom
       }
     },
     { new: true }
-  ).exec() as ISellerDocument;
+  ).exec()) as ISellerDocument;
   return updatedSeller;
 };
 
@@ -78,7 +86,7 @@ const updateSellerCompletedJobsProp = async (data: IOrderMessage): Promise<void>
       },
       $set: { recentDelivery: new Date(recentDelivery!) }
     }
-    ).exec();
+  ).exec();
 };
 
 const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> => {
@@ -87,7 +95,7 @@ const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> =>
     '2': 'two',
     '3': 'three',
     '4': 'four',
-    '5': 'five',
+    '5': 'five'
   };
   const ratingKey: string = ratingTypes[`${data.rating}`];
   await SellerModel.updateOne(
@@ -97,7 +105,7 @@ const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> =>
         ratingsCount: 1,
         ratingSum: data.rating,
         [`ratingCategories.${ratingKey}.value`]: data.rating,
-        [`ratingCategories.${ratingKey}.count`]: 1,
+        [`ratingCategories.${ratingKey}.count`]: 1
       }
     }
   ).exec();
@@ -109,6 +117,7 @@ export {
   getSellerByEmail,
   getRandomSellers,
   createSeller,
+  removeSellers,
   updateSeller,
   updateTotalGigsCount,
   updateSellerOngoingJobsProp,

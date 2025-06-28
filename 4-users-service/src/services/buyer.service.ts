@@ -2,18 +2,24 @@ import { BuyerModel } from '@users/models/buyer.schema';
 import { IBuyerDocument } from '@fvoid/shared-lib';
 
 const getBuyerByEmail = async (email: string): Promise<IBuyerDocument | null> => {
-  const buyer: IBuyerDocument | null = await BuyerModel.findOne({ email }).exec() as IBuyerDocument;
+  const buyer: IBuyerDocument | null = (await BuyerModel.findOne({ email }).exec()) as IBuyerDocument;
   return buyer;
 };
 
 const getBuyerByUsername = async (username: string): Promise<IBuyerDocument | null> => {
-  const buyer: IBuyerDocument | null = await BuyerModel.findOne({ username }).exec() as IBuyerDocument;
+  const buyer: IBuyerDocument | null = (await BuyerModel.findOne({ username }).exec()) as IBuyerDocument;
   return buyer;
 };
 
 const getRandomBuyers = async (count: number): Promise<IBuyerDocument[]> => {
-  const buyers: IBuyerDocument[] = await BuyerModel.aggregate([{ $sample: { size: count }}]);
+  const buyers: IBuyerDocument[] = await BuyerModel.aggregate([{ $sample: { size: count } }]);
   return buyers;
+};
+
+const removeBuyers = async (): Promise<string> => {
+  await BuyerModel.deleteMany();
+
+  return 'remove all buyers';
 };
 
 const createBuyer = async (buyerData: IBuyerDocument): Promise<void> => {
@@ -37,16 +43,17 @@ const updateBuyerIsSellerProp = async (email: string): Promise<void> => {
 const updateBuyerPurchasedGigsProp = async (buyerId: string, purchasedGigId: string, type: string): Promise<void> => {
   await BuyerModel.updateOne(
     { _id: buyerId },
-    type === 'purchased-gigs' ?
-    {
-      $push: {
-        purchasedGigs: purchasedGigId
-      }
-    } : {
-      $pull: {
-        purchasedGigs: purchasedGigId
-      }
-    }
+    type === 'purchased-gigs'
+      ? {
+          $push: {
+            purchasedGigs: purchasedGigId
+          }
+        }
+      : {
+          $pull: {
+            purchasedGigs: purchasedGigId
+          }
+        }
   ).exec();
 };
 
@@ -56,6 +63,6 @@ export {
   getRandomBuyers,
   createBuyer,
   updateBuyerIsSellerProp,
-  updateBuyerPurchasedGigsProp
+  updateBuyerPurchasedGigsProp,
+  removeBuyers
 };
-
