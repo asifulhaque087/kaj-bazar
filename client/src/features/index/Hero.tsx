@@ -85,12 +85,16 @@ const Hero: FC = (): ReactElement => {
             <div className="grid grid-cols-3 gap-x-2 gap-y-4 sm:flex sm:justify-center lg:justify-start">
               {categories.map((category: string) => (
                 <div
+                  onClick={() => navigate(`/search/categories/${replaceSpacesWithDash(category)}`)}
                   key={uuidv4()}
                   className="w-full min-w-0 cursor-pointer rounded-full border border-gray-200 p-4 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-cyan-300/30"
                 >
                   <div className="flex justify-center">
                     <span className="block truncate font-medium dark:text-white">
-                      <a href={`/search/categories/${replaceSpacesWithDash(category)}`}>{category}</a>
+                      {/* <a href={`/search/categories/${replaceSpacesWithDash(category)}`}>{category}</a> */}
+                      {/* <a href={`/search/categories/${category}`}>{category}</a> */}
+                      {/* <a href={`/search/categories/${category}`}>{category}</a> */}
+                      {category}
                     </span>
                   </div>
                 </div>

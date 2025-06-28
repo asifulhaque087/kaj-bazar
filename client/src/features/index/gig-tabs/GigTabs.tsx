@@ -1,13 +1,18 @@
 import { FC, ReactElement, useState } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useGetAuthGigsByCategoryQuery } from 'src/features/auth/services/auth.service';
 import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
 import TopGigsView from 'src/shared/gigs/TopGigsView';
-import { categories, lowerCase, replaceAmpersandAndDashWithSpace, replaceSpacesWithDash } from 'src/shared/utils/utils.service';
+import { categories, lowerCase, replaceAmpersandAndDashWithSpace, replaceDashWithSpaces, replaceSpacesWithDash } from 'src/shared/utils/utils.service';
 import { v4 as uuidv4 } from 'uuid';
 
 const GigTabs: FC = (): ReactElement => {
   const [activeTab, setActiveTab] = useState<string>('Graphics & Design');
-  const queryType = `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(activeTab)}`)}`;
+
+  const navigate: NavigateFunction = useNavigate();
+
+  // const queryType = `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(activeTab)}`)}`;
+  const queryType = `query=${replaceDashWithSpaces(`${lowerCase(activeTab)}`)}`;
   const { data, isSuccess } = useGetAuthGigsByCategoryQuery({
     query: `${queryType}`,
     from: '0',
@@ -42,12 +47,13 @@ const GigTabs: FC = (): ReactElement => {
         <div className="mt-4 h-full overflow-hidden border px-6 py-6">
           {categoryGigs.length > 0 ? (
             <>
-              <a
+              <button
                 className="mt-10 w-[10%] rounded border border-black px-6 py-3 text-center text-sm font-bold text-black hover:bg-gray-100 focus:outline-none md:px-4 md:py-2 md:text-base"
-                href={`/search/categories/${replaceSpacesWithDash(activeTab)}`}
+                // href={`/search/categories/${replaceSpacesWithDash(activeTab)}`}
+                onClick={() => navigate(`/search/categories/${replaceSpacesWithDash(activeTab)}`)}
               >
                 Explore
-              </a>
+              </button>
               <TopGigsView gigs={categoryGigs} width="w-72" type="index" />
             </>
           ) : (

@@ -24,10 +24,15 @@ const GigsIndexDisplay: FC<IGigsProps> = ({ type }): ReactElement => {
   let gigs: ISellerGig[] = [];
   let totalGigs = 0;
   const updatedSearchParams: URLSearchParams = new URLSearchParams(searchParams.toString());
+
+  // console.log('category is ', category?.toLowerCase());
+  // console.log('category is ', lowerCase(category));
+
   const queryType: string =
     type === 'search'
       ? replaceDashWithSpaces(`${updatedSearchParams}`)
-      : `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(`${category}`)}`)}&${updatedSearchParams.toString()}`;
+      : `query=${replaceDashWithSpaces(category?.toLowerCase()!)}&${updatedSearchParams.toString()}`;
+  // : `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(`${category}`)}`)}&${updatedSearchParams.toString()}`;
   const { data, isSuccess, isLoading, isError } = useGetAuthGigsByCategoryQuery({
     query: `${queryType}`,
     from: itemFrom,
@@ -41,8 +46,12 @@ const GigsIndexDisplay: FC<IGigsProps> = ({ type }): ReactElement => {
     totalGigs = data.total ?? 0;
   }
 
-  const categoryName = find(categories(), (item: string) => location.pathname.includes(replaceSpacesWithDash(`${lowerCase(`${item}`)}`)));
+  // const categoryName = find(categories(), (item: string) => location.pathname.includes(replaceSpacesWithDash(`${lowerCase(`${item}`)}`)));
+  const categoryName = find(categories(), (item: string) => location.pathname.includes(replaceSpacesWithDash(item.toLocaleLowerCase())));
   const gigCategories = categoryName ?? searchParams.get('query');
+
+  console.log('gigs are ', gigs);
+  console.log('category name ', gigCategories);
 
   return (
     <div className="flex w-screen flex-col">
