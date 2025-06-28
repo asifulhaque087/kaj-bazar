@@ -179,7 +179,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                       }}
                       className="relative z-10 flex cursor-pointer justify-center self-center text-2xl font-semibold text-black lg:text-3xl"
                     >
-                      Jobber
+                      Kaj Bazar
                     </Link>
                     <HeaderSearchInput />
                   </div>

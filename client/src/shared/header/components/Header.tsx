@@ -50,7 +50,7 @@ const Header: FC<IHeader> = ({ navClass }): ReactElement => {
             <div className="flex flex-wrap items-center justify-between gap-6 md:gap-0 md:py-3 lg:py-5">
               <div className="flex w-full items-center justify-between lg:w-auto">
                 <Link to="/" className="relative z-10 cursor-pointer text-3xl font-semibold text-white">
-                  Jobber
+                  Kaj Bazar
                 </Link>
                 <div className="peer-checked:hamburger relative z-20 -mr-6 block cursor-pointer p-6 lg:hidden">
                   <Button
