@@ -28,8 +28,10 @@ export const replaceSpacesWithDash = (title: string): string => {
 };
 
 export const replaceDashWithSpaces = (title: string): string => {
+  console.log("from alsdjfkalsjdfkl title ", title)
   const lowercaseTitle: string = lowerCase(`${title}`);
-  const updatedTitle = lowercaseTitle.replace(/-|\/| /g, ' '); // replace - / and space with -
+  // const updatedTitle = lowercaseTitle.replace(/-|\/| /g, ' '); // replace - / and space with -
+  const updatedTitle = lowercaseTitle.replace(/-|\/| /g, '+'); // replace - / and space with -
   return updatedTitle;
 };
 
@@ -38,6 +40,7 @@ export const replaceAmpersandWithSpace = (title: string): string => {
 };
 
 export const replaceAmpersandAndDashWithSpace = (title: string): string => {
+  console.log("repl custom")
   const updatedTitle = title.replace(/[& -]/g, '+');
   return updatedTitle;
 };
