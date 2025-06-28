@@ -12,9 +12,9 @@ export class Search {
     objList.forEach(([key, value], index) => {
       query += `${key}=${value}${index !== lastItemIndex ? '&' : ''}`;
     });
-    res.status(StatusCodes.OK).json({ message: 'we reached' });
+    // res.status(StatusCodes.OK).json({ message: 'we reached' });
 
-    console.log('query is ', query);
+    // console.log('query is ', query);
     const response: AxiosResponse = await gigService.searchGigs(`${query}`, from, size, type);
     res.status(StatusCodes.OK).json({ message: response.data.message, total: response.data.total, gigs: response.data.gigs });
   }

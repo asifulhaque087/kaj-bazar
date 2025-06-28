@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-import { createAuthUser, getUserByUsernameOrEmail } from '@auth/services/auth.service';
+import { createAuthUser, getUserByUsernameOrEmail, removeAuthUsers } from '@auth/services/auth.service';
 import { faker } from '@faker-js/faker';
 import { BadRequestError, IAuthDocument, firstLetterUppercase, lowerCase } from '@fvoid/shared-lib';
 import { Request, Response } from 'express';
@@ -10,6 +10,10 @@ import { sample } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 
 export async function create(req: Request, res: Response): Promise<void> {
+  // remove all user
+
+  await removeAuthUsers();
+
   const { count } = req.params;
   const usernames: string[] = [];
   for (let i = 0; i < parseInt(count, 10); i++) {
