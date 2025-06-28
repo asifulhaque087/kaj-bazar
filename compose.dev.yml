@@ -124,6 +124,7 @@ services:
       - ./1-gateway-service:/app
       - /app/node_modules
     depends_on:
+      - redis
       - chat
       - order
 
@@ -261,6 +262,8 @@ services:
     depends_on:
       mongodb:
         condition: service_started
+      redis:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
 
@@ -290,6 +293,8 @@ services:
       - /app/node_modules
     depends_on:
       mongodb:
+        condition: service_started
+      redis:
         condition: service_started
       rabbitmq:
         condition: service_healthy
