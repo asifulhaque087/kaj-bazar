@@ -19,7 +19,10 @@ export const appRoutes = (app: Application) => {
   app.use(BASE_PATH, searchRoutes.routes());
 
   // app.use(BASE_PATH, authMiddleware.verifyUser, gigRoutes.routes());
-  app.use(BASE_PATH, gigRoutes.routes());
+  // app.use(BASE_PATH, gigRoutes.routes());
+
+  app.use(BASE_PATH, authMiddleware.verifyUser, gigRoutes.routes());
+
 
   app.use(BASE_PATH, authMiddleware.verifyUser, currentUserRoutes.routes());
   app.use(BASE_PATH, authMiddleware.verifyUser, buyerRoutes.routes());
