@@ -8,7 +8,7 @@ import { socketService } from './sockets/socket.service';
 import InfoModal from './features/info-modal';
 
 const App: FC = (): ReactElement => {
-  const [isInfoModal, setIsInfoModal] = useState(true);
+  const [isInfoModal, setIsInfoModal] = useState(false);
 
   useBeforeWindowUnload();
 
