@@ -56,12 +56,12 @@ export class GatewayServer {
         name: 'session',
         keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 3600000,
-        secure: true,
-        sameSite: 'none'
-        // secure: config.NODE_ENV !== 'development',
-        // ...(config.NODE_ENV !== 'development' && {
-        //   sameSite: 'none'
-        // })
+        // secure: true,
+        // sameSite: 'none'
+        secure: config.NODE_ENV !== 'development',
+        ...(config.NODE_ENV !== 'development' && {
+          sameSite: 'none'
+        })
       })
     );
     app.use(hpp());
@@ -71,8 +71,8 @@ export class GatewayServer {
 
     app.use(
       cors({
-        // origin: config.CLIENT_URL,
-        origin: 'https://www.kaj-bazar.duckdns.org',
+        origin: config.CLIENT_URL,
+        // origin: 'https://www.kaj-bazar.duckdns.org',
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization']
