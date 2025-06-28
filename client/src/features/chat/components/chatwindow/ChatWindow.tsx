@@ -162,22 +162,26 @@ const ChatWindow: FC<IChatWindowProps> = ({ chatMessages, isLoading, setSkip }):
             )}
           </div>
           <div className="relative h-[100%]">
-            <div className="absolute flex h-[98%] w-screen grow flex-col overflow-scroll" ref={scrollRef}>
+            <div className="absolute flex h-[98%] w-full grow flex-col overflow-scroll bg-green-5000" ref={scrollRef}>
               {chatMessages.map((message: IMessageDocument) => (
-                <div key={uuidv4()} className="mb-4">
-                  <div className="flex w-full cursor-pointer items-center space-x-4 px-5 py-2 hover:bg-[#f5fbff]">
+                <div key={uuidv4()} className={`mb-4 ${sameUser(message) ? 'ml-autoo' : null}`}>
+                  <div
+                    className={`flex ${sameUser(message) ? 'flex-row-reverse' : null}  w-full cursor-pointer items-center gap-[20px] px-5 py-2 hover:bg-[#f5fbff]`}
+                  >
                     <div className="flex self-start">
                       <img className="h-10 w-10 object-cover rounded-full" src={message.senderPicture} alt="" />
                     </div>
                     <div className="w-full text-sm dark:text-white">
-                      <div className="flex gap-x-2 pb-1 font-bold text-[#777d74]">
+                      <div className={`flex ${sameUser(message) ? 'flex-row-reverse' : null} gap-x-2 pb-1 font-bold text-[#777d74]`}>
                         <span>{message.senderUsername}</span>
                         <span className="mt-1 self-center text-xs font-normal">{TimeAgo.dayMonthYear(`${message.createdAt}`)}</span>
                       </div>
-                      <div className="flex flex-col text-[#777d74]">
-                        <span>{message.body}</span>
-                        {message.hasOffer && <ChatOffer message={message} seller={seller} gig={data?.gig} />}
-                        {message.file && <ChatFile message={message} />}
+                      <div className={`flex flex-col text-[#777d74] ${sameUser(message) ? 'items-end' : null}`}>
+                        <div>
+                          <p className={`${sameUser(message) ? 'text-right' : null}`}>{message.body}</p>
+                          {message.hasOffer && <ChatOffer message={message} seller={seller} gig={data?.gig} />}
+                          {message.file && <ChatFile message={message} />}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -252,6 +256,14 @@ const ChatWindow: FC<IChatWindowProps> = ({ chatMessages, isLoading, setSkip }):
       )}
     </>
   );
+
+  // const sameUser = (message: IMessageDocument): boolean => {
+  //   return authUser.username == (message.senderUsername || message.receiverUsername);
+  // };
+
+  function sameUser(message: IMessageDocument): boolean {
+    return authUser.username == (message.senderUsername || message.receiverUsername);
+  }
 };
 
 export default ChatWindow;

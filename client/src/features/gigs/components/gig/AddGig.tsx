@@ -104,8 +104,8 @@ const AddGig: FC = (): ReactElement => {
 
       const isValid: boolean = await schemaValidation();
 
-      console.log('create gig click', validationErrors);
       if (isValid) {
+        console.log('create gig click', validationErrors);
         const gig: ICreateGig = {
           profilePicture: `${authUser.profilePicture}`,
           sellerId,
