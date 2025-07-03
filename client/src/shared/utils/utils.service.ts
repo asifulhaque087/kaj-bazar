@@ -28,7 +28,7 @@ export const replaceSpacesWithDash = (title: string): string => {
 };
 
 export const replaceDashWithSpaces = (title: string): string => {
-  console.log("from alsdjfkalsjdfkl title ", title)
+  console.log('from alsdjfkalsjdfkl title ', title);
   const lowercaseTitle: string = lowerCase(`${title}`);
   // const updatedTitle = lowercaseTitle.replace(/-|\/| /g, ' '); // replace - / and space with -
   const updatedTitle = lowercaseTitle.replace(/-|\/| /g, '+'); // replace - / and space with -
@@ -40,7 +40,7 @@ export const replaceAmpersandWithSpace = (title: string): string => {
 };
 
 export const replaceAmpersandAndDashWithSpace = (title: string): string => {
-  console.log("repl custom")
+  console.log('repl custom');
   const updatedTitle = title.replace(/[& -]/g, '+');
   return updatedTitle;
 };
@@ -108,8 +108,6 @@ export const deleteFromLocalStorage = (key: string): void => {
 };
 
 export const applicationLogout = (dispatch: Dispatch, navigate: NavigateFunction) => {
-  // console.log('user is logging out');
-
   const loggedInUsername: string = getDataFromSessionStorage('loggedInuser');
   dispatch(logout({}));
   if (loggedInUsername) {
@@ -117,6 +115,7 @@ export const applicationLogout = (dispatch: Dispatch, navigate: NavigateFunction
   }
   dispatch(api.util.resetApiState());
   dispatch(authApi.endpoints.logout.initiate() as never);
+
   saveToSessionStorage(JSON.stringify(false), JSON.stringify(''));
   deleteFromLocalStorage('becomeASeller');
   navigate('/');

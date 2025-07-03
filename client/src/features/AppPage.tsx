@@ -51,8 +51,12 @@ const AppPage: FC = (): ReactElement => {
   }, [currentUserData, navigate, dispatch, appLogout, authUser.username, buyerData, sellerData]);
 
   const logoutUser = useCallback(async () => {
+    console.log('log out user called');
+    console.log('currentUserData is ', currentUserData);
     if ((!currentUserData && appLogout) || isError) {
       setTokenIsValid(false);
+
+      console.log('then token is valid false');
       applicationLogout(dispatch, navigate);
     }
   }, [currentUserData, dispatch, navigate, appLogout, isError]);
@@ -61,6 +65,10 @@ const AppPage: FC = (): ReactElement => {
     checkUser();
     logoutUser();
   }, [checkUser, logoutUser]);
+
+  console.log('auth user is ', tokenIsValid, authUser.id);
+
+  // console.log('loading is ',isBuyerLoading && isSellerLoading)
 
   if (authUser) {
     return !tokenIsValid && !authUser.id ? (
@@ -80,6 +88,25 @@ const AppPage: FC = (): ReactElement => {
   } else {
     return <Index />;
   }
+
+  // if (authUser) {
+  //   return !tokenIsValid && !authUser.id ? (
+  //     <Index />
+  //   ) : (
+  //     <>
+  //       {isBuyerLoading && isSellerLoading ? (
+  //         <CircularPageLoader />
+  //       ) : (
+  //         <>
+  //           <HomeHeader showCategoryContainer={showCategoryContainer} />
+  //           <Home />
+  //         </>
+  //       )}
+  //     </>
+  //   );
+  // } else {
+  //   return <Index />;
+  // }
 };
 
 export default AppPage;

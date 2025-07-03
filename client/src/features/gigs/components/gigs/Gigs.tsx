@@ -33,7 +33,8 @@ const Gigs: FC<IGigsProps> = ({ type }) => {
   const queryType: string =
     type === 'search'
       ? replaceDashWithSpaces(`${updatedSearchParams}`)
-      : `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(`${category}`)}`)}&${updatedSearchParams.toString()}`;
+      : `query=${replaceDashWithSpaces(`${lowerCase(`${category}`)}`)}&${updatedSearchParams.toString()}`;
+      // : `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(`${category}`)}`)}&${updatedSearchParams.toString()}`;
   const { data, isSuccess, isLoading, isError } = useSearchGigsQuery({
     query: `${queryType}`,
     from: itemFrom,

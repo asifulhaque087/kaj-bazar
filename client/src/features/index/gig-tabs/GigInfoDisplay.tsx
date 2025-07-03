@@ -2,11 +2,14 @@ import { FC, ReactElement, Suspense, useRef, useState } from 'react';
 import { FaArrowRight, FaCircleNotch, FaRegClock } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import StickyBox from 'react-sticky-box';
+import ForgotPasswordModal from 'src/features/auth/components/ForgotPassword';
+import LoginModal from 'src/features/auth/components/Login';
 import RegisterModal from 'src/features/auth/components/Register';
 import { useGetAuthGigByIdQuery } from 'src/features/auth/services/auth.service';
 import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
 import Button from 'src/shared/button/Button';
 import Header from 'src/shared/header/components/Header';
+import { IHeaderModalProps } from 'src/shared/header/interfaces/header.interface';
 import HtmlParser from 'src/shared/html-parser/HtmlParser';
 import CircularPageLoader from 'src/shared/page-loader/CircularPageLoader';
 import StarRating from 'src/shared/rating/StarRating';
@@ -16,6 +19,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 const GigInfoDisplay: FC = (): ReactElement => {
   const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
+
+  const [showModal, setShowModal] = useState<IHeaderModalProps>({
+    login: false,
+    register: false,
+    forgotPassword: false
+  });
+
   const { gigId } = useParams<string>();
   const { data, isSuccess, isLoading } = useGetAuthGigByIdQuery(`${gigId}`);
   const gig = useRef<ISellerGig>(emptyGigData);
@@ -25,7 +35,30 @@ const GigInfoDisplay: FC = (): ReactElement => {
 
   return (
     <>
-      {showRegisterModal && (
+      {showModal.login && (
+        <LoginModal
+          onClose={() => setShowModal((item: IHeaderModalProps) => ({ ...item, login: false }))}
+          onToggle={() => setShowModal((item: IHeaderModalProps) => ({ ...item, login: false, register: true }))}
+          onTogglePassword={() => setShowModal((item: IHeaderModalProps) => ({ ...item, login: false, forgotPassword: true }))}
+        />
+      )}
+      {showModal.register && (
+        <RegisterModal
+          onClose={() => setShowModal((item: IHeaderModalProps) => ({ ...item, register: false }))}
+          onToggle={() => setShowModal((item: IHeaderModalProps) => ({ ...item, login: true, register: false }))}
+        />
+      )}
+      {showModal.forgotPassword && (
+        <ForgotPasswordModal
+          onClose={() => setShowModal((item: IHeaderModalProps) => ({ ...item, forgotPassword: false }))}
+          onToggle={() => setShowModal((item: IHeaderModalProps) => ({ ...item, login: true, forgotPassword: false }))}
+        />
+      )}
+      {/* {openSidebar && (
+        <HeaderSideBar setShowLoginModal={setShowModal} setShowRegisterModal={setShowModal} setOpenSidebar={setOpenSidebar} />
+      )} */}
+
+      {/* {showRegisterModal && (
         <Suspense>
           <RegisterModal
             onClose={() => setShowRegisterModal(false)}
@@ -34,7 +67,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
             }}
           />
         </Suspense>
-      )}
+      )} */}
       <div className="flex w-screen flex-col">
         <Header navClass="navbar peer-checked:navbar-active relative z-20 w-full border-b border-gray-100 bg-white/90 shadow-2xl shadow-gray-600/5 backdrop-blur dark:border-gray-800 dark:bg-gray-900/80 dark:shadow-none" />
         {isLoading ? (
@@ -134,7 +167,9 @@ const GigInfoDisplay: FC = (): ReactElement => {
                               className={
                                 'text-md flex w-full cursor-pointer justify-between rounded bg-sky-500 px-8 py-2 font-bold text-white focus:outline-none '
                               }
-                              onClick={() => setShowRegisterModal(true)}
+                              // onClick={() => setShowRegisterModal(true)}
+
+                              onClick={() => setShowModal((item: IHeaderModalProps) => ({ ...item, register: true }))}
                               label={
                                 <>
                                   <span className="w-full">Continue</span> <FaArrowRight className="flex self-center" />
