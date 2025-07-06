@@ -106,7 +106,6 @@ services:
     ports:
       - 4000:4000
     environment:
-      - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
@@ -121,8 +120,8 @@ services:
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
     volumes:
-      - ./1-gateway-service:/app
-      - /app/node_modules
+      - ./1-gateway-service:/home/app
+      - /home/app/node_modules
     depends_on:
       - redis
       - chat
