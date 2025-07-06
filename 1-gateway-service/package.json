@@ -1,0 +1,22 @@
+{
+  "name": "gateway-service",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun src/index.ts",
+    "dev": "bun --watch src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@fvoid/shared-lib": "^1.0.14",
+    "axios": "^1.10.0",
+    "hono": "^4.8.4",
+    "hono-sessions": "^0.7.3"
+  }
+}
