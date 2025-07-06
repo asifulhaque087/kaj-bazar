@@ -1,13 +1,14 @@
 import http from 'http';
 
 import 'express-async-errors';
-import { CustomError, IAuthPayload, IErrorResponse } from '@fvoid/shared-lib';
+// import { CustomError, IAuthPayload, IErrorResponse } from '@fvoid/shared-lib';
+import { CustomError, IErrorResponse } from '@fvoid/shared-lib';
 import { config } from '@gig/config';
 import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
-import hpp from 'hpp';
-import helmet from 'helmet';
+// import hpp from 'hpp';
+// import helmet from 'helmet';
 import cors from 'cors';
-import { verify } from 'jsonwebtoken';
+// import { verify } from 'jsonwebtoken';
 import compression from 'compression';
 // import { checkConnection, createIndex } from '@gig/elasticsearch';
 import { appRoutes } from '@gig/routes';
@@ -29,9 +30,9 @@ const start = (app: Application): void => {
 };
 
 const securityMiddleware = (app: Application): void => {
-  app.set('trust proxy', 1);
-  app.use(hpp());
-  app.use(helmet());
+  // app.set('trust proxy', 1);
+  // app.use(hpp());
+  // app.use(helmet());
   app.use(
     cors({
       origin: config.API_GATEWAY_URL,
@@ -39,14 +40,14 @@ const securityMiddleware = (app: Application): void => {
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     })
   );
-  app.use((req: Request, _res: Response, next: NextFunction) => {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(' ')[1];
-      const payload: IAuthPayload = verify(token, config.JWT_TOKEN!) as IAuthPayload;
-      req.currentUser = payload;
-    }
-    next();
-  });
+  // app.use((req: Request, _res: Response, next: NextFunction) => {
+  //   if (req.headers.authorization) {
+  //     const token = req.headers.authorization.split(' ')[1];
+  //     const payload: IAuthPayload = verify(token, config.JWT_TOKEN!) as IAuthPayload;
+  //     req.currentUser = payload;
+  //   }
+  //   next();
+  // });
 };
 
 const standardMiddleware = (app: Application): void => {

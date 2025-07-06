@@ -14,12 +14,14 @@ import { StatusCodes } from 'http-status-codes';
 //   hits: any;
 // }
 
-
-
-
-
 const gigById = async (req: Request, res: Response): Promise<void> => {
-  const gig: ISellerGig|null = await getGigById(req.params.gigId);
+  console.log('hello from gig service');
+
+  res.status(StatusCodes.OK).json({ message: 'Get gig by id' });
+
+  return;
+
+  const gig: ISellerGig | null = await getGigById(req.params.gigId);
   res.status(StatusCodes.OK).json({ message: 'Get gig by id', gig });
 };
 

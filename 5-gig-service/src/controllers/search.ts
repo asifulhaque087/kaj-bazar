@@ -17,6 +17,8 @@ async function singleGigById(req: Request, res: Response): Promise<void> {
 }
 
 const gigs = async (req: Request, res: Response): Promise<void> => {
+  console.log('I am from gigs');
+
   const { from, size, type } = req.params;
 
   const paginate: IPaginateProps = {
