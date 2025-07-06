@@ -24,6 +24,14 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "noPropertyAccessFromIndexSignature": false,
+
+    "baseUrl": ".", // This tells TypeScript to resolve paths relative to the tsconfig.json file itself
+    "paths": {
+      "@src/*": ["src/*"] // This is your alias!
+      // You can add more aliases here:
+      // "@utils/*": ["./src/utils/*"],
+      // "@config": ["./src/config/index.ts"]
+    }
   }
 }
