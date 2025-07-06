@@ -3,7 +3,13 @@ import { logger } from "hono/logger";
 import { errorHandler } from "@fvoid/shared-lib";
 import { NotFoundError } from "@fvoid/shared-lib";
 import { cors } from "hono/cors";
-import { config } from "./config";
+import { config } from "@src/config";
+import loginRegisterRouter from "@src/routes/login-register.route";
+import verficationRouter from "@src/routes/verification.route";
+import passwordRouter from "@src/routes/password.route";
+import identityRouter from "@src/routes/identity.route";
+import healthRouter from "@src/routes/health.route";
+import seedRouter from "@src/routes/seed.route";
 
 const app = new Hono();
 
@@ -12,7 +18,7 @@ const app = new Hono();
 app.use(
   "*",
   cors({
-    origin: config.CLIENT_URL, // Matches 'origin'
+    origin: config.API_GATEWAY_URL, // Matches 'origin'
     credentials: true, // Matches 'credentials'
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Matches 'methods'
     allowHeaders: ["Content-Type", "Authorization"], // Matches 'allowedHeaders'
@@ -23,15 +29,14 @@ app.use(
 
 app.use("*", logger());
 
-const BASE_PATH = "/api/gateway/v1";
+const BASE_PATH = "/api/auth/v1";
 
-// app.route(BASE_PATH, searchRoutes.routes());
-
-// app.route(BASE_PATH, authRoutes.routes());
-
-app.get("/auth-health", (c) => {
-  return c.text("Auth server is running");
-});
+app.route("/", healthRouter);
+app.route(BASE_PATH, loginRegisterRouter);
+app.route(BASE_PATH, verficationRouter);
+app.route(BASE_PATH, passwordRouter);
+app.route(BASE_PATH, identityRouter);
+app.route(BASE_PATH, seedRouter);
 
 //** Error middleware
 
