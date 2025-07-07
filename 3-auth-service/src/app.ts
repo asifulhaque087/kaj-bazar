@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { errorHandler } from "@fvoid/shared-lib";
+import { configureCloudinary, errorHandler } from "@fvoid/shared-lib";
 import { NotFoundError } from "@fvoid/shared-lib";
 import { cors } from "hono/cors";
 import { config } from "@src/config";
@@ -10,6 +10,17 @@ import passwordRouter from "@src/routes/password.route";
 import identityRouter from "@src/routes/identity.route";
 import healthRouter from "@src/routes/health.route";
 import seedRouter from "@src/routes/seed.route";
+import { mqWrapper } from "@src/rabbitmq-wrapper";
+
+// ** Configure Cloudinary
+
+configureCloudinary({
+  cloud_name: config.CLOUD_NAME,
+  api_key: config.CLOUD_API_KEY,
+  api_secret: config.CLOUD_API_SECRET,
+});
+
+// ** Create Application
 
 const app = new Hono();
 
@@ -37,6 +48,15 @@ app.route(BASE_PATH, verficationRouter);
 app.route(BASE_PATH, passwordRouter);
 app.route(BASE_PATH, identityRouter);
 app.route(BASE_PATH, seedRouter);
+
+// ** RabbitMQ
+
+await mqWrapper.connect(config.RABBITMQ_ENDPOINT);
+
+process.once("SIGINT", async () => {
+  await mqWrapper.channel.close();
+  await mqWrapper.connection.close();
+});
 
 //** Error middleware
 
