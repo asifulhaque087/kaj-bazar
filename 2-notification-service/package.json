@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
-    "@fvoid/shared-lib": "^1.0.8",
+    "@fvoid/shared-lib": "^1.0.18",
     "amqplib": "^0.10.3",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -57,11 +57,8 @@
     "typescript-transform-paths": "^3.4.6",
     "winston": "^3.11.0"
   },
-
   "overrides": {
     "minimatch": "5.1.2",
     "glob": "8.1.0"
   }
-
-
 }
