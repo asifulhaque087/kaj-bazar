@@ -6,6 +6,9 @@ import { healthRoutes } from '@notifications/routes';
 import { createConnection } from '@notifications/queues/connection';
 import { Channel } from 'amqplib';
 import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notifications/queues/email.consumer';
+import { AuthCreatedListener } from '@notifications/events/listeners/auth-created-listener';
+import { mqWrapper } from '@notifications/rabbitmq-wrapper';
+import { config } from '@notifications/config';
 
 const SERVER_PORT = 4001;
 
@@ -17,6 +20,16 @@ export function start(app: Application): void {
 
 async function startQueues(): Promise<void> {
   const emailChannel: Channel = (await createConnection()) as Channel;
+
+  await mqWrapper.connect(config.RABBITMQ_ENDPOINT!);
+
+  process.once('SIGINT', async () => {
+    await mqWrapper.channel.close();
+    await mqWrapper.connection.close();
+  });
+
+  new AuthCreatedListener(mqWrapper.channel).listen();
+
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
 }
