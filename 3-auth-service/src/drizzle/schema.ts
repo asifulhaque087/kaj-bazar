@@ -28,14 +28,10 @@ export const AuthTable = mysqlTable(
     browserName: text("browserName"),
     deviceType: text("deviceType"),
     otp: text("otp"),
-    otpExpiration: datetime("otpExpiration")
-      .notNull()
-      .default(sql`CURRENT_TIMESTAMP`), // Changed to sql`CURRENT_TIMESTAMP`
-    createdAt: datetime("createdAt").default(sql`CURRENT_TIMESTAMP`), // Changed to sql`CURRENT_TIMESTAMP`
+    otpExpiration: datetime("otpExpiration"),
+    createdAt: datetime("createdAt"), // Changed to sql`CURRENT_TIMESTAMP`
     passwordResetToken: text("passwordResetToken"),
-    passwordResetExpires: datetime("passwordResetExpires")
-      .notNull()
-      .default(sql`CURRENT_TIMESTAMP`), // Changed to sql`CURRENT_TIMESTAMP`
+    passwordResetExpires: datetime("passwordResetExpires"),
 
     // Indexes
   }
