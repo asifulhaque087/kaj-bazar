@@ -46,6 +46,11 @@ services:
       - "3306:3306"
     # volumes:
     #   - ./docker-volumes/mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-papi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   postgres:
     container_name: postgres_container
@@ -170,11 +175,12 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./3-auth-service:/app
-      - /app/node_modules
+      - ./3-auth-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
+        # condition: service_started
       rabbitmq:
         condition: service_healthy
 
@@ -326,3 +332,27 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+
+  # Studios
+
+  auth-studio:
+    container_name: auth_studio_container
+    build:
+      context: 3-auth-service
+      dockerfile: Dockerfile.studio
+    restart: "no"
+    ports:
+      # - 4984:4984
+      - 4983:4983
+
+    environment:
+      - MYSQL_DB=${AUTH_DB_URL}
+
+    profiles: ["exclude"]
+
+    depends_on:
+      mysql:
+
+        # condition: service_started
+        condition: service_healthy
+
