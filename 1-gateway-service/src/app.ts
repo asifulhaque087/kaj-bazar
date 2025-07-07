@@ -5,8 +5,9 @@ import { NotFoundError } from "@fvoid/shared-lib";
 import { sessionMiddleware, CookieStore, Session } from "hono-sessions";
 import { cors } from "hono/cors";
 import { axiosAuthInstance } from "./axios-services/auth.axios";
-import { authRoutes } from "./routes/auth.routes";
-import { searchRoutes } from "./routes/search.routes";
+import searchRouter from "@src/routes/search.routes";
+import authRouter from "@src/routes/auth.routes";
+import healthRouter from "@src/routes/health.routes";
 
 export type SessionData = {
   jwt?: string;
@@ -73,15 +74,11 @@ app.use("*", logger());
 
 const BASE_PATH = "/api/gateway/v1";
 
-app.route(BASE_PATH, searchRoutes.routes());
+app.route(BASE_PATH, searchRouter);
 
-app.route(BASE_PATH, authRoutes.routes());
+app.route(BASE_PATH, authRouter);
 
-app.get("/books", (c) => c.json("list books"));
-
-app.get("/gateway-health", (c) => {
-  return c.text("Gateway server is running");
-});
+app.route("", healthRouter);
 
 // Error middleware
 
