@@ -13,10 +13,11 @@ import { Hono } from "hono";
 import { sign } from "hono/jwt";
 import { type ZodIssue } from "zod";
 import { config } from "@src/config";
-import { hashPassword } from "@src/utils/hashing.util";
+import { hashPassword, verifyPassword } from "@src/utils/hashing.util";
 import type { UploadApiResponse } from "cloudinary";
 import { AuthCreatedPublisher } from "@src/events/publishers/auth-created-publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
+import { loginValidation } from "@src/validations/login-register.validation";
 
 const loginRegisterRouter = new Hono();
 
@@ -47,12 +48,9 @@ loginRegisterRouter.post(
       .limit(1)
       .then((res) => res[0]);
 
-    if (isUser) throw new BadRequestError("Incorrent data");
+    if (isUser) throw new BadRequestError("User already data");
 
     // ** Upload profile picture
-
-    console.log("file is ", profilePicture);
-
     const profilePublicId = crypto.randomUUID();
     let uploadResult: UploadApiResponse;
     try {
@@ -71,30 +69,25 @@ loginRegisterRouter.post(
       throw new Error("File upload error. Try again.");
 
     // ** Generate email verification token
-
     const randomCharacters = crypto.randomBytes(20).toString("hex");
 
     // ** hash the password
     const hashedPassword = await hashPassword(password);
 
     //** Prepare auth data
-
     const authData = {
       username,
       email,
       profilePublicId,
-      // profilePublicId: "profile-publid-id",
       password: hashedPassword,
       country,
       profilePicture: uploadResult?.secure_url,
-      // profilePicture: "this is public pic",
       emailVerificationToken: randomCharacters,
       browserName,
       deviceType,
     };
 
     // ** Create auth user in database
-
     const result = await db
       .insert(AuthTable)
       .values(authData)
@@ -102,7 +95,6 @@ loginRegisterRouter.post(
       .then((res) => res[0]);
 
     // ** Send email verification message to queue
-
     const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
 
     new AuthCreatedPublisher(mqWrapper.channel).publish({
@@ -112,7 +104,6 @@ loginRegisterRouter.post(
     });
 
     // ** Sign JWT token
-
     const payload = {
       id: result?.id,
       email: authData.email,
@@ -125,15 +116,59 @@ loginRegisterRouter.post(
 
     // ** Respond to client
     return c.json(
-      { message: "User created successfully", user: result, token: userJWT },
+      {
+        message: "User created successfully",
+        user: { id: result?.id, ...authData },
+        token: userJWT,
+      },
       201
     );
   }
 );
 
 // ** Sign In An User
-loginRegisterRouter.post("/signin", async (c) => {
-  return c.json({ message: "I am from login" });
-});
+loginRegisterRouter.post(
+  "/signin",
+
+  zValidator("json", loginValidation, (result) => {
+    if (!result.success)
+      throw new RequestValidationError(result?.error.issues as ZodIssue[]);
+  }),
+  async (c) => {
+    // ** Extract the data
+    const { username, email, password } = c.req.valid("json");
+
+    // ** Find isUser & throw error if !isUser
+    const isUser = await db
+      .select()
+      .from(AuthTable)
+      .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
+      .limit(1)
+      .then((res) => res[0]);
+
+    if (!isUser) throw new BadRequestError("Invalid credentials");
+
+    // ** Compare password
+    const isPasswordValid = verifyPassword(password, isUser.password);
+
+    if (!isPasswordValid) throw new BadRequestError("Invalid credentials");
+
+    // ** Generate jwt
+    const payload = {
+      id: isUser?.id,
+      email: isUser.email,
+      username: isUser.username,
+      exp: Math.floor(Date.now() / 1000) + 60 * 1, // testing
+    };
+
+    const userJWT = await sign(payload, config.JWT_TOKEN);
+
+    // ** Return response
+    return c.json(
+      { message: "User logged in successfully", user: isUser, token: userJWT },
+      201
+    );
+  }
+);
 
 export default loginRegisterRouter;
