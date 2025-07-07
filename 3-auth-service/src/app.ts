@@ -13,7 +13,6 @@ import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 
 // ** Configure Cloudinary
-
 configureCloudinary({
   cloud_name: config.CLOUD_NAME,
   api_key: config.CLOUD_API_KEY,
@@ -21,11 +20,9 @@ configureCloudinary({
 });
 
 // ** Create Application
-
 const app = new Hono();
 
 // ** Security Middlewares
-
 app.use(
   "*",
   cors({
@@ -37,7 +34,6 @@ app.use(
 );
 
 //**  Route Middleware
-
 app.use("*", logger());
 
 const BASE_PATH = "/api/auth/v1";
@@ -50,7 +46,6 @@ app.route(BASE_PATH, identityRouter);
 app.route(BASE_PATH, seedRouter);
 
 // ** RabbitMQ
-
 await mqWrapper.connect(config.RABBITMQ_ENDPOINT);
 
 process.once("SIGINT", async () => {
@@ -59,7 +54,6 @@ process.once("SIGINT", async () => {
 });
 
 //** Error middleware
-
 app.notFound(async () => {
   throw new NotFoundError();
 });
