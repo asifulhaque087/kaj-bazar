@@ -1,29 +1,41 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Tinos, Poppins } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Tinos,
+  Poppins,
+  Roboto,
+} from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
-const tinos = Tinos({
-  variable: "--font-tinos",
-  weight: ["400", "700"],
-});
+// const tinos = Tinos({
+//   variable: "--font-tinos",
+//   weight: ["400", "700"],
+// });
 
-const inter = Inter({
-  variable: "--font-inter",
-  weight: ["400", "700"],
-});
+// const inter = Inter({
+//   variable: "--font-inter",
+//   weight: ["400", "700"],
+// });
 
-const poppings = Poppins({
-  variable: "--font-poppins",
+// const poppings = Poppins({
+//   variable: "--font-poppins",
+//   weight: ["400", "500", "700"],
+// });
+
+const roboto = Roboto({
+  variable: "--font-robot",
   weight: ["400", "500", "700"],
 });
 
@@ -40,7 +52,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${tinos.variable} ${inter.variable} ${poppings.className} antialiased`}
+        // className={`${geistSans.variable} ${geistMono.variable} ${tinos.variable} ${inter.variable} ${poppings.className} antialiased`}
+        className={`${roboto.className} antialiased`}
       >
         {children}
       </body>
