@@ -40,7 +40,7 @@ loginRegisterRouter.post(
       deviceType,
     } = c.req.valid("json");
 
-    // ** Check if user exists by username or email
+    // Check if user exists by username or email
     const isUser = await db
       .select()
       .from(AuthTable)
@@ -48,9 +48,9 @@ loginRegisterRouter.post(
       .limit(1)
       .then((res) => res[0]);
 
-    if (isUser) throw new BadRequestError("User already data");
+    if (isUser) throw new BadRequestError("User already exits");
 
-    // ** Upload profile picture
+    // Upload profile picture
     const profilePublicId = crypto.randomUUID();
     let uploadResult: UploadApiResponse;
     try {
@@ -68,13 +68,13 @@ loginRegisterRouter.post(
     if (!uploadResult.public_id)
       throw new Error("File upload error. Try again.");
 
-    // ** Generate email verification token
+    // Generate email verification token
     const randomCharacters = crypto.randomBytes(20).toString("hex");
 
-    // ** hash the password
+    // hash the password
     const hashedPassword = await hashPassword(password);
 
-    //** Prepare auth data
+    // Prepare auth data
     const authData = {
       username,
       email,
@@ -87,14 +87,14 @@ loginRegisterRouter.post(
       deviceType,
     };
 
-    // ** Create auth user in database
+    // Create auth user in database
     const result = await db
       .insert(AuthTable)
       .values(authData)
       .$returningId()
       .then((res) => res[0]);
 
-    // ** Send email verification message to queue
+    // Send email verification message to queue
     const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
 
     new AuthCreatedPublisher(mqWrapper.channel).publish({
@@ -103,18 +103,18 @@ loginRegisterRouter.post(
       template: "verifyEmail",
     });
 
-    // ** Sign JWT token
+    // Sign JWT token
     const payload = {
       id: result?.id,
       email: authData.email,
       username: authData.username,
-      exp: Math.floor(Date.now() / 1000) + 60 * 1, // testing
-      // exp: Math.floor(Date.now() / 1000) + 10 * 24 * 60 * 60,
+      // exp: Math.floor(Date.now() / 1000) + 60 * 1, // 1 min
+      exp: Math.floor(Date.now() / 1000) + 24 * 7 * 3600, // This will set the expiry to 7 days from now
     };
 
     const userJWT = await sign(payload, config.JWT_TOKEN);
 
-    // ** Respond to client
+    // Respond to client
     return c.json(
       {
         message: "User created successfully",
@@ -135,10 +135,10 @@ loginRegisterRouter.post(
       throw new RequestValidationError(result?.error.issues as ZodIssue[]);
   }),
   async (c) => {
-    // ** Extract the data
+    // Extract the data
     const { username, email, password } = c.req.valid("json");
 
-    // ** Find isUser & throw error if !isUser
+    // Find isUser & throw error if !isUser
     const isUser = await db
       .select()
       .from(AuthTable)
@@ -146,24 +146,23 @@ loginRegisterRouter.post(
       .limit(1)
       .then((res) => res[0]);
 
-    if (!isUser) throw new BadRequestError("Invalid credentials");
+    if (!isUser) throw new BadRequestError("User not found");
 
-    // ** Compare password
-    const isPasswordValid = verifyPassword(password, isUser.password);
-
+    // Compare password
+    const isPasswordValid = await verifyPassword(password, isUser.password);
     if (!isPasswordValid) throw new BadRequestError("Invalid credentials");
 
-    // ** Generate jwt
+    // Generate jwt
     const payload = {
       id: isUser?.id,
       email: isUser.email,
       username: isUser.username,
-      exp: Math.floor(Date.now() / 1000) + 60 * 1, // testing
+      exp: Math.floor(Date.now() / 1000) + 24 * 7 * 3600, // This will set the expiry to 7 days from now
     };
 
     const userJWT = await sign(payload, config.JWT_TOKEN);
 
-    // ** Return response
+    // Return response
     return c.json(
       { message: "User logged in successfully", user: isUser, token: userJWT },
       201
