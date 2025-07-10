@@ -29,6 +29,13 @@
       "when": 1751865829746,
       "tag": "0003_violet_stature",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1752055185562,
+      "tag": "0004_slow_hemingway",
+      "breakpoints": true
     }
   ]
 }
