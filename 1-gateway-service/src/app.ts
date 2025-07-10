@@ -2,50 +2,32 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { errorHandler } from "@fvoid/shared-lib";
 import { NotFoundError } from "@fvoid/shared-lib";
-import { sessionMiddleware, CookieStore, Session } from "hono-sessions";
+import { sessionMiddleware, CookieStore } from "hono-sessions";
 import { cors } from "hono/cors";
-import { axiosAuthInstance } from "./axios-services/auth.axios";
 import searchRouter from "@src/routes/search.routes";
 import authRouter from "@src/routes/auth.routes";
 import healthRouter from "@src/routes/health.routes";
+import { config } from "@src/config";
 
-export type SessionData = {
-  jwt?: string;
-  userId?: string;
-};
+//** Set up your Hono
+const app = new Hono();
 
-// Set up your Hono instance with session variables type
-const app = new Hono<{
-  Variables: {
-    session: Session<SessionData>;
-  };
-}>();
-
-const config = {
-  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:5173",
-
-  SECRET_KEY:
-    process.env.SESSION_SECRET ||
-    "a_very_secret_key_at_least_32_characters_long_for_production",
-};
-
-// ** security middlewares
-
+// ** Security middlewares
 app.use(
   "*",
   sessionMiddleware({
-    sessionCookieName: "hono-session",
+    // sessionCookieName: "honoSession",
     store: new CookieStore(),
-    encryptionKey: config.SECRET_KEY,
+    encryptionKey: config.SECRET_KEY_ONE,
     expireAfterSeconds: 24 * 7 * 3600,
     cookieOptions: {
+      path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     },
   })
 );
 
-// --- CORS Middleware Configuration ---
 app.use(
   "*",
   cors({
@@ -56,31 +38,18 @@ app.use(
   })
 );
 
-app.use(async (c, next) => {
-  const session = c.get("session");
-  const jwt = session.get("jwt");
-
-  // console.log("calling from ");
-
-  if (jwt) {
-    axiosAuthInstance.defaults.headers["Authorization"] = `Bearer ${jwt}`;
-  }
-  return next();
-});
-
-// route middleware
-
+// ** Route middleware
 app.use("*", logger());
 
-const BASE_PATH = "/api/gateway/v1";
+const BASE_PATH = "/api/v1/gateway";
 
 app.route(BASE_PATH, searchRouter);
 
 app.route(BASE_PATH, authRouter);
 
-app.route("", healthRouter);
+app.route("/", healthRouter);
 
-// Error middleware
+// ** Error middleware
 
 app.notFound(async () => {
   throw new NotFoundError();
