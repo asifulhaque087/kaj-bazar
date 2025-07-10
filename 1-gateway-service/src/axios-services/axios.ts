@@ -12,28 +12,26 @@ export class AxiosService {
   // This is the static factory method. It's the primary way to create instances.
   public static async create(
     baseUrl: string,
-    serviceName?: string
+    serviceName: string
   ): Promise<AxiosService> {
-    let requestGatewayToken = "";
-    if (serviceName) {
-      requestGatewayToken = await sign(
-        { id: serviceName },
-        `${config.GATEWAY_JWT_TOKEN}`
-      );
-    }
+    // Generate Token For Gateway
+
+    const gatewayToken = await sign(
+      { id: serviceName },
+      `${config.GATEWAY_JWT_TOKEN}`
+    );
 
     const instance = axios.create({
       baseURL: baseUrl,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        gatewayToken: requestGatewayToken,
+        gatewayToken,
       },
       withCredentials: true,
     });
 
     const serviceInstance = new AxiosService(instance);
-    // console.log("AxiosService.create() method finished.");
     return serviceInstance;
   }
 }
