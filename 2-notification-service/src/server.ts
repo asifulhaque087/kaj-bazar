@@ -3,12 +3,13 @@ import http from 'http';
 
 import { Application } from 'express';
 import { healthRoutes } from '@notifications/routes';
-import { createConnection } from '@notifications/queues/connection';
-import { Channel } from 'amqplib';
-import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notifications/queues/email.consumer';
-import { AuthCreatedListener } from '@notifications/events/listeners/auth-created-listener';
+// import { createConnection } from '@notifications/queues/connection';
+// import { Channel } from 'amqplib';
+// import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notifications/queues/email.consumer';
+// import { consumeOrderEmailMessages } from '@notifications/queues/email.consumer';
 import { mqWrapper } from '@notifications/rabbitmq-wrapper';
 import { config } from '@notifications/config';
+import { SendEmailListener } from '@notifications/events/listeners/send-email-listener';
 
 const SERVER_PORT = 4001;
 
@@ -19,7 +20,7 @@ export function start(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  const emailChannel: Channel = (await createConnection()) as Channel;
+  // const emailChannel: Channel = (await createConnection()) as Channel;
 
   await mqWrapper.connect(config.RABBITMQ_ENDPOINT!);
 
@@ -28,10 +29,10 @@ async function startQueues(): Promise<void> {
     await mqWrapper.connection.close();
   });
 
-  new AuthCreatedListener(mqWrapper.channel).listen();
+  new SendEmailListener(mqWrapper.channel).listen();
 
-  await consumeAuthEmailMessages(emailChannel);
-  await consumeOrderEmailMessages(emailChannel);
+  // await consumeAuthEmailMessages(emailChannel);
+  // await consumeOrderEmailMessages(emailChannel);
 }
 
 function startServer(app: Application): void {
