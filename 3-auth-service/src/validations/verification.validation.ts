@@ -7,5 +7,5 @@ export const tokenSchema = z.object({
 
 export const resendEmailSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email(),
-  userId: z.number(),
+  // userId: z.number(),
 });
