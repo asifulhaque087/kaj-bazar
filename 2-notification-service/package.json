@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
-    "@fvoid/shared-lib": "^1.0.18",
+    "@fvoid/shared-lib": "^1.0.21",
     "amqplib": "^0.10.3",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
