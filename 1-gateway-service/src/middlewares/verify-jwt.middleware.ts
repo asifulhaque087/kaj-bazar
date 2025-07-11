@@ -11,39 +11,6 @@ type SessionData = {
   userId?: string;
 };
 
-// const publicAxios = await AxiosService.create(
-//   `${config.AUTH_BASE_URL}/api/v1/auth`,
-//   "auth"
-// );
-
-// export const verifyJwtToken = createMiddleware<{
-//   Variables: {
-//     bearerToken: string;
-//     honoSession: Session<SessionData>;
-//   };
-// }>(async (c, next) => {
-//   // export const verifyJwtToken = createMiddleware(async (c, next) => {
-//   // ** Get the token
-
-//   const session = c.get("honoSession");
-
-//   if (!session) throw new NotAuthorizedError();
-
-//   try {
-//     const jwtToken = session.get("");
-
-//     if (!jwtToken) throw new NotAuthorizedError();
-
-//     await verify(jwtToken, `${config.JWT_TOKEN}`);
-//     c.set("bearerToken", `jwt ${jwtToken}`);
-//     // c.set("protectedAxios", )
-//   } catch (error) {
-//     throw new NotAuthorizedError();
-//   }
-
-//   await next();
-// });
-
 export const verifyJwtToken = createMiddleware<{
   Variables: {
     // publicAxios: AxiosService;
