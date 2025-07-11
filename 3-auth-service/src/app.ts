@@ -11,6 +11,7 @@ import identityRouter from "@src/routes/identity.route";
 import healthRouter from "@src/routes/health.route";
 import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
+import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
 
 // ** Configure Cloudinary
 configureCloudinary({
@@ -26,17 +27,21 @@ const app = new Hono();
 app.use(
   "*",
   cors({
-    origin: config.API_GATEWAY_URL, // Matches 'origin'
+    // origin: config.API_GATEWAY_URL, // Matches 'origin'
+    origin: "*", // Matches 'origin'
     credentials: true, // Matches 'credentials'
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Matches 'methods'
-    allowHeaders: ["Content-Type", "Authorization"], // Matches 'allowedHeaders'
+    // allowHeaders: ["Content-Type", "Authorization"], // Matches 'allowedHeaders'
   })
 );
+
+app.use(verifyGatewayToken);
 
 //**  Route Middleware
 app.use("*", logger());
 
-const BASE_PATH = "/api/auth/v1";
+const BASE_PATH = "/api/v1/auth";
+
 
 app.route("/", healthRouter);
 app.route(BASE_PATH, loginRegisterRouter);
