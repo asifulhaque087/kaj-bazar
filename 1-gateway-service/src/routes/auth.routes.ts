@@ -60,6 +60,7 @@ authRouter.post(
   }
 );
 
+// ** Signin Route Handler
 authRouter.post("/auth/signin", async (c) => {
   const body = await c.req.json();
 
@@ -90,28 +91,168 @@ authRouter.post("/auth/signin", async (c) => {
   }
 });
 
+// ** Signout Route Handler
 authRouter.post("/auth/signout", verifyJwtToken, async (c) => {
   return c.json({ token: "bearerToken" });
 });
 
-authRouter.put("/auth/verify-email", async (c) => {
-  return c.json({});
+// ** Verify Email Route Handler
+authRouter.put("/auth/verify-email", verifyJwtToken, async (c) => {
+  const body = await c.req.json();
+
+  try {
+    // forward req to auth service
+    const protectedAxios = c.get("protectedAxios");
+    const response: AxiosResponse = await protectedAxios.axios.put(
+      "/verify-email",
+      body
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
-authRouter.put("/auth/verify-otp/:otp", async (c) => {
-  return c.json({});
+// ** Verify Otp Route Handler
+authRouter.put("/auth/verify-otp/:otp", verifyJwtToken, async (c) => {
+  const otp = c.req.param("otp");
+
+  try {
+    // forward req to auth service
+    const protectedAxios = c.get("protectedAxios");
+    const response: AxiosResponse = await protectedAxios.axios.put(
+      `/verify-otp/${otp}`
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
+});
+
+// ** Resend Email Route Handler
+authRouter.post("/auth/resend-email", async (c) => {
+  const body = await c.req.json();
+
+  try {
+    // forward req to auth service
+    const apiService = c.get("publicAxios");
+    const response: AxiosResponse = await apiService.axios.post(
+      "/resend-email",
+      body
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
 authRouter.put("/auth/forgot-password", async (c) => {
-  return c.json({});
+  const body = await c.req.json();
+
+  try {
+    // forward req to auth service
+    const apiService = c.get("publicAxios");
+    const response: AxiosResponse = await apiService.axios.put(
+      "/forgot-password",
+      body
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
 authRouter.put("/auth/reset-password/:token", async (c) => {
-  return c.json({});
+  const body = await c.req.json();
+  const { token } = c.req.param();
+
+  try {
+    // forward req to auth service
+    const apiService = c.get("publicAxios");
+    const response: AxiosResponse = await apiService.axios.put(
+      `/reset-password/${token}`,
+      body
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
-authRouter.put("/auth/change-password", async (c) => {
-  return c.json({});
+authRouter.put("/auth/change-password", verifyJwtToken, async (c) => {
+  const body = await c.req.json();
+
+  try {
+    // forward req to auth service
+    const apiService = c.get("protectedAxios");
+    const response: AxiosResponse = await apiService.axios.put(
+      "/change-password",
+      body
+    );
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
 authRouter.put("/auth/seed/:count", async (c) => {
