@@ -16,10 +16,11 @@ export class AxiosService {
   ): Promise<AxiosService> {
     // Generate Token For Gateway
 
-    const gatewayToken = await sign(
-      { id: serviceName },
-      `${config.GATEWAY_JWT_TOKEN}`
-    );
+    const payload = {
+      serviceName,
+    };
+
+    const gatewayToken = await sign(payload, `${config.GATEWAY_JWT_TOKEN}`);
 
     const instance = axios.create({
       baseURL: baseUrl,
