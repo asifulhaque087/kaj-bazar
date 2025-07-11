@@ -17,7 +17,7 @@ async function emailTemplates(template: string, receiver: string, locals: IEmail
     });
     const email: Email = new Email({
       message: {
-        from: `Jobber App <${config.SENDER_EMAIL}>`
+        from: `Kaj Bazar App <${config.SENDER_EMAIL}>`
       },
       send: true,
       preview: false,
