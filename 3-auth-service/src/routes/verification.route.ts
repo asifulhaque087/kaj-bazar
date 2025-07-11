@@ -1,7 +1,5 @@
 // ** Third party imports
-
 import * as crypto from "node:crypto";
-
 import {
   BadRequestError,
   NotFoundError,
@@ -20,24 +18,24 @@ import {
   resendEmailSchema,
   tokenSchema,
 } from "@src/validations/verification.validation";
-import { AuthCreatedPublisher } from "@src/events/publishers/auth-created-publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
+import { SendEmailPublisher } from "@src/events/publishers/send-email-publisher";
 
+// ** Hono App
 const verficationRouter = new Hono();
 
 // ** Email verfication
 verficationRouter.put(
   "/verify-email",
-
   zValidator("json", tokenSchema, (result) => {
     if (!result.success) throw new RequestValidationError(result?.error.issues);
   }),
 
   async (c) => {
-    // ** Extract token
+    // Extract token
     const { token } = c.req.valid("json");
 
-    // ** Find user by token
+    // Find user by token
     const isUser = await db
       .select()
       .from(AuthTable)
@@ -47,23 +45,22 @@ verficationRouter.put(
 
     if (!isUser) throw new BadRequestError("Invalid token");
 
-    // ** Verify User Email
+    // Verify User Email
     await db
       .update(AuthTable)
-      .set({ emailVerified: true, emailVerificationToken: token })
+      .set({ emailVerified: true, emailVerificationToken: null })
       .where(eq(AuthTable.id, isUser.id));
 
-    // ** Return Response
+    // Return Response
     return c.json({ message: "Account verify successfully" });
   }
 );
 
 // ** Opt verfication
 verficationRouter.put("/verify-otp/:otp", async (c) => {
-  // ** Extract OTP
+  // Extract OTP
   const otp = c.req.param("otp");
-
-  // ** Find user by otp
+  // Find user by otp
   const isUser = await db
     .select()
     .from(AuthTable)
@@ -73,12 +70,12 @@ verficationRouter.put("/verify-otp/:otp", async (c) => {
 
   if (!isUser) throw new BadRequestError("Invalid OTP");
 
-  // ** Check if OTP is expired
+  // Check if OTP is expired
   if (isUser.otpExpiration && new Date() > new Date(isUser.otpExpiration)) {
     throw new BadRequestError("OTP has expired");
   }
 
-  // ** Update otp
+  // Update otp
   await db
     .update(AuthTable)
     .set({
@@ -87,7 +84,7 @@ verficationRouter.put("/verify-otp/:otp", async (c) => {
     })
     .where(eq(AuthTable.id, isUser.id));
 
-  // ** Generate token
+  // Generate token
   const payload = {
     id: isUser?.id,
     email: isUser.email,
@@ -97,7 +94,7 @@ verficationRouter.put("/verify-otp/:otp", async (c) => {
 
   const userJWT = await sign(payload, config.JWT_TOKEN);
 
-  // ** Return response
+  // Return response
   return c.json(
     { message: "OTP verified successfully ", user: isUser, token: userJWT },
     201
@@ -107,17 +104,15 @@ verficationRouter.put("/verify-otp/:otp", async (c) => {
 // ** Resend Email
 verficationRouter.post(
   "/resend-email",
-
   zValidator("json", resendEmailSchema, (result) => {
     if (!result.success) throw new RequestValidationError(result?.error.issues);
   }),
 
   async (c) => {
-    // ** Extract Data
+    // Extract Data
+    const { email } = c.req.valid("json");
 
-    const { email, userId } = c.req.valid("json");
-
-    // ** Find the user
+    // Find the user by email
     const isUser = await db
       .select()
       .from(AuthTable)
@@ -127,25 +122,25 @@ verficationRouter.post(
 
     if (!isUser) throw new NotFoundError();
 
-    // ** Generate verfication link
+    // Generate verfication link
     const randomCharacters = crypto.randomBytes(20).toString("hex");
-    const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${isUser.emailVerificationToken}`;
+    const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${randomCharacters}`;
 
-    // ** Update User
+    // Update User
     await db
       .update(AuthTable)
       .set({ emailVerificationToken: randomCharacters })
       .where(eq(AuthTable.id, isUser.id));
 
-    // ** Publish Event
-
-    new AuthCreatedPublisher(mqWrapper.channel).publish({
+    // Publish Event
+    new SendEmailPublisher(mqWrapper.channel).publish({
       receiverEmail: isUser.email!,
       verifyLink: verificationLink,
       template: "verifyEmail",
+      username: isUser.username,
     });
 
-    // ** Fetch updated user
+    // Fetch updated user
     const updatedUser = await db
       .select()
       .from(AuthTable)
@@ -153,7 +148,7 @@ verficationRouter.post(
       .limit(1)
       .then((res) => res[0]);
 
-    // ** Return Response
+    // Return Response
     return c.json({
       message: "Email verification sent",
       user: updatedUser,
