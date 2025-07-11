@@ -15,9 +15,9 @@ import { type ZodIssue } from "zod";
 import { config } from "@src/config";
 import { hashPassword, verifyPassword } from "@src/utils/hashing.util";
 import type { UploadApiResponse } from "cloudinary";
-import { AuthCreatedPublisher } from "@src/events/publishers/auth-created-publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import { loginValidation } from "@src/validations/login-register.validation";
+import { SendEmailPublisher } from "@src/events/publishers/send-email-publisher";
 
 const loginRegisterRouter = new Hono();
 
@@ -97,10 +97,11 @@ loginRegisterRouter.post(
     // Send email verification message to queue
     const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
 
-    new AuthCreatedPublisher(mqWrapper.channel).publish({
+    new SendEmailPublisher(mqWrapper.channel).publish({
       receiverEmail: authData.email!,
       verifyLink: verificationLink,
       template: "verifyEmail",
+      username: authData.username
     });
 
     // Sign JWT token
