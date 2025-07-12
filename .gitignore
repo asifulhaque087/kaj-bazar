@@ -5,6 +5,8 @@ node_modules
 # output
 out
 dist
+.next
+
 build
 *.tgz
 
