@@ -37,6 +37,17 @@ identityRouter.get("/refresh-token/:username", verifyClientToken, async (c) => {
 
 // ** Get Current User
 identityRouter.get("/currentuser", verifyClientToken, async (c) => {
+  // get current user email and find user
+  const user = c.get("user");
+
+  const isUser = await db.query.AuthTable.findFirst({
+    where: eq(AuthTable.email, user.email),
+  });
+
+  if (!isUser) throw new NotFoundError();
+
+  // return response
+  return c.json({ message: "Authenticated user", user });
 });
 
 export default identityRouter;
