@@ -11,7 +11,7 @@ import { sign } from "hono/jwt";
 const identityRouter = new Hono();
 
 // ** Refresh token
-identityRouter.get("/refresh-token/:username", verifyClientToken, async (c) => {
+identityRouter.get("/refresh-token", verifyClientToken, async (c) => {
   // get current user email and find user
   const user = c.get("user");
 
