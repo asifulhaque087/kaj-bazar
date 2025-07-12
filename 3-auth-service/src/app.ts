@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { configureCloudinary, errorHandler } from "@fvoid/shared-lib";
+import {
+  configureCloudinary,
+  errorHandler,
+  verifyGatewayToken,
+} from "@fvoid/shared-lib";
 import { NotFoundError } from "@fvoid/shared-lib";
 import { cors } from "hono/cors";
 import { config } from "@src/config";
@@ -11,7 +15,7 @@ import identityRouter from "@src/routes/identity.route";
 import healthRouter from "@src/routes/health.route";
 import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
-import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
+// import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
 
 // ** Configure Cloudinary
 configureCloudinary({
@@ -35,13 +39,12 @@ app.use(
   })
 );
 
-app.use(verifyGatewayToken);
+app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "auth"));
 
 //**  Route Middleware
 app.use("*", logger());
 
 const BASE_PATH = "/api/v1/auth";
-
 
 app.route("/", healthRouter);
 app.route(BASE_PATH, loginRegisterRouter);
