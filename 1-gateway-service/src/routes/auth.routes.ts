@@ -256,6 +256,30 @@ authRouter.put("/auth/change-password", verifyJwtToken, async (c) => {
 });
 
 authRouter.get("/auth/refresh-token", verifyJwtToken, async (c) => {
+  try {
+    // forward req to auth service
+    const apiService = c.get("protectedAxios");
+    const response: AxiosResponse = await apiService.axios.get(
+      `/refresh-token`
+    );
+
+    // set jwt to session
+    const session = c.get("session");
+    session.set("jwt", response.data.token);
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
 });
 
 authRouter.get("/auth/currentuser", verifyJwtToken, async (c) => {
