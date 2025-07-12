@@ -255,6 +255,30 @@ authRouter.put("/auth/change-password", verifyJwtToken, async (c) => {
   }
 });
 
+authRouter.get("/auth/refresh-token", verifyJwtToken, async (c) => {
+});
+
+authRouter.get("/auth/currentuser", verifyJwtToken, async (c) => {
+  try {
+    // forward req to auth service
+    const apiService = c.get("protectedAxios");
+    const response: AxiosResponse = await apiService.axios.get("/currentuser");
+
+    // return response
+    return c.json(response.data);
+  } catch (error) {
+    // return errors
+
+    if (!(error instanceof AxiosError && error.response))
+      throw new Error("Server Error");
+
+    return c.json(
+      error.response.data,
+      error.response.status as ContentfulStatusCode
+    );
+  }
+});
+
 authRouter.put("/auth/seed/:count", async (c) => {
   return c.json({});
 });
