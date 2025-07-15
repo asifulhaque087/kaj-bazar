@@ -8,15 +8,17 @@
     "dev": "bun --watch src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.10"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@fvoid/shared-lib": "^1.0.14",
+    "@fvoid/shared-lib": "^1.0.22",
     "axios": "^1.10.0",
     "hono": "^4.8.4",
-    "hono-sessions": "^0.7.3"
+    "hono-sessions": "^0.7.3",
+    "jsonwebtoken": "^9.0.2"
   }
 }
