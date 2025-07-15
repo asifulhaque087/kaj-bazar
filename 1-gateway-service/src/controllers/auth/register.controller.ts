@@ -5,10 +5,10 @@ const register = async (req: Request, res: Response) => {
   const body = req.body;
 
   try {
-    const publicAxios = req.publicAxios!;
+    const apiService = req.publicAxios!;
 
     // Make request to auth service
-    const response: AxiosResponse = await publicAxios.axios.post(
+    const response: AxiosResponse = await apiService.axios.post(
       "/signup",
       body
     );
@@ -17,15 +17,17 @@ const register = async (req: Request, res: Response) => {
     req.session = { jwt: response.data.token };
 
     // Send response data
-    res.json({
-      message: response.data.message,
-      user: response.data.user,
-    });
+    return res.json(response.data);
+
+    // res.json({
+    //   message: response.data.message,
+    //   user: response.data.user,
+    // });
   } catch (error) {
     if (!(error instanceof AxiosError && error.response))
       throw new Error("Server Error");
 
-    res.status(error.response.status).json(error.response.data);
+    return res.status(error.response.status).json(error.response.data);
   }
 };
 
