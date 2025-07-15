@@ -1,324 +1,42 @@
-// ##################
-
-
-import { config } from "@src/config";
-import register from "@src/controllers/auth/register.controller";
-import { apiMiddleware } from "@src/middlewares/api.middleware";
-import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
+// ** Third Party Imports
 import { Router } from "express";
 
-// const healthRouter = Router();
+// ** Config
+import { config } from "@src/config";
 
+// ** Middlewares
+import { apiMiddleware } from "@src/middlewares/api.middleware";
+import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
 
+// ** Controllers
+import authSeed from "@src/controllers/auth/auth-seed.controller";
+import changePassword from "@src/controllers/auth/change-password.controller";
+import currentUser from "@src/controllers/auth/current-user.controller";
+import forgotPassword from "@src/controllers/auth/forgot-password.controller";
+import login from "@src/controllers/auth/login.controller";
+import logout from "@src/controllers/auth/logout.controller";
+import refreshToken from "@src/controllers/auth/refresh-token.controller";
+import register from "@src/controllers/auth/register.controller";
+import resendEmail from "@src/controllers/auth/resend-email.controller";
+import resetPassword from "@src/controllers/auth/reset-password.controller";
+import verifyEmail from "@src/controllers/auth/verify-email.controller";
+import verifyOtp from "@src/controllers/auth/verify-otp.controller";
 
 const authRouter = Router();
 
 authRouter.use(apiMiddleware(`${config.AUTH_BASE_URL}/api/v1/auth`, "auth"));
 
 authRouter.post("/auth/signup", register);
-authRouter.post("/auth/signin", register);
-authRouter.post("/auth/signout", verifyJwtToken, register);
-authRouter.put("/auth/verify-email", verifyJwtToken, register);
-authRouter.post("/auth/verify-otp/:otp", verifyJwtToken, register);
-authRouter.post("/auth/resend-email", register);
-authRouter.post("/auth/forgot-password", register);
-authRouter.post("/auth/reset-password/:token", register);
-authRouter.post("/auth/change-password", verifyJwtToken, register);
-authRouter.post("/auth/refresh-token", verifyJwtToken, register);
-authRouter.post("/auth/currentuser", verifyJwtToken, register);
-authRouter.post("/auth/seed/:count", register);
+authRouter.post("/auth/signin", login);
+authRouter.post("/auth/signout", verifyJwtToken, logout);
+authRouter.put("/auth/verify-email", verifyJwtToken, verifyEmail);
+authRouter.put("/auth/verify-otp/:otp", verifyJwtToken, verifyOtp);
+authRouter.post("/auth/resend-email", resendEmail);
+authRouter.put("/auth/forgot-password", forgotPassword);
+authRouter.put("/auth/reset-password/:token", resetPassword);
+authRouter.put("/auth/change-password", verifyJwtToken, changePassword);
+authRouter.get("/auth/refresh-token", verifyJwtToken, refreshToken);
+authRouter.get("/auth/currentuser", verifyJwtToken, currentUser);
+authRouter.put("/auth/seed/:count", authSeed);
 
-
-
-
-
-// // ** Create Hono App
-// const authRouter = new Hono<{ Variables: AppVariables }>();
-
-// // ** Create APi services
-// authRouter.use(apiMiddleware(`${config.AUTH_BASE_URL}/api/v1/auth`, "auth"));
-
-// // ** Signup Route Handler
-// authRouter.post(
-//   "",
-
-//   async (c) => {
-//     const body = await c.req.json();
-
-//     try {
-//       // request to auth service
-//       const publicAxios = c.get("publicAxios");
-//       const response: AxiosResponse = await publicAxios.axios.post(
-//         "/signup",
-//         body
-//       );
-
-//       // set jwt
-//       const session = c.get("session");
-//       session.set("jwt", response.data.token);
-
-//       // response data
-//       return c.json({
-//         message: response.data.message,
-//         user: response.data.user,
-//       });
-//     } catch (error) {
-//       if (!(error instanceof AxiosError && error.response))
-//         throw new Error("Server Error");
-
-//       return c.json(
-//         error.response.data,
-//         error.response.status as ContentfulStatusCode
-//       );
-//     }
-//   }
-// );
-
-// // ** Signin Route Handler
-// authRouter.post("/auth/signin", async (c) => {
-//   const body = await c.req.json();
-
-//   try {
-//     // forward req to auth service
-//     const publicAxios = c.get("publicAxios");
-//     const response: AxiosResponse = await publicAxios.axios.post(
-//       "/signin",
-//       body
-//     );
-
-//     // set jwt to session
-//     const session = c.get("session");
-//     session.set("jwt", response.data.token);
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// // ** Signout Route Handler
-// authRouter.post("/auth/signout", verifyJwtToken, async (c) => {
-//   return c.json({ token: "bearerToken" });
-// });
-
-// // ** Verify Email Route Handler
-// authRouter.put("/auth/verify-email", verifyJwtToken, async (c) => {
-//   const body = await c.req.json();
-
-//   try {
-//     // forward req to auth service
-//     const protectedAxios = c.get("protectedAxios");
-//     const response: AxiosResponse = await protectedAxios.axios.put(
-//       "/verify-email",
-//       body
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// // ** Verify Otp Route Handler
-// authRouter.put("/auth/verify-otp/:otp", verifyJwtToken, async (c) => {
-//   const otp = c.req.param("otp");
-
-//   try {
-//     // forward req to auth service
-//     const protectedAxios = c.get("protectedAxios");
-//     const response: AxiosResponse = await protectedAxios.axios.put(
-//       `/verify-otp/${otp}`
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// // ** Resend Email Route Handler
-// authRouter.post("/auth/resend-email", async (c) => {
-//   const body = await c.req.json();
-
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("publicAxios");
-//     const response: AxiosResponse = await apiService.axios.post(
-//       "/resend-email",
-//       body
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.put("/auth/forgot-password", async (c) => {
-//   const body = await c.req.json();
-
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("publicAxios");
-//     const response: AxiosResponse = await apiService.axios.put(
-//       "/forgot-password",
-//       body
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.put("/auth/reset-password/:token", async (c) => {
-//   const body = await c.req.json();
-//   const { token } = c.req.param();
-
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("publicAxios");
-//     const response: AxiosResponse = await apiService.axios.put(
-//       `/reset-password/${token}`,
-//       body
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.put("/auth/change-password", verifyJwtToken, async (c) => {
-//   const body = await c.req.json();
-
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("protectedAxios");
-//     const response: AxiosResponse = await apiService.axios.put(
-//       "/change-password",
-//       body
-//     );
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.get("/auth/refresh-token", verifyJwtToken, async (c) => {
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("protectedAxios");
-//     const response: AxiosResponse = await apiService.axios.get(
-//       `/refresh-token`
-//     );
-
-//     // set jwt to session
-//     const session = c.get("session");
-//     session.set("jwt", response.data.token);
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.get("/auth/currentuser", verifyJwtToken, async (c) => {
-//   try {
-//     // forward req to auth service
-//     const apiService = c.get("protectedAxios");
-//     const response: AxiosResponse = await apiService.axios.get("/currentuser");
-
-//     // return response
-//     return c.json(response.data);
-//   } catch (error) {
-//     // return errors
-
-//     if (!(error instanceof AxiosError && error.response))
-//       throw new Error("Server Error");
-
-//     return c.json(
-//       error.response.data,
-//       error.response.status as ContentfulStatusCode
-//     );
-//   }
-// });
-
-// authRouter.put("/auth/seed/:count", async (c) => {
-//   return c.json({});
-// });
-
-// export default authRouter;
+export default authRouter;
