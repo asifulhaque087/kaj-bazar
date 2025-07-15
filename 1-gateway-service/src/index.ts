@@ -6,14 +6,18 @@ import cookieSession from "cookie-session";
 import healthRouter from "@src/routes/health.routes";
 import { config } from "@src/config";
 import { errorHandler, NotFoundError } from "@fvoid/shared-lib";
+import authRouter from "@src/routes/auth.routes";
+import gigRouter from "@src/routes/gig.routes";
 
 // **  Create Applicaiton
 const app = express();
 
-// ** Body Parser Middleware (to parse JSON request bodies)
-// Hono parses JSON by default, Express needs explicit middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // For URL-encoded bodies
+// ** Standart Middlewares
+
+// Body Parser Middleware (to parse JSON request bodies)
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // For URL-encoded bodies
 
 // ** Security Middlewares
 
@@ -44,16 +48,19 @@ const BASE_PATH = "/api/v1/gateway";
 
 app.use(healthRouter);
 
+app.use(BASE_PATH, authRouter);
+app.use(BASE_PATH, gigRouter);
 
-// ** 404 Not Found Handler
+// ** Error Handler Middlewares
+
 app.get("*", () => {
   throw new NotFoundError();
 });
 
-// ** Global Error Handler
 app.use(errorHandler);
 
 // ** Listen App
+
 const PORT = 4000;
 app.listen(PORT, () => {
   console.log(`Gateway server is running on port ${PORT}`);
