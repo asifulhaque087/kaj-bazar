@@ -1,65 +1,19 @@
 // ** Third party imports
-import {
-  BadRequestError,
-  NotFoundError,
-  verifyClientToken,
-} from "@fvoid/shared-lib";
-import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
-// import { verifyClientToken } from "@src/middlewares/verfiyClientToken.middleware";
-import { eq } from "drizzle-orm";
-import { Hono } from "hono";
-import { sign } from "hono/jwt";
+import { Router } from "express";
 
-const identityRouter = new Hono();
+// ** Local Imports
+import currentUser from "@src/controllers/current-user.controller";
+import refreshToken from "@src/controllers/refresh-token.controller";
+import { verifyClientToken } from "@src/middlewares/verfiyClientToken.middleware";
+
+const identityRouter = Router();
+
+// Todo -  verifyClientToken(config.JWT_TOKEN),
 
 // ** Refresh token
-identityRouter.get(
-  "/refresh-token",
-  verifyClientToken(config.JWT_TOKEN),
-  async (c) => {
-    // get current user email and find user
-    const user = c.get("user");
-
-    const isUser = await db.query.AuthTable.findFirst({
-      where: eq(AuthTable.email, user.email),
-    });
-
-    if (!isUser) throw new BadRequestError("Invalid token");
-
-    // generate jwt
-    const payload = {
-      id: isUser?.id,
-      email: isUser.email,
-      username: isUser.username,
-      exp: Math.floor(Date.now() / 1000) + 24 * 7 * 3600, // This will set the expiry to 7 days from now
-    };
-
-    const userJWT = await sign(payload, config.JWT_TOKEN);
-
-    // return response
-    return c.json({ message: "Refresh token", user: isUser, token: userJWT });
-  }
-);
+identityRouter.get("/refresh-token", verifyClientToken, refreshToken);
 
 // ** Get Current User
-identityRouter.get(
-  "/currentuser",
-  verifyClientToken(config.JWT_TOKEN),
-  async (c) => {
-    // get current user email and find user
-    const user = c.get("user");
-
-    const isUser = await db.query.AuthTable.findFirst({
-      where: eq(AuthTable.email, user.email),
-    });
-
-    if (!isUser) throw new NotFoundError();
-
-    // return response
-    return c.json({ message: "Authenticated user", user });
-  }
-);
+identityRouter.get("/currentuser", verifyClientToken, currentUser);
 
 export default identityRouter;
