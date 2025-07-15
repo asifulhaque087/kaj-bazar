@@ -1,11 +1,11 @@
 // ** Third party imports
-import { Hono } from "hono";
+import { Router, type Request, type Response } from "express";
 
-const seedRouter = new Hono();
+const seedRouter = Router();
 
 // ** Seed Auth Data
-seedRouter.put("/seed/:count", async (c) => {
-  return c.json({ message: "I am from seed auth data" });
+seedRouter.put("/seed/:count", async (req: Request, res: Response) => {
+  res.json({ message: "I am from seed auth data" });
 });
 
 export default seedRouter;
