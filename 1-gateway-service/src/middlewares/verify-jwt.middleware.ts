@@ -1,46 +1,50 @@
-import { NotAuthorizedError } from "@fvoid/shared-lib";
-import { config } from "@src/config";
-import { createMiddleware } from "hono/factory";
-import { verify } from "hono/jwt";
+import type { Request, Response, NextFunction } from "express";
+import { NotAuthorizedError } from "@fvoid/shared-lib"; // Assuming this path is correct
+import { config } from "@src/config"; // Assuming this path is correct
+import jwt from "jsonwebtoken"; // Import the jsonwebtoken library
 
-import { Session } from "hono-sessions";
-import type { AxiosService } from "@src/axios-services/axios";
+/**
+ * Express middleware to verify a JWT token from the session and inject it
+ * into the Authorization header of the protected Axios instance.
+ *
+ * This middleware assumes that:
+ * 1. `cookie-session` middleware has been run previously, populating `req.session`.
+ * 2. `apiMiddleware` has been run previously, populating `req.protectedAxios`.
+ *
+ * @param req The Express request object.
+ * @param res The Express response object.
+ * @param next The Express next middleware function.
+ */
+export const verifyJwtToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // Access session data from req.session (provided by cookie-session middleware)
+  const session = req.session;
 
-type SessionData = {
-  jwt?: string;
-  userId?: string;
-};
-
-export const verifyJwtToken = createMiddleware<{
-  Variables: {
-    // publicAxios: AxiosService;
-    protectedAxios: AxiosService;
-    session: Session<SessionData>;
-  };
-}>(async (c, next) => {
-  // Check session
-  const session = c.get("session");
+  // If no session exists, the user is not authorized
   if (!session) throw new NotAuthorizedError();
 
   try {
-    // Check token
-    const jwtToken = session.get("jwt");
-    if (!jwtToken) throw new NotAuthorizedError();
+    // Get the JWT token from the session
+    const jwtToken = session.jwt;
 
-    // verify token
-    await verify(jwtToken, `${config.JWT_TOKEN}`);
+    // If no JWT token is found in the session, the user is not authorized
+    if (!jwtToken) {
+      throw new NotAuthorizedError();
+    }
 
-    // Inject token
-    const protectedAxios = c.get("protectedAxios");
+    jwt.verify(jwtToken, config.JWT_TOKEN);
+
+    const protectedAxios = req.protectedAxios!;
+
     protectedAxios.axios.defaults.headers[
       "Authorization"
     ] = `Bearer ${jwtToken}`;
 
-    // set axios intance to context
-    c.set("protectedAxios", protectedAxios);
+    next();
   } catch (error) {
     throw new NotAuthorizedError();
   }
-
-  await next();
-});
+};
