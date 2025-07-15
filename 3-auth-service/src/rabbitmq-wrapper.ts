@@ -19,13 +19,15 @@ class MQWrapper {
   }
 
   async connect(url: string) {
-    const connection = await connect(url);
+    try {
+      const connection = await connect(url);
+      this._connection = await connect(url);
+      this._channel = await connection.createChannel();
 
-    this._connection = await connect(url);
-
-    this._channel = await connection.createChannel();
-
-    console.log("rabbitmq connected");
+      console.log("rabbitmq connected");
+    } catch (error) {
+      // throw new ConnectionError()
+    }
   }
 }
 
