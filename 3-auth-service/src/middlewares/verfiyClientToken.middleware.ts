@@ -1,41 +1,50 @@
-import { NotAuthorizedError } from "@fvoid/shared-lib";
-import { config } from "@src/config";
-import { createMiddleware } from "hono/factory";
-import { verify } from "hono/jwt";
+import jwt from "jsonwebtoken";
+import { NotAuthorizedError } from "@fvoid/shared-lib"; // Assuming this is a custom error class
+import { config } from "@src/config"; // Assuming this is your configuration file
+import type { NextFunction, Request, Response } from "express";
 
-type Payload = {
+// Define the shape of your JWT payload
+type ClientJWTPayload = {
   id: number | undefined;
   email: string;
   username: string;
   exp: number;
 };
 
-export const verifyClientToken = createMiddleware<{
-  Variables: {
-    // publicAxios: AxiosService;
-    user: Payload;
-  };
-}>(async (c, next) => {
-  const authHeader = c.req.header("Authorization");
-  if (!authHeader) throw new NotAuthorizedError();
+// Extend Request to include the user property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: ClientJWTPayload;
+    }
+  }
+}
 
-  try {
-    // Check token
+export const verifyClientToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.header("Authorization");
 
-    const [bearer, jwtToken] = authHeader.split(" ");
-
-    if (bearer !== "Bearer" || !jwtToken) throw new NotAuthorizedError();
-
-    // verify token
-    const payload: Payload = (await verify(
-      jwtToken,
-      `${config.JWT_TOKEN}`
-    )) as Payload;
-
-    c.set("user", payload);
-  } catch (error) {
+  if (!authHeader) {
     throw new NotAuthorizedError();
   }
 
-  await next();
-});
+  try {
+    const [bearer, jwtToken] = authHeader.split(" ");
+
+    if (bearer !== "Bearer" || !jwtToken) {
+      throw new NotAuthorizedError();
+    }
+
+    // Verify token
+    const payload = jwt.verify(jwtToken, config.JWT_TOKEN) as ClientJWTPayload;
+
+    req.user = payload; // Attach the payload to the request object
+    next(); // Continue to the next middleware or route handler
+  } catch (error) {
+    // If the token is invalid or expired, jwt.verify will throw an error
+    throw new NotAuthorizedError();
+  }
+};

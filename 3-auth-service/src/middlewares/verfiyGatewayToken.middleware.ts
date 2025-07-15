@@ -1,27 +1,31 @@
+import jwt from "jsonwebtoken";
 import { NotAuthorizedError } from "@fvoid/shared-lib";
-import { config } from "@src/config";
-import { createMiddleware } from "hono/factory";
-import { verify } from "hono/jwt";
+import type { NextFunction, Request, Response } from "express";
 
-type Payload = {
+type GatewayJWTPayload = {
   serviceName: string;
 };
 
-export const verifyGatewayToken = createMiddleware(async (c, next) => {
-  const gatewayToken = c.req.header("gatewayToken");
-  if (!gatewayToken) throw new NotAuthorizedError();
+export const verifyGatewayToken = (
+  secret: string,
+  expectedServiceName: string
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const gatewayToken = req.header("gatewayToken");
 
-  try {
-    // verify token
-    const payload: Payload = (await verify(
-      gatewayToken,
-      `${config.GATEWAY_JWT_TOKEN}`
-    )) as Payload;
+    if (!gatewayToken) {
+      throw new NotAuthorizedError();
+    }
 
-    if (payload.serviceName !== "auth") throw new NotAuthorizedError();
-  } catch (error) {
-    throw new NotAuthorizedError();
-  }
+    try {
+      const payload = jwt.verify(gatewayToken, secret) as GatewayJWTPayload;
 
-  await next();
-});
+      if (payload.serviceName !== expectedServiceName)
+        throw new NotAuthorizedError();
+
+      next();
+    } catch (error) {
+      throw new NotAuthorizedError();
+    }
+  };
+};
