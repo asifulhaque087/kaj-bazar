@@ -1,15 +1,21 @@
 // ** Third party imports
-import { insertAuthSchema } from "@src/drizzle/schema";
 import { z } from "zod";
 
+// forgot password validation schema
 export const forgotPasswordSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email(),
 });
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
-export const resetPasswordValidation = insertAuthSchema.pick({
-  password: true,
+// reset password validation schema
+export const resetPasswordSchema = z.object({
+  password: z.string().min(6, { message: "Password is required" }),
 });
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
-export const changePasswordValidation = insertAuthSchema.pick({
-  password: true,
+// change password validation schema
+
+export const changePasswordSchema = z.object({
+  password: z.string().min(6, { message: "Password is required" }),
 });
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
