@@ -1,24 +1,23 @@
 // ** Third party imports
-// import { z } from "zod";
+import { z } from "zod";
 
-import { insertAuthSchema } from "@src/drizzle/schema";
-
-// ** Local imports
-
-export const signUpValidation = insertAuthSchema;
-
-export const loginValidation = insertAuthSchema.pick({
-  username: true,
-  email: true,
-  password: true,
+// ** Register Validation
+export const userRegistrationSchema = z.object({
+  username: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8),
+  profilePicture: z
+    .string()
+    .min(1, "Profile picture is required")
+    .max(5000000, "Profile picture data is too large for initial processing."),
+  country: z.string().min(1, "Country is a required field"),
 });
+export type UserRegistrationInput = z.infer<typeof userRegistrationSchema>;
 
-// export type registerUser = z.infer<typeof registerUserSchema>;
-
-// export const loginUserValidation = insertUserSchema.omit({
-//   id: true,
-//   name: true,
-//   refreshToken: true,
-// });
-
-// export type LoginUser = z.infer<typeof loginUserSchema>;
+// ** Login Validation
+export const userLoginSchema = z.object({
+  username: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+export type UserLoginInput = z.infer<typeof userLoginSchema>;
