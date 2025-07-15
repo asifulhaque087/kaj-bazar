@@ -1,11 +1,11 @@
 // ** Third party imports
-import { Hono } from "hono";
+import { Router } from "express";
 
-const healthRouter = new Hono();
+const healthRouter = Router();
 
 // ** Check Health
-healthRouter.get("/auth-health", (c) => {
-  return c.text("Auth server is running");
+healthRouter.get("/auth-health", (_req, res) => {
+  return res.send("Auth server is running");
 });
 
 export default healthRouter;
