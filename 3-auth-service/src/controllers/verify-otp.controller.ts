@@ -1,6 +1,6 @@
 // ** Third Party Imports
 
-import { BadRequestError } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
@@ -18,12 +18,14 @@ const verifyOtp = async (req: Request, res: Response) => {
   if (!otp) throw new BadRequestError("OTP not found");
 
   // Find user by otp
-  const isUser = await db
-    .select()
-    .from(AuthTable)
-    .where(eq(AuthTable.otp, otp))
-    .limit(1)
-    .then((res) => res[0]);
+  const isUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(eq(AuthTable.otp, otp))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   if (!isUser) throw new BadRequestError("Invalid OTP");
 
@@ -33,13 +35,15 @@ const verifyOtp = async (req: Request, res: Response) => {
   }
 
   // Update otp
-  await db
-    .update(AuthTable)
-    .set({
-      otp: null, // Clear the OTP after successful verification
-      otpExpiration: null, // Clear the expiry time
-    })
-    .where(eq(AuthTable.id, isUser.id));
+  await handleAsync(
+    db
+      .update(AuthTable)
+      .set({
+        otp: null, // Clear the OTP after successful verification
+        otpExpiration: null, // Clear the expiry time
+      })
+      .where(eq(AuthTable.id, isUser.id))
+  );
 
   // Generate token
   const payload = {
@@ -49,10 +53,10 @@ const verifyOtp = async (req: Request, res: Response) => {
     exp: Math.floor(Date.now() / 1000) + 60 * 1, // testing
   };
 
-  const userJWT = await jwt.sign(payload, config.JWT_TOKEN);
+  const userJWT = jwt.sign(payload, config.JWT_TOKEN);
 
   // Return response
-  res.json({
+  return res.json({
     message: "OTP verified successfully ",
     user: isUser,
     token: userJWT,

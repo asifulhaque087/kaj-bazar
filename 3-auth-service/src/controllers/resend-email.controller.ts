@@ -1,4 +1,4 @@
-import { NotFoundError } from "@fvoid/shared-lib";
+import { handleAsync, NotFoundError } from "@fvoid/shared-lib";
 import { config } from "@src/config";
 import { db } from "@src/drizzle/db";
 import { AuthTable } from "@src/drizzle/schema";
@@ -15,12 +15,14 @@ const resendEmail = async (req: Request, res: Response) => {
   const { email } = req.body as ResendEmaiInput;
 
   // Find the user by email
-  const isUser = await db
-    .select()
-    .from(AuthTable)
-    .where(eq(AuthTable.email, email))
-    .limit(1)
-    .then((res) => res[0]);
+  const isUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(eq(AuthTable.email, email))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   if (!isUser) throw new NotFoundError();
 
@@ -29,10 +31,12 @@ const resendEmail = async (req: Request, res: Response) => {
   const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${randomCharacters}`;
 
   // Update User
-  await db
-    .update(AuthTable)
-    .set({ emailVerificationToken: randomCharacters })
-    .where(eq(AuthTable.id, isUser.id));
+  await handleAsync(
+    db
+      .update(AuthTable)
+      .set({ emailVerificationToken: randomCharacters })
+      .where(eq(AuthTable.id, isUser.id))
+  );
 
   // Publish Event
   new SendEmailPublisher(mqWrapper.channel).publish({
@@ -43,15 +47,17 @@ const resendEmail = async (req: Request, res: Response) => {
   });
 
   // Fetch updated user
-  const updatedUser = await db
-    .select()
-    .from(AuthTable)
-    .where(eq(AuthTable.email, email))
-    .limit(1)
-    .then((res) => res[0]);
+  const updatedUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(eq(AuthTable.email, email))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   // Return Response
-  res.json({
+  return res.json({
     message: "Email verification sent",
     user: updatedUser,
   });

@@ -1,7 +1,7 @@
 // ** Third Party Imports
 
 import jwt from "jsonwebtoken";
-import { BadRequestError } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
 import { eq, or } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -18,12 +18,14 @@ const login = async (req: Request, res: Response) => {
   const { username, email, password } = req.body as UserLoginInput;
 
   // Find isUser & throw error if !isUser
-  const isUser = await db
-    .select()
-    .from(AuthTable)
-    .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
-    .limit(1)
-    .then((res) => res[0]);
+  const isUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   if (!isUser) throw new BadRequestError("User not found");
 
@@ -44,7 +46,7 @@ const login = async (req: Request, res: Response) => {
 
   // Return response
 
-  res.json({
+  return res.json({
     message: "User logged in successfully",
     user: isUser,
     token: userJWT,

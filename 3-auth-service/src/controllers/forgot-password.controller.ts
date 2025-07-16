@@ -1,6 +1,6 @@
 // Third Party Imports
 
-import { BadRequestError } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 import * as crypto from "node:crypto";
@@ -19,12 +19,14 @@ const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body as ForgotPasswordInput;
 
   // find user by email
-  const isUser = await db
-    .select()
-    .from(AuthTable)
-    .where(eq(AuthTable.email, email))
-    .limit(1)
-    .then((res) => res[0]);
+  const isUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(eq(AuthTable.email, email))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   if (!isUser) throw new BadRequestError("Invalid credentials");
 
@@ -33,10 +35,12 @@ const forgotPassword = async (req: Request, res: Response) => {
   const date: Date = new Date();
   date.setHours(date.getHours() + 1);
 
-  await db
-    .update(AuthTable)
-    .set({ passwordResetToken: randomCharacters, passwordResetExpires: date })
-    .where(eq(AuthTable.id, isUser.id));
+  await handleAsync(
+    db
+      .update(AuthTable)
+      .set({ passwordResetToken: randomCharacters, passwordResetExpires: date })
+      .where(eq(AuthTable.id, isUser.id))
+  );
 
   // send email
   const passwordResetLink = `${config.CLIENT_URL}/reset_password?token=${randomCharacters}`;
@@ -49,7 +53,7 @@ const forgotPassword = async (req: Request, res: Response) => {
   });
 
   // send response
-  res.json({ message: "Reset password link sent" });
+  return res.json({ message: "Reset password link sent" });
 };
 
 export default forgotPassword;

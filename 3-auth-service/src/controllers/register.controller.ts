@@ -8,7 +8,7 @@ import * as crypto from "node:crypto";
 
 // ** Local Imports
 
-import { BadRequestError, uploads } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync, uploads } from "@fvoid/shared-lib";
 import { config } from "@src/config";
 import { db } from "@src/drizzle/db";
 import { AuthTable } from "@src/drizzle/schema";
@@ -28,30 +28,25 @@ const register = async (req: Request, res: Response) => {
     // deviceType,
   } = req.body as UserRegistrationInput;
 
-  // Check if user exists by username or email
-  const isUser = await db
-    .select()
-    .from(AuthTable)
-    .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
-    .limit(1)
-    .then((res) => res[0]);
+  // Find user by email or username
+
+  const isUser = await handleAsync(
+    db
+      .select()
+      .from(AuthTable)
+      .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
+      .limit(1)
+      .then((res) => res[0])
+  );
 
   if (isUser) throw new BadRequestError("User already exits");
 
   // Upload profile picture
   const profilePublicId = crypto.randomUUID();
-  let uploadResult: UploadApiResponse;
-  try {
-    uploadResult = (await uploads(
-      profilePicture,
-      `${profilePublicId}`,
-      true,
-      true
-    )) as UploadApiResponse;
-  } catch (error) {
-    console.error("Upload error:", error);
-    throw new Error("File upload error. Try again.");
-  }
+
+  const uploadResult = (await handleAsync(
+    uploads(profilePicture, `${profilePublicId}`, true, true)
+  )) as UploadApiResponse;
 
   if (!uploadResult.public_id) throw new Error("File upload error. Try again.");
 
@@ -75,11 +70,13 @@ const register = async (req: Request, res: Response) => {
   };
 
   // Create auth user in database
-  const result = await db
-    .insert(AuthTable)
-    .values(authData)
-    .$returningId()
-    .then((res) => res[0]);
+  const result = await handleAsync(
+    db
+      .insert(AuthTable)
+      .values(authData)
+      .$returningId()
+      .then((res) => res[0])
+  );
 
   // Send email verification message to queue
   const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
@@ -103,7 +100,7 @@ const register = async (req: Request, res: Response) => {
   const userJWT = jwt.sign(payload, config.JWT_TOKEN);
 
   // Respond to client
-  res.json({
+  return res.json({
     message: "User created successfully",
     user: { id: result?.id, ...authData },
     token: userJWT,

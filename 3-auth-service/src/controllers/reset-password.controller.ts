@@ -1,6 +1,6 @@
 // ** Third Party Imports
 
-import { BadRequestError } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
 import { and, eq, gt } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -28,12 +28,14 @@ const resetPassword = async (req: Request, res: Response) => {
   //   .limit(1)
   //   .then((res) => res[0]);
 
-  const isUser = await db.query.AuthTable.findFirst({
-    where: and(
-      eq(AuthTable.passwordResetToken, token),
-      gt(AuthTable.passwordResetExpires, new Date())
-    ),
-  });
+  const isUser = await handleAsync(
+    db.query.AuthTable.findFirst({
+      where: and(
+        eq(AuthTable.passwordResetToken, token),
+        gt(AuthTable.passwordResetExpires, new Date())
+      ),
+    })
+  );
 
   if (!isUser) throw new BadRequestError("Invalid token");
 
@@ -41,14 +43,16 @@ const resetPassword = async (req: Request, res: Response) => {
   const hashedPassword = await hashPassword(password);
 
   // update password
-  await db
-    .update(AuthTable)
-    .set({
-      password: hashedPassword,
-      passwordResetToken: null,
-      passwordResetExpires: null,
-    })
-    .where(eq(AuthTable.id, isUser.id));
+  await handleAsync(
+    db
+      .update(AuthTable)
+      .set({
+        password: hashedPassword,
+        passwordResetToken: null,
+        passwordResetExpires: null,
+      })
+      .where(eq(AuthTable.id, isUser.id))
+  );
 
   // send email
   new SendEmailPublisher(mqWrapper.channel).publish({

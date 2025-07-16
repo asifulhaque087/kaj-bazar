@@ -1,6 +1,10 @@
 // ** Third Party Imports
 
-import { NotAuthorizedError, NotFoundError } from "@fvoid/shared-lib";
+import {
+  NotAuthorizedError,
+  NotFoundError,
+  handleAsync,
+} from "@fvoid/shared-lib";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -15,14 +19,16 @@ const currentUser = async (req: Request, res: Response) => {
 
   if (!user) throw new NotAuthorizedError();
 
-  const isUser = await db.query.AuthTable.findFirst({
-    where: eq(AuthTable.email, user.email),
-  });
+  const isUser = await handleAsync(
+    db.query.AuthTable.findFirst({
+      where: eq(AuthTable.email, user.email),
+    })
+  );
 
   if (!isUser) throw new NotFoundError();
 
   // return response
-  res.json({ message: "Authenticated user", user });
+  return res.json({ message: "Authenticated user", user });
 };
 
 export default currentUser;
