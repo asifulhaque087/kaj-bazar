@@ -1,8 +1,8 @@
 import express from "express";
+import "express-async-errors";
 import morgan from "morgan";
 import cors from "cors";
 import cookieSession from "cookie-session";
-
 import healthRouter from "@src/routes/health.routes";
 import { config } from "@src/config";
 import { errorHandler, NotFoundError } from "@fvoid/shared-lib";
@@ -53,8 +53,9 @@ app.use(BASE_PATH, gigRouter);
 
 // ** Error Handler Middlewares
 
-app.get("*", () => {
-  throw new NotFoundError();
+app.get("*", async (req, res, next) => {
+  next(new NotFoundError());
+  // throw new NotFoundError();
 });
 
 app.use(errorHandler);
