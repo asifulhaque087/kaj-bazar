@@ -1,3 +1,4 @@
+import { handleAsync } from "@fvoid/shared-lib";
 import { connect, type Channel, type ChannelModel } from "amqplib";
 
 class MQWrapper {
@@ -19,15 +20,25 @@ class MQWrapper {
   }
 
   async connect(url: string) {
-    try {
-      const connection = await connect(url);
-      this._connection = await connect(url);
-      this._channel = await connection.createChannel();
+    this._connection = await handleAsync(
+      connect(url),
+      "RabbitMq Connection Error !!!"
+    );
 
-      console.log("rabbitmq connected");
-    } catch (error) {
-      // throw new ConnectionError()
-    }
+    this._channel = await handleAsync(
+      this._connection.createChannel(),
+      "RabbitMq Connection Error !!!"
+    );
+
+    console.log("Rabbitmq Connected 🎉");
+
+    // try {
+    //   this._connection = await connect(url);
+    //   this._channel = await this._connection.createChannel();
+    //   console.log("rabbitmq connected");
+    // } catch (error) {
+    //   throw new ConnectionError("RabbitMq Connection Error !!!");
+    // }
   }
 }
 
