@@ -7,11 +7,13 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
 } from "@src/validations/password.validation";
-import { verifyClientToken } from "@src/middlewares/verfiyClientToken.middleware";
+// import { verifyClientToken } from "@src/middlewares/verfiyClientToken.middleware";
 import { validateData } from "@src/middlewares/validation.middleware";
 import forgotPassword from "@src/controllers/forgot-password.controller";
 import resetPassword from "@src/controllers/reset-password.controller";
 import changePassword from "@src/controllers/change-password.controller";
+import { verifyClientToken } from "@fvoid/shared-lib";
+import { config } from "@src/config";
 
 const passwordRouter = Router();
 
@@ -32,7 +34,7 @@ passwordRouter.put(
 // ** Change Password
 passwordRouter.put(
   "/change-password",
-  verifyClientToken,
+  verifyClientToken(config.JWT_TOKEN),
   validateData(changePasswordSchema),
   changePassword
 );
