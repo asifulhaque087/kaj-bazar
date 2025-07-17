@@ -3,7 +3,7 @@ import mysql from "mysql2/promise";
 import * as schema from "@src/drizzle/schema";
 import { config } from "@src/config";
 
-const connection = await mysql.createConnection(config.MYSQL_DB);
+const connection = await mysql.createConnection(config.DATABASE_URL);
 
 export const db = drizzle(connection, {
   schema: schema,

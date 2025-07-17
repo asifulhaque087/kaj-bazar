@@ -6,6 +6,6 @@ export default defineConfig({
   schema: "src/drizzle/schema.ts",
   dialect: "mysql",
   dbCredentials: {
-    url: config.MYSQL_DB,
+    url: config.DATABASE_URL,
   },
 });
