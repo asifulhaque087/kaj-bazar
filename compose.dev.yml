@@ -1,4 +1,4 @@
-# docker compose up -d redis redis-commander mongodb mysql postgres rabbitmq
+# docker compose up -d redis redis-commander mongodb auth-mysql postgres rabbitmq
 # version: '3.9'
 
 name: kaj-bazar-dev
@@ -14,14 +14,14 @@ services:
     # volumes:
     #   - ./docker-volumes/cache:/data
 
-  redis-commander:
-    container_name: redis-commander
-    image: ghcr.io/joeferner/redis-commander:latest
-    restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      - REDIS_HOSTS=local:redis_container:6379
+  # redis-commander:
+  #   container_name: redis-commander
+  #   image: ghcr.io/joeferner/redis-commander:latest
+  #   restart: always
+  #   ports:
+  #     - "8081:8081"
+  #   environment:
+  #     - REDIS_HOSTS=local:redis_container:6379
 
   mongodb:
     container_name: mongodb_container
@@ -32,14 +32,14 @@ services:
     # volumes:
     #   - ./docker-volumes/data:/data/db
 
-  mysql:
-    container_name: mysql_container
+  auth-mysql:
+    container_name: auth_mysql_container
     image: mysql:latest
     # command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      - MYSQL_USER=kaj_bazar
-      - MYSQL_DATABASE=kaj_bazar_auth
+      - MYSQL_USER=auth
+      - MYSQL_DATABASE=auth_db
       - MYSQL_ROOT_PASSWORD=api
       - MYSQL_PASSWORD=api
     ports:
@@ -66,7 +66,7 @@ services:
     #   - ./docker-volumes/postgres:/var/lib/postgresql
 
   user-postgres:
-    container_name: review_postgres_container
+    container_name: user_postgres_container # FIX: Changed from review_postgres_container
     image: postgres:17.5-alphine
     restart: always
     environment:
@@ -115,8 +115,8 @@ services:
       - VITE_STRIPE_KEY=${VITE_STRIPE_KEY}
       - VITE_ELASTIC_APM_SERVER=${VITE_ELASTIC_APM_SERVER}
     volumes:
-      - ./client:/app
-      - /app/node_modules
+      - ./client:/home/app
+      - /home/app/node_modules
     depends_on:
       - gateway
 
@@ -147,13 +147,13 @@ services:
       - /home/app/node_modules
     depends_on:
       - redis
-      - chat
-      - order
+      - chats # FIX: Changed from chat
+      - orders # FIX: Changed from order
 
-  notifications:
-    container_name: notification_container
+  email: # FIX: Changed from notification
+    container_name: email_container # FIX: Changed from notification_container
     build:
-      context: 2-notification-service
+      context: 2-email-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -166,8 +166,8 @@ services:
       - SENDER_EMAIL=${SENDER_EMAIL}
       - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
     volumes:
-      - ./2-notification-service:/app
-      - /app/node_modules
+      - ./2-email-service:/home/app
+      - /home/app/node_modules
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -188,7 +188,7 @@ services:
       - CLIENT_URL=${CLIENT_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
-      - MYSQL_DB=${AUTH_DB_URL}
+      - DATABASE_URL=${AUTH_DB_URL}
       - CLOUD_NAME=${CLOUD_NAME}
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
@@ -196,7 +196,7 @@ services:
       - ./3-auth-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mysql:
+      auth-mysql:
         condition: service_healthy
         # condition: service_started
       rabbitmq:
@@ -223,18 +223,18 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./4-users-service:/app
-      - /app/node_modules
+      - ./4-users-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mongodb:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  gig:
-    container_name: gig_container
+  gigs: # FIX: Changed from gig
+    container_name: gigs_container # FIX: Changed from gig_container
     build:
-      context: 5-gig-service
+      context: 5-gigs-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -252,18 +252,18 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./5-gig-service:/app
-      - /app/node_modules
+      - ./5-gigs-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mongodb:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  chat:
-    container_name: chat_container
+  chats: # FIX: Changed from chat
+    container_name: chats_container # FIX: Changed from chat_container
     build:
-      context: 6-chat-service
+      context: 6-chats-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -280,8 +280,8 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./6-chat-service:/app
-      - /app/node_modules
+      - ./6-chats-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mongodb:
         condition: service_started
@@ -290,10 +290,10 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  order:
-    container_name: order_container
+  orders: # FIX: Changed from order
+    container_name: orders_container # FIX: Changed from order_container
     build:
-      context: 7-order-service
+      context: 7-orders-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -312,8 +312,8 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./7-order-service:/app
-      - /app/node_modules
+      - ./7-orders-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mongodb:
         condition: service_started
@@ -322,10 +322,10 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  review:
-    container_name: review_container
+  reviews: # FIX: Changed from review
+    container_name: reviews_container # FIX: Changed from review_container
     build:
-      context: 8-review-service
+      context: 8-reviews-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -343,8 +343,8 @@ services:
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
     volumes:
-      - ./8-review-service:/app
-      - /app/node_modules
+      - ./8-reviews-service:/home/app
+      - /home/app/node_modules
     depends_on:
       mongodb:
         condition: service_started
@@ -369,12 +369,12 @@ services:
     profiles: ["exclude"]
 
     depends_on:
-      mysql:
+      auth-mysql:
         # condition: service_started
         condition: service_healthy
 
   user-studio:
-    container_name: user_studio_container
+    container_name: users_studio_container # FIX: Changed from user_studio_container
     build:
       context: 4-users-service
       dockerfile: Dockerfile.studio
@@ -387,6 +387,6 @@ services:
     profiles: ["exclude"]
 
     depends_on:
-      mysql:
-        # condition: service_started
-        condition: service_healthy
+      # mysql:
+      # condition: service_started
+      # condition: service_healthy
