@@ -88,7 +88,7 @@ class Service {
   }
 
   private start_server() {
-    const PORT = 4005;
+    const PORT = 4006;
 
     const httpServer = new http.Server(this.app);
     // const socketIO = await createSocketIO(httpServer);
