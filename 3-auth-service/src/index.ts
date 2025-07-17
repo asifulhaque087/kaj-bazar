@@ -16,7 +16,7 @@ import loginRegisterRouter from "@src/routes/login-register.route";
 import verficationRouter from "@src/routes/verification.route";
 import passwordRouter from "@src/routes/password.route";
 import identityRouter from "@src/routes/identity.route";
-import healthRouter from "@src/routes/health.route";
+import healthRouter from "@src/routes/health.routes";
 import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 // import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
