@@ -58,12 +58,12 @@ class Service {
       })
     );
 
-    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
+    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "reviews"));
   }
 
   private set_route_middlewares() {
     this.app.use(morgan("dev"));
-    const BASE_PATH = "/api/v1/users";
+    const BASE_PATH = "/api/v1/reviews";
     this.app.use(healthRouter);
     this.app.use(BASE_PATH, queryRouter);
     this.app.use(BASE_PATH, mutationRouter);
@@ -78,8 +78,8 @@ class Service {
   }
 
   private set_error_middlewares() {
-    this.app.use("*", function (req, res, next) {
-      next(new NotFoundError());
+    this.app.use("*", (req, res, next) => {
+      throw new NotFoundError();
     });
 
     this.app.use(errorHandler);
