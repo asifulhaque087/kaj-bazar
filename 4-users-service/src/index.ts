@@ -2,7 +2,7 @@
 import express, { type Application } from "express";
 import "express-async-errors";
 import cors from "cors";
-import morgan from "morgan"; // A popular HTTP request logger middleware for node.js
+import morgan from "morgan";
 import {
   configureCloudinary,
   errorHandler,
@@ -12,17 +12,10 @@ import {
 
 // ** Local Imports
 import { config } from "@src/config";
-// import loginRegisterRouter from "@src/routes/login-register.route";
-// import verficationRouter from "@src/routes/verification.route";
-// import passwordRouter from "@src/routes/password.route";
-// import identityRouter from "@src/routes/identity.route";
-// import healthRouter from "@src/routes/health.route";
-// import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import buyerRouter from "@src/routes/buyer.routes";
 import sellerRouter from "@src/routes/seller.routes";
-// import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
 
 // ** Define Service
 
