@@ -1,13 +1,15 @@
-FROM node:21-alpine3.18
+FROM oven/bun:latest
 
 WORKDIR /home/app
 
 COPY package.json .
-RUN npm install
+COPY bun.lock .
+
+RUN bun install
 
 COPY . .
 
-
 EXPOSE 4007
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "bun", "run", "dev" ]
+
