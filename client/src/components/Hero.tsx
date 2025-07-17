@@ -1,7 +1,20 @@
+"use client";
+
 import Categories from "@/components/Categories";
 import { ArrowRight, SearchIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+
+interface FormValue {
+  searchInput: string;
+}
 
 const Hero = () => {
+  const { register, handleSubmit } = useForm<FormValue>({
+    defaultValues: {
+      searchInput: "",
+    },
+  });
+
   return (
     <>
       <div className="rounded-[14px] bg-[#0D0E12] min-h-[474px] relative overflow-hidden px-[14px]">
@@ -33,9 +46,13 @@ const Hero = () => {
 
         {/* Search Box */}
 
-        <form className="flex items-center  justify-between w-full  bg-[#E8E7D9] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] mt-[24px]">
+        <form
+          className="flex items-center  justify-between w-full  bg-[#E8E7D9] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] mt-[24px]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {/* Input Field */}
           <input
+            {...register("searchInput")}
             type="text"
             placeholder="Search For Gigs"
             className="placeholder:tracking-[0.14px] placeholder:text-[16px] placeholder:font-[500]   placeholder-[#735858] bg-transparent outline-none focus:outline-none font-inter"
@@ -56,6 +73,10 @@ const Hero = () => {
       </div>
     </>
   );
+
+  function onSubmit(data: FormValue) {
+    console.log("the new combination data is ", data);
+  }
 };
 
 export default Hero;
