@@ -1,11 +1,11 @@
 // ** Third party imports
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 
 const healthRouter = Router();
 
 // ** Check Health
-healthRouter.get("/user-health", (_req, res) => {
-  return res.send("User server is running");
+healthRouter.get("/users-health", (_req: Request, res: Response) => {
+  return res.send("Users server is running");
 });
 
 export default healthRouter;
