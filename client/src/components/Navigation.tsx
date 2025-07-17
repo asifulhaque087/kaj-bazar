@@ -1,8 +1,11 @@
 "use client";
 
-import AuthModal from "@/components/auth-modal";
-import { BaseModal } from "@/components/base-modal";
+// ** Third Party Imports
 import { useState } from "react";
+
+// ** Components Imports
+import LoginModal from "@/components/login-modal";
+import RegisterModal from "@/components/register-modal";
 
 const Navigation = () => {
   const [activeItem, setActiveItem] = useState(-1);
@@ -42,18 +45,19 @@ const Navigation = () => {
         </div>
       </div>
 
-      <AuthModal />
+      <LoginModal
+        showModal={activeItem == 0 ? true : false}
+        setShowModal={setActiveItem}
+        // setShowModal={() => setActiveItem(-1)}
+      />
+
+      <RegisterModal
+        showModal={activeItem == 1 ? true : false}
+        // setShowModal={() => setActiveItem(-1)}
+        setShowModal={setActiveItem}
+      />
     </>
   );
 };
-
-
-    <BaseModal
-      // showModal={!!deletingCategory}
-      // showModal={true}
-      showModal={false}
-      // setShowModal={() => setDeletingCategory(null)}
-      className="max-w-md p-8"
-    ></BaseModal>
 
 export default Navigation;
