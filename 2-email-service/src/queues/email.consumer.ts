@@ -1,8 +1,8 @@
-import { config } from '@notifications/config';
-import { IEmailLocals } from '@fvoid/shared-lib';
-import { Channel, ConsumeMessage } from 'amqplib';
-import { createConnection } from '@notifications/queues/connection';
-import { sendEmail } from '@notifications/queues/mail.transport';
+import { config } from "@src/config";
+import { IEmailLocals } from "@fvoid/shared-lib";
+import { Channel, ConsumeMessage } from "amqplib";
+import { createConnection } from "@src/queues/connection";
+import { sendEmail } from "@src/queues/mail.transport";
 
 // async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
 //   try {
@@ -39,11 +39,14 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
     if (!channel) {
       channel = (await createConnection()) as Channel;
     }
-    const exchangeName = 'jobber-order-notification';
-    const routingKey = 'order-email';
-    const queueName = 'order-email-queue';
-    await channel.assertExchange(exchangeName, 'direct');
-    const jobberQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
+    const exchangeName = "jobber-order-notification";
+    const routingKey = "order-email";
+    const queueName = "order-email-queue";
+    await channel.assertExchange(exchangeName, "direct");
+    const jobberQueue = await channel.assertQueue(queueName, {
+      durable: true,
+      autoDelete: false,
+    });
     await channel.bindQueue(jobberQueue.queue, exchangeName, routingKey);
     channel.consume(jobberQueue.queue, async (msg: ConsumeMessage | null) => {
       const {
@@ -70,11 +73,11 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
         type,
         message,
         serviceFee,
-        total
+        total,
       } = JSON.parse(msg!.content.toString());
       const locals: IEmailLocals = {
         appLink: `${config.CLIENT_URL}`,
-        appIcon: 'https://i.ibb.co/Kyp2m0t/cover.png',
+        appIcon: "https://i.ibb.co/Kyp2m0t/cover.png",
         username,
         sender,
         offerLink,
@@ -96,18 +99,22 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
         type,
         message,
         serviceFee,
-        total
+        total,
       };
-      if (template === 'orderPlaced') {
-        await sendEmail('orderPlaced', receiverEmail, locals);
-        await sendEmail('orderReceipt', receiverEmail, locals);
+      if (template === "orderPlaced") {
+        await sendEmail("orderPlaced", receiverEmail, locals);
+        await sendEmail("orderReceipt", receiverEmail, locals);
       } else {
         await sendEmail(template, receiverEmail, locals);
       }
       channel.ack(msg!);
     });
   } catch (error) {
-    console.log('error', 'NotificationService EmailConsumer consumeOrderEmailMessages() method error:', error);
+    console.log(
+      "error",
+      "NotificationService EmailConsumer consumeOrderEmailMessages() method error:",
+      error
+    );
   }
 }
 

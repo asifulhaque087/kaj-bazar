@@ -1,12 +1,20 @@
-import { emailTemplates } from '@notifications/helpers';
-import { IEmailLocals } from '@fvoid/shared-lib';
+import { emailTemplates } from "@src/helpers";
+import { IEmailLocals } from "@fvoid/shared-lib";
 
-async function sendEmail(template: string, receiverEmail: string, locals: IEmailLocals): Promise<void> {
+async function sendEmail(
+  template: string,
+  receiverEmail: string,
+  locals: IEmailLocals
+): Promise<void> {
   try {
     emailTemplates(template, receiverEmail, locals);
-    console.log('Email sent successfully.');
+    console.log("Email sent successfully.");
   } catch (error) {
-    console.log('error', 'NotificationService MailTransport sendEmail() method error:', error);
+    console.log(
+      "error",
+      "NotificationService MailTransport sendEmail() method error:",
+      error
+    );
   }
 }
 
