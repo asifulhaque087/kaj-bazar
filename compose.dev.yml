@@ -54,7 +54,8 @@ services:
 
   review-postgres:
     container_name: review_postgres_container
-    image: postgres:14.18-alpine3.22
+    # image: postgres:14.18-alpine3.22
+    image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_USER=review
@@ -67,7 +68,7 @@ services:
 
   user-postgres:
     container_name: user_postgres_container # FIX: Changed from review_postgres_container
-    image: postgres:14.18-alpine3.22
+    image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_USER=user
@@ -76,7 +77,7 @@ services:
 
   # gig-postgres:
   #   container_name: gig_postgres_container
-  #   image: postgres:17.5-alphine
+  #   image: postgres:13-alpine
   #   restart: always
   #   environment:
   #     - POSTGRES_USER=gig
@@ -244,7 +245,7 @@ services:
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${GIG_DB_URL}
+      - DATABASE_URL=${GIGS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - REDIS_HOST=${REDIS_HOST}
@@ -273,7 +274,7 @@ services:
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${CHAT_DB_URL}
+      - DATABASE_URL=${CHATS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - CLOUD_NAME=${CLOUD_NAME}
@@ -304,7 +305,7 @@ services:
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
       - CLIENT_URL=${CLIENT_URL}
-      - DATABASE_URL=${ORDER_DB_URL}
+      - DATABASE_URL=${ORDERS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - STRIPE_API_KEY=${STRIPE_API_KEY}
