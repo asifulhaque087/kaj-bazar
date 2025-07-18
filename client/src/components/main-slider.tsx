@@ -1,16 +1,16 @@
 "use client";
 
-import { Swiper as SwiperClass } from "swiper/types";
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import { Autoplay } from "swiper/modules"; // <--- Import Autoplay module
-
-// Import Swiper styles
-import "swiper/css";
+// ** Third Party Imports
 import { useCallback, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
+// ** Swipper Imports
+import { Swiper as SwiperClass } from "swiper/types";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+
+// ** Components Imports
 import Gig from "@/components/Gig";
 
 export const MainSlider = ({ items }: any) => {
@@ -55,7 +55,7 @@ export const MainSlider = ({ items }: any) => {
         spaceBetween={10}
         slidesPerView={"auto"}
         allowTouchMove={true}
-        modules={[Autoplay]} // <--- Add Autoplay to modules
+        modules={[Autoplay]}
         autoplay={{
           delay: 2000,
           disableOnInteraction: false,
