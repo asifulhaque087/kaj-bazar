@@ -1,8 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export const CategoryTab = () => {
+interface CategoryTabProps {
+  setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+}
+
+export const CategoryTab = (props: CategoryTabProps) => {
+  // ** Props
+
+  const { setActiveCategory } = props;
+
   const [active, setActive] = useState(0);
 
   const tabs = [
@@ -46,13 +54,21 @@ export const CategoryTab = () => {
             "!bg-[#16B8E1] !text-white !rounded-[15px] !px-[10px] !py-[2px] grid place-items-center"
           }
           `}
-          onClick={() => setActive(i)}
+          onClick={() => onSelect(i)}
         >
           {tab.title}
         </span>
       ))}
     </div>
   );
+
+  // ** Functions
+
+  function onSelect(i: number) {
+    setActive(i);
+
+    if (setActiveCategory) setActiveCategory(tabs[i].title);
+  }
 };
 
 export default CategoryTab;

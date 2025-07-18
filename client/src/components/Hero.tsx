@@ -55,7 +55,7 @@ const Hero = () => {
             {...register("searchInput")}
             type="text"
             placeholder="Search For Gigs"
-            className="placeholder:tracking-[0.14px] placeholder:text-[16px] placeholder:font-[500]   placeholder-[#735858] bg-transparent outline-none focus:outline-none font-inter"
+            className="placeholder:tracking-[0.14px] placeholder:text-[16px] placeholder:font-[500]   placeholder-[#735858] bg-transparent outline-none focus:outline-none font-inter grow"
           />
 
           <button
