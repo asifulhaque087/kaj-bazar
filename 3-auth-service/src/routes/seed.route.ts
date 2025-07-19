@@ -1,11 +1,9 @@
 // ** Third party imports
-import { Router, type Request, type Response } from "express";
+import seedAuth from "@src/controllers/seed-auth.controller";
+import { Router } from "express";
 
 const seedRouter = Router();
 
-// ** Seed Auth Data
-seedRouter.put("/seed/:count", async (req: Request, res: Response) => {
-  res.json({ message: "I am from seed auth data" });
-});
+seedRouter.put("/seed/:count", seedAuth);
 
 export default seedRouter;
