@@ -359,13 +359,13 @@ services:
     build:
       context: 3-auth-service
       dockerfile: Dockerfile.studio
-    restart: "no"
+    restart: always
     ports:
       # - 4984:4984
       - 4983:4983
 
     environment:
-      - MYSQL_DB=${AUTH_DB_URL}
+      - DATABASE_URL=${AUTH_DB_URL}
 
     profiles: ["exclude"]
 
@@ -379,15 +379,11 @@ services:
     build:
       context: 4-users-service
       dockerfile: Dockerfile.studio
-    restart: "no"
+    restart: always
     ports:
       - 4984:4984
     environment:
       - DATABASE_URL=${USERS_DB_URL}
-
     profiles: ["exclude"]
-
-    # depends_on:
-    # mysql:
-    # condition: service_started
-    # condition: service_healthy
+    depends_on:
+      - user-postgres
