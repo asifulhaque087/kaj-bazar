@@ -16,6 +16,8 @@ import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import buyerRouter from "@src/routes/buyer.routes";
 import sellerRouter from "@src/routes/seller.routes";
+import { RemoveBuyersListener } from "@src/events/listeners/remove-buyers.listener";
+import { CreateBuyerListener } from "@src/events/listeners/create-buyer.listener";
 
 // ** Define Service
 
@@ -58,7 +60,7 @@ class Service {
       })
     );
 
-    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
+    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
   }
 
   private set_route_middlewares() {
@@ -75,6 +77,9 @@ class Service {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new RemoveBuyersListener(mqWrapper.channel).listen();
+    new CreateBuyerListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
