@@ -26,17 +26,17 @@ const authRouter = Router();
 
 authRouter.use(apiMiddleware(`${config.AUTH_BASE_URL}/api/v1/auth`, "auth"));
 
-authRouter.post("/auth/signup", register);
-authRouter.post("/auth/signin", login);
-authRouter.post("/auth/signout", verifyJwtToken, logout);
-authRouter.put("/auth/verify-email", verifyJwtToken, verifyEmail);
-authRouter.put("/auth/verify-otp/:otp", verifyJwtToken, verifyOtp);
-authRouter.post("/auth/resend-email", resendEmail);
-authRouter.put("/auth/forgot-password", forgotPassword);
-authRouter.put("/auth/reset-password/:token", resetPassword);
-authRouter.put("/auth/change-password", verifyJwtToken, changePassword);
-authRouter.get("/auth/refresh-token", verifyJwtToken, refreshToken);
-authRouter.get("/auth/currentuser", verifyJwtToken, currentUser);
-authRouter.put("/auth/seed/:count", authSeed);
+authRouter.post("/signup", register);
+authRouter.post("/signin", login);
+authRouter.post("/signout", verifyJwtToken, logout);
+authRouter.put("/verify-email", verifyJwtToken, verifyEmail);
+authRouter.put("/verify-otp/:otp", verifyJwtToken, verifyOtp);
+authRouter.post("/resend-email", resendEmail);
+authRouter.put("/forgot-password", forgotPassword);
+authRouter.put("/reset-password/:token", resetPassword);
+authRouter.put("/change-password", verifyJwtToken, changePassword);
+authRouter.get("/refresh-token", verifyJwtToken, refreshToken);
+authRouter.get("/currentuser", verifyJwtToken, currentUser);
+authRouter.put("/seed/:count", authSeed);
 
 export default authRouter;
