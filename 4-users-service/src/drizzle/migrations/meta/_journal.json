@@ -15,6 +15,13 @@
       "when": 1752858331227,
       "tag": "0001_powerful_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752987696435,
+      "tag": "0002_lyrical_captain_universe",
+      "breakpoints": true
     }
   ]
 }
