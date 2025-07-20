@@ -48,8 +48,8 @@ const BASE_PATH = "/api/v1/gateway";
 
 app.use(healthRouter);
 
-app.use(BASE_PATH, authRouter);
-app.use(BASE_PATH, gigRouter);
+app.use(`${BASE_PATH}/auth`, authRouter);
+app.use(`${BASE_PATH}/gigs`, gigRouter);
 
 // ** Error Handler Middlewares
 
