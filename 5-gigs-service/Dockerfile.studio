@@ -10,7 +10,7 @@ COPY package*.json .
 
 COPY . . 
 
-EXPOSE 4984
+EXPOSE 4985
 
 # Command to run Drizzle Studio
-CMD ["npx", "drizzle-kit", "studio", "--host", "0.0.0.0", "--port", "4984" ]
+CMD ["npx", "drizzle-kit", "studio", "--host", "0.0.0.0", "--port", "4985" ]

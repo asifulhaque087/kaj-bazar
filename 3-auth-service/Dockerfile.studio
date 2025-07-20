@@ -4,13 +4,12 @@ WORKDIR /home/app
 
 COPY package*.json .
 
-RUN npm install
+# RUN npm install
+# RUN npm install drizzle-kit@0.31.4 drizzle-orm@0.44.2 mysql2@3.14.1
 
-# RUN npm install drizzle-kit@latest
 
 COPY . . 
 
 EXPOSE 4983
 
-# Command to run Drizzle Studio
 CMD ["npx", "drizzle-kit", "studio", "--host", "0.0.0.0", "--port", "4983" ]
