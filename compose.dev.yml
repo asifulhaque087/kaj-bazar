@@ -75,14 +75,14 @@ services:
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=users
 
-  # gig-postgres:
-  #   container_name: gig_postgres_container
-  #   image: postgres:13-alpine
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=gig
-  #     - POSTGRES_PASSWORD=api
-  #     - POSTGRES_DB=gigs
+  gig-postgres:
+    container_name: gig_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=gig
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=gigs
 
   rabbitmq:
     container_name: rabbitmq_container
@@ -369,10 +369,15 @@ services:
 
     profiles: ["exclude"]
 
+    volumes:
+      - ./3-auth-service:/home/app
+
     depends_on:
       auth-mysql:
         # condition: service_started
         condition: service_healthy
+      auth:
+        condition: service_started
 
   user-studio:
     container_name: users_studio_container # FIX: Changed from user_studio_container
@@ -385,5 +390,27 @@ services:
     environment:
       - DATABASE_URL=${USERS_DB_URL}
     profiles: ["exclude"]
+
+    volumes:
+      - ./4-users-service:/home/app
     depends_on:
       - user-postgres
+      - users
+
+  gig-studio:
+    container_name: gigs_studio_container
+    build:
+      context: 5-gigs-service
+      dockerfile: Dockerfile.studio
+    restart: always
+    ports:
+      - 4985:4985
+    environment:
+      - DATABASE_URL=${GIGS_DB_URL}
+    profiles: ["exclude"]
+
+    volumes:
+      - ./5-gigs-service:/home/app
+    depends_on:
+      - gig-postgres
+      - gigs
