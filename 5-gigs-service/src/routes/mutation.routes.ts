@@ -1,3 +1,4 @@
+import seedGigs from "@src/controllers/seed-gigs.controller";
 import { Router, type Request, type Response } from "express";
 
 const mutationRouter = Router();
@@ -14,12 +15,10 @@ mutationRouter.put("/active/:gigId", (req: Request, res: Response) => {
   return res.json({ m: "I am from get  active gig by gig  id" });
 });
 
-mutationRouter.put("/seed/:count", (req: Request, res: Response) => {
-  return res.json({ m: "I am from Seed Gig" });
-});
-
 mutationRouter.delete("/:gigId/:sellerId", (req: Request, res: Response) => {
   return res.json({ m: "I am from Delete Gig" });
 });
+
+mutationRouter.put("/seed/:count", seedGigs);
 
 export default mutationRouter;
