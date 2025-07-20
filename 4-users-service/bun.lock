@@ -5,7 +5,7 @@
       "name": "users-service",
       "dependencies": {
         "@faker-js/faker": "^9.9.0",
-        "@fvoid/shared-lib": "^1.0.26",
+        "@fvoid/shared-lib": "^1.0.28",
         "amqplib": "^0.10.8",
         "cloudinary": "^2.7.0",
         "cors": "^2.8.5",
@@ -95,7 +95,7 @@
 
     "@faker-js/faker": ["@faker-js/faker@9.9.0", "", {}, "sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA=="],
 
-    "@fvoid/shared-lib": ["@fvoid/shared-lib@1.0.26", "", { "dependencies": { "@hono/zod-validator": "^0.7.0", "amqplib": "^0.10.8", "cloudinary": "^2.1.0", "express": "^4.19.2", "hono": "^4.7.11", "http-status-codes": "^2.3.0", "jsonwebtoken": "^9.0.2", "mongoose": "^8.2.4" } }, "sha512-1I/P021Juk5dCBVLaJWuqC4V6kLrrSRhR+QV5juuzGK1bBu+IU3cjG65Wp4K4B7mDp5UuYlKShjHHRSMl+78HA=="],
+    "@fvoid/shared-lib": ["@fvoid/shared-lib@1.0.28", "", { "dependencies": { "@hono/zod-validator": "^0.7.0", "amqplib": "^0.10.8", "cloudinary": "^2.1.0", "express": "^4.19.2", "hono": "^4.7.11", "http-status-codes": "^2.3.0", "jsonwebtoken": "^9.0.2", "mongoose": "^8.2.4" } }, "sha512-Ry2/iVW/cA8EiDtNMl7F5wYygADbUgLhGKMMtVjonU22Z2KRVNf+QaTT5d5504d/k2PyBhYg2xoSNLV3PYiOjg=="],
 
     "@hono/zod-validator": ["@hono/zod-validator@0.7.1", "", { "peerDependencies": { "hono": ">=3.9.0", "zod": "^3.25.0 || ^4.0.0" } }, "sha512-8+vJT1RvezAx5sN7hiZ5Mis0RMuFL77nBEcqQQgT9ufoLkxr+7ll461WlBJQcGoQSY6EGMClVae19v3s/7bbgQ=="],
 
