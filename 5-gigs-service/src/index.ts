@@ -16,10 +16,7 @@ import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
-// import healthRouter from "@src/routes/health.routes";
-// import buyerRouter from "@src/routes/buyer.routes";
-// import sellerRouter from "@src/routes/seller.routes";
-// import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
+import { ReceiveSellerListener } from "@src/events/listeners/receive-sellers.listener";
 
 // ** Define Service
 
@@ -35,7 +32,7 @@ class Service {
     this.set_standard_middlewares();
     this.set_security_middlewares();
     this.set_route_middlewares();
-    // this.start_rabbitmq();
+    this.start_rabbitmq();
     this.set_error_middlewares();
     this.start_server();
   }
@@ -62,12 +59,12 @@ class Service {
       })
     );
 
-    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
+    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "gigs"));
   }
 
   private set_route_middlewares() {
     this.app.use(morgan("dev"));
-    const BASE_PATH = "/api/v1/users";
+    const BASE_PATH = "/api/v1/gigs";
     this.app.use(healthRouter);
     this.app.use(BASE_PATH, queryRouter);
     this.app.use(BASE_PATH, mutationRouter);
@@ -79,6 +76,8 @@ class Service {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new ReceiveSellerListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
