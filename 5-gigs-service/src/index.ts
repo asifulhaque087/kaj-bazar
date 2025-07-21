@@ -59,7 +59,7 @@ class Service {
       })
     );
 
-    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "gigs"));
+    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "gigs"));
   }
 
   private set_route_middlewares() {
