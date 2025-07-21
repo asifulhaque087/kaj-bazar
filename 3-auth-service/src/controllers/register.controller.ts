@@ -1,5 +1,4 @@
 // ** Third Party Imports
-
 import type { UploadApiResponse } from "cloudinary";
 import jwt from "jsonwebtoken";
 import { eq, or } from "drizzle-orm";
@@ -7,7 +6,6 @@ import type { Request, Response } from "express";
 import * as crypto from "node:crypto";
 
 // ** Local Imports
-
 import { BadRequestError, handleAsync, uploads } from "@fvoid/shared-lib";
 import { config } from "@src/config";
 import { db } from "@src/drizzle/db";
