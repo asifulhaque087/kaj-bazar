@@ -61,15 +61,14 @@ class Service {
       })
     );
 
-    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
+    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
   }
 
   private set_route_middlewares() {
     this.app.use(morgan("dev"));
-    const BASE_PATH = "/api/v1/users";
     this.app.use(healthRouter);
-    this.app.use(BASE_PATH, buyerRouter);
-    this.app.use(BASE_PATH, sellerRouter);
+    this.app.use("/api/v1/buyers", buyerRouter);
+    this.app.use("/api/v1/sellers", sellerRouter);
   }
 
   private async start_rabbitmq() {
