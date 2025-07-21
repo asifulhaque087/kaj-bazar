@@ -7,7 +7,9 @@ import healthRouter from "@src/routes/health.routes";
 import { config } from "@src/config";
 import { errorHandler, NotFoundError } from "@fvoid/shared-lib";
 import authRouter from "@src/routes/auth.routes";
-import gigRouter from "@src/routes/gig.routes";
+import gigRouter from "@src/routes/gigs.routes";
+import buyerRouter from "@src/routes/buyers.routes";
+import sellerRouter from "@src/routes/sellers.routes";
 
 // **  Create Applicaiton
 const app = express();
@@ -49,6 +51,8 @@ const BASE_PATH = "/api/v1/gateway";
 app.use(healthRouter);
 
 app.use(`${BASE_PATH}/auth`, authRouter);
+app.use(`${BASE_PATH}/buyers`, buyerRouter);
+app.use(`${BASE_PATH}/sellers`, sellerRouter);
 app.use(`${BASE_PATH}/gigs`, gigRouter);
 
 // ** Error Handler Middlewares
