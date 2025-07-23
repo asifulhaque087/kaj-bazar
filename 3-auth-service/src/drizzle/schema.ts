@@ -24,3 +24,6 @@ export const AuthTable = mysqlTable("auths_table", {
   passwordResetToken: text("passwordResetToken"),
   passwordResetExpires: datetime("passwordResetExpires"),
 });
+
+// export type Auth = typeof AuthTable.$inferSelect;
+// export type NewAuth = typeof AuthTable.$inferInsert;
