@@ -15,14 +15,16 @@ import type { UserLoginInput } from "@src/validations/login-register.validation"
 
 const login = async (req: Request, res: Response) => {
   // Extract the data
-  const { username, email, password } = req.body as UserLoginInput;
+  // const { username ="", email, password } = req.body as UserLoginInput;
+  const { email, password } = req.body as UserLoginInput;
 
   // Find isUser & throw error if !isUser
   const isUser = await handleAsync(
     db
       .select()
       .from(AuthTable)
-      .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
+      // .where(or(eq(AuthTable.username, username), eq(AuthTable.email, email)))
+      .where(eq(AuthTable.email, email))
       .limit(1)
       .then((res) => res[0])
   );
