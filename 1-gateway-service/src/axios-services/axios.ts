@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
-import { sign } from "hono/jwt";
 import { config } from "@src/config";
+import jwt from "jsonwebtoken";
 
 export class AxiosService {
   public axios: AxiosInstance;
@@ -10,17 +10,13 @@ export class AxiosService {
   }
 
   // This is the static factory method. It's the primary way to create instances.
-  public static async create(
-    baseUrl: string,
-    serviceName: string
-  ): Promise<AxiosService> {
+  public static create(baseUrl: string, serviceName: string): AxiosService {
     // Generate Token For Gateway
 
-    const payload = {
-      serviceName,
-    };
+    const payload = { serviceName };
 
-    const gatewayToken = await sign(payload, `${config.GATEWAY_JWT_TOKEN}`);
+    // const gatewayToken = await sign(payload, `${config.GATEWAY_JWT_TOKEN}`);
+    const gatewayToken = jwt.sign(payload, `${config.GATEWAY_JWT_TOKEN}`);
 
     const instance = axios.create({
       baseURL: baseUrl,
