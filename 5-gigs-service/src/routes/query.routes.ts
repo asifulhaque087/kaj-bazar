@@ -1,10 +1,9 @@
+import searchGigs from "@src/controllers/search-gigs.controller";
 import { Router, type Request, type Response } from "express";
 
 const queryRouter: Router = Router();
 
-queryRouter.get("/:gigId", (req: Request, res: Response) => {
-  return res.json({ m: "I am from Get Gigs by Category" });
-});
+queryRouter.get("/search", searchGigs);
 
 queryRouter.get("/seller/:sellerId", (req: Request, res: Response) => {
   return res.json({ m: "I am from Get Gigs by seller id" });
@@ -13,9 +12,9 @@ queryRouter.get("/seller/pause/:sellerId", (req: Request, res: Response) => {
   return res.json({ m: "I am from Get Paused Gigs by seller id" });
 });
 
-queryRouter.get("/search/:from/:size/:type", (req: Request, res: Response) => {
-  return res.json({ m: "I am from Search gigs" });
-});
+// queryRouter.get("/search/:from/:size/:type", (req: Request, res: Response) => {
+//   return res.json({ m: "I am from Search gigs" });
+// });
 
 queryRouter.get("/category/:username", (req: Request, res: Response) => {
   return res.json({ m: "I am from Get Gigs by category" });
@@ -27,6 +26,10 @@ queryRouter.get("/top/:username", (req: Request, res: Response) => {
 
 queryRouter.get("/similar/:gigId", (req: Request, res: Response) => {
   return res.json({ m: "I am from GEt Simillar gigs" });
+});
+
+queryRouter.get("/:gigId", (req: Request, res: Response) => {
+  return res.json({ m: "I am from Get Gigs by Category" });
 });
 
 export default queryRouter;
