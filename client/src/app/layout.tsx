@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import ReactQueryProvider from "@/providers/react-query-provider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -57,8 +58,7 @@ export default function RootLayout({
         className={`${roboto.className} antialiased`}
       >
         <Toaster />
-
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
