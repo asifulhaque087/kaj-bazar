@@ -20,10 +20,6 @@ export class ReceiveSellerListener extends Listener<ReceiveSellersEvent> {
   async onMessage(data: ReceiveSellersEvent["data"], message: ConsumeMessage) {
     const { count, sellers } = data;
 
-    console.log("the count is ######################### ", sellers.length);
-
-    // Todo - Here we have to seed the gigs
-
     // ** --- Remove All Gigs ---
     await handleAsync(db.delete(GigsTable));
 
