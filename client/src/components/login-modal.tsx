@@ -23,7 +23,8 @@ import { BaseModal } from "@/components/base-modal";
 import {
   LoginFormField,
   loginValidation,
-} from "@/validations/login.validation";
+} from "@/api/auth/schemas/login.schema";
+import { useLogin } from "@/api/auth/mutations/use-login.mutation";
 
 // ** Component Props
 interface ModalProps {
@@ -37,10 +38,17 @@ const LoginModal = (props: ModalProps) => {
   const form = useForm<LoginFormField>({
     resolver: zodResolver(loginValidation),
     defaultValues: {
+      // username: "",
       email: "",
       password: "",
     },
     mode: "onSubmit", // Validate on submit
+  });
+
+  const { mutate: login } = useLogin({
+    reset: form.reset,
+    setError: form.setError,
+    setShowModal,
   });
 
   return (
@@ -51,7 +59,7 @@ const LoginModal = (props: ModalProps) => {
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit((data) => login(data))}
           className="space-y-8 max-w-3xl w-full mx-auto py-10"
         >
           {/* <FormField
@@ -144,33 +152,9 @@ const LoginModal = (props: ModalProps) => {
 
   // ** Functions
 
-  async function onSubmit(values: LoginFormField) {
-    try {
-      console.log("Form values:", values);
-      // Simulate an API call
-      // const response = await fetch('/api/register', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(values),
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to register.");
-      // }
-
-      toast.success("Registration Successful!", {
-        description: "Your account has been created.",
-      });
-    } catch (error: any) {
-      console.error("Form submission error:", error);
-      toast.error("Registration Failed", {
-        description: error.message || "Something went wrong. Please try again.",
-      });
-    }
-  }
+  // async function onSubmit(values: LoginFormField) {
+  //   login;
+  // }
 };
 
 export default LoginModal;
