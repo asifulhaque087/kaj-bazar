@@ -2,6 +2,7 @@
 
 import Categories from "@/components/Categories";
 import { ArrowRight, SearchIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 interface FormValue {
@@ -9,6 +10,8 @@ interface FormValue {
 }
 
 const Hero = () => {
+  const router = useRouter();
+
   const { register, handleSubmit } = useForm<FormValue>({
     defaultValues: {
       searchInput: "",
@@ -48,7 +51,11 @@ const Hero = () => {
 
         <form
           className="flex items-center  justify-between w-full  bg-[#E8E7D9] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] mt-[24px]"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) =>
+            router.push(
+              `/gigs?searchKey=${encodeURIComponent(data.searchInput)}`
+            )
+          )}
         >
           {/* Input Field */}
           <input
