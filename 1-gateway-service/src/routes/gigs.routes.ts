@@ -9,7 +9,8 @@ const gigRouter = Router();
 
 gigRouter.use(apiMiddleware(`${config.GIG_BASE_URL}/api/v1/gigs`, "gigs"));
 
-gigRouter.get("/search/:from/:size/:type", searchGig);
+// gigRouter.get("/search/:from/:size/:type", searchGig);
+gigRouter.get("/search", searchGig);
 
 gigRouter.put("/seed/:count", seedGigs);
 
