@@ -20,8 +20,8 @@ declare global {
  */
 export const apiMiddleware = (baseURL: string, serviceName: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const publicInstance = await AxiosService.create(baseURL, serviceName);
-    const protectedInstance = await AxiosService.create(baseURL, serviceName);
+    const publicInstance = AxiosService.create(baseURL, serviceName);
+    const protectedInstance = AxiosService.create(baseURL, serviceName);
 
     req.publicAxios = publicInstance;
     req.protectedAxios = protectedInstance;
