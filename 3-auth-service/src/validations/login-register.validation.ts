@@ -16,7 +16,7 @@ export type UserRegistrationInput = z.infer<typeof userRegistrationSchema>;
 
 // ** Login Validation
 export const userLoginSchema = z.object({
-  username: z.string(),
+  // username: z.string(),
   email: z.string().email(),
   password: z.string().min(6, "Password must be atlest 6 char long"),
 });
