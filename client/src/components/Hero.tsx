@@ -53,7 +53,9 @@ const Hero = () => {
           className="flex items-center  justify-between w-full  bg-[#E8E7D9] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] mt-[24px]"
           onSubmit={handleSubmit((data) =>
             router.push(
-              `/gigs?searchKey=${encodeURIComponent(data.searchInput)}`
+              `/gigs?searchKey=${encodeURIComponent(
+                data.searchInput
+              )}&page=1&limit=5`
             )
           )}
         >
