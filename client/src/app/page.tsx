@@ -1,15 +1,26 @@
 "use client";
 
+import { useSearch } from "@/api/gigs/queries/use-search.query";
 import CategoryTab from "@/components/CategoryTab";
 import Hero from "@/components/Hero";
-import MainSlider from "@/components/main-slider";
 import Navigation from "@/components/Navigation";
 import { useState } from "react";
+import GigSlider from "@/components/gig-slider";
 
 export default function Home() {
-  const [currentCategory, setCurrentCategory] = useState<string>();
+  const [currentCategory, setCurrentCategory] =
+    useState<string>("Graphics & Design");
+
+  const { isLoading, data, error } = useSearch({
+    q: `category=${encodeURIComponent(currentCategory)}`,
+    page: 1,
+    limit: 10,
+  });
 
   console.log("curren category is ", currentCategory);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="px-[12px]">
@@ -26,10 +37,13 @@ export default function Home() {
       </div>
 
       <div className="mt-[24px]">
-        <CategoryTab setActiveCategory={setCurrentCategory} />
+        <CategoryTab
+          setActiveCategory={setCurrentCategory}
+          activeCategory={currentCategory}
+        />
       </div>
       <div className="mt-[24px]">
-        <MainSlider />
+        <GigSlider gigs={data?.data || []} />
       </div>
     </div>
   );
