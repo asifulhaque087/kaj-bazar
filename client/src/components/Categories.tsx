@@ -21,7 +21,9 @@ const Categories = () => {
       {categories.map((cat, i) => (
         <button
           onClick={() =>
-            router.push(`/gigs?category=${encodeURIComponent(cat)}`)
+            router.push(
+              `/gigs?category=${encodeURIComponent(cat)}&page=1&limit=5`
+            )
           }
           key={i}
           className={`${
