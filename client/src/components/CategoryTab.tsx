@@ -1,73 +1,91 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useBrowser } from "@/hooks/use-browser.hook";
+import { shuffleArray } from "@/utils/shuffle-array.utils";
+import { Dispatch, SetStateAction } from "react";
 
 interface CategoryTabProps {
-  setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+  setActiveCategory: Dispatch<SetStateAction<string>>;
+  activeCategory: string;
 }
+
+const categories = [
+  "Graphics & Design",
+  "Digital Marketing",
+  "Writing & Translation",
+  "Video & Animation",
+  "Music & Audio",
+  "Programming & Tech",
+  "Photography",
+  "Data",
+  "Business",
+];
+
+const tabs = shuffleArray(categories);
 
 export const CategoryTab = (props: CategoryTabProps) => {
   // ** Props
 
-  const { setActiveCategory } = props;
+  const { setActiveCategory, activeCategory } = props;
 
-  const [active, setActive] = useState(0);
+  const browser = useBrowser();
 
-  const tabs = [
-    {
-      title: "Architect",
-    },
+  console.log("tabs are ", tabs);
 
-    {
-      title: "Graphics",
-    },
+  // const tabs = [
+  //   {
+  //     title: "Architect",
+  //   },
 
-    {
-      title: "Development",
-    },
+  //   {
+  //     title: "Graphics",
+  //   },
 
-    {
-      title: "Coding",
-    },
+  //   {
+  //     title: "Development",
+  //   },
 
-    {
-      title: "Architect",
-    },
+  //   {
+  //     title: "Coding",
+  //   },
 
-    {
-      title: "Graphics",
-    },
+  //   {
+  //     title: "Architect",
+  //   },
 
-    {
-      title: "Development",
-    },
-  ];
+  //   {
+  //     title: "Graphics",
+  //   },
+
+  //   {
+  //     title: "Development",
+  //   },
+  // ];
+
+  if (!browser) return;
 
   return (
     <div className="flex items-center justify-between bg-gray-100 py-[16px] px-[26px]  rounded-[10px]  overflow-x-auto gray-scroll gap-x-[20px]">
       {tabs.map((tab, i) => (
         <span
           key={i}
-          className={`text-black text-[14px] tracking-[0.5px] cursor-pointer
+          className={`text-black whitespace-nowrap text-[14px] tracking-[0.5px] cursor-pointer
           ${
-            i == active &&
+            tab == activeCategory &&
             "!bg-[#16B8E1] !text-white !rounded-[15px] !px-[10px] !py-[2px] grid place-items-center"
           }
           `}
           onClick={() => onSelect(i)}
         >
-          {tab.title}
+          {tab}
         </span>
       ))}
     </div>
   );
 
-  // ** Functions
-
+  // ** --- Functions ---
   function onSelect(i: number) {
-    setActive(i);
-
-    if (setActiveCategory) setActiveCategory(tabs[i].title);
+    setActiveCategory(tabs[i]);
   }
 };
 
