@@ -48,7 +48,7 @@ const GigCard = (props: IGigCard) => {
 
         {/* Image Box */}
 
-        <Link href={`/gig/l`} className="w-full">
+        <Link href={`/gig/${gig.id}`} className="w-full">
           <div className="px-[12px]">
             <div className="h-[148px] w-full rounded-[7px] overflow-hidden bg-red-500">
               <img
