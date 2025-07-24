@@ -19,7 +19,6 @@ import identityRouter from "@src/routes/identity.route";
 import healthRouter from "@src/routes/health.routes";
 import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
-// import { verifyGatewayToken } from "@src/middlewares/verfiyGatewayToken.middleware";
 
 // ** Define Auth Service
 
