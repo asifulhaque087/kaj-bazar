@@ -6,10 +6,10 @@ import {
   resendEmailSchema,
   verifyEmailSchema,
 } from "@src/validations/verification.validation";
-import { validateData } from "@src/middlewares/validation.middleware";
 import verifyEmail from "@src/controllers/verify-email.controller";
 import verifyOtp from "@src/controllers/verify-otp.controller";
 import resendEmail from "@src/controllers/resend-email.controller";
+import { validateData } from "@fvoid/shared-lib";
 
 const verficationRouter = Router();
 

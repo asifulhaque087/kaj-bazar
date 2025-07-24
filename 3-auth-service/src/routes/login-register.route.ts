@@ -7,8 +7,8 @@ import {
   userRegistrationSchema,
 } from "@src/validations/login-register.validation";
 import register from "@src/controllers/register.controller";
-import { validateData } from "@src/middlewares/validation.middleware";
 import login from "@src/controllers/login.controller";
+import { validateData } from "@fvoid/shared-lib";
 
 const loginRegisterRouter = Router();
 

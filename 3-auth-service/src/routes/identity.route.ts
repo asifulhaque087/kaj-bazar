@@ -4,7 +4,7 @@ import { Router } from "express";
 // ** Local Imports
 import currentUser from "@src/controllers/current-user.controller";
 import refreshToken from "@src/controllers/refresh-token.controller";
-import { verifyClientToken } from "@src/middlewares/verfiyClientToken.middleware";
+import { verifyClientToken } from "@fvoid/shared-lib";
 
 const identityRouter = Router();
 
