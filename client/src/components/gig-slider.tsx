@@ -1,5 +1,4 @@
 "use client";
-
 // ** Third Party Imports
 import { useCallback, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,12 +10,18 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 // ** Components Imports
-import Gig from "@/components/Gig";
+import GigCard from "@/components/gig-card";
+import { Gig } from "@/api/gigs/schemas/gig.schema";
 
-export const MainSlider = ({ items }: any) => {
+interface IGigSlider {
+  gigs: Gig[];
+}
+
+const GigSlider = (props: IGigSlider) => {
+  // ** --- Props ---
+  const { gigs } = props;
+
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
-
-  // const theSlides = useMemo(() => ["slide one", "slide two"], []);
 
   const handlePrevious = useCallback(() => {
     swiperRef?.slidePrev();
@@ -63,9 +68,9 @@ export const MainSlider = ({ items }: any) => {
         }}
         className="!p-[2px] "
       >
-        {[...Array(16)].map((item, i) => (
+        {gigs.map((gig, i) => (
           <SwiperSlide key={i} className="!w-fit py-[10px]">
-            <Gig gig={""} />
+            <GigCard gig={gig} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -73,4 +78,4 @@ export const MainSlider = ({ items }: any) => {
   );
 };
 
-export default MainSlider;
+export default GigSlider;
