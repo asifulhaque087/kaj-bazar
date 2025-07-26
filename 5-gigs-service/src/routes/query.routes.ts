@@ -1,3 +1,4 @@
+import getGigById from "@src/controllers/gig-by-id.controller";
 import searchGigs from "@src/controllers/search-gigs.controller";
 import { Router, type Request, type Response } from "express";
 
@@ -28,9 +29,7 @@ queryRouter.get("/similar/:gigId", (req: Request, res: Response) => {
   return res.json({ m: "I am from GEt Simillar gigs" });
 });
 
-queryRouter.get("/:gigId", (req: Request, res: Response) => {
-  return res.json({ m: "I am from Get Gigs by Category" });
-});
+queryRouter.get("/:gigId", getGigById);
 
 export default queryRouter;
 
