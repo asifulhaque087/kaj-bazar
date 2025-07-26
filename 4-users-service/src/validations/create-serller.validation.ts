@@ -13,7 +13,10 @@ export const languageSchema = z.object({
     .min(2, "Level name must be at least 2 characters"),
 });
 
-export const skillSchema = z.string().min(1, "Skill cannot be empty");
+// export const skillSchema = z.string().min(1, "Skill cannot be empty");
+export const skillSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+});
 
 export const experienceSchema = z.object({
   company: z.string().min(1, "Company name is required"),
