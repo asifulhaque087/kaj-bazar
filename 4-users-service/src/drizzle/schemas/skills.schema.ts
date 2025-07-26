@@ -8,7 +8,7 @@ export const SkillsTable = pgTable("skills_table", {
   sellerId: integer("seller_id")
     .notNull()
     .references(() => SellersTable.id, { onDelete: "cascade" }),
-  skill: varchar("skill", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
 });
 
 // ** --- Relations for Drizzle ---
