@@ -30,3 +30,8 @@ export const searchGigs = async (
   );
   return response.data; // Ensure your API returns an object with data and totalCount
 };
+
+export const getGigById = async (id: number): Promise<Gig> => {
+  const response = await axios.get<Gig>(`/${id}`);
+  return response.data;
+};
