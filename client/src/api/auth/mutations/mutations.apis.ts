@@ -12,9 +12,6 @@ export const register = async (data: RegisterSchema) => {
 };
 
 export const login = async (data: LoginFormField) => {
-  data.email = "hello";
-  data.password = "asl";
-
   const response = await axios.post(`/signin`, data);
   return response.data;
 };
