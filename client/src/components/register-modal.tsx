@@ -5,7 +5,6 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import axios from "axios";
 
 // ** Components
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,6 @@ import {
 } from "@/api/auth/schemas/register.schema";
 import Image from "next/image";
 import { XCircle } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
 
 // ** Component Props
 interface ModalProps {
@@ -53,8 +51,6 @@ const RegisterModal = (props: ModalProps) => {
     },
     mode: "onSubmit", // Validate on submit
   });
-
-  // ** --- Api Call ---
 
   return (
     <BaseModal
