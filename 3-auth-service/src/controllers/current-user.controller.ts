@@ -22,13 +22,25 @@ const currentUser = async (req: Request, res: Response) => {
   const isUser = await handleAsync(
     db.query.AuthTable.findFirst({
       where: eq(AuthTable.email, user.email),
+      columns: {
+        password: false,
+        passwordResetExpires: false,
+        passwordResetToken: false,
+        emailVerificationToken: false,
+        otp: false,
+        otpExpiration: false,
+        browserName: false,
+        deviceType: false,
+      },
     })
   );
 
   if (!isUser) throw new NotFoundError();
 
   // return response
-  return res.json({ message: "Authenticated user", user });
+  // return res.json({ message: "Authenticated user", user });
+  // return res.json({ user: isUser });
+  return res.json(isUser);
 };
 
 export default currentUser;
