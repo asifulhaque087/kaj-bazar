@@ -4,7 +4,7 @@ import type { Request, Response } from "express";
 import { sampleSize, random, sample } from "lodash";
 import { ConnectionError, handleAsync } from "@fvoid/shared-lib";
 import { faker } from "@faker-js/faker";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 // ** --- DB Imports ---
 
@@ -101,6 +101,17 @@ const seedSeller = async (req: Request, res: Response) => {
             .values(getUniqueCertificates(newSeller.id))
         );
 
+        // ** --- Update Buyer is seller property ---
+
+        // Update buyer
+
+        await handleAsync(
+          tx
+            .update(BuyersTable)
+            .set({ isSeller: true })
+            .where(eq(BuyersTable.id, buyer?.id!))
+        );
+
         return { id: newSeller.id };
       })
     );
@@ -110,13 +121,13 @@ const seedSeller = async (req: Request, res: Response) => {
 
 const getUniqueSkills = (sellerId: number) => {
   const skills = [
-    { sellerId: sellerId, skill: "JavaScript" },
-    { sellerId: sellerId, skill: "React.js" },
-    { sellerId: sellerId, skill: "Node.js" },
-    { sellerId: sellerId, skill: "Python" },
-    { sellerId: sellerId, skill: "Data Analysis" },
-    { sellerId: sellerId, skill: "Machine Learning" },
-    { sellerId: sellerId, skill: "SQL" },
+    { sellerId: sellerId, name: "JavaScript" },
+    { sellerId: sellerId, name: "React.js" },
+    { sellerId: sellerId, name: "Node.js" },
+    { sellerId: sellerId, name: "Python" },
+    { sellerId: sellerId, name: "Data Analysis" },
+    { sellerId: sellerId, name: "Machine Learning" },
+    { sellerId: sellerId, name: "SQL" },
     // { sellerId: sellerId, skill: "Cloud Computing (AWS/Azure/GCP)" },
     // { sellerId: sellerId, skill: "Project Management" },
     // { sellerId: sellerId, skill: "Digital Marketing" },
