@@ -10,6 +10,7 @@ import {
 import "./globals.css";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/providers/react-query-provider";
+import AuthProvider from "@/providers/auth.provider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -58,7 +59,9 @@ export default function RootLayout({
         className={`${roboto.className} antialiased`}
       >
         <Toaster />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
