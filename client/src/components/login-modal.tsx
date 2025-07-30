@@ -4,7 +4,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 // ** Components
 import { Button } from "@/components/ui/button";
@@ -18,13 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { BaseModal } from "@/components/base-modal";
+import { loginForm, LoginForm } from "@/schemas";
+import { useLogin } from "@/api/auth";
 
 // ** Validations
-import {
-  LoginFormField,
-  loginValidation,
-} from "@/api/auth/schemas/login.schema";
-import { useLogin } from "@/api/auth/mutations/use-login.mutation";
 
 // ** Component Props
 interface ModalProps {
@@ -35,8 +31,8 @@ interface ModalProps {
 const LoginModal = (props: ModalProps) => {
   const { showModal, setShowModal } = props;
 
-  const form = useForm<LoginFormField>({
-    resolver: zodResolver(loginValidation),
+  const form = useForm<LoginForm>({
+    resolver: zodResolver(loginForm),
     defaultValues: {
       // username: "",
       email: "",
