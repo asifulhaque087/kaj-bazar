@@ -8,7 +8,7 @@ export const config = {
   AUTH_BASE_URL: process.env.AUTH_BASE_URL || "",
   USERS_BASE_URL: process.env.USERS_BASE_URL || "",
   GIG_BASE_URL: process.env.GIG_BASE_URL || "",
-  MESSAGE_BASE_URL: process.env.MESSAGE_BASE_URL || "",
+  CHAT_BASE_URL: process.env.CHAT_BASE_URL || "",
   ORDER_BASE_URL: process.env.ORDER_BASE_URL || "",
   REVIEW_BASE_URL: process.env.REVIEW_BASE_URL || "",
   REDIS_HOST: process.env.REDIS_HOST || "",
