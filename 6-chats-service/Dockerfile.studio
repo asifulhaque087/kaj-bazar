@@ -1,0 +1,16 @@
+FROM node:21-alpine3.18
+
+WORKDIR /home/app
+
+COPY package*.json .
+
+# RUN npm install
+
+# RUN npm install drizzle-kit@latest
+
+COPY . . 
+
+EXPOSE 4986
+
+# Command to run Drizzle Studio
+CMD ["npx", "drizzle-kit", "studio", "--host", "0.0.0.0", "--port", "4986" ]
