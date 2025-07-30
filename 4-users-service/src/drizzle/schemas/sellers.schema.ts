@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
   jsonb,
+  uuid,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { LanguagesTable } from "@src/drizzle/schemas/languages.schema";
@@ -17,7 +18,7 @@ import { EducationsTable } from "@src/drizzle/schemas/educations.schema";
 
 // ** --- Seller Table ---
 export const SellersTable = pgTable("sellers_table", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   fullName: text("full_name").notNull(),
   username: varchar("username", { length: 255 }).notNull().unique(),
   email: varchar("email", { length: 255 }).notNull().unique(),
