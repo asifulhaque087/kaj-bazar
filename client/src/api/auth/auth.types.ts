@@ -1,9 +1,19 @@
+import { LoginForm } from "@/schemas";
+import { Dispatch, SetStateAction } from "react";
+import { UseFormReset, UseFormSetError } from "react-hook-form";
+
 export const SELLER_QUERY_KEYS = {
   all: ["sellers"] as const, // Base key for all seller-related queries
   lists: () => [...SELLER_QUERY_KEYS.all, "list"] as const, // Key for a list of sellers
   detail: (sellerId: string) =>
     [...SELLER_QUERY_KEYS.all, "detail", sellerId] as const, // Key for a single seller's details
 };
+
+export interface UseLoginProps {
+  setError: UseFormSetError<LoginForm>;
+  reset: UseFormReset<LoginForm>;
+  setShowModal: Dispatch<SetStateAction<number>>;
+}
 
 // import { useQuery } from '@tanstack/react-query';
 // import { getSellers } from '../seller.service'; // Assuming this fetches a list

@@ -20,9 +20,3 @@ export interface ApiErrorResponse {
 export interface ApiValidationError {
   errors: { message: string; field?: string }[];
 }
-
-export interface UseLoginProps {
-  setError: UseFormSetError<LoginForm>;
-  reset: UseFormReset<LoginForm>;
-  setShowModal: Dispatch<SetStateAction<number>>;
-}

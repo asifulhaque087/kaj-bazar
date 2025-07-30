@@ -1,6 +1,7 @@
 import { login } from "@/api/auth/auth.service";
+import { UseLoginProps } from "@/api/auth/auth.types";
 import { LoginForm } from "@/schemas";
-import { ApiValidationError, UseLoginProps } from "@/types";
+import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
