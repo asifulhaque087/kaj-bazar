@@ -1,5 +1,5 @@
 "use client";
-import { useSearch } from "@/api/gigs/queries/use-search.query";
+import { useSearch } from "@/api/gigs";
 import Gig from "@/components/gig-card";
 import { Pagination } from "@/components/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
