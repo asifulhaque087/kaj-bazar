@@ -47,12 +47,11 @@ const seedAuth = async (req: Request, res: Response) => {
       db
         .insert(AuthTable)
         .values(authData)
-        .$returningId()
+        .returning()
         .then((res) => res[0])
     );
 
     // Send this to user service
-
     new CreateBuyerPublisher(mqWrapper.channel).publish({
       id: result?.id!,
       username: authData.username,
