@@ -18,14 +18,15 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.23",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/morgan": "^1.9.10"
+    "@types/morgan": "^1.9.10",
+    "@types/pg": "^8.15.4"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
-    "@fvoid/shared-lib": "^1.0.25",
+    "@fvoid/shared-lib": "^1.0.29",
     "amqplib": "^0.10.8",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
@@ -35,7 +36,7 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "mysql2": "^3.14.1",
+    "pg": "^8.16.3",
     "zod": "^4.0.5"
   }
 }
