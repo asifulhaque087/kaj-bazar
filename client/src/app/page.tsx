@@ -1,11 +1,11 @@
 "use client";
 
-import { useSearch } from "@/api/gigs/queries/use-search.query";
 import CategoryTab from "@/components/CategoryTab";
 import Hero from "@/components/Hero";
 import Navigation from "@/components/Navigation";
 import { useState } from "react";
 import GigSlider from "@/components/gig-slider";
+import { useSearch } from "@/api/gigs";
 
 export default function Home() {
   const [currentCategory, setCurrentCategory] =
@@ -17,7 +17,7 @@ export default function Home() {
     limit: 10,
   });
 
-  console.log("curren category is ", currentCategory);
+  // console.log("curren category is ", currentCategory);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
