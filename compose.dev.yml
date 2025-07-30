@@ -32,25 +32,31 @@ services:
     # volumes:
     #   - ./docker-volumes/data:/data/db
 
-  auth-mysql:
-    container_name: auth_mysql_container
-    image: mysql:latest
-    # command: --default-authentication-plugin=mysql_native_password
+  # auth-mysql:
+  #   container_name: auth_mysql_container
+  #   image: mysql:latest
+  #   restart: always
+  #   environment:
+  #     - MYSQL_USER=auth
+  #     - MYSQL_DATABASE=auth_db
+  #     - MYSQL_ROOT_PASSWORD=api
+  #     - MYSQL_PASSWORD=api
+  #   ports:
+  #     - "3306:3306"
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-papi"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  auth-db:
+    container_name: auth_postgres_container # FIX: Changed from review_postgres_container
+    image: postgres:13-alpine
     restart: always
     environment:
-      - MYSQL_USER=auth
-      - MYSQL_DATABASE=auth_db
-      - MYSQL_ROOT_PASSWORD=api
-      - MYSQL_PASSWORD=api
-    ports:
-      - "3306:3306"
-    # volumes:
-    #   - ./docker-volumes/mysql:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-papi"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - POSTGRES_USER=auth
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=auths
 
   review-postgres:
     container_name: review_postgres_container
@@ -83,6 +89,15 @@ services:
       - POSTGRES_USER=gig
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=gigs
+
+  chat-postgres:
+    container_name: chat_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=chat
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=chats
 
   rabbitmq:
     container_name: rabbitmq_container
@@ -139,7 +154,7 @@ services:
       - AUTH_BASE_URL=${AUTH_BASE_URL}
       - USERS_BASE_URL=${USERS_BASE_URL}
       - GIG_BASE_URL=${GIG_BASE_URL}
-      - MESSAGE_BASE_URL=${MESSAGE_BASE_URL}
+      - CHAT_BASE_URL=${CHAT_BASE_URL}
       - ORDER_BASE_URL=${ORDER_BASE_URL}
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
@@ -197,9 +212,9 @@ services:
       - ./3-auth-service:/home/app
       - /home/app/node_modules
     depends_on:
-      auth-mysql:
-        condition: service_healthy
-        # condition: service_started
+      auth-db:
+        # condition: service_healthy
+        condition: service_started
       rabbitmq:
         condition: service_healthy
 
@@ -373,9 +388,9 @@ services:
       - ./3-auth-service:/home/app
 
     depends_on:
-      auth-mysql:
-        # condition: service_started
-        condition: service_healthy
+      auth-db:
+        condition: service_started
+        # condition: service_healthy
       auth:
         condition: service_started
 
@@ -414,3 +429,21 @@ services:
     depends_on:
       - gig-postgres
       - gigs
+
+  chat-studio:
+    container_name: chats_studio_container
+    build:
+      context: 6-chats-service
+      dockerfile: Dockerfile.studio
+    restart: always
+    ports:
+      - 4986:4986
+    environment:
+      - DATABASE_URL=${CHATS_DB_URL}
+    profiles: ["exclude"]
+
+    volumes:
+      - ./6-chats-service:/home/app
+    depends_on:
+      - chat-postgres
+      - chats
