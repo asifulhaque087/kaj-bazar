@@ -1,11 +1,11 @@
-import { drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "@src/drizzle/schema";
 import { config } from "@src/config";
 
-const connection = await mysql.createConnection(config.DATABASE_URL);
+import { Pool } from "pg";
 
-export const db = drizzle(connection, {
-  schema: schema,
-  mode: "default", // Optional, can also be 'planetscale' depending on your DB
+export const pool = new Pool({
+  connectionString: config.DATABASE_URL,
 });
+
+export const db = drizzle(pool, { schema });
