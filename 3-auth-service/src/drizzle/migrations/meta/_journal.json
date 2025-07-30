@@ -1,47 +1,12 @@
 {
   "version": "7",
-  "dialect": "mysql",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1751797550728,
-      "tag": "0000_natural_doctor_octopus",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1751820600346,
-      "tag": "0001_lumpy_shooting_star",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1751820909600,
-      "tag": "0002_tired_morg",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1751865829746,
-      "tag": "0003_violet_stature",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1752055185562,
-      "tag": "0004_slow_hemingway",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1752858358874,
-      "tag": "0005_high_blink",
+      "version": "7",
+      "when": 1753851033111,
+      "tag": "0000_jittery_makkari",
       "breakpoints": true
     }
   ]
