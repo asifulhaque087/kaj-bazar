@@ -20,12 +20,9 @@ import { Input } from "@/components/ui/input";
 import { BaseModal } from "@/components/base-modal";
 
 // ** Validations
-import {
-  RegisterFormField,
-  registerValidation,
-} from "@/api/auth/schemas/register.schema";
 import Image from "next/image";
 import { XCircle } from "lucide-react";
+import { registerForm, RegisterForm } from "@/schemas";
 
 // ** Component Props
 interface ModalProps {
@@ -40,8 +37,8 @@ const RegisterModal = (props: ModalProps) => {
   // ** --- States ---
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const form = useForm<RegisterFormField>({
-    resolver: zodResolver(registerValidation),
+  const form = useForm<RegisterForm>({
+    resolver: zodResolver(registerForm),
     defaultValues: {
       username: "",
       email: "",
@@ -205,7 +202,7 @@ const RegisterModal = (props: ModalProps) => {
 
   // ** Functions
 
-  async function onSubmit(values: RegisterFormField) {
+  async function onSubmit(values: RegisterForm) {
     try {
       console.log("Form values:", values);
       // Simulate an API call
