@@ -1,1 +1,0 @@
-ALTER TABLE `auths_table` MODIFY COLUMN `profilePicture` mediumtext NOT NULL;
