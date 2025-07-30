@@ -1,16 +1,16 @@
 {
-  "id": "a1d2538c-fe07-4011-843f-b125903b96d3",
+  "id": "12769d38-91ac-4fbd-89e6-2f0bff6b0da0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.buyers": {
-      "name": "buyers",
+    "public.buyers_table": {
+      "name": "buyers_table",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -26,17 +26,23 @@
           "primaryKey": false,
           "notNull": true
         },
+        "profilePublicId": {
+          "name": "profilePublicId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "profile_picture": {
           "name": "profile_picture",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "country": {
           "name": "country",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "is_seller": {
           "name": "is_seller",
@@ -44,13 +50,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
-        },
-        "purchased_gigs": {
-          "name": "purchased_gigs",
-          "type": "uuid[]",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'{}'"
         },
         "created_at": {
           "name": "created_at",
@@ -64,15 +63,15 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "buyers_username_unique": {
-          "name": "buyers_username_unique",
+        "buyers_table_username_unique": {
+          "name": "buyers_table_username_unique",
           "nullsNotDistinct": false,
           "columns": [
             "username"
           ]
         },
-        "buyers_email_unique": {
-          "name": "buyers_email_unique",
+        "buyers_table_email_unique": {
+          "name": "buyers_table_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -89,13 +88,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -103,7 +103,7 @@
           "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "from": {
           "name": "from",
@@ -113,7 +113,7 @@
         },
         "year": {
           "name": "year",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         }
@@ -146,50 +146,46 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "country": {
-          "name": "country",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "''"
         },
         "university": {
           "name": "university",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": true
         },
         "title": {
           "name": "title",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": true
         },
         "major": {
           "name": "major",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
         },
         "year": {
           "name": "year",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -220,13 +216,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -234,36 +231,31 @@
           "name": "company",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": true
         },
         "title": {
           "name": "title",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": true
         },
         "start_date": {
           "name": "start_date",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
         },
         "end_date": {
           "name": "end_date",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
         },
         "currently_working_here": {
           "name": "currently_working_here",
@@ -295,13 +287,65 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.languages_table": {
+      "name": "languages_table",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "seller_id": {
+          "name": "seller_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language": {
+          "name": "language",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "level": {
+          "name": "level",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "languages_table_seller_id_sellers_table_id_fk": {
+          "name": "languages_table_seller_id_sellers_table_id_fk",
+          "tableFrom": "languages_table",
+          "tableTo": "sellers_table",
+          "columnsFrom": [
+            "seller_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.sellers_table": {
       "name": "sellers_table",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -345,8 +389,7 @@
           "name": "oneliner",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": false
         },
         "country": {
           "name": "country",
@@ -454,75 +497,25 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.languages_table": {
-      "name": "languages_table",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "seller_id": {
-          "name": "seller_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "language": {
-          "name": "language",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "level": {
-          "name": "level",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "languages_table_seller_id_sellers_table_id_fk": {
-          "name": "languages_table_seller_id_sellers_table_id_fk",
-          "tableFrom": "languages_table",
-          "tableTo": "sellers_table",
-          "columnsFrom": [
-            "seller_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.skills_table": {
       "name": "skills_table",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "skill": {
-          "name": "skill",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -556,13 +549,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "platform": {
+          "name": "platform",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -570,8 +570,7 @@
           "name": "link",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "''"
+          "notNull": true
         }
       },
       "indexes": {},

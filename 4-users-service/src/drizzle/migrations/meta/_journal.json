@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1752852354551,
-      "tag": "0000_rich_psynapse",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1752858331227,
-      "tag": "0001_powerful_betty_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1752987696435,
-      "tag": "0002_lyrical_captain_universe",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1753509487190,
-      "tag": "0003_flowery_slyde",
+      "when": 1753851033570,
+      "tag": "0000_amusing_epoch",
       "breakpoints": true
     }
   ]

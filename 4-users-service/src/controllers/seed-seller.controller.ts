@@ -56,6 +56,7 @@ const seedSeller = async (req: Request, res: Response) => {
           tx
             .insert(SellersTable)
             .values({
+              id: buyer?.id!,
               fullName: faker.person.fullName(),
               username: buyer?.username!,
               email: buyer?.email!,
@@ -119,7 +120,7 @@ const seedSeller = async (req: Request, res: Response) => {
   return res.json({ message: "Sellers created successfully" });
 };
 
-const getUniqueSkills = (sellerId: number) => {
+const getUniqueSkills = (sellerId: string) => {
   const skills = [
     { sellerId: sellerId, name: "JavaScript" },
     { sellerId: sellerId, name: "React.js" },
@@ -147,7 +148,7 @@ const getUniqueSkills = (sellerId: number) => {
   return sampleSize(skills, random(1, skills.length));
 };
 
-const getUniqueLanguages = (sellerId: number) => {
+const getUniqueLanguages = (sellerId: string) => {
   const languages = [
     { sellerId: sellerId, language: "English", level: "Native" },
     { sellerId: sellerId, language: "Spanish", level: "Fluent" },
@@ -170,7 +171,7 @@ const getUniqueLanguages = (sellerId: number) => {
   return sampleSize(languages, random(1, languages.length));
 };
 
-const getUniqueExperiences = (sellerId: number) => {
+const getUniqueExperiences = (sellerId: string) => {
   const experiences = [
     {
       sellerId: sellerId,
@@ -277,7 +278,7 @@ const getUniqueExperiences = (sellerId: number) => {
   return sampleSize(experiences, random(1, experiences.length));
 };
 
-const getUniqueEducations = (sellerId: number) => {
+const getUniqueEducations = (sellerId: string) => {
   const educations = [
     {
       sellerId: sellerId,
@@ -364,7 +365,7 @@ const getUniqueEducations = (sellerId: number) => {
   return data;
 };
 
-const getUniqueSocialLinks = (sellerId: number) => {
+const getUniqueSocialLinks = (sellerId: string) => {
   const socialLinks = [
     {
       sellerId: sellerId,
@@ -421,7 +422,7 @@ const getUniqueSocialLinks = (sellerId: number) => {
   return sampleSize(socialLinks, random(1, socialLinks.length));
 };
 
-const getUniqueCertificates = (sellerId: number) => {
+const getUniqueCertificates = (sellerId: string) => {
   const certificates = [
     {
       sellerId: sellerId,
