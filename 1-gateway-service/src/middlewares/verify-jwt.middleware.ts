@@ -3,18 +3,6 @@ import { NotAuthorizedError } from "@fvoid/shared-lib"; // Assuming this path is
 import { config } from "@src/config"; // Assuming this path is correct
 import jwt from "jsonwebtoken"; // Import the jsonwebtoken library
 
-/**
- * Express middleware to verify a JWT token from the session and inject it
- * into the Authorization header of the protected Axios instance.
- *
- * This middleware assumes that:
- * 1. `cookie-session` middleware has been run previously, populating `req.session`.
- * 2. `apiMiddleware` has been run previously, populating `req.protectedAxios`.
- *
- * @param req The Express request object.
- * @param res The Express response object.
- * @param next The Express next middleware function.
- */
 export const verifyJwtToken = async (
   req: Request,
   res: Response,
@@ -25,6 +13,8 @@ export const verifyJwtToken = async (
 
   // If no session exists, the user is not authorized
   if (!session) throw new NotAuthorizedError();
+
+  // console.log("hello 1");
 
   try {
     // Get the JWT token from the session
