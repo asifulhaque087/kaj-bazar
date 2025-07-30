@@ -72,7 +72,7 @@ const register = async (req: Request, res: Response) => {
     db
       .insert(AuthTable)
       .values(authData)
-      .$returningId()
+      .returning()
       .then((res) => res[0])
   );
 
@@ -100,7 +100,7 @@ const register = async (req: Request, res: Response) => {
   // Respond to client
   return res.json({
     message: "User created successfully",
-    user: { id: result?.id, ...authData },
+    user: result,
     token: userJWT,
   });
 };
