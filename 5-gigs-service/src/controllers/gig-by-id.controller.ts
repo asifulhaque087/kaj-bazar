@@ -13,7 +13,7 @@ const getGigById = async (req: Request, res: Response) => {
     db
       .select()
       .from(GigsTable)
-      .where(eq(GigsTable.id, parseInt(gigId)))
+      .where(eq(GigsTable.id, gigId))
       .limit(1)
       .then((res) => res[0])
   );
