@@ -1,28 +1,23 @@
-import {
-  mysqlTable,
-  boolean,
-  datetime,
-  serial,
-  text,
-  mediumtext,
-} from "drizzle-orm/mysql-core";
+import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-export const AuthTable = mysqlTable("auths_table", {
-  id: serial().primaryKey(),
+export const AuthTable = pgTable("auths_table", {
+  id: uuid("id").primaryKey().defaultRandom(),
   username: text("username").notNull(),
   password: text("password").notNull(),
   email: text("email").notNull(),
   profilePublicId: text("profilePublicId").notNull(),
-  profilePicture: mediumtext("profilePicture"),
+  profilePicture: text("profilePicture").notNull(),
+
+  // ** Optional
   country: text("country"),
   emailVerificationToken: text("emailVerificationToken"),
   emailVerified: boolean("emailVerified").notNull().default(false),
   browserName: text("browserName"),
   deviceType: text("deviceType"),
   otp: text("otp"),
-  otpExpiration: datetime("otpExpiration"),
+  otpExpiration: timestamp("otpExpiration"),
   passwordResetToken: text("passwordResetToken"),
-  passwordResetExpires: datetime("passwordResetExpires"),
+  passwordResetExpires: timestamp("passwordResetExpires"),
 });
 
 // export type Auth = typeof AuthTable.$inferSelect;
