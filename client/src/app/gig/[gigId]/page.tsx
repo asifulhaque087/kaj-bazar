@@ -2,24 +2,31 @@
 
 import { Star, StarHalf } from "lucide-react"; // Import the Star icon from lucide-react
 
-import { useGetGigById } from "@/api/gigs/queries/use-get-gig-by-id.query";
+// import { useGetGigById } from "@/api/gigs/queries/use-get-gig-by-id.query";
 import { rating } from "@/utils/rating.util";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import MiniChatRoom from "@/components/mini-chat-room";
+import { useAuthStore } from "@/store/use-auth.store";
+import { useGetGigById } from "@/api/gigs";
+import { useFindOrCreateConversation } from "@/api/chats";
 
 const page = () => {
   const params = useParams<{ gigId: string }>();
 
+  const { authUser, buyer } = useAuthStore();
+
   // console.log("The param is ", params.gigId);
+
+  const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
 
   const {
     data: gig,
     isLoading,
     error,
   } = useGetGigById({
-    id: parseInt(params.gigId),
+    id: params.gigId,
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -45,7 +52,7 @@ const page = () => {
       <div>
         avg rating:
         <span className="text-orange-400">
-          {rating(gig.ratingSum / gig.ratingsCount)}
+          {rating(gig.ratingSum! / gig.ratingsCount!)}
         </span>
       </div>
 
@@ -56,9 +63,9 @@ const page = () => {
 
       <div>
         <ProductRating
-          ratingCategories={gig.ratingCategories}
-          ratingSum={gig.ratingSum}
-          ratingsCount={gig.ratingsCount}
+          ratingCategories={gig.ratingCategories!}
+          ratingSum={gig.ratingSum!}
+          ratingsCount={gig.ratingsCount!}
         />
       </div>
 
@@ -90,12 +97,29 @@ const page = () => {
       <div> basicDescription: {gig.basicDescription}</div>
       <div>expected delivery: {gig.expectedDelivery}</div>
 
+      {/* About the seller */}
+
       <div>
-        contact: <Button>contact</Button>
+        seller - name: {gig.username}
+        {/* from : {gig} */}
       </div>
 
       <div>
-        <MiniChatRoom />
+        contact:{" "}
+        <Button
+          onClick={() =>
+            findOrCreateConversation({
+              receiverUsername: gig.username,
+              senderUsername: authUser?.username!,
+            })
+          }
+        >
+          contact
+        </Button>
+      </div>
+
+      <div>
+        <MiniChatRoom gig={gig} buyer={buyer} />
       </div>
     </div>
   );
@@ -122,7 +146,7 @@ const ProductRating = (props: IRatingData) => {
   // Calculate the average rating
   const averageRating = parseFloat((ratingSum / ratingsCount).toFixed(1));
 
-  console.log("asldkjfasdafd ", averageRating);
+  // console.log("asldkjfasdafd ", averageRating);
 
   // Function to render stars
   const renderStars = () => {
@@ -146,9 +170,8 @@ const ProductRating = (props: IRatingData) => {
         // For simplicity, we'll just show a full star if it's 0.5 or more.
         // If you need true half stars, you might need a separate icon or CSS masking.
         stars.push(
-          <div className="relative  w-[16px]">
+          <div className="relative  w-[16px]" key={i}>
             <Star
-              key={i}
               size={20}
               fill="none"
               stroke="currentColor"
@@ -156,7 +179,6 @@ const ProductRating = (props: IRatingData) => {
             />
 
             <StarHalf
-              key={i}
               size={20}
               fill="currentColor"
               stroke="currentColor"
