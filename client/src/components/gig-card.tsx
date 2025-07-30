@@ -1,4 +1,4 @@
-import { Gig } from "@/api/gigs/schemas/gig.schema";
+import { Gig } from "@/schemas";
 import { Heart, Star } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ const GigCard = (props: IGigCard) => {
 
   // console.log("gig is ", gig);
 
-  const avgRating = gig.ratingSum / gig.ratingsCount;
+  const avgRating = gig?.ratingSum! / gig?.ratingsCount!;
   const rating = avgRating.toFixed(1);
 
   return (
