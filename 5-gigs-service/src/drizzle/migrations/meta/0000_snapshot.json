@@ -1,5 +1,5 @@
 {
-  "id": "ce880b6f-903e-4c5f-8927-69f9a187d92b",
+  "id": "bab3cb0c-73dd-451c-b4c1-7137cce038c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,13 +10,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "seller_id": {
           "name": "seller_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
