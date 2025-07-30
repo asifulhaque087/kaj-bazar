@@ -19,6 +19,8 @@ import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
+import conversationRouter from "@src/routes/conversation.routes";
+import messageRouter from "@src/routes/message.routes";
 // ** Define Service
 
 class Service {
@@ -60,15 +62,18 @@ class Service {
       })
     );
 
-    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "users"));
+    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "chats"));
   }
 
   private set_route_middlewares() {
     this.app.use(morgan("dev"));
     const BASE_PATH = "/api/v1/chats";
     this.app.use(healthRouter);
-    this.app.use(BASE_PATH, queryRouter);
-    this.app.use(BASE_PATH, mutationRouter);
+    // this.app.use(`${BASE_PATH}/conversation`, conversationRouter);
+    this.app.use(BASE_PATH, conversationRouter);
+    this.app.use(BASE_PATH, messageRouter);
+    // this.app.use(BASE_PATH, queryRouter);
+    // this.app.use(BASE_PATH, mutationRouter);
   }
 
   private async start_rabbitmq() {
