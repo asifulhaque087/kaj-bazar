@@ -30,7 +30,7 @@ export const CategoryTab = (props: CategoryTabProps) => {
 
   const browser = useBrowser();
 
-  console.log("tabs are ", tabs);
+  // console.log("tabs are ", tabs);
 
   // const tabs = [
   //   {
