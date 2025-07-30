@@ -28,135 +28,28 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils"; // Make sure you have this utility function
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, PlusCircle, MinusCircle } from "lucide-react";
-import { createSellerValues } from "@/api/sellers/mutations/create-seller/create-seller.values";
-import {
-  CreateSellerFormFields,
-  createSellerSchema,
-} from "@/api/sellers/mutations/create-seller/create-seller.type";
-import { useCreateSeller } from "@/api/sellers/mutations/create-seller/create-seller.mutation";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/use-auth.store";
-
-// Import your schema
-
-// Example default values (from your JSON data)
-// const defaultValues: Partial<SellerFormFields> = {
-//   fullName: "John Doe",
-//   username: "john.doe.seller",
-//   email: "john.doe@example.com",
-//   country: "United States",
-//   profilePicture: "https://placehold.co/150x150/000000/FFFFFF?text=JD",
-//   description:
-//     "Experienced web developer specializing in full-stack solutions with a strong focus on user experience and performance. Passionate about building scalable and maintainable applications.",
-//   oneliner: "Your go-to full-stack developer for robust web apps!",
-//   languages: [
-//     {
-//       language: "English",
-//       level: "Native",
-//     },
-//     {
-//       language: "Spanish",
-//       level: "Conversational",
-//     },
-//   ],
-//   skills: [
-//     { name: "JavaScript" }, // Each skill is now an object
-//     { name: "TypeScript" },
-//     { name: "React" },
-//     { name: "Node.js" },
-//     { name: "Express.js" },
-//     { name: "PostgreSQL" },
-//     { name: "Drizzle ORM" },
-//     { name: "Git" },
-//     { name: "Cloud Deployment" },
-//   ],
-//   experience: [
-//     {
-//       company: "Tech Solutions Inc.",
-//       title: "Senior Software Engineer",
-//       startDate: "2020-01-15",
-//       endDate: "2024-06-30",
-//       description:
-//         "Led development of scalable microservices, optimized database queries, and mentored junior developers.",
-//       currentlyWorkingHere: false,
-//     },
-//     {
-//       company: "Web Innovations LLC",
-//       title: "Junior Developer",
-//       startDate: "2018-07-01",
-//       endDate: "2019-12-31",
-//       description:
-//         "Assisted in front-end development and bug fixing for various client projects.",
-//       currentlyWorkingHere: false,
-//     },
-//   ],
-//   education: [
-//     {
-//       country: "United States",
-//       university: "State University",
-//       title: "Bachelor of Science",
-//       major: "Computer Science",
-//       year: "2018",
-//     },
-//   ],
-//   socialLinks: [
-//     {
-//       link: "https://linkedin.com/in/johndoe",
-//       platform: "LinkedIn",
-//     },
-//     {
-//       link: "https://twitter.com/janedoe_tech",
-//       platform: "Twitter",
-//     },
-//     {
-//       link: "https://github.com/devmaster",
-//       platform: "GitHub",
-//     },
-//     {
-//       link: "https://facebook.com/profile.php?id=12345",
-//       platform: "Facebook",
-//     },
-//     {
-//       link: "https://instagram.com/creative_mind",
-//       platform: "Instagram",
-//     },
-//   ],
-//   certificates: [
-//     {
-//       name: "AWS Certified Developer – Associate",
-//       from: "Amazon Web Services",
-//       year: "2022",
-//     },
-//     {
-//       name: "Full Stack Web Development Bootcamp",
-//       from: "Coding Academy",
-//       year: "2018",
-//     },
-//   ],
-// };
+import { useCreateSeller } from "@/api/sellers";
+import { createSellerDefaultForm } from "@/forms";
+import { createSellerForm, CreateSellerForm } from "@/schemas";
 
 function ProfileForm() {
   const { buyer } = useAuthStore();
 
-  // if (!authUser) return;
-
-  // const vals = createSellerValues(authUser);
-
-  // console.log("vala are ", vals);
-
-  const form = useForm<CreateSellerFormFields>({
-    resolver: zodResolver(createSellerSchema),
-    defaultValues: createSellerValues(null),
+  const form = useForm<CreateSellerForm>({
+    resolver: zodResolver(createSellerForm),
+    defaultValues: createSellerDefaultForm(null),
     mode: "onChange",
   });
 
   useEffect(() => {
     if (buyer) {
       // Only reset if authUser exists
-      form.reset(createSellerValues(buyer));
+      form.reset(createSellerDefaultForm(buyer));
     }
   }, [buyer, form]);
 
@@ -911,13 +804,6 @@ function ProfileForm() {
       </form>
     </Form>
   );
-
-  function onSubmit(values: CreateSellerFormFields) {
-    // createSeller
-
-    console.log("Form submitted:", values);
-    // You would typically send this data to an API
-  }
 }
 
 export default ProfileForm;
