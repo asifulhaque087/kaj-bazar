@@ -10,7 +10,7 @@ const GigCard = (props: IGigCard) => {
   // ** --- Props ---
   const { gig } = props;
 
-  console.log("gig is ", gig);
+  // console.log("gig is ", gig);
 
   const avgRating = gig.ratingSum / gig.ratingsCount;
   const rating = avgRating.toFixed(1);
