@@ -1,6 +1,7 @@
 import { handleAsync } from "@fvoid/shared-lib";
 import { db } from "@src/drizzle/db";
 import { MessagesTable } from "@src/drizzle/schemas";
+import { gatewayClient } from "@src/socket/gatewayClient";
 import type { CreateMessageForm } from "@src/validations/message.validations";
 import type { Request, Response } from "express";
 
@@ -39,6 +40,7 @@ const createMessage = async (req: Request, res: Response) => {
   );
 
   // Todo - We have to publish this message a an event
+  gatewayClient.emit("chatServiceNotification", result);
 
   return res.json({ m: "Event send successfully" });
 };
