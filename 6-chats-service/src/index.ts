@@ -11,8 +11,6 @@ import {
 } from "@fvoid/shared-lib";
 import http from "http";
 
-import { Server } from "socket.io";
-
 // ** Local Imports
 import { config } from "@src/config";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
@@ -21,6 +19,7 @@ import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
 import conversationRouter from "@src/routes/conversation.routes";
 import messageRouter from "@src/routes/message.routes";
+import { initializeGatewayClient } from "@src/socket/gatewayClient";
 // ** Define Service
 
 class Service {
@@ -95,25 +94,11 @@ class Service {
   private start_server() {
     const PORT = 4005;
 
-    const httpServer = new http.Server(this.app);
-    // const socketIO = await createSocketIO(httpServer);
-
-    const io = new Server(httpServer, {
-      cors: {
-        origin: "*",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      },
+    this.app.listen(PORT, () => {
+      console.log(`Chats server is running on port ${PORT}`);
     });
 
-    httpServer.listen(PORT, () => {
-      console.log(`Chats server running on port ${PORT}`);
-    });
-
-    // startHttpServer(httpServer);
-
-    // this.app.listen(PORT, () => {
-    //   console.log(`Chats server is running on port ${PORT}`);
-    // });
+    initializeGatewayClient();
   }
 }
 
