@@ -1,5 +1,5 @@
 {
-  "id": "12769d38-91ac-4fbd-89e6-2f0bff6b0da0",
+  "id": "f79876ce-1689-49eb-9f26-842816366799",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -36,7 +36,7 @@
           "name": "profile_picture",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "country": {
           "name": "country",

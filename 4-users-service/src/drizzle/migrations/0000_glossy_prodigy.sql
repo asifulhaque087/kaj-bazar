@@ -3,7 +3,7 @@ CREATE TABLE "buyers_table" (
 	"username" text NOT NULL,
 	"email" text NOT NULL,
 	"profilePublicId" text NOT NULL,
-	"profile_picture" text,
+	"profile_picture" text NOT NULL,
 	"country" text,
 	"is_seller" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
