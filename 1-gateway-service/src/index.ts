@@ -20,6 +20,7 @@ import chatRouter from "@src/routes/chats.routes";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { SocketIOAppHandler } from "@src/sockets/socket";
+import { redisConnection } from "@src/redis/redis.connection";
 // ** Define Service
 
 class Service {
@@ -35,6 +36,7 @@ class Service {
     this.set_route_middlewares();
     // this.start_rabbitmq();
     this.set_error_middlewares();
+    this.connect_redis();
     await this.start_server();
   }
 
@@ -62,6 +64,10 @@ class Service {
         allowedHeaders: ["Content-Type", "Authorization"],
       })
     );
+  }
+
+  private connect_redis() {
+    redisConnection.redisConnect();
   }
 
   private set_route_middlewares() {
