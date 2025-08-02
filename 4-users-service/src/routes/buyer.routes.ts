@@ -19,6 +19,6 @@ buyerRouter.get(
   currentBuyer
 );
 
-buyerRouter.get("/:username", getBuyerByName);
+buyerRouter.get("/username/:username", getBuyerByName);
 
 export default buyerRouter;
