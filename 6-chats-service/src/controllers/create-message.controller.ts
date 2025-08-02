@@ -1,11 +1,13 @@
 import { handleAsync } from "@fvoid/shared-lib";
 import { db } from "@src/drizzle/db";
 import { MessagesTable } from "@src/drizzle/schemas";
-import { gatewayClient } from "@src/socket/gatewayClient";
+import { gatewayClient } from "@src/sockets/gatewayClient";
 import type { CreateMessageForm } from "@src/validations/message.validations";
 import type { Request, Response } from "express";
 
 const createMessage = async (req: Request, res: Response) => {
+  const io = req.io!;
+
   const {
     buyerId,
     conversationId,
@@ -31,7 +33,7 @@ const createMessage = async (req: Request, res: Response) => {
     body,
   };
 
-  const result = await handleAsync(
+  const message = await handleAsync(
     db
       .insert(MessagesTable)
       .values(messageData)
@@ -40,7 +42,9 @@ const createMessage = async (req: Request, res: Response) => {
   );
 
   // Todo - We have to publish this message a an event
-  gatewayClient.emit("chatServiceNotification", result);
+  // gatewayClient.emit("chatServiceNotification", message);
+  io.emit("newMessage", message);
+  // console.log("%%%%%%%%%%%% ", message);
 
   return res.json({ m: "Event send successfully" });
 };
