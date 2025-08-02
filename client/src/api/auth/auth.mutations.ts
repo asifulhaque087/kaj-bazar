@@ -1,6 +1,8 @@
 import { login } from "@/api/auth/auth.service";
 import { UseLoginProps } from "@/api/auth/auth.types";
 import { LoginForm } from "@/schemas";
+import { useAuthStore } from "@/store/use-auth.store";
+import { useChatStore } from "@/store/use-chat.store";
 import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -10,12 +12,20 @@ export const useLogin = (props: UseLoginProps) => {
   // ** Props
   const { reset, setError, setShowModal } = props;
 
+  // ** --- Store ---
+  const { connectSocket } = useChatStore();
+  const { setAuthUser } = useAuthStore();
+
   // const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: LoginForm) => login(data),
 
     onSuccess: (data) => {
+      // console.log("data of login is ", data.user);
+      setAuthUser(data.user);
+      connectSocket();
+
       toast.success("Login successfully");
       reset();
       setShowModal(-1);
