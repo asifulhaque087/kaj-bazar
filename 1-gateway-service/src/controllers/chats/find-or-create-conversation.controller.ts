@@ -4,7 +4,7 @@ import { type AxiosResponse, AxiosError } from "axios";
 const findOrCreateConversation = async (req: Request, res: Response) => {
   const body = req.body;
 
-  console.log("hello 2 from controller");
+  // console.log("hello 2 from controller");
 
   try {
     const apiService = req.protectedAxios!;
