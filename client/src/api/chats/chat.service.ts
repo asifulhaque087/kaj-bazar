@@ -19,3 +19,18 @@ export const createMessage = async (data: CreateMessageForm) => {
   const response = await chat__axios.post(`/message/create-message`, data);
   return response.data;
 };
+
+export const getConversationsByUsername = async (username: string) => {
+  console.log("user name is ", username);
+  const response = await chat__axios.get<Conversation[]>(
+    `/conversation/get-conversations/${username}`
+  );
+  return response.data;
+};
+
+export const getConversationsById = async (id: string) => {
+  const response = await chat__axios.get<Conversation>(
+    `/conversation/get-conversation/${id}`
+  );
+  return response.data;
+};
