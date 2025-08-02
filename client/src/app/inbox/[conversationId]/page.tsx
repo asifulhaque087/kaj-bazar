@@ -1,5 +1,5 @@
 "use client";
-import { useGetConversationsById } from "@/api/chats";
+import { useCreateMessage, useGetConversationsById } from "@/api/chats";
 import { Button } from "@/components/ui/button";
 import { DevTool } from "@hookform/devtools";
 
@@ -35,8 +35,13 @@ const page = () => {
   const dummy = useRef<HTMLSpanElement>(null);
 
   // ** --- Store ---
-  const { messages, selectedConversation } = useChatStore();
-  const { authUser, buyer } = useAuthStore();
+  const {
+    messages,
+    selectedConversation,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
+  const { authUser, buyer, otherSeller, otherBuyer } = useAuthStore();
 
   // ** --- Params
 
@@ -46,6 +51,9 @@ const page = () => {
 
   // ** --- Queries
   const { data: conversation } = useGetConversationsById({ conversationId });
+
+  // ** --- Mutation ---
+  const { mutate: createMessage } = useCreateMessage();
 
   const currentUserIsBuyer =
     conversation?.senderUsername === authUser?.username;
@@ -62,29 +70,31 @@ const page = () => {
   });
 
   // ** --- Use form ---
+
   const form = useForm<CreateMessageForm>({
     resolver: zodResolver(createMessageForm),
-    // defaultValues: createMessageDefaultForm(null, null, null),
-    defaultValues: { body: "" },
+    defaultValues: createMessageDefaultForm(null, null, null, null),
     mode: "onSubmit",
   });
 
   useEffect(() => {
-    if (buyer && selectedConversation) {
+    if (authUser && conversation && (otherBuyer || otherSeller)) {
       const hola = createMessageDefaultForm(
-        selectedConversation?.id!,
-        buyer,
-        null
+        authUser,
+        conversation,
+        otherSeller,
+        otherBuyer
       );
 
-      console.log("hola is ", hola);
       form.reset(hola);
     }
-  }, [buyer, form, selectedConversation]);
+  }, [authUser, conversation, otherSeller, otherBuyer]);
 
   const isbrowser = useBrowser();
 
   if (!isbrowser) return;
+
+  console.log("errors are ", form.formState.errors);
 
   return (
     <div>
@@ -101,7 +111,7 @@ const page = () => {
         <form
           // onSubmit={form.handleSubmit(onSubmit)}
 
-          onSubmit={form.handleSubmit((data) => console.log(data))}
+          onSubmit={form.handleSubmit((data) => createMessage(data))}
           // onSubmit={form.handleSubmit((data) => console.log("data is ", data))}
           className="space-y-8 max-w-3xl w-full mx-auto py-10"
         >
