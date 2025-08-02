@@ -1,5 +1,4 @@
-import { Auth } from "@/api/auth/schemas/auth.schema";
-import { Buyer } from "@/api/buyers/queries/current-buyer/curren-buyer.type";
+import { Auth, Buyer } from "@/schemas";
 import { create } from "zustand";
 
 type States = {
