@@ -1,3 +1,4 @@
+import { LoginApi } from "@/api/auth/auth.types";
 import { auth__axios } from "@/api/common/axios.service";
 import { Auth, LoginForm, RegisterPayload } from "@/schemas";
 
@@ -9,7 +10,7 @@ export async function getAuthUser(): Promise<Auth> {
 
 // ** --- Mutations ---
 export const login = async (data: LoginForm) => {
-  const response = await auth__axios.post(`/signin`, data);
+  const response = await auth__axios.post<LoginApi>(`/signin`, data);
   return response.data;
 };
 
