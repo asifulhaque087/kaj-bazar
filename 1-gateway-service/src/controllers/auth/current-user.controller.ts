@@ -9,10 +9,10 @@ const currentUser = async (req: Request, res: Response) => {
   try {
     const apiService = req.protectedAxios!;
 
-    console.log("api service @#@#@#@#@#@#@#@#@#@@# ", apiService);
+    // console.log("api service @#@#@#@#@#@#@#@#@#@@# ", apiService);
     const response: AxiosResponse = await apiService.axios.get("/currentuser");
 
-    console.log("api service after @#@#@#@#@#@#@#@#@#@@# ", apiService);
+    // console.log("api service after @#@#@#@#@#@#@#@#@#@@# ", apiService);
     // Send response data
     return res.json(response.data);
   } catch (error) {
