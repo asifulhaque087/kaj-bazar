@@ -35,7 +35,7 @@ const page = () => {
           }}
         >
           <h1>{con.senderUsername}</h1>
-          <p>{con.messages[0].body}</p>
+          <p>{con.messages[0]?.body}</p>
         </div>
         // </Link>
       ))}
