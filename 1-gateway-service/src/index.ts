@@ -105,7 +105,7 @@ class Service {
     const httpServer = new http.Server(this.app);
 
     httpServer.listen(PORT, () => {
-      console.log(`Chats server running on port ${PORT}`);
+      console.log(`Gateway server running on port ${PORT}`);
     });
 
     const io = new Server(httpServer, {
