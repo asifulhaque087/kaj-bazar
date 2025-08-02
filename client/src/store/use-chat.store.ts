@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
 import { Conversation, Message } from "@/schemas";
+import { useAuthStore } from "@/store/use-auth.store";
+import { config } from "@/config";
 
 type States = {
   conversations: Conversation[];
   selectedConversation: Conversation | null;
   messages: Message[];
-  IO: Socket | null;
+  socket: Socket | null;
 };
 
 type Actions = {
@@ -16,17 +18,15 @@ type Actions = {
   disconnectSocket: () => void;
   subscribeToMessages: () => void;
   unsubscribeFromMessages: () => void;
-  // setAuthUser: (user: Auth) => void;
-  // setBuyer: (buyer: Buyer) => void;
 };
 
-// login, register, auth check er pore connect socket korte hobe.
+// login, register, auth check er pore socket connect  korte hobe.
 
 export const useChatStore = create<States & Actions>((set, get) => ({
   conversations: [],
   selectedConversation: null,
   messages: [],
-  IO: null,
+  socket: null,
 
   setSelectedConversation: (conversation) =>
     set({ selectedConversation: conversation }),
@@ -36,37 +36,53 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   },
 
   connectSocket: () => {
-    const { authUser } = get();
+    const authUser = useAuthStore.getState().authUser;
 
     if (!authUser || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, {
+    // gatewayClient = io(`${config.API_GATEWAY_URL}`, {
+    //   transports: ["websocket", "polling"], // Standard transports
+    //   secure: true, // Use true if your Gateway uses HTTPS/WSS, false for HTTP/WS
+    // });
+
+    const socket = io("http://localhost:4000/", {
+      transports: ["websocket", "polling"],
+      secure: true,
       query: {
-        userId: authUser._id,
+        userId: authUser.id,
       },
     });
-    socket.connect();
+    // socket.connect();
+    // socket.connect;
 
     set({ socket: socket });
 
-    socket.on("getOnlineUsers", (userIds) => {
-      set({ onlineUsers: userIds });
+    socket.on("connect", () => {
+      console.log("Client connected to Gateway socket server.");
+      socket.emit("registerUserSocket", authUser.username);
+      get().subscribeToMessages();
     });
+
+    socket.on("disconnect", () => {
+      console.log("Client disconnected from Gateway socket server.");
+      get().unsubscribeFromMessages(); // Unsubscribe on disconnect
+    });
+
+    // socket.on("getOnlineUsers", (userIds) => {
+    //   set({ onlineUsers: userIds });
+    // });
   },
   disconnectSocket: () => {
-    if (get().socket?.connected) get().socket.disconnect();
+    if (get().socket?.connected) {
+      get().unsubscribeFromMessages(); // Unsubscribe before disconnecting
+      get().socket?.disconnect();
+    }
+    set({ socket: null }); // Clear socket reference
   },
   subscribeToMessages: () => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
+    const socket = get().socket;
 
-    const socket = useAuthStore.getState().socket;
-
-    socket.on("newMessage", (newMessage) => {
-      const isMessageSentFromSelectedUser =
-        newMessage.senderId === selectedUser._id;
-      if (!isMessageSentFromSelectedUser) return;
-
+    socket?.on("newMessage", (newMessage) => {
       set({
         messages: [...get().messages, newMessage],
       });
@@ -74,7 +90,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   },
 
   unsubscribeFromMessages: () => {
-    const socket = useAuthStore.getState().socket;
-    socket.off("newMessage");
+    const socket = get().socket;
+    socket?.off("newMessage");
   },
 }));
