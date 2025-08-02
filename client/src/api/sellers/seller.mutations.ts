@@ -1,4 +1,4 @@
-import { createSellerApi } from "@/api/sellers/mutations/create-seller/create-seller.api";
+import { createSeller } from "@/api/sellers/seller.service";
 import { UseCreateSellerProps } from "@/api/sellers/seller.types";
 import { CreateSellerPayload } from "@/schemas/seller.schema";
 import { ApiValidationError } from "@/types";
@@ -13,7 +13,7 @@ export const useCreateSeller = (props: UseCreateSellerProps) => {
   const { reset, setError } = props;
 
   return useMutation({
-    mutationFn: (data: CreateSellerPayload) => createSellerApi(data),
+    mutationFn: (data: CreateSellerPayload) => createSeller(data),
 
     onSuccess: (data) => {
       toast.success("Login successfully");
