@@ -1,4 +1,4 @@
-import { LoginForm } from "@/schemas";
+import { Auth, LoginForm } from "@/schemas";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 
@@ -79,3 +79,9 @@ export interface UseLoginProps {
 // if (cachedSeller) {
 //   // Do something with cached data
 // }
+
+export interface LoginApi {
+  message: string;
+  user: Auth;
+  token: string;
+}
