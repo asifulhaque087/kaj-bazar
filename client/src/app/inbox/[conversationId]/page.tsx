@@ -90,6 +90,12 @@ const page = () => {
     }
   }, [authUser, conversation, otherSeller, otherBuyer]);
 
+  useEffect(() => {
+    if (dummy.current) {
+      dummy.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const isbrowser = useBrowser();
 
   if (!isbrowser) return;
@@ -98,9 +104,18 @@ const page = () => {
 
   return (
     <div>
-      <main>
+      <main className="flex flex-col gap-y-[10px]">
         {messages.map((msg) => (
-          <div key={msg.id}>{msg.body}</div>
+          <div
+            key={msg.id}
+            className={` ${
+              msg.senderUsername === authUser?.username
+                ? "self-end bg-blue-400"
+                : "bg-red-300 self-start"
+            }`}
+          >
+            {msg.body}
+          </div>
         ))}
         <span ref={dummy}></span>
       </main>
@@ -109,9 +124,8 @@ const page = () => {
 
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
-
-          onSubmit={form.handleSubmit((data) => createMessage(data))}
+          onSubmit={form.handleSubmit(onSubmit)}
+          // onSubmit={form.handleSubmit((data) => createMessage(data))}
           // onSubmit={form.handleSubmit((data) => console.log("data is ", data))}
           className="space-y-8 max-w-3xl w-full mx-auto py-10"
         >
@@ -207,8 +221,14 @@ const page = () => {
     }
   }
 
-  function onSubmit(values: CreateMessageForm) {
-    console.log("the values are ", values);
+  function onSubmit(data: CreateMessageForm) {
+    createMessage(data);
+
+    form.reset();
+
+    // if (dummy.current) {
+    //   dummy.current.scrollIntoView({ behavior: "smooth" });
+    // }
   }
 };
 
