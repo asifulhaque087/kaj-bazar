@@ -23,3 +23,8 @@ export const getGigById = async (id: string): Promise<Gig> => {
   const response = await gig__axios.get<Gig>(`/${id}`);
   return response.data;
 };
+
+export const getGigBySellerId = async (sellerId: string): Promise<Gig[]> => {
+  const response = await gig__axios.get<Gig[]>(`/seller/${sellerId}`);
+  return response.data;
+};
