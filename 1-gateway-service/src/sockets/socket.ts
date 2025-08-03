@@ -189,12 +189,22 @@ export class SocketIOAppHandler {
     chatSocketClient.on("newMessage", (message) => {
       console.log("!!!!!!!!!!!!!!!!!! message is ", message);
 
+      // send to receiver
       const receiverGatewaySocketId = this.userSocketIdMap.get(
         message.receiverUsername
       );
 
       if (receiverGatewaySocketId) {
         this.io.to(receiverGatewaySocketId).emit("newMessage", message);
+      }
+
+      // Send to sender
+      const senderGatewaySocketId = this.userSocketIdMap.get(
+        message.senderUsername // Assuming your message object has a senderUsername
+      );
+
+      if (senderGatewaySocketId) {
+        this.io.to(senderGatewaySocketId).emit("newMessage", message);
       }
     });
 
