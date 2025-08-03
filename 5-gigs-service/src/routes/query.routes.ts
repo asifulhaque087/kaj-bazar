@@ -1,14 +1,12 @@
 import getGigById from "@src/controllers/gig-by-id.controller";
 import searchGigs from "@src/controllers/search-gigs.controller";
+import getSellerGigs from "@src/controllers/seller-gigs.controller";
 import { Router, type Request, type Response } from "express";
 
 const queryRouter: Router = Router();
 
 queryRouter.get("/search", searchGigs);
 
-queryRouter.get("/seller/:sellerId", (req: Request, res: Response) => {
-  return res.json({ m: "I am from Get Gigs by seller id" });
-});
 queryRouter.get("/seller/pause/:sellerId", (req: Request, res: Response) => {
   return res.json({ m: "I am from Get Paused Gigs by seller id" });
 });
@@ -28,6 +26,12 @@ queryRouter.get("/top/:username", (req: Request, res: Response) => {
 queryRouter.get("/similar/:gigId", (req: Request, res: Response) => {
   return res.json({ m: "I am from GEt Simillar gigs" });
 });
+
+// queryRouter.get("/seller/:sellerId", (req: Request, res: Response) => {
+//   return res.json({ m: "I am from Get Gigs by seller id" });
+// });
+
+queryRouter.get("/seller/:sellerId", getSellerGigs);
 
 queryRouter.get("/:gigId", getGigById);
 
