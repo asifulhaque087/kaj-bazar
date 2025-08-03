@@ -13,17 +13,20 @@ import {
 // Define the type for your offer object for better TypeScript support
 interface Offer {
   gigTitle: string;
+  gigId: string;
   price: number;
   description: string;
   deliveryInDays: number;
-  oldDeliveryDate: string;
-  newDeliveryDate: string;
-  accepted: boolean;
-  cancelled: boolean;
+  // ** optional
+  oldDeliveryDate?: string;
+  newDeliveryDate?: string;
+  accepted?: boolean;
+  cancelled?: boolean;
 }
 
 const defaultOfferValue: Offer = {
   gigTitle: "",
+  gigId: "",
   price: 0,
   description: "",
   deliveryInDays: 0,
@@ -51,7 +54,7 @@ export const MessagesTable = pgTable("messages_table", {
   fileType: text("file_type").default(""),
   fileSize: text("file_size").default(""),
   fileName: text("file_name").default(""),
-  gigId: text("gig_id").default(""),
+  // gigId: text("gig_id").default(""),
   isRead: boolean("is_read").default(false),
   hasOffer: boolean("has_offer").default(false),
   offer: jsonb("offer").$type<Offer>().default(defaultOfferValue),
@@ -64,7 +67,5 @@ export const messagesRelations = relations(MessagesTable, ({ one }) => ({
     references: [ConversationsTable.id],
   }), // A message belongs to one conversation
 }));
-
-
 
 // export type Auth = typeof MessagesTable.$inferSelect;
