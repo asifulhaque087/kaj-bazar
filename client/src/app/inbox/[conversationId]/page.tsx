@@ -24,12 +24,14 @@ import { useForm } from "react-hook-form";
 import { useBrowser } from "@/hooks/use-browser.hook";
 import { useSellerByName } from "@/api/sellers";
 import { useBuyerByName } from "@/api/buyers";
+import SendOfferModal from "@/components/send-offer-modal";
 
 const page = () => {
   // ** --- Props ---
 
   // ** --- States ---
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isOfferModal, setIsOfferModal] = useState<boolean>(false);
 
   // ** --- Reference ---
   const dummy = useRef<HTMLSpanElement>(null);
@@ -90,6 +92,8 @@ const page = () => {
     }
   }, [authUser, conversation, otherSeller, otherBuyer]);
 
+  // console.log("the form is hola ", form.getValues());
+
   useEffect(() => {
     if (dummy.current) {
       dummy.current.scrollIntoView({ behavior: "smooth" });
@@ -100,7 +104,7 @@ const page = () => {
 
   if (!isbrowser) return;
 
-  console.log("errors are ", form.formState.errors);
+  // console.log("errors are ", form.formState.errors);
 
   return (
     <div>
@@ -115,6 +119,26 @@ const page = () => {
             }`}
           >
             {msg.body}
+            {msg.hasOffer && msg.offer && (
+              <div className="border p-2 mt-2 rounded">
+                <strong>Offer:</strong>
+                <p>Gig: {msg.offer.gigTitle}</p>
+                <p>Price: ${msg.offer.price}</p>
+                <p>Delivery: {msg.offer.deliveryInDays} days</p>
+                <p>Description: {msg.offer.description}</p>
+              </div>
+            )}
+            {msg.file && (
+              <div className="mt-2">
+                <Image
+                  src={msg.file}
+                  alt="Attached file"
+                  width={100}
+                  height={100}
+                  objectFit="cover"
+                />
+              </div>
+            )}
           </div>
         ))}
         <span ref={dummy}></span>
@@ -124,6 +148,7 @@ const page = () => {
 
       <Form {...form}>
         <form
+          id="create-message-form"
           onSubmit={form.handleSubmit(onSubmit)}
           // onSubmit={form.handleSubmit((data) => createMessage(data))}
           // onSubmit={form.handleSubmit((data) => console.log("data is ", data))}
@@ -142,6 +167,15 @@ const page = () => {
               </FormItem>
             )}
           />
+
+          <SendOfferModal
+            showModal={isOfferModal}
+            setShowModal={() => setIsOfferModal(false)}
+            setValue={form.setValue}
+            control={form.control}
+            parentFormId="create-message-form"
+          />
+
           {/* 
           <FormField
             control={form.control}
@@ -184,10 +218,16 @@ const page = () => {
             )}
           /> */}
 
+          {!currentUserIsBuyer && (
+            <Button type="button" onClick={() => setIsOfferModal(true)}>
+              send offer
+            </Button>
+          )}
+
           <Button type="submit">Submit</Button>
         </form>
 
-        <DevTool control={form.control} />
+        {/* <DevTool control={form.control} /> */}
       </Form>
     </div>
   );
@@ -223,6 +263,8 @@ const page = () => {
 
   function onSubmit(data: CreateMessageForm) {
     createMessage(data);
+
+    // console.log("data is ", data);
 
     form.reset();
 
