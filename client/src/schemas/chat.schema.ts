@@ -3,13 +3,16 @@ import { z } from "zod";
 // Define the Zod schema for the Offer object
 export const OfferSchema = z.object({
   gigTitle: z.string(),
+  gigId: z.string().optional(),
   price: z.number(),
   description: z.string(),
   deliveryInDays: z.number(),
-  oldDeliveryDate: z.string(),
-  newDeliveryDate: z.string(),
-  accepted: z.boolean(),
-  cancelled: z.boolean(),
+
+  // ** --- optional ---
+  oldDeliveryDate: z.string().optional(),
+  newDeliveryDate: z.string().optional(),
+  accepted: z.boolean().optional(),
+  cancelled: z.boolean().optional(),
 });
 
 // Zod schema for the MessagesTable
@@ -29,7 +32,6 @@ export const messageSchema = z.object({
   fileType: z.string().optional(),
   fileSize: z.string().optional(),
   fileName: z.string().optional(),
-  gigId: z.string().optional(),
   isRead: z.boolean().optional(),
   hasOffer: z.boolean().optional(),
   offer: OfferSchema.optional(),
@@ -43,7 +45,11 @@ export const createMessageForm = messageSchema.omit({
   id: true,
   createdAt: true,
 });
-
+// .extend({
+//   offer: OfferSchema.extend({
+//     price: z.number().nullable(),
+//   }).optional(),
+// });
 export type CreateMessageForm = z.infer<typeof createMessageForm>;
 
 export const conversationSchema = z.object({
