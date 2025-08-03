@@ -3,61 +3,14 @@ import {
   Buyer,
   Conversation,
   CreateMessageForm,
-  Gig,
   Seller,
 } from "@/schemas";
 
-// export const createMessageDefaultForm = (
-
-//   conversationId: string | null,
-//   buyer: Buyer | null,
-//   // authUser: Auth | null,
-//   gig: Gig | null
-// ): Partial<CreateMessageForm> => {
-//   let baseDefaults: Partial<CreateMessageForm> = {
-//     senderUsername: "",
-//     receiverUsername: "",
-//     senderPicture: "",
-//     receiverPicture: "",
-//     body: "",
-//   };
-
-//   if (conversationId) {
-//     baseDefaults = {
-//       ...baseDefaults,
-//       conversationId: conversationId,
-//     };
-//   }
-
-//   if (buyer) {
-//     baseDefaults = {
-//       ...baseDefaults,
-//       senderUsername: buyer.username,
-//       senderPicture: buyer.profilePicture,
-//       buyerId: buyer.id,
-//     };
-//   }
-
-//   if (gig) {
-//     baseDefaults = {
-//       ...baseDefaults,
-//       receiverUsername: gig.username,
-//       receiverPicture: gig.profilePicture,
-//       sellerId: gig.sellerId,
-//     };
-//   }
-
-//   return baseDefaults;
-// };
-
 export const createMessageDefaultForm = (
-  // conversationId: string | null,
-  // buyer: Buyer | null,
   authUser: Auth | null,
   selectedConversation: Conversation | null,
   otherSeller: Seller | null,
   otherBuyer: Buyer | null
-  // gig: Gig | null
 ): Partial<CreateMessageForm> => {
   const isBuyer = checkBuyer(selectedConversation, authUser);
   const isSeller = !isBuyer;
@@ -78,6 +31,20 @@ export const createMessageDefaultForm = (
 
     // ** Optional
     body: "",
+    hasOffer: false,
+
+    offer: {
+      gigTitle: "",
+      gigId: "",
+      description: "",
+      price: 0,
+      deliveryInDays: 0,
+      // ** optional
+      oldDeliveryDate: "",
+      newDeliveryDate: "",
+      accepted: false,
+      cancelled: false,
+    },
   };
 
   // if (conversationId) {
@@ -113,22 +80,4 @@ const checkBuyer = (
 ) => {
   const isBuyer = selectedConversation?.senderUsername === authUser?.username;
   return isBuyer;
-
-  // const otherUser = isBuyer ? otherSeller : otherBuyer;
-
-  // return [isBuyer, otherUser];
 };
-
-// const checkBuyer = (
-//   selectedConversation: Conversation | null,
-//   authUser: Auth | null,
-//   otherBuyer: Buyer | null,
-//   otherSeller: Seller | null
-// ) => {
-//   const isBuyer = selectedConversation?.senderUsername === authUser?.username;
-//   return isBuyer;
-
-//   // const otherUser = isBuyer ? otherSeller : otherBuyer;
-
-//   // return [isBuyer, otherUser];
-// };
