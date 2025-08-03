@@ -9,19 +9,21 @@ const createMessage = async (req: Request, res: Response) => {
   const io = req.io!;
 
   const {
-    buyerId,
     conversationId,
-    receiverPicture,
-    receiverUsername,
-    sellerId,
-    senderPicture,
     senderUsername,
+    receiverUsername,
+    senderPicture,
+    receiverPicture,
+    buyerId,
+    sellerId,
+    // optional
+    hasOffer,
     body,
-    file,
+    offer,
+    // file,
   } = req.body as CreateMessageForm;
 
   // ** Prepare data
-
   const messageData = {
     buyerId,
     conversationId,
@@ -30,8 +32,12 @@ const createMessage = async (req: Request, res: Response) => {
     sellerId,
     senderPicture,
     senderUsername,
+    hasOffer,
     body,
+    offer: offer,
   };
+
+  // console.log("message data is ", messageData);
 
   const message = await handleAsync(
     db
