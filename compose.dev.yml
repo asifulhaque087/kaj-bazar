@@ -295,6 +295,7 @@ services:
       - CLOUD_NAME=${CLOUD_NAME}
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
+      - REDIS_HOST=${REDIS_HOST}
     volumes:
       - ./6-chats-service:/home/app
       - /home/app/node_modules
