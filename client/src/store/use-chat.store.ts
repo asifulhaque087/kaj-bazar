@@ -87,6 +87,13 @@ export const useChatStore = create<States & Actions>((set, get) => ({
         messages: [...get().messages, newMessage],
       });
     });
+
+    socket?.on("updateMessage", (upMsg) => {
+      const updateMessages = get().messages.map((msg) =>
+        msg.id === upMsg.id ? upMsg : msg
+      );
+      set({ messages: updateMessages });
+    });
   },
 
   unsubscribeFromMessages: () => {
