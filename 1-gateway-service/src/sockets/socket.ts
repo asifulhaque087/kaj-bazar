@@ -187,8 +187,6 @@ export class SocketIOAppHandler {
 
     // custom events
     chatSocketClient.on("newMessage", (message) => {
-      console.log("!!!!!!!!!!!!!!!!!! message is ", message);
-
       // send to receiver
       const receiverGatewaySocketId = this.userSocketIdMap.get(
         message.receiverUsername
@@ -205,6 +203,26 @@ export class SocketIOAppHandler {
 
       if (senderGatewaySocketId) {
         this.io.to(senderGatewaySocketId).emit("newMessage", message);
+      }
+    });
+
+    chatSocketClient.on("updateMessage", (message) => {
+      // send to receiver
+      const receiverGatewaySocketId = this.userSocketIdMap.get(
+        message.receiverUsername
+      );
+
+      if (receiverGatewaySocketId) {
+        this.io.to(receiverGatewaySocketId).emit("updateMessage", message);
+      }
+
+      // Send to sender
+      const senderGatewaySocketId = this.userSocketIdMap.get(
+        message.senderUsername // Assuming your message object has a senderUsername
+      );
+
+      if (senderGatewaySocketId) {
+        this.io.to(senderGatewaySocketId).emit("updateMessage", message);
       }
     });
 
