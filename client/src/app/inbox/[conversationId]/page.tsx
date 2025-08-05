@@ -126,6 +126,14 @@ const page = () => {
                 <p>Price: ${msg.offer.price}</p>
                 <p>Delivery: {msg.offer.deliveryInDays} days</p>
                 <p>Description: {msg.offer.description}</p>
+                {currentUserIsBuyer ? (
+                  <div>
+                    <Button className="bg-green-500">Accept</Button>
+                    <Button className="bg-red-500">Cancel</Button>
+                  </div>
+                ) : (
+                  <Button className="bg-red-500">Cancel</Button>
+                )}
               </div>
             )}
             {msg.file && (
