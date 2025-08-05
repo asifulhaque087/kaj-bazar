@@ -455,3 +455,21 @@ services:
     depends_on:
       - chat-postgres
       - chats
+
+  order-studio:
+    container_name: orders_studio_container
+    build:
+      context: 7-orders-service
+      dockerfile: Dockerfile.studio
+    restart: always
+    ports:
+      - 4987:4987
+    environment:
+      - DATABASE_URL=${ORDERS_DB_URL}
+    profiles: ["exclude"]
+
+    volumes:
+      - ./7-orders-service:/home/app
+    depends_on:
+      - order-db
+      - orders
