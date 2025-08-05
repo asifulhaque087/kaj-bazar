@@ -58,15 +58,6 @@ services:
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=auths
 
-  review-postgres:
-    container_name: review_postgres_container
-    # image: postgres:14.18-alpine3.22
-    image: postgres:13-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=review
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=reviews
     # ports:
     # - "5432:5432"
     # volumes:
