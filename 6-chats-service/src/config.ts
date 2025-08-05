@@ -10,4 +10,5 @@ export const config = {
   GATEWAY_JWT_TOKEN: process.env.GATEWAY_JWT_TOKEN || "",
   API_GATEWAY_URL: process.env.API_GATEWAY_URL || "",
   ELASTIC_SEARCH_URL: process.env.ELASTIC_SEARCH_URL || "",
+  REDIS_HOST: process.env.REDIS_HOST || "",
 };
