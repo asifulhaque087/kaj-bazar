@@ -90,6 +90,16 @@ services:
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=chats
 
+  order-db:
+    container_name: order_postgres_container
+    # image: postgres:14.18-alpine3.22
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=order
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=orders
+
   review-db:
     container_name: review_postgres_container
     image: postgres:13-alpine
