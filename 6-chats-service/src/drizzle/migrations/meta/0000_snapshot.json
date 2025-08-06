@@ -1,5 +1,5 @@
 {
-  "id": "5dc619e3-99ef-42ad-997d-efaba89920fd",
+  "id": "21a46c0e-42da-43e1-8cc9-91027a84e23e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -124,13 +124,6 @@
           "notNull": false,
           "default": "''"
         },
-        "gig_id": {
-          "name": "gig_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "''"
-        },
         "is_read": {
           "name": "is_read",
           "type": "boolean",
@@ -150,7 +143,7 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false,
-          "default": "'{\"gigTitle\":\"\",\"price\":0,\"description\":\"\",\"deliveryInDays\":0,\"oldDeliveryDate\":\"\",\"newDeliveryDate\":\"\",\"accepted\":false,\"cancelled\":false}'::jsonb"
+          "default": "'{\"gigTitle\":\"\",\"gigId\":\"\",\"price\":0,\"description\":\"\",\"deliveryInDays\":0,\"oldDeliveryDate\":\"\",\"newDeliveryDate\":\"\",\"accepted\":false,\"cancelled\":false}'::jsonb"
         },
         "created_at": {
           "name": "created_at",
