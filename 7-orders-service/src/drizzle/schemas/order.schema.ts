@@ -61,40 +61,37 @@ export const OrderStatus = pgEnum("oder_status", [
 export const OrdersTable = pgTable("orders_table", {
   id: uuid("id").primaryKey().defaultRandom(),
   messageId: uuid("message_id").notNull(),
-  placeOrderAt: timestamp("place_order_at", { withTimezone: true }).notNull(),
+  paymentIntent: text("payment_intent").notNull(),
+  price: integer("price").notNull(),
+  // serviceFee: integer("service_fee").notNull(),
+  gig: jsonb("gig").$type<Gig>().notNull(),
+  // buyer: jsonb("buyer").$type<Buyer>(),
+  // seller: jsonb("seller").$type<Seller>(),
+  buyer: jsonb("buyer").$type<User>().notNull(),
+  seller: jsonb("seller").$type<User>().notNull(),
+  deliveryDueDate: timestamp("delivery_due_date").notNull(),
 
+  // ** Optional
+
+  deliveryInDays: integer("delivery_in_days"),
+  orderStatus: OrderStatus("order_status").default("incomplete").notNull(),
+  placeOrderAt: timestamp("place_order_at").notNull().defaultNow(),
   // requirement
   requirement: text("requirement"),
   requirementAt: timestamp("requirement_at"),
 
   orderStartedAt: timestamp("order_started_at"),
-
-  gig: jsonb("gig").$type<Gig>(),
-  // buyer: jsonb("buyer").$type<Buyer>(),
-  // seller: jsonb("seller").$type<Seller>(),
-  buyer: jsonb("buyer").$type<User>(),
-  seller: jsonb("seller").$type<User>(),
-
-  // due dates
   requestExtensions: jsonb("request_extensions").$type<ExtensionRequest[]>(),
-  deliveryDueDate: timestamp("delivery_due_date"),
 
   // delivery
   deliveredWorks: jsonb("delivered_works").$type<DeliveredWork[]>(),
   orderDeliveredAt: timestamp("oder_delivered_at"),
-
   // review
   sellerReceivedReview: jsonb("seller_received_review").$type<Review>(),
   buyerReceivedReview: jsonb("buyer_received_review").$type<Review>(),
 
   accepted: boolean("accepted"),
   acceptedAt: timestamp("accepted_at"),
-
-  orderStatus: OrderStatus("order_status").default("incomplete").notNull(),
-
-  paymentIntent: text("payment_intent"),
-  price: integer("price").notNull(),
-  serviceFee: integer("service_fee").notNull(),
 });
 
 // --- Relationships ---
