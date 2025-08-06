@@ -1,0 +1,1 @@
+ALTER TABLE "orders_table" ADD COLUMN "delivery_in_days" integer;
