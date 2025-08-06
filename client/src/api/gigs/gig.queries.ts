@@ -10,6 +10,7 @@ export const useGetGigById = ({ id }: { id: string }) => {
   return useQuery({
     queryKey: ["gig", id],
     queryFn: () => getGigById(id),
+    enabled: !!id,
   });
 };
 
