@@ -3,6 +3,7 @@ import {
   Conversation,
   CreateConversationForm,
   CreateMessageForm,
+  Message,
 } from "@/schemas";
 
 export const findOrCreateConversationApi = async (
@@ -32,5 +33,10 @@ export const getConversationsById = async (id: string) => {
   const response = await chat__axios.get<Conversation>(
     `/conversation/get-conversation/${id}`
   );
+  return response.data;
+};
+
+export const getMessageById = async (id: string) => {
+  const response = await chat__axios.get<Message>(`/message/${id}`);
   return response.data;
 };
