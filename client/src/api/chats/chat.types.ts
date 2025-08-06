@@ -7,3 +7,7 @@ export interface UseGetConversationsByUsernameProps {
 export interface UseGetConversationsByIdProps {
   conversationId: string;
 }
+
+export interface UseGetMessageByIdProps {
+  id: string;
+}
