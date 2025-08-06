@@ -3,6 +3,7 @@ import getConversationById from "@src/controllers/chats/conversation-by-id.contr
 import createMessage from "@src/controllers/chats/create-message.controller";
 import findOrCreateConversation from "@src/controllers/chats/find-or-create-conversation.controller";
 import getConversations from "@src/controllers/chats/get-conversations.controller";
+import getMessageById from "@src/controllers/chats/message-by-id.controller";
 import { apiMiddleware } from "@src/middlewares/api.middleware";
 import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
 import { Router } from "express";
@@ -22,6 +23,7 @@ chatRouter.post(
 );
 
 chatRouter.post("/message/create-message", verifyJwtToken, createMessage);
+chatRouter.get("/message/:id", verifyJwtToken, getMessageById);
 
 chatRouter.get(
   "/conversation/get-conversations/:username",
