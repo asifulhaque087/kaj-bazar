@@ -1,2 +1,0 @@
-ALTER TABLE "messages_table" ALTER COLUMN "offer" SET DEFAULT '{"gigTitle":"","gigId":"","price":0,"description":"","deliveryInDays":0,"oldDeliveryDate":"","newDeliveryDate":"","accepted":false,"cancelled":false}'::jsonb;--> statement-breakpoint
-ALTER TABLE "messages_table" DROP COLUMN "gig_id";
