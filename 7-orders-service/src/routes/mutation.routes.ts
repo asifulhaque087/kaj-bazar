@@ -1,14 +1,10 @@
+import createOrder from "@src/controllers/create-order.controller";
 import { Router, type Request, type Response } from "express";
 
 const mutationRouter = Router();
 
-mutationRouter.post(
-  "/",
+mutationRouter.post("/create", createOrder);
 
-  (req: Request, res: Response) => {
-    return res.json({ m: "I am from Create an order" });
-  }
-);
 mutationRouter.post(
   "/create-payment-intent",
 
