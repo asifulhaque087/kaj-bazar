@@ -1,10 +1,12 @@
 import {
   getConversationsById,
   getConversationsByUsername,
+  getMessageById,
 } from "@/api/chats/chat.service";
 import {
   UseGetConversationsByIdProps,
   UseGetConversationsByUsernameProps,
+  UseGetMessageByIdProps,
 } from "@/api/chats/chat.types";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
 import { useChatStore } from "@/store/use-chat.store";
@@ -73,6 +75,19 @@ export const useGetConversationsById = (
       setSelectedConversation(fetchedData);
       setMessages(fetchedData.messages);
     },
+    onError: (err) => {},
+    onSettled: (settledData, settledError) => {},
+  });
+};
+
+export const useGetMessageById = (props: UseGetMessageByIdProps) => {
+  const { id } = props;
+
+  return useQueryWithSideEffects({
+    queryKey: ["message", id],
+    queryFn: () => getMessageById(id),
+    // enabled: !!conversationId,
+    onSuccess: (fetchedData) => {},
     onError: (err) => {},
     onSettled: (settledData, settledError) => {},
   });
