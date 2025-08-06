@@ -21,6 +21,7 @@ import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { SocketIOAppHandler } from "@src/sockets/socket";
 import { redisConnection } from "@src/redis/redis.connection";
+import orderRouter from "@src/routes/orders.routes";
 // ** Define Service
 
 class Service {
@@ -82,6 +83,7 @@ class Service {
     this.app.use(`${BASE_PATH}/sellers`, sellerRouter);
     this.app.use(`${BASE_PATH}/gigs`, gigRouter);
     this.app.use(`${BASE_PATH}/chats`, chatRouter);
+    this.app.use(`${BASE_PATH}/orders`, orderRouter);
   }
 
   private set_error_middlewares() {
