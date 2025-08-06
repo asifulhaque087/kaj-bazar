@@ -51,7 +51,7 @@ interface Gig {
 //   receivedAt: string;
 // }
 
-const OrderStatus = pgEnum("oder_status", [
+export const OrderStatus = pgEnum("oder_status", [
   "incomplete",
   "progress",
   "complete",
