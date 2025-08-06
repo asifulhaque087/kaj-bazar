@@ -18,7 +18,7 @@ import { useChatStore } from "@/store/use-chat.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon, XCircle } from "lucide-react";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useBrowser } from "@/hooks/use-browser.hook";
@@ -35,6 +35,10 @@ const page = () => {
 
   // ** --- Reference ---
   const dummy = useRef<HTMLSpanElement>(null);
+
+  // ** --- Hooks ---
+  const router = useRouter();
+  const isbrowser = useBrowser();
 
   // ** --- Store ---
   const {
@@ -100,8 +104,6 @@ const page = () => {
     }
   }, [messages]);
 
-  const isbrowser = useBrowser();
-
   if (!isbrowser) return;
 
   // console.log("errors are ", form.formState.errors);
@@ -128,7 +130,12 @@ const page = () => {
                 <p>Description: {msg.offer.description}</p>
                 {currentUserIsBuyer ? (
                   <div>
-                    <Button className="bg-green-500">Accept</Button>
+                    <Button
+                      className="bg-green-500"
+                      onClick={() => router.push(`/checkout/${msg.id}`)}
+                    >
+                      Accept
+                    </Button>
                     <Button className="bg-red-500">Cancel</Button>
                   </div>
                 ) : (
