@@ -57,3 +57,9 @@ export const deliverWorkSchema = z.object({
 });
 
 export type DeliverWorkInput = z.infer<typeof deliverWorkSchema>;
+
+export const approveDeliverySchema = z.object({
+  id: z.string(),
+});
+
+export type ApproveDeliveryInput = z.infer<typeof approveDeliverySchema>;
