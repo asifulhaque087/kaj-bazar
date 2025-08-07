@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetOrderById } from "@/api/orders";
+import { useApproveDelivery, useGetOrderById } from "@/api/orders";
 import DeliveryModal from "@/components/deliver-modal";
 import { Button } from "@/components/ui/button";
 import { DeliveredWork, Order } from "@/schemas";
@@ -90,6 +90,10 @@ interface WorksProps {
 const Works = (props: WorksProps) => {
   const { order, isBuyer } = props;
 
+  // ** --- Mutations ----
+
+  const { mutate: approveDeliver } = useApproveDelivery();
+
   return (
     <div>
       {isBuyer ? (
@@ -112,7 +116,10 @@ const Works = (props: WorksProps) => {
             Are you ready to approve the delivery ?
           </h1>
           <p>If you have issue contact the seller in the inbox</p>
-          <Button className="bg-green-400 text-white">
+          <Button
+            className="bg-green-400 text-white"
+            onClick={() => approveDeliver(order.id)}
+          >
             Yes, approve the delivery
           </Button>
         </div>
