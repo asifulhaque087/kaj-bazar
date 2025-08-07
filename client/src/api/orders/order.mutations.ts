@@ -1,6 +1,7 @@
 // ** --- DataType ---
 
 import {
+  approveDelivery,
   createOrder,
   deliverWork,
   startOrder,
@@ -62,6 +63,21 @@ export const useDeliverWork = () => {
 
   return useMutation({
     mutationFn: (data: DeliveredWorkPayload) => deliverWork(data),
+
+    onSuccess: (order) => {
+      // router.push(`/order/${order.id}/activity`);
+    },
+
+    onError: (error: AxiosError) => {},
+  });
+};
+
+export const useApproveDelivery = () => {
+  // ** hooks
+  // const router = useRouter();
+
+  return useMutation({
+    mutationFn: (id: string) => approveDelivery(id),
 
     onSuccess: (order) => {
       // router.push(`/order/${order.id}/activity`);
