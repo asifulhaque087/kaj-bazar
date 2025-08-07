@@ -42,3 +42,10 @@ export type CreteOrderInput = z.infer<typeof createOrdersSchema>;
 //   seller: UserSchema,
 //   deliveryDueDate: z.date().nullable(),
 // });
+
+export const startOrderSchema = z.object({
+  id: z.string(),
+  requirement: z.string().optional(),
+});
+
+export type StartOrderInput = z.infer<typeof startOrderSchema>;
