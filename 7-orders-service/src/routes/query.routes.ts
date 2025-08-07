@@ -1,3 +1,4 @@
+import getOrderById from "@src/controllers/order-by-id.controller";
 import { Router, type Request, type Response } from "express";
 
 const queryRouter = Router();
@@ -10,13 +11,6 @@ queryRouter.get(
   }
 );
 
-queryRouter.get(
-  "/:orderId",
-
-  (req: Request, res: Response) => {
-    return res.json({ m: "I am from Get order by order id" });
-  }
-);
 queryRouter.get(
   "/seller/:sellerId",
 
@@ -31,5 +25,7 @@ queryRouter.get(
     return res.json({ m: "I am from Get orders by buyer id " });
   }
 );
+
+queryRouter.get("/:id", getOrderById);
 
 export default queryRouter;
