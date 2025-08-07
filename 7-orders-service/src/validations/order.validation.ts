@@ -49,3 +49,11 @@ export const startOrderSchema = z.object({
 });
 
 export type StartOrderInput = z.infer<typeof startOrderSchema>;
+
+export const deliverWorkSchema = z.object({
+  id: z.string(),
+  file: z.string(),
+  message: z.string().optional(),
+});
+
+export type DeliverWorkInput = z.infer<typeof deliverWorkSchema>;
