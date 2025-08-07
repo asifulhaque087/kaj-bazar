@@ -1,5 +1,7 @@
 import { config } from "@src/config";
 import createOrder from "@src/controllers/orders/create-order.controller";
+import getOrderById from "@src/controllers/orders/order-by-id.controller";
+import startOrder from "@src/controllers/orders/start-order.controller";
 import { apiMiddleware } from "@src/middlewares/api.middleware";
 import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
 import { Router } from "express";
@@ -11,5 +13,7 @@ orderRouter.use(
 );
 
 orderRouter.post("/create", verifyJwtToken, createOrder);
+orderRouter.post("/start-order", verifyJwtToken, startOrder);
+orderRouter.get("/:id", verifyJwtToken, getOrderById);
 
 export default orderRouter;
