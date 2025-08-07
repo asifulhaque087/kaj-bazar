@@ -76,6 +76,54 @@ const page = () => {
       {/* delivered works */}
       {!!order?.deliveredWorks && <Works order={order} isBuyer={isBuyer} />}
       {/* {!!order?.deliveredWorks } */}
+      {/* reviews */}
+      {order?.accepted && (
+        <>
+          {isBuyer && !order.sellerReceivedReview && (
+            <div>
+              <h1>ready to reveiw the seller</h1>
+              <Button>Review</Button>
+            </div>
+          )}
+
+          {isBuyer && order.sellerReceivedReview && (
+            <div>
+              <h1>You reviewed {order.seller.username}</h1>
+              <div>reviews...</div>
+            </div>
+          )}
+
+          {!isBuyer && order.sellerReceivedReview && (
+            <div>
+              <h1>{order.buyer.username} reviewed You</h1>
+              <div>reviews...</div>
+            </div>
+          )}
+
+          {/* seller */}
+
+          {!isBuyer && !order.buyerReceivedReview && (
+            <div>
+              <h1>ready to reveiw the buyer</h1>
+              <Button>Review</Button>
+            </div>
+          )}
+
+          {!isBuyer && order.buyerReceivedReview && (
+            <div>
+              <h1>You reviewed {order.buyer.username}</h1>
+              <div>reviews...</div>
+            </div>
+          )}
+
+          {isBuyer && order.buyerReceivedReview && (
+            <div>
+              <h1>{order.seller.username} reviewed You</h1>
+              <div>reviews...</div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
