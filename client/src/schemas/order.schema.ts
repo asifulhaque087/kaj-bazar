@@ -13,6 +13,33 @@ const DeliveredWorkSchema = z.object({
   file: z.string(),
 });
 
+export type DeliveredWork = z.infer<typeof DeliveredWorkSchema>;
+
+export const deliveredWorkForm = z.object({
+  // message: z.string().optional(),
+  // file: z.string(),
+
+  file: z.instanceof(File, { message: "File is required." }),
+  message: z.string().min(1, { message: "Message is required." }).optional(),
+});
+
+// const deliveredWorkForm = z.object({
+//   file: z.instanceof(File, { message: "File is required." }),
+//   message: z.string().min(1, { message: "Message is required." }).optional(),
+// });
+
+// type DeliveredWorkForm = z.infer<typeof deliveredWorkForm>;
+
+export type DeliveredWorkForm = z.infer<typeof deliveredWorkForm>;
+
+export const deliveredWorkPalyload = z.object({
+  id: z.string(),
+  file: z.string(),
+  message: z.string().optional(),
+});
+
+export type DeliveredWorkPayload = z.infer<typeof deliveredWorkPalyload>;
+
 const ReviewSchema = z.object({
   rating: z.number(),
   review: z.string(),
