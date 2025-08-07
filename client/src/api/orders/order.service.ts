@@ -25,3 +25,8 @@ export const deliverWork = async (data: DeliveredWorkPayload) => {
   const response = await order__axios.post<Order>(`/deliver-work`, data);
   return response.data;
 };
+
+export const approveDelivery = async (id: string) => {
+  const response = await order__axios.post<Order>(`/approve-delivery`, { id });
+  return response.data;
+};
