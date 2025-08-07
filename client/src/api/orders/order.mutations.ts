@@ -1,7 +1,15 @@
 // ** --- DataType ---
 
-import { createOrder, startOrder } from "@/api/orders/order.service";
-import { CreateOrderPayload, StartOrderPayload } from "@/schemas";
+import {
+  createOrder,
+  deliverWork,
+  startOrder,
+} from "@/api/orders/order.service";
+import {
+  CreateOrderPayload,
+  DeliveredWorkPayload,
+  StartOrderPayload,
+} from "@/schemas";
 import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -42,6 +50,21 @@ export const useStartOrder = () => {
 
     onSuccess: (order) => {
       router.push(`/order/${order.id}/activity`);
+    },
+
+    onError: (error: AxiosError) => {},
+  });
+};
+
+export const useDeliverWork = () => {
+  // ** hooks
+  // const router = useRouter();
+
+  return useMutation({
+    mutationFn: (data: DeliveredWorkPayload) => deliverWork(data),
+
+    onSuccess: (order) => {
+      // router.push(`/order/${order.id}/activity`);
     },
 
     onError: (error: AxiosError) => {},
