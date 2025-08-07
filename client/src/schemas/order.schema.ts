@@ -77,3 +77,11 @@ export const createOrderForm = orderSchema.omit({
 
 export type CreateOrderForm = z.infer<typeof createOrderForm>;
 export type CreateOrderPayload = z.infer<typeof createOrderForm>;
+
+export const startOrderForm = z.object({
+  id: z.string(),
+  requirement: z.string().optional(),
+});
+
+export type StartOrderForm = z.infer<typeof startOrderForm>;
+export type StartOrderPayload = z.infer<typeof startOrderForm>;
