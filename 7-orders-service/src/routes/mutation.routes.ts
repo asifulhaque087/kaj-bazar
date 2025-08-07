@@ -1,8 +1,10 @@
 import { validateData } from "@fvoid/shared-lib";
+import approveDelivery from "@src/controllers/approve-delivery.controller";
 import createOrder from "@src/controllers/create-order.controller";
 import deliverWork from "@src/controllers/deliver-work.controller";
 import startOrder from "@src/controllers/start-order.controller";
 import {
+  approveDeliverySchema,
   createOrdersSchema,
   deliverWorkSchema,
   startOrderSchema,
@@ -17,6 +19,12 @@ mutationRouter.post(
   "/deliver-work",
   validateData(deliverWorkSchema),
   deliverWork
+);
+
+mutationRouter.post(
+  "/approve-delivery",
+  validateData(approveDeliverySchema),
+  approveDelivery
 );
 
 mutationRouter.post(
