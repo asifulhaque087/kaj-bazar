@@ -1,9 +1,16 @@
+import { validateData } from "@fvoid/shared-lib";
 import createOrder from "@src/controllers/create-order.controller";
+import startOrder from "@src/controllers/start-order.controller";
+import {
+  createOrdersSchema,
+  startOrderSchema,
+} from "@src/validations/order.validation";
 import { Router, type Request, type Response } from "express";
 
 const mutationRouter = Router();
 
-mutationRouter.post("/create", createOrder);
+mutationRouter.post("/create", validateData(createOrdersSchema), createOrder);
+mutationRouter.post("/start-order", validateData(startOrderSchema), startOrder);
 
 mutationRouter.post(
   "/create-payment-intent",
