@@ -6,7 +6,7 @@ export const ReviewsTable = pgTable("reviews_table", {
   //  gig information
   gigId: uuid("gig_id").notNull(),
   gigImage: text("gig_image").notNull(),
-  gigTitle: text("gig_image").notNull(),
+  gigTitle: text("gig_title").notNull(),
   //   order information
   orderId: uuid("order_id").notNull(),
   //   buyer information
