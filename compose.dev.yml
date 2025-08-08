@@ -23,14 +23,14 @@ services:
   #   environment:
   #     - REDIS_HOSTS=local:redis_container:6379
 
-  mongodb:
-    container_name: mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - 27017:27017
-    # volumes:
-    #   - ./docker-volumes/data:/data/db
+  # mongodb:
+  #   container_name: mongodb_container
+  #   image: mongo:latest
+  #   restart: always
+  #   ports:
+  #     - 27017:27017
+  # volumes:
+  #   - ./docker-volumes/data:/data/db
 
   # auth-mysql:
   #   container_name: auth_mysql_container
@@ -252,7 +252,7 @@ services:
       - ./4-users-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mongodb:
+      user-postgres:
         condition: service_started
       rabbitmq:
         condition: service_healthy
@@ -281,7 +281,7 @@ services:
       - ./5-gigs-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mongodb:
+      gig-postgres:
         condition: service_started
       rabbitmq:
         condition: service_healthy
@@ -310,7 +310,7 @@ services:
       - ./6-chats-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mongodb:
+      chat-postgres:
         condition: service_started
       redis:
         condition: service_started
@@ -342,7 +342,7 @@ services:
       - ./7-orders-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mongodb:
+      order-db:
         condition: service_started
       redis:
         condition: service_started
@@ -370,7 +370,7 @@ services:
       - ./8-reviews-service:/home/app
       - /home/app/node_modules
     depends_on:
-      mongodb:
+      review-db:
         condition: service_started
       rabbitmq:
         condition: service_healthy
@@ -396,11 +396,8 @@ services:
       - ./3-auth-service:/home/app
 
     depends_on:
-      auth-db:
-        condition: service_started
-        # condition: service_healthy
-      auth:
-        condition: service_started
+      - auth-db
+      - auth
 
   user-studio:
     container_name: users_studio_container # FIX: Changed from user_studio_container
@@ -473,3 +470,21 @@ services:
     depends_on:
       - order-db
       - orders
+
+  review-studio:
+    container_name: reviews_studio_container
+    build:
+      context: 8-reviews-service
+      dockerfile: Dockerfile.studio
+    restart: always
+    ports:
+      - 4988:4988
+    environment:
+      - DATABASE_URL=${REVIEWS_DB_URL}
+    profiles: ["exclude"]
+
+    volumes:
+      - ./8-reviews-service:/home/app
+    depends_on:
+      - review-db
+      - reviews
