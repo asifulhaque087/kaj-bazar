@@ -31,7 +31,7 @@ class Service {
     this.set_standard_middlewares();
     this.set_security_middlewares();
     this.set_route_middlewares();
-    // this.start_rabbitmq();
+    this.start_rabbitmq();
     this.set_error_middlewares();
     this.start_server();
   }
