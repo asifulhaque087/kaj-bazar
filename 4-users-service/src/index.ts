@@ -19,6 +19,8 @@ import sellerRouter from "@src/routes/seller.routes";
 import { RemoveBuyersListener } from "@src/events/listeners/remove-buyers.listener";
 import { CreateBuyerListener } from "@src/events/listeners/create-buyer.listener";
 import { GetSellerListener } from "@src/events/listeners/get-sellers.listener";
+import { SellerReceivedReviewListener } from "@src/events/listeners/seller-received-review.listener";
+import { BuyerReceivedReviewListener } from "@src/events/listeners/buyer-received-review.listener";
 
 // ** Define Service
 
@@ -81,6 +83,8 @@ class Service {
     new RemoveBuyersListener(mqWrapper.channel).listen();
     new CreateBuyerListener(mqWrapper.channel).listen();
     new GetSellerListener(mqWrapper.channel).listen();
+    new SellerReceivedReviewListener(mqWrapper.channel).listen();
+    new BuyerReceivedReviewListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
