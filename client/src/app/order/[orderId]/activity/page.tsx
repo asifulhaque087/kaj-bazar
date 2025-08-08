@@ -1,9 +1,12 @@
 "use client";
 
 import { useApproveDelivery, useGetOrderById } from "@/api/orders";
+import { useBuyerReviewSeller, useSellerReviewBuyer } from "@/api/reviews";
+import BuyerReviewSellerModal from "@/components/buyer-review-seller-modal";
 import DeliveryModal from "@/components/deliver-modal";
+import SellerReviewBuyerModal from "@/components/seller-review-buyer-modal";
 import { Button } from "@/components/ui/button";
-import { DeliveredWork, Order } from "@/schemas";
+import { BuyerReviewSellerPayload, DeliveredWork, Order } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -12,12 +15,18 @@ const page = () => {
   const { orderId } = useParams<{ orderId: string }>();
 
   // ** --- States ---
-
   const [deliverModal, setDeliverModal] = useState(false);
+  const [buyerReviewSellerModal, setBuyerReviewSellerModal] = useState(false);
+  const [sellerReviewBuyerModal, setSellerReviewBuyerModal] = useState(false);
 
   // ** --- store ---
   const { authUser } = useAuthStore();
 
+  // ** --- Mutations ---
+  const { mutate: sellerReviewBuyer } = useSellerReviewBuyer();
+  const { mutate: buyerReviewSeller } = useBuyerReviewSeller();
+
+  // ** --- Queries ---
   const { data: order, isLoading: isOrderLoading } = useGetOrderById(orderId);
 
   if (isOrderLoading || !authUser) return;
@@ -82,7 +91,15 @@ const page = () => {
           {isBuyer && !order.sellerReceivedReview && (
             <div>
               <h1>ready to reveiw the seller</h1>
-              <Button>Review</Button>
+              <Button onClick={() => setBuyerReviewSellerModal(true)}>
+                Review
+              </Button>
+
+              <BuyerReviewSellerModal
+                order={order}
+                setShowModal={setBuyerReviewSellerModal}
+                showModal={buyerReviewSellerModal}
+              />
             </div>
           )}
 
@@ -105,7 +122,15 @@ const page = () => {
           {!isBuyer && !order.buyerReceivedReview && (
             <div>
               <h1>ready to reveiw the buyer</h1>
-              <Button>Review</Button>
+              <Button onClick={() => setSellerReviewBuyerModal(true)}>
+                Review
+              </Button>
+
+              <SellerReviewBuyerModal
+                order={order}
+                setShowModal={setSellerReviewBuyerModal}
+                showModal={sellerReviewBuyerModal}
+              />
             </div>
           )}
 
