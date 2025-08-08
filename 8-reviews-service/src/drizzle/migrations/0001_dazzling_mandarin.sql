@@ -1,0 +1,1 @@
+ALTER TABLE "reviews_table" ADD COLUMN "gig_title" text NOT NULL;
