@@ -18,6 +18,8 @@ import healthRouter from "@src/routes/health.routes";
 import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
 import { Server } from "socket.io";
+import { SellerReceivedReviewListener } from "@src/events/listeners/seller-received-review.listener";
+import { BuyerReceivedReviewListener } from "@src/events/listeners/buyer-received-review.listener";
 // import { createClient } from "redis";
 // import { createAdapter } from "@socket.io/redis-adapter";
 
@@ -44,7 +46,7 @@ class Service {
     this.set_security_middlewares();
     this.start_server();
     this.set_route_middlewares();
-    // await this.start_rabbitmq();
+    await this.start_rabbitmq();
     this.set_error_middlewares();
     // this.start_server();
   }
@@ -88,6 +90,9 @@ class Service {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new SellerReceivedReviewListener(mqWrapper.channel).listen();
+    new BuyerReceivedReviewListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
