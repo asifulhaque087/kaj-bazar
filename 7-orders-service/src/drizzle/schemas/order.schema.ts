@@ -24,7 +24,7 @@ interface DeliveredWork {
 
 interface Review {
   rating: number;
-  review: string;
+  review: string | null;
   receivedAt: string;
 }
 
