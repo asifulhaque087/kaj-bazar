@@ -43,7 +43,7 @@ export default function Home() {
         />
       </div>
       <div className="mt-[24px]">
-        <GigSlider gigs={data?.data || []} />
+        <GigSlider gigs={data?.data || []} currentCategory={currentCategory} />
       </div>
     </div>
   );

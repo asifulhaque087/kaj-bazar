@@ -11,15 +11,19 @@ import "swiper/css";
 
 // ** Components Imports
 import GigCard from "@/components/gig-card";
-import { Gig } from "@/api/gigs/schemas/gig.schema";
+import { Gig } from "@/schemas";
+import { useRouter } from "next/navigation";
 
 interface IGigSlider {
   gigs: Gig[];
+  currentCategory: string;
 }
 
 const GigSlider = (props: IGigSlider) => {
   // ** --- Props ---
-  const { gigs } = props;
+  const { gigs, currentCategory } = props;
+
+  const router = useRouter();
 
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
 
@@ -35,7 +39,16 @@ const GigSlider = (props: IGigSlider) => {
     <div>
       {/* controll */}
       <div className="flex items-center gap-[10px] pb-[14px]">
-        <button className="capitalize px-[14px] py-[10px]  outline-none rounded-[4px] border border-[#62646A] cursor-pointer">
+        <button
+          className="capitalize px-[14px] py-[10px]  outline-none rounded-[4px] border border-[#62646A] cursor-pointer"
+          onClick={() =>
+            router.push(
+              `/gigs?category=${encodeURIComponent(
+                currentCategory
+              )}&page=1&limit=5`
+            )
+          }
+        >
           explore
         </button>
 
