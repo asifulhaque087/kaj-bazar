@@ -11,6 +11,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import AuthProvider from "@/providers/auth.provider";
+import Footer from "@/components/footer";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -63,6 +64,8 @@ export default function RootLayout({
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>
+
+        <Footer />
       </body>
     </html>
   );
