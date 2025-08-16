@@ -50,7 +50,7 @@ const GigCard = (props: IGigCard) => {
 
         <Link href={`/gig/${gig.id}`} className="w-full">
           <div className="px-[12px]">
-            <div className="h-[148px] w-full rounded-[7px] overflow-hidden bg-red-500">
+            <div className="h-[148px] w-full rounded-[7px] overflow-hidden">
               <img
                 // src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/435057859/original/b1178ebc894adffee3df9f46a3af8378c41f21c2/build-secure-and-scalable-backend-apis-with-nodejs-express.png"
                 src={gig.coverImage}
