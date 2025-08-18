@@ -58,14 +58,15 @@ export default function RootLayout({
       <body
         // className={`${geistSans.variable} ${geistMono.variable} ${tinos.variable} ${inter.variable} ${poppings.className} antialiased`}
         // className={`${roboto.className} antialiased xl:w-[1086px] 2xl:w-[1386] 2xl:max-w-[1722px] mx-auto`}
-        className={`${roboto.className}  antialiased sm:px-[30px] md:px-[50px] lg:px-[80px] xl:px-[100px]   2xl:max-w-[1920px] mx-auto`}
+        // className={`${roboto.className}  antialiased sm:px-[30px] md:px-[50px] lg:px-[80px] xl:px-[100px]   2xl:max-w-[1920px] mx-auto`}
+        className={`${roboto.className}  bg-[#F4F3F2] antialiased px-[14px] sm:px-[30px] md:px-[50px] lg:px-[80px] xl:px-[100px]   2xl:max-w-[1920px] mx-auto`}
       >
         <Toaster />
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>
 
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
