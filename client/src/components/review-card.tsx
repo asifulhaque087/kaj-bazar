@@ -1,26 +1,59 @@
 import StarRatingBar from "@/components/start-rating-bar";
+import { rating } from "@/utils/rating.util";
 
-const ReviewCard = () => {
-  // Mock review data. In a real application, this would come from an API.
-  const reviewData = {
-    totalReviews: 50,
-    averageRating: 4.5,
-    ratingCategories: {
-      five: { value: 5, count: 25 },
-      four: { value: 4, count: 15 },
-      three: { value: 3, count: 5 },
-      two: { value: 2, count: 3 },
-      one: { value: 1, count: 2 },
-    },
+type RatingCategories = {
+  five: {
+    star: number;
+    count: number;
   };
+  four: {
+    star: number;
+    count: number;
+  };
+  three: {
+    star: number;
+    count: number;
+  };
+  two: {
+    star: number;
+    count: number;
+  };
+  one: {
+    star: number;
+    count: number;
+  };
+};
+
+// The full type for the schema, including the optional modifier
+interface ReviewCardProps {
+  ratingCategories?: RatingCategories;
+  ratingsCount: number;
+  ratingSum: number;
+  // averageRating: number;
+  // totalReviews: number;
+}
+const ReviewCard = (props: ReviewCardProps) => {
+  // Mock review data. In a real application, this would come from an API.
+
+  // const reviewData = props;
+  const { ratingsCount, ratingSum, ratingCategories } = props;
+
+  // const reviewData = {
+  //   totalReviews: 50,
+  //   ratingCategories: {
+  //     five: { value: 5, count: 25 },
+  //     four: { value: 4, count: 15 },
+  //     three: { value: 3, count: 5 },
+  //     two: { value: 2, count: 3 },
+  //     one: { value: 1, count: 2 },
+  //   },
+  // };
 
   // Helper function to calculate the width percentage for the bars.
 
   const calculateWidth = (count: number) => {
     // Check if totalReviews is not zero to prevent division by zero errors.
-    return reviewData.totalReviews > 0
-      ? (count / reviewData.totalReviews) * 100
-      : 0;
+    return ratingsCount > 0 ? (count / ratingsCount) * 100 : 0;
   };
 
   // Main card layout
@@ -31,13 +64,16 @@ const ReviewCard = () => {
         <div className="">
           <span className="text-7xl font-light text-gray-800">
             {/* {reviewData.averageRating.toString().replace(".", ",")} */}
-            {reviewData.averageRating.toString()}
+            {/* {averageRating.toString()} */}
+            {/* {ratingSum / ratingsCount} */}
+
+            {rating(ratingSum! / ratingsCount!)}
           </span>
           <span className="text-xl text-gray-500">/5</span>
         </div>
         {/* Review count section */}
         <p className="text-sm text-gray-500 mb-6 font-medium">
-          ({reviewData.totalReviews} New Reviews)
+          ({ratingsCount} New Reviews)
         </p>
       </div>
 
@@ -45,23 +81,23 @@ const ReviewCard = () => {
       <div className="w-full">
         <StarRatingBar
           stars={5}
-          width={calculateWidth(reviewData.ratingCategories.five.count)}
+          width={calculateWidth(ratingCategories?.five.count!)}
         />
         <StarRatingBar
           stars={4}
-          width={calculateWidth(reviewData.ratingCategories.four.count)}
+          width={calculateWidth(ratingCategories?.four.count!)}
         />
         <StarRatingBar
           stars={3}
-          width={calculateWidth(reviewData.ratingCategories.three.count)}
+          width={calculateWidth(ratingCategories?.three.count!)}
         />
         <StarRatingBar
           stars={2}
-          width={calculateWidth(reviewData.ratingCategories.two.count)}
+          width={calculateWidth(ratingCategories?.two.count!)}
         />
         <StarRatingBar
           stars={1}
-          width={calculateWidth(reviewData.ratingCategories.one.count)}
+          width={calculateWidth(ratingCategories?.one.count!)}
         />
       </div>
     </div>
