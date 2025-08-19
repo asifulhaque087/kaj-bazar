@@ -84,7 +84,7 @@ export default function GigForm() {
   const [subCategories, setSubCategories] = useState<string[]>([]);
 
   const handleKeyDownTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "," || e.key === " ") {
+    if (e.key === "," || e.key === "Enter") {
       e.preventDefault();
       const newTagTitle = e.currentTarget.value.trim();
       if (newTagTitle) {
@@ -98,7 +98,7 @@ export default function GigForm() {
   const handleKeyDownSubCategories = (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (e.key === "," || e.key === " ") {
+    if (e.key === "," || e.key === "Enter") {
       e.preventDefault();
       const newSubCategory = inputSubCategory.trim();
       if (newSubCategory && !subCategories.includes(newSubCategory)) {
@@ -308,7 +308,7 @@ export default function GigForm() {
             />
           </FormControl>
           <FormDescription>
-            Press comma or space to add a subcategory.
+            Press comma or enter to add a subcategory.
           </FormDescription>
           <FormMessage />
         </FormItem>
@@ -334,7 +334,7 @@ export default function GigForm() {
             placeholder="e.g. logo design, minimalist"
             onKeyDown={handleKeyDownTags}
           />
-          <FormDescription>Press comma or space to add a tag.</FormDescription>
+          <FormDescription>Press comma or enter to add a tag.</FormDescription>
           {form.formState.errors.tags && (
             <FormMessage>{form.formState.errors.tags.message}</FormMessage>
           )}
