@@ -29,17 +29,17 @@ const page = () => {
 
   const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
 
-  // const {
-  //   data: gig,
-  //   isLoading,
-  //   error,
-  // } = useGetGigById({
-  //   id: params.gigId,
-  // });
+  const {
+    data: gig,
+    isLoading,
+    error,
+  } = useGetGigById({
+    id: params.gigId,
+  });
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error.message}</div>;
-  // if (!gig) return <div>Error: No gigs found</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!gig) return <div>Error: No gigs found</div>;
 
   return (
     <div>
@@ -56,8 +56,11 @@ const page = () => {
               className="rounded-[10px] h-[344px] w-full md:w-[60%] relative flex flex-col p-[20px] bg-white grow"
               // className="h-[344px] basis-[50%] grow rounded-[10px]  flex flex-col p-[20px] bg-white"
               style={{
+                // backgroundImage: `linear-gradient(to bottom,rgba(255,255,255,.2),
+                // rgba(0,0,0, .7)), url(${"https://plus.unsplash.com/premium_photo-1681487178876-a1156952ec60?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"})`,
+
                 backgroundImage: `linear-gradient(to bottom,rgba(255,255,255,.2),
-                rgba(0,0,0, .7)), url(${"https://plus.unsplash.com/premium_photo-1681487178876-a1156952ec60?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"})`,
+                rgba(0,0,0, .7)), url(${gig.coverImage})`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
@@ -66,17 +69,19 @@ const page = () => {
               {/* <div className="mt-auto absolute w-full bottom-6 left-6 right-6"> */}
               <div className="mt-auto">
                 <h1 className="font-[roboto] font-bold text-[20px] sm:text-[24px] text-white">
-                  Let’s Hunt for Your Dream Property
+                  {/* Let’s Hunt for Your Dream Property */}
+                  {gig.title}
                 </h1>
                 <div className="flex items-center gap-x-[12px] overflow-auto  scrollbar-hide">
-                  {tags.map((tag, i) => (
-                    <div
-                      key={i}
-                      className="rounded-[6px] text-[12px] sm:text-[14px] p-[8px] sm:p-[12px]  bg-[rgba(99,146,216,.15)] text-white"
-                    >
-                      {tag}
-                    </div>
-                  ))}
+                  {!!gig.tags &&
+                    gig.tags.map((tag, i) => (
+                      <div
+                        key={i}
+                        className="rounded-[6px] text-[12px] sm:text-[14px] p-[8px] sm:p-[12px]  bg-[rgba(99,146,216,.15)] text-white"
+                      >
+                        {tag}
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -84,13 +89,23 @@ const page = () => {
             <div className="p-[30px]   w-full  grow  md:w-[30%] shadow flex flex-col gap-y-[20px]  items-center justify-center bg-white rounded-[10px]">
               {/* <div className="basis-[50%] grow shadow flex flex-col gap-y-[20px]  items-center justify-center bg-white rounded-[10px]"> */}
               <h1 className="font-[roboto] font-extrabold text-[40px] tracking-[1.6] text-[#27C9BE] leading-none">
-                $250
+                {/* $250 */}
+                ${gig.price}
               </h1>
               <p className="font-[roboto] text-[14px] tracking-[.56] text-black text-center">
-                Explore our range of beautiful properties with the addition of
-                separate accommodation suitable for you.
+                {/* Explore our range of beautiful properties with the addition of
+                separate accommodation suitable for you. */}
+                {gig.basicDescription}
               </p>
-              <button className="bg-[#6392D8] py-[6px] px-[24px] rounded-[8px] font-[roboto] text-[16px] font-medium tracking-[.64] text-white border-none outline-none">
+              <button
+                className="bg-[#6392D8] py-[6px] px-[24px] rounded-[8px] font-[roboto] text-[16px] font-medium tracking-[.64] text-white border-none outline-none cursor-pointer"
+                onClick={() =>
+                  findOrCreateConversation({
+                    receiverUsername: gig.username,
+                    senderUsername: authUser?.username!,
+                  })
+                }
+              >
                 Contact
               </button>
             </div>
@@ -114,13 +129,18 @@ const page = () => {
               !isDescription ? "hidden" : "block"
             }`}
           >
-            This is Description of this gig
+            {/* This is Description of this gig */}
+            {gig.description}
           </div>
 
           {/* here another scroll and non scroll */}
           <div className="flex mt-[14px] gap-[14px] items-start md:h-[400px] flex-col md:flex-row">
             <div className="w-full md:w-[40%] h-full">
-              <ReviewCard />
+              <ReviewCard
+                ratingSum={gig?.ratingSum!}
+                ratingsCount={gig.ratingsCount!}
+                ratingCategories={gig.ratingCategories}
+              />
             </div>
             {/* scrollable */}
             <div className="w-full md:w-[60%] h-[400px] md:h-full   bg-white p-6 rounded-[10px]  shadow flex flex-col">
@@ -128,7 +148,10 @@ const page = () => {
               <div className="overflow-y-auto w-full h-full">
                 <div className="flex flex-col gap-y-[14px]">
                   {[...Array(90)].map((item, index) => (
-                    <div key={index} className="bg-[#f4f3f2] rounded-[10px] p-[14px]">
+                    <div
+                      key={index}
+                      className="bg-[#f4f3f2] rounded-[10px] p-[14px]"
+                    >
                       <div className="flex flex-col gap-y-[14px]">
                         <div className="flex items-center justify-between">
                           <div className="flex gap-x-[10px]">
@@ -140,13 +163,17 @@ const page = () => {
                             </div>
 
                             <div>
-                              <h1 className="text-[18px] font-medium font-[roboto] text-[#333]">Ayushi Keshari</h1>
+                              <h1 className="text-[18px] font-medium font-[roboto] text-[#333]">
+                                Ayushi Keshari
+                              </h1>
                               <p>rating</p>
                             </div>
                           </div>
-                          <span className="text-[12px] font-[roboto] text-[#333]">20 mins ago</span>
+                          <span className="text-[12px] font-[roboto] text-[#333]">
+                            20 mins ago
+                          </span>
                         </div>
-                        <p  className="text-[16px] font-[roboto] text-[#333]">
+                        <p className="text-[16px] font-[roboto] text-[#333]">
                           Lorem ipsum dolor sit, amet consectetur adipisicing
                           elit. Quisquam quam omnis recusandae sequi quo magnam
                           esse atque ipsa? Ullam, doloremque veniam?
@@ -184,9 +211,7 @@ const page = () => {
               Aspernatur aut accusantium numquam.
             </p>
 
-            <div>
-              <ReviewCard />
-            </div>
+            <div>{/* <ReviewCard /> */}</div>
 
             <div className="flex  flex-wrap gap-[10px] items-center justify-center">
               {[...Array(6)].map((item, index) => (
