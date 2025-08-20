@@ -1,8 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
+import { useForm, useFieldArray, Resolver } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,104 +22,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
-import { X } from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { X, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-// ---
-// 1. Zod Schema Definition
-// ---
-
-export const TagSchema = z.object({
-  title: z.string().min(1, "Tag is required"),
-});
-
-const formSchema = z.object({
-  title: z.string().min(1, { message: "Title is required." }),
-  description: z.string().min(1, { message: "Description is required." }),
-  basicTitle: z.string().min(1, { message: "Basic title is required." }),
-  basicDescription: z.string().min(1, {
-    message: "Basic description is required.",
-  }),
-  category: z.string().min(1, { message: "Category is required." }),
-  subCategories: z.array(z.string()).optional(),
-  expectedDelivery: z
-    .string()
-    .min(1, { message: "Delivery time is required." }),
-  coverImage: z.string().url({ message: "Must be a valid URL." }),
-  price: z.coerce
-    .number()
-    .min(0, { message: "Price must be a positive number." }),
-  tags: z.array(TagSchema).optional(),
-});
-// ---
-// 2. Form Component
-// ---
+import { createGigForm, CreateGigForm } from "@/schemas";
+import { createGigDefaultForm } from "@/forms";
+import { useAuthStore } from "@/store/use-auth.store";
+import Image from "next/image";
+import { useCreateGig } from "@/api/gigs/gig.mutations";
 
 export default function GigForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      basicTitle: "",
-      basicDescription: "",
-      category: "",
-      subCategories: [],
-      expectedDelivery: "",
-      coverImage: "",
-      price: 0,
-      tags: [{ title: "newTagTitle" }],
-    },
+  // ** --- States ---
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // ** --- store ---
+  const { authUser } = useAuthStore();
+
+  const form = useForm<CreateGigForm>({
+    resolver: zodResolver(createGigForm) as Resolver<CreateGigForm>,
+    defaultValues: createGigDefaultForm(null),
+    mode: "onChange",
+  });
+
+  // const form = useForm<CreateGigForm>({
+  //   resolver: zodResolver(createGigForm),
+  //   defaultValues: createGigDefaultForm(null),
+  //   mode: "onChange",
+  // });
+
+  useEffect(() => {
+    if (authUser) {
+      // Only reset if authUser exists
+      form.reset(createGigDefaultForm(authUser));
+    }
+  }, [authUser, form]);
+
+  // ** --- mutations ---
+
+  const { mutate: createGig } = useCreateGig({
+    reset: form.reset,
+    setError: form.setError,
+  });
+
+  // Use useFieldArray to manage the dynamic 'subCategories' list
+  const {
+    fields: subCategoryFields,
+    append: appendSubCategory,
+    remove: removeSubCategory,
+  } = useFieldArray({
+    control: form.control,
+    name: "subCategories",
   });
 
   // Use useFieldArray to manage the dynamic 'tags' list
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: tagFields,
+    append: appendTag,
+    remove: removeTag,
+  } = useFieldArray({
     control: form.control,
     name: "tags",
   });
 
-  const [inputSubCategory, setInputSubCategory] = useState("");
-  const [subCategories, setSubCategories] = useState<string[]>([]);
+  // const [inputSubCategory, setInputSubCategory] = useState("");
 
-  const handleKeyDownTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "," || e.key === "Enter") {
-      e.preventDefault();
-      const newTagTitle = e.currentTarget.value.trim();
-      if (newTagTitle) {
-        // Append a new object to the 'tags' array
-        append({ title: newTagTitle });
-        e.currentTarget.value = ""; // Clear the input
-      }
-    }
-  };
-
-  const handleKeyDownSubCategories = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === "," || e.key === "Enter") {
-      e.preventDefault();
-      const newSubCategory = inputSubCategory.trim();
-      if (newSubCategory && !subCategories.includes(newSubCategory)) {
-        setSubCategories([...subCategories, newSubCategory]);
-        setInputSubCategory("");
-      }
-    }
-  };
-
-  const removeSubCategory = (subCategoryToRemove: string) => {
-    setSubCategories(
-      subCategories.filter((sub) => sub !== subCategoryToRemove)
-    );
-  };
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit((data) => createGig(data))}
         className="space-y-8 p-6 border rounded-lg"
       >
         {/* Title Field */}
@@ -270,28 +239,51 @@ export default function GigForm() {
           name="coverImage"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cover Image URL</FormLabel>
+              <FormLabel>Cover Image</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.jpg" {...field} />
+                <Input
+                  id="cover-image-input" // Added an ID for direct access
+                  type="file"
+                  accept="image/*" // Accept only image files
+                  onChange={handleFileChange}
+                  // We don't spread {...field} directly here because we're manually handling the file input
+                />
               </FormControl>
-              <FormDescription>
-                A high-quality image URL for your gig's cover.
-              </FormDescription>
               <FormMessage />
+              {imagePreview && (
+                <div className="mt-4 relative w-[100px] h-[100px]">
+                  <p className="text-sm text-gray-500 mb-2">Image Preview:</p>
+                  <Image
+                    src={imagePreview}
+                    alt="Cover Image Preview"
+                    layout="fill" // Use fill for better image handling within a container
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleClearImage}
+                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 rounded-full p-1 h-auto w-auto"
+                    size="icon"
+                  >
+                    <XCircle className="h-4 w-4 text-white" />
+                  </Button>
+                </div>
+              )}
             </FormItem>
           )}
         />
 
-        {/* Subcategories Field (Updated) */}
-        <FormItem>
+        {/* Subcategories Field */}
+        <div>
           <FormLabel>Subcategories</FormLabel>
-          <div className="flex flex-wrap gap-2">
-            {subCategories.map((sub, index) => (
-              <Badge key={index} className="flex items-center gap-1">
-                {sub}
+          <div className="flex flex-wrap gap-2 py-2">
+            {subCategoryFields.map((field, index) => (
+              <Badge key={field.id} className="flex items-center gap-1">
+                {field.title}
                 <button
                   type="button"
-                  onClick={() => removeSubCategory(sub)}
+                  onClick={() => removeSubCategory(index)}
                   className="p-1 rounded-full hover:bg-white/20"
                 >
                   <X size={12} />
@@ -299,30 +291,30 @@ export default function GigForm() {
               </Badge>
             ))}
           </div>
-          <FormControl>
-            <Input
-              placeholder="e.g. Logo Design, Branding"
-              value={inputSubCategory}
-              onChange={(e) => setInputSubCategory(e.target.value)}
-              onKeyDown={handleKeyDownSubCategories}
-            />
-          </FormControl>
+          <Input
+            placeholder="e.g. Logo Design, Branding"
+            onKeyDown={handleKeyDownSubCategories}
+          />
           <FormDescription>
             Press comma or enter to add a subcategory.
           </FormDescription>
-          <FormMessage />
-        </FormItem>
+          {form.formState.errors.subCategories && (
+            <FormMessage>
+              {form.formState.errors.subCategories.message}
+            </FormMessage>
+          )}
+        </div>
 
         {/* --- Tags Field (Updated to use useFieldArray) --- */}
         <div>
           <FormLabel>Tags</FormLabel>
           <div className="flex flex-wrap gap-2 py-2">
-            {fields.map((field, index) => (
+            {tagFields.map((field, index) => (
               <Badge key={field.id} className="flex items-center gap-1">
                 {field.title}
                 <button
                   type="button"
-                  onClick={() => remove(index)}
+                  onClick={() => removeTag(index)}
                   className="p-1 rounded-full hover:bg-white/20"
                 >
                   <X size={12} />
@@ -343,4 +335,59 @@ export default function GigForm() {
       </form>
     </Form>
   );
+
+  function handleKeyDownTags(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "," || e.key === "Enter") {
+      e.preventDefault();
+      const newTagTitle = e.currentTarget.value.trim();
+      if (newTagTitle) {
+        appendTag({ title: newTagTitle });
+        e.currentTarget.value = "";
+      }
+    }
+  }
+
+  function handleKeyDownSubCategories(
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) {
+    if (e.key === "," || e.key === "Enter") {
+      e.preventDefault();
+      const newSubCategory = e.currentTarget.value.trim();
+      if (newSubCategory) {
+        // Append a new object to the 'subCategories' array
+        appendSubCategory({ title: newSubCategory });
+        e.currentTarget.value = "";
+      }
+    }
+  }
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String);
+        form.setValue("coverImage", base64String); // Set the base64 string to the form field
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+      form.setValue("coverImage", "");
+    }
+  }
+
+  // Function to handle clearing the image
+  function handleClearImage() {
+    setImagePreview(null);
+    form.setValue("coverImage", "");
+
+    // ** IMPORTANT: Clear the file input's value directly
+    const fileInput = document.getElementById(
+      "cover-image-input"
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ""; // This clears the visually displayed file name
+    }
+  }
 }
