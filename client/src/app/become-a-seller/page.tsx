@@ -122,7 +122,8 @@ function ProfileForm() {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((data) => createSeller(data))}
+        // onSubmit={form.handleSubmit((data) => createSeller(data))}
+        onSubmit={form.handleSubmit((data) => console.log(data))}
         className="space-y-8 p-4"
       >
         <h2 className="text-2xl font-bold">Personal Information</h2>
