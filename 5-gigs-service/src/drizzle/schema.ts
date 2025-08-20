@@ -8,6 +8,14 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
+interface SubCategory {
+  title: string;
+}
+
+interface Tag {
+  title: string;
+}
+
 export const GigsTable = pgTable("gigs_table", {
   id: uuid("id").primaryKey().defaultRandom(),
   sellerId: uuid("seller_id").notNull(),
@@ -19,12 +27,14 @@ export const GigsTable = pgTable("gigs_table", {
   basicTitle: text("basic_title").notNull(),
   basicDescription: text("basic_description").notNull(),
   category: text("category").notNull(),
-  subCategories: text("sub_categories").array().notNull(),
+  // subCategories: text("sub_categories").array().notNull(),
+  subCategories: jsonb("sub_categories").$type<SubCategory[]>().notNull(),
   expectedDelivery: text("expected_delivery").notNull(),
   coverImage: text("cover_image").notNull(),
   price: integer("price").notNull(),
   // ** Optional
-  tags: text("tags").array(),
+  // tags: text("tags").array(),
+  tags: jsonb("tags").$type<Tag[]>(),
   active: boolean("active").notNull().default(true),
   ratingsCount: integer("ratings_count").notNull().default(0),
   ratingSum: integer("rating_sum").notNull().default(0),
