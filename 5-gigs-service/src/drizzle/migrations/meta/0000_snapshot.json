@@ -1,5 +1,5 @@
 {
-  "id": "7af59f6e-1233-4e0d-9ce8-ac8cb1e8d449",
+  "id": "1fd0656c-f3a5-4fb9-9fc2-526b7c2813f8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -71,9 +71,9 @@
         },
         "sub_categories": {
           "name": "sub_categories",
-          "type": "text[]",
+          "type": "jsonb",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "expected_delivery": {
           "name": "expected_delivery",
@@ -95,7 +95,7 @@
         },
         "tags": {
           "name": "tags",
-          "type": "text[]",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },

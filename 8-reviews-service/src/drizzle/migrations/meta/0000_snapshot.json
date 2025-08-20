@@ -1,5 +1,5 @@
 {
-  "id": "c2a981ad-6393-481e-a11b-cd357af431b3",
+  "id": "5a575dc2-7729-4930-9d18-27ed99426cca",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,6 +23,12 @@
         },
         "gig_image": {
           "name": "gig_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gig_title": {
+          "name": "gig_title",
           "type": "text",
           "primaryKey": false,
           "notNull": true

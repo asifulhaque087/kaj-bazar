@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1754638281168,
-      "tag": "0000_productive_black_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1754648155915,
-      "tag": "0001_dazzling_mandarin",
+      "when": 1755672813771,
+      "tag": "0000_eager_ego",
       "breakpoints": true
     }
   ]

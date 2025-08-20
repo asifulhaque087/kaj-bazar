@@ -2,6 +2,7 @@ CREATE TABLE "reviews_table" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"gig_id" uuid NOT NULL,
 	"gig_image" text NOT NULL,
+	"gig_title" text NOT NULL,
 	"order_id" uuid NOT NULL,
 	"buyer_id" uuid NOT NULL,
 	"seller_id" uuid NOT NULL,

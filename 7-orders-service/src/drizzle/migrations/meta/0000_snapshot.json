@@ -1,5 +1,5 @@
 {
-  "id": "a2a07c02-8833-4ead-bb07-a13ec7bc758d",
+  "id": "719b0f62-b242-4b1a-bc73-181e57a9722a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -21,11 +21,62 @@
           "primaryKey": false,
           "notNull": true
         },
-        "place_order_at": {
-          "name": "place_order_at",
-          "type": "timestamp with time zone",
+        "payment_intent": {
+          "name": "payment_intent",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gig": {
+          "name": "gig",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "buyer": {
+          "name": "buyer",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seller": {
+          "name": "seller",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delivery_due_date": {
+          "name": "delivery_due_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delivery_in_days": {
+          "name": "delivery_in_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order_status": {
+          "name": "order_status",
+          "type": "oder_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'incomplete'"
+        },
+        "place_order_at": {
+          "name": "place_order_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         },
         "requirement": {
           "name": "requirement",
@@ -45,33 +96,9 @@
           "primaryKey": false,
           "notNull": false
         },
-        "gig": {
-          "name": "gig",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "buyer": {
-          "name": "buyer",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "seller": {
-          "name": "seller",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
         "request_extensions": {
           "name": "request_extensions",
           "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "delivery_due_date": {
-          "name": "delivery_due_date",
-          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -110,32 +137,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
-        },
-        "order_status": {
-          "name": "order_status",
-          "type": "oder_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'incomplete'"
-        },
-        "payment_intent": {
-          "name": "payment_intent",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "price": {
-          "name": "price",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "service_fee": {
-          "name": "service_fee",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},

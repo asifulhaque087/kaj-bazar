@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1754451703925,
-      "tag": "0000_fluffy_skullbuster",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1754469379263,
-      "tag": "0001_perpetual_mephisto",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1754469493074,
-      "tag": "0002_exotic_jamie_braddock",
+      "when": 1755672813297,
+      "tag": "0000_uneven_hellfire_club",
       "breakpoints": true
     }
   ]
