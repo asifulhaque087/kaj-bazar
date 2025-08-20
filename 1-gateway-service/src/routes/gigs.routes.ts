@@ -1,5 +1,6 @@
 // import type { SessionData } from "@src/app";
 import { config } from "@src/config";
+import createGig from "@src/controllers/gigs/create-gig.controller";
 import getGigById from "@src/controllers/gigs/gig-by-id.controller";
 import searchGig from "@src/controllers/gigs/search.controller";
 import seedGigs from "@src/controllers/gigs/seed-gigs.controller";
@@ -13,12 +14,12 @@ gigRouter.use(apiMiddleware(`${config.GIG_BASE_URL}/api/v1/gigs`, "gigs"));
 
 // gigRouter.get("/search/:from/:size/:type", searchGig);
 gigRouter.get("/search", searchGig);
+gigRouter.get("/seller/:sellerId", getSellerGigs);
+gigRouter.get("/:gigId", getGigById);
 
 gigRouter.put("/seed/:count", seedGigs);
 
-gigRouter.get("/seller/:sellerId", getSellerGigs);
-
-gigRouter.get("/:gigId", getGigById);
+gigRouter.post("/create", createGig);
 
 // searchRouter.get("/gig", async (c) => {
 //   console.log("hello from gig search");
