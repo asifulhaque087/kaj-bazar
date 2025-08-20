@@ -79,7 +79,7 @@ const page = () => {
                         key={i}
                         className="rounded-[6px] text-[12px] sm:text-[14px] p-[8px] sm:p-[12px]  bg-[rgba(99,146,216,.15)] text-white"
                       >
-                        {tag}
+                        {tag.title}
                       </div>
                     ))}
                 </div>
