@@ -5,7 +5,9 @@ import getGigById from "@src/controllers/gigs/gig-by-id.controller";
 import searchGig from "@src/controllers/gigs/search.controller";
 import seedGigs from "@src/controllers/gigs/seed-gigs.controller";
 import getSellerGigs from "@src/controllers/gigs/seller-gigs.controller";
+import updateGig from "@src/controllers/gigs/update-gig.controller";
 import { apiMiddleware } from "@src/middlewares/api.middleware";
+import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
 import { Router } from "express";
 
 const gigRouter = Router();
@@ -19,7 +21,9 @@ gigRouter.get("/:gigId", getGigById);
 
 gigRouter.put("/seed/:count", seedGigs);
 
-gigRouter.post("/create", createGig);
+gigRouter.post("/create", verifyJwtToken, createGig);
+
+gigRouter.put("/update", verifyJwtToken, updateGig);
 
 // searchRouter.get("/gig", async (c) => {
 //   console.log("hello from gig search");
