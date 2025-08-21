@@ -1,6 +1,6 @@
 // createGigDefaultForm
 
-import { Auth, CreateGigForm } from "@/schemas";
+import { Auth, CreateGigForm, Gig, UpdateGigForm } from "@/schemas";
 
 export const createGigDefaultForm = (
   authUser: Auth | null
@@ -22,6 +22,29 @@ export const createGigDefaultForm = (
 
     // optional
     tags: [],
+  };
+
+  return baseDefaults;
+};
+export const updateGigDefaultForm = (
+  gig: Gig | null
+): Partial<UpdateGigForm> => {
+  let baseDefaults: Partial<UpdateGigForm> = {
+    id: gig?.id,
+    sellerId: gig?.sellerId ?? "",
+    username: gig?.username ?? "",
+    email: gig?.email ?? "",
+    profilePicture: gig?.profilePicture ?? "",
+    title: gig?.title ?? "",
+    description: gig?.description ?? "",
+    basicTitle: gig?.basicTitle ?? "",
+    basicDescription: gig?.basicDescription ?? "",
+    category: gig?.category ?? "",
+    subCategories: gig?.subCategories ?? [],
+    expectedDelivery: gig?.expectedDelivery ?? "",
+    coverImage: gig?.coverImage ?? "",
+    price: gig?.price ?? 0,
+    tags: gig?.tags ?? [],
   };
 
   return baseDefaults;
