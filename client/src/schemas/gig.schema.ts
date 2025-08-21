@@ -61,3 +61,10 @@ export const createGigForm = gigSchema.omit({ id: true });
 
 export type CreateGigForm = z.infer<typeof createGigForm>;
 export type CreateGigPayload = z.infer<typeof createGigForm>;
+
+// Update
+
+export const updateGigForm = gigSchema;
+
+export type UpdateGigForm = z.infer<typeof updateGigForm>;
+export type UpdateGigPayload = z.infer<typeof updateGigForm>;
