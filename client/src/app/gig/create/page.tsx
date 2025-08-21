@@ -165,13 +165,42 @@ export default function GigForm() {
         />
 
         {/* Category Field */}
-        <FormField
+        {/* <FormField
           control={form.control}
           name="category"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Graphics & Design">
+                    Graphics & Design
+                  </SelectItem>
+                  <SelectItem value="Digital Marketing">
+                    Digital Marketing
+                  </SelectItem>
+                  <SelectItem value="Writing & Translation">
+                    Writing & Translation
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        {/* Category Field */}
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value || ""}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
@@ -201,7 +230,9 @@ export default function GigForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Expected Delivery</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              {/* <Select onValueChange={field.onChange} defaultValue={field.value}> */}
+              <Select onValueChange={field.onChange} value={field.value || ""}>
+                {/* <Select onValueChange={field.onChange} value={"1 day"}> */}
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a delivery time" />
@@ -209,6 +240,11 @@ export default function GigForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="1 day">1 day</SelectItem>
+
+                  <SelectItem value="4 Days Delivery">
+                    4 Days Delivery
+                  </SelectItem>
+
                   <SelectItem value="3 days">3 days</SelectItem>
                   <SelectItem value="7 days">7 days</SelectItem>
                 </SelectContent>
