@@ -1,5 +1,5 @@
 import { apiService, gig__axios } from "@/api/common/axios.service";
-import { CreateGigPayload, Gig } from "@/schemas";
+import { CreateGigPayload, Gig, UpdateGigPayload } from "@/schemas";
 
 // Define a type for the API response if it includes totalCount
 interface SearchGigsResponse {
@@ -31,5 +31,10 @@ export const getGigBySellerId = async (sellerId: string): Promise<Gig[]> => {
 
 export const createGig = async (data: CreateGigPayload) => {
   const response = await gig__axios.post(`/create`, data);
+  return response.data;
+};
+
+export const updateGig = async (data: UpdateGigPayload) => {
+  const response = await gig__axios.put(`/update`, data);
   return response.data;
 };
