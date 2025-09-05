@@ -11,6 +11,7 @@ export const useGetGigById = ({ id }: { id: string }) => {
     queryKey: ["gig", id],
     queryFn: () => getGigById(id),
     enabled: !!id,
+    refetchOnWindowFocus: false, // ⬅️ Add this line
   });
 };
 
@@ -26,6 +27,7 @@ export const useSearch = ({
   return useQuery({
     queryKey: ["gigs", q, page, limit], // Include page and limit in queryKey
     queryFn: () => searchGigs(q, page, limit), // Pass page and limit to searchGigs
+    refetchOnWindowFocus: false, // ⬅️ Add this line
   });
 };
 
@@ -34,5 +36,6 @@ export const useGetGigBySellerId = (sellerId: string | undefined) => {
     queryKey: ["gig", sellerId],
     queryFn: () => getGigBySellerId(sellerId!),
     enabled: !!sellerId,
+    refetchOnWindowFocus: false, // ⬅️ Add this line
   });
 };
