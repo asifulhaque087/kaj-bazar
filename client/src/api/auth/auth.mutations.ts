@@ -1,5 +1,6 @@
 import { login } from "@/api/auth/auth.service";
 import { UseLoginProps } from "@/api/auth/auth.types";
+import { useCurrentBuyer } from "@/api/buyers";
 import { LoginForm } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
@@ -14,7 +15,9 @@ export const useLogin = (props: UseLoginProps) => {
 
   // ** --- Store ---
   const { connectSocket } = useChatStore();
-  const { setAuthUser } = useAuthStore();
+  const { setAuthUser, authUser } = useAuthStore();
+
+  useCurrentBuyer(authUser?.id);
 
   // const queryClient = useQueryClient();
 
