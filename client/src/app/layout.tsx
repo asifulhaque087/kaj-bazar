@@ -1,32 +1,10 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Inter,
-  Tinos,
-  Poppins,
-  Roboto,
-} from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import AuthProvider from "@/providers/auth.provider";
 import Footer from "@/components/footer";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-// const tinos = Tinos({
-//   variable: "--font-tinos",
-//   weight: ["400", "700"],
-// });
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -55,12 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} ${tinos.variable} ${inter.variable} ${poppings.className} antialiased`}
-        // className={`${roboto.className} antialiased xl:w-[1086px] 2xl:w-[1386] 2xl:max-w-[1722px] mx-auto`}
-        // className={`${roboto.className}  antialiased sm:px-[30px] md:px-[50px] lg:px-[80px] xl:px-[100px]   2xl:max-w-[1920px] mx-auto`}
-        className={`${roboto.className}  bg-[#F4F3F2] antialiased px-[14px] sm:px-[30px] md:px-[50px] lg:px-[80px] xl:px-[100px]   2xl:max-w-[1920px] mx-auto`}
-      >
+      <body className={`${roboto.className}  bg-[#F4F3F2] antialiased`}>
         <Toaster />
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
