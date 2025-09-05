@@ -8,15 +8,8 @@ const AuthProvider = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  const { isLoading: isUserLoading, data: user } = useAuthUser();
-  const { isLoading: isBuyerLoading, data: buyer } = useCurrentBuyer(user?.id);
-
-  // useEffect(() => {
-  //   if (user) setAuthUser(user);
-  //   if (buyer) setBuyer(buyer);
-  // }, [user, setAuthUser, buyer, setBuyer]);
-
-  // if (isUserLoading || isBuyerLoading) return <div>Loading...</div>;
+  const { data: user } = useAuthUser();
+  useCurrentBuyer(user?.id);
 
   return <div>{children}</div>;
 };
