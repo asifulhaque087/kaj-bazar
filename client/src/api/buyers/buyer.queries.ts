@@ -5,15 +5,16 @@ import { useAuthStore } from "@/store/use-auth.store";
 
 export const useCurrentBuyer = (authId: string | undefined) => {
   // ** --- Store ---
-  const { setBuyer } = useAuthStore();
+  const { setBuyer, setRole, role } = useAuthStore();
 
   return useQueryWithSideEffects({
     queryKey: ["current_buyer"],
     queryFn: () => currentBuyer(),
-    enabled: !!authId,
+    enabled: !!authId && role !== "seller",
 
     onSuccess: (data) => {
       setBuyer(data);
+      setRole("buyer");
     },
   });
 };
