@@ -15,6 +15,7 @@ export const useAuthUser = () => {
     staleTime: Infinity,
     gcTime: Infinity,
     retry: false,
+    refetchOnWindowFocus: false, // ⬅️ Add this line
 
     onSuccess: (data) => {
       setAuthUser(data);
