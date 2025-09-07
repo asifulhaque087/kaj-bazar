@@ -16,31 +16,30 @@ import {
   arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useFieldArray, useForm } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  useFieldArray,
+  useForm,
+  UseFormGetValues,
+} from "react-hook-form";
 import { useBrowser } from "@/hooks/use-browser.hook";
 import Grid from "@/components/image-field/grid";
 import SortablePhoto from "@/components/image-field/sortable-photo";
 import Header from "@/components/image-field/header";
 import Photo from "@/components/image-field/photo";
+import { CreateGigForm } from "@/schemas";
 
 // ** Internal imports
-const photos = [
-  { url: "https://final-gallery.netlify.app/images/image-1.webp", orderId: 1 },
-  { url: "https://final-gallery.netlify.app/images/image-2.webp", orderId: 2 },
-  { url: "https://final-gallery.netlify.app/images/image-4.webp", orderId: 3 },
-  { url: "https://final-gallery.netlify.app/images/image-5.webp", orderId: 4 },
-  { url: "https://final-gallery.netlify.app/images/image-6.webp", orderId: 5 },
-  { url: "https://final-gallery.netlify.app/images/image-7.webp", orderId: 6 },
-  { url: "https://final-gallery.netlify.app/images/image-8.webp", orderId: 7 },
-  { url: "https://final-gallery.netlify.app/images/image-9.webp", orderId: 8 },
-  { url: "https://final-gallery.netlify.app/images/image-10.jpeg", orderId: 9 },
-  {
-    url: "https://final-gallery.netlify.app/images/image-11.jpeg",
-    orderId: 10,
-  },
-];
 
-export const ImageField = () => {
+interface Props {
+  control: Control<CreateGigForm>;
+  errors: FieldErrors<CreateGigForm>;
+  getValues: UseFormGetValues<CreateGigForm>;
+}
+
+const ImageField = (props: Props) => {
+  const { control, getValues, errors } = props;
   const [activeId, setActiveId] = useState<string | null>(null);
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
 
@@ -49,11 +48,12 @@ export const ImageField = () => {
       activationConstraint: { distance: 8 },
     })
   );
-  const { control, handleSubmit, setValue, getValues } = useForm({
-    defaultValues: {
-      images: photos,
-    },
-  });
+  // const { control, handleSubmit, setValue, getValues } = useForm({
+  //   defaultValues: {
+  //     images: photos,
+  //   },
+  // });
+
   const { fields, append, remove, move, replace } = useFieldArray({
     control,
     name: "images",
@@ -68,7 +68,11 @@ export const ImageField = () => {
 
   return (
     <div className="border rounded-t-md bg-[#fefefe]">
-      <Header totalItems={selectedUrls.length} removePhotos={removePhotos} />
+      <Header
+        totalItems={selectedUrls.length}
+        removePhotos={removePhotos}
+        // errors={errors}
+      />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -85,7 +89,7 @@ export const ImageField = () => {
           items={fields.map((field) => field.url)}
           strategy={rectSortingStrategy}
         >
-          <Grid>
+          <Grid errors={errors} append={append} fieldCount={fields.length}>
             {fields.map(({ url, id }, index) => (
               <SortablePhoto
                 key={id}
@@ -107,12 +111,12 @@ export const ImageField = () => {
           ) : null}
         </DragOverlay>
       </DndContext>
-      <button
+      {/* <button
         onClick={handleSubmit((data) => console.log("data is ", data))}
         className="mt-8 w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors shadow-md"
       >
         Update Item
-      </button>
+      </button> */}
     </div>
   );
 
