@@ -5,6 +5,10 @@ import { z } from "zod";
 const SubCategorySchema = z.object({
   title: z.string().min(1, "Sub-category title cannot be empty"),
 });
+// const ImageSchema = z.object({
+//   url: z.string().min(1, "Image url cannot be empty"),
+//   orderId: z.int(),
+// });
 
 // Define the schema for a single Tag object
 const TagSchema = z.object({
@@ -33,11 +37,14 @@ export const gigSchema = z.object({
     .min(1, "At least one sub-category is required"),
   expectedDelivery: z.string().min(1, "Expected delivery cannot be empty"),
   coverImage: z.string().min(1, "Cover image is required"),
+  // images: z.array(ImageSchema).min(1, "At lest one image is required"),
   // price: z.number().int().positive("Price must be a positive integer"),
   // price: z.number(),
   price: z.coerce.number().int().positive("Price must be a positive integer"),
 
   // ** optional
+
+  // coverImage: z.string().nullable().optional(),
   tags: z.array(TagSchema).nullable().optional(),
   active: z.boolean().optional(),
   ratingsCount: z.number().int().optional(), // Drizzle has default(0), so optional on creation
