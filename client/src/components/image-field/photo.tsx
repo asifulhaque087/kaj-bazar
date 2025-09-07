@@ -25,8 +25,8 @@ const Photo = (props: Props) => {
     touchAction: "none",
     opacity: faded ? "0.2" : "1",
     transformOrigin: "0 0",
-    gridRowStart: index === 0 ? "span 2" : undefined,
-    gridColumnStart: index === 0 ? "span 2" : undefined,
+    // gridRowStart: index === 0 ? "span 2" : undefined,
+    // gridColumnStart: index === 0 ? "span 2" : undefined,
     ...style,
   };
 
