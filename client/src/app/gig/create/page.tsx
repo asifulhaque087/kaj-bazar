@@ -28,15 +28,17 @@ import { Badge } from "@/components/ui/badge";
 import { createGigForm, CreateGigForm } from "@/schemas";
 import { createGigDefaultForm } from "@/forms";
 import { useAuthStore } from "@/store/use-auth.store";
-import Image from "next/image";
 import { useCreateGig } from "@/api/gigs/gig.mutations";
 import Container from "@/components/container";
 import { Card } from "@/components/ui/card";
 import ImageField from "@/components/image-field";
+// import { DevTool } from "@hookform/devtools";
+import { useBrowser } from "@/hooks/use-browser.hook";
+import Navigation from "@/components/Navigation";
+import Link from "next/link";
 
 export default function GigForm() {
   // ** --- States ---
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // ** --- store ---
   const { authUser } = useAuthStore();
@@ -45,13 +47,8 @@ export default function GigForm() {
     resolver: zodResolver(createGigForm) as Resolver<CreateGigForm>,
     defaultValues: createGigDefaultForm(null),
     mode: "onChange",
+    // mode: "onSubmit",
   });
-
-  // const form = useForm<CreateGigForm>({
-  //   resolver: zodResolver(createGigForm),
-  //   defaultValues: createGigDefaultForm(null),
-  //   mode: "onChange",
-  // });
 
   useEffect(() => {
     if (authUser) {
@@ -62,7 +59,7 @@ export default function GigForm() {
 
   // ** --- mutations ---
 
-  const { mutate: createGig } = useCreateGig({
+  const { isPending, mutate: createGig } = useCreateGig({
     reset: form.reset,
     setError: form.setError,
   });
@@ -89,15 +86,105 @@ export default function GigForm() {
 
   // const [inputSubCategory, setInputSubCategory] = useState("");
 
+  // const watchedImages = form.watch("images");
+  // const watchedSubCategories = form.watch("subCategories");
+
+  const isBrowser = useBrowser();
+
+  const imagePreview = form.watch("coverImage");
+
+  if (!isBrowser) return;
+
+  // console.log("wathc images are ", watchedImages);
+
   return (
     <Container>
+      {/* header */}
+      <Navigation />
+
+      {/* Breadcum */}
+      <nav
+        className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb"
+      >
+        <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <li className="inline-flex items-center">
+            <a
+              href="#"
+              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+            >
+              <svg
+                className="w-3 h-3 me-2.5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+              </svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <div className="flex items-center">
+              <svg
+                className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 "
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <Link
+                href="/gigs"
+                className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white"
+              >
+                Gigs
+              </Link>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div className="flex items-center">
+              <svg
+                className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
+                Create
+              </span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => createGig(data))}
+          // onSubmit={form.handleSubmit((data) =>
+          //   console.log("submitted data is ", data)
+          // )}
           className="grid grid-cols-12 gap-[24px] mt-[24px]"
         >
           <div className="col-span-12 xl:col-span-6">
-            <Card className="px-[24px] shadow-lg h-full">
+            <Card className="px-[24px] shadow-lg h-full flex flex-col justify-center">
               {/* Title Field */}
               <FormField
                 control={form.control}
@@ -156,7 +243,7 @@ export default function GigForm() {
           </div>
 
           <div className="col-span-12 xl:col-span-6">
-            <Card className="px-[24px] shadow-lg h-full">
+            <Card className="px-[24px] shadow-lg h-full flex flex-col justify-center">
               {/* Basic Title Field */}
               <FormField
                 control={form.control}
@@ -186,43 +273,6 @@ export default function GigForm() {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </Card>
-          </div>
-
-          <div className="col-span-12 xl:col-span-6">
-            <Card className="px-[24px] shadow-lg h-full">
-              {/* Category Field */}
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Graphics & Design">
-                          Graphics & Design
-                        </SelectItem>
-                        <SelectItem value="Digital Marketing">
-                          Digital Marketing
-                        </SelectItem>
-                        <SelectItem value="Writing & Translation">
-                          Writing & Translation
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -265,7 +315,78 @@ export default function GigForm() {
           </div>
 
           <div className="col-span-12 xl:col-span-6">
-            <Card className="px-[24px] shadow-lg h-full">
+            <Card className="px-[24px] shadow-lg h-full flex flex-col justify-center">
+              {/* Category Field */}
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || ""}
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Graphics & Design">
+                          Graphics & Design
+                        </SelectItem>
+                        <SelectItem value="Digital Marketing">
+                          Digital Marketing
+                        </SelectItem>
+                        <SelectItem value="Writing & Translation">
+                          Writing & Translation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* image field */}
+
+              <FormField
+                control={form.control}
+                name="coverImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cover Image</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="cover-image-input"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    {imagePreview && (
+                      <div className="mt-4 relative w-[100px] h-[100px]">
+                        {/* <p className="text-sm text-gray-500 mb-2">Image Preview:</p> */}
+                        <img src={imagePreview} alt="gig" />
+                        <Button
+                          type="button"
+                          onClick={handleClearImage}
+                          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 rounded-full p-1 h-auto w-auto cursor-pointer"
+                          size="icon"
+                        >
+                          <XCircle className="h-4 w-4 text-white" />
+                        </Button>
+                      </div>
+                    )}
+                  </FormItem>
+                )}
+              />
+            </Card>
+          </div>
+
+          <div className="col-span-12 xl:col-span-6">
+            <Card className="px-[24px] shadow-lg h-full flex flex-col justify-center">
               {/* Subcategories Field */}
               <div>
                 <FormLabel>Subcategories</FormLabel>
@@ -332,15 +453,21 @@ export default function GigForm() {
 
           <div className="col-span-12 xl:col-span-12">
             <Card className="px-[24px] shadow-lg h-full">
-              {/* Cover Image Field */}
-              <ImageField />
+              <Button
+                disabled={isPending}
+                type="submit"
+                className="cursor-pointer bg-[#6392D8] text-white py-[20px]"
+              >
+                {isPending ? "Creating..." : "Create Gig"}
+              </Button>
             </Card>
           </div>
-          <div className="col-span-12 xl:col-span-12">
+          {/* <div className="col-span-12 xl:col-span-12">
             <Button type="submit">Create Gig</Button>
-          </div>
+          </div> */}
         </form>
       </Form>
+      {/* <DevTool control={form.control} /> */}
     </Container>
   );
 
@@ -369,33 +496,29 @@ export default function GigForm() {
     }
   }
 
+  // Function to handle file input change
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        setImagePreview(base64String);
         form.setValue("coverImage", base64String); // Set the base64 string to the form field
       };
       reader.readAsDataURL(file);
     } else {
-      setImagePreview(null);
       form.setValue("coverImage", "");
     }
   }
 
-  // Function to handle clearing the image
   function handleClearImage() {
-    setImagePreview(null);
     form.setValue("coverImage", "");
 
-    // ** IMPORTANT: Clear the file input's value directly
     const fileInput = document.getElementById(
       "cover-image-input"
     ) as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ""; // This clears the visually displayed file name
+      fileInput.value = "";
     }
   }
 }
