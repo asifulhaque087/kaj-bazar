@@ -79,7 +79,8 @@ import { z } from "zod";
 export const LanguageSchema = z.object({
   id: z.string().uuid(), // ID is required for an existing language entry
   language: z.string().min(1, "Language is required"),
-  level: z.enum(["Native", "Conversational", "Fluent", "Basic"]),
+  // level: z.enum(["Native", "Conversational", "Fluent", "Basic"]),
+  level: z.string().min(1, "Level is required"),
 });
 export type Language = z.infer<typeof LanguageSchema>; // Keep base type for reading
 
