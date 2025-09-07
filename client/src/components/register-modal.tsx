@@ -23,6 +23,7 @@ import { BaseModal } from "@/components/base-modal";
 import Image from "next/image";
 import { XCircle } from "lucide-react";
 import { registerForm, RegisterForm } from "@/schemas";
+import { useBrowser } from "@/hooks/use-browser.hook";
 
 // ** Component Props
 interface ModalProps {
@@ -35,7 +36,7 @@ const RegisterModal = (props: ModalProps) => {
   const { showModal, setShowModal } = props;
 
   // ** --- States ---
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const form = useForm<RegisterForm>({
     resolver: zodResolver(registerForm),
@@ -48,6 +49,9 @@ const RegisterModal = (props: ModalProps) => {
     },
     mode: "onSubmit", // Validate on submit
   });
+
+  const imagePreview = form.watch("profilePicture");
+  // console.log("image preview is ", imagePreview);
 
   return (
     <BaseModal
@@ -152,29 +156,20 @@ const RegisterModal = (props: ModalProps) => {
                 </FormControl>
                 <FormMessage />
                 {imagePreview && (
-                  // <div className="mt-4">
-                  //   <p className="text-sm text-gray-500">Image Preview:</p>
-                  //   <Image
-                  //     src={imagePreview}
-                  //     alt="Profile Preview"
-                  //     width={100}
-                  //     height={100}
-                  //     className="mt-2 rounded-md object-cover"
-                  //   />
-                  // </div>
                   <div className="mt-4 relative w-[100px] h-[100px]">
-                    <p className="text-sm text-gray-500 mb-2">Image Preview:</p>
-                    <Image
+                    {/* <p className="text-sm text-gray-500 mb-2">Image Preview:</p> */}
+                    <img src={imagePreview} alt="profile" />
+                    {/* <Image
                       src={imagePreview}
                       alt="Profile Preview"
-                      layout="fill" // Use fill for better image handling within a container
+                      layout="fill"
                       objectFit="cover"
                       className="rounded-md"
-                    />
+                    /> */}
                     <Button
                       type="button"
                       onClick={handleClearImage}
-                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 rounded-full p-1 h-auto w-auto"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 rounded-full p-1 h-auto w-auto cursor-pointer"
                       size="icon"
                     >
                       <XCircle className="h-4 w-4 text-white" />
@@ -237,19 +232,17 @@ const RegisterModal = (props: ModalProps) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        setImagePreview(base64String);
         form.setValue("profilePicture", base64String); // Set the base64 string to the form field
       };
       reader.readAsDataURL(file);
     } else {
-      setImagePreview(null);
       form.setValue("profilePicture", "");
     }
   }
 
   // Function to handle clearing the image
   function handleClearImage() {
-    setImagePreview(null);
+    // setImagePreview(null);
     form.setValue("profilePicture", "");
 
     // ** IMPORTANT: Clear the file input's value directly
