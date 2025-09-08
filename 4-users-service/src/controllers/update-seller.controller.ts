@@ -35,10 +35,16 @@ const updateSeller = async (req: Request, res: Response) => {
       // ** ---update languages ---
 
       // 1. remove langugages
+
       await handleAsync(
         tx
           .delete(LanguagesTable)
-          .where(inArray(LanguagesTable.id, formData.removedLangIds))
+          .where(
+            inArray(
+              LanguagesTable.id,
+              formData.removedLangIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -71,7 +77,12 @@ const updateSeller = async (req: Request, res: Response) => {
       await handleAsync(
         tx
           .delete(SkillsTable)
-          .where(inArray(SkillsTable.id, formData.removedSkillIds))
+          .where(
+            inArray(
+              SkillsTable.id,
+              formData.removedSkillIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -102,7 +113,12 @@ const updateSeller = async (req: Request, res: Response) => {
       await handleAsync(
         tx
           .delete(ExperiencesTable)
-          .where(inArray(ExperiencesTable.id, formData.removedExperienceIds))
+          .where(
+            inArray(
+              ExperiencesTable.id,
+              formData.removedExperienceIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -142,7 +158,12 @@ const updateSeller = async (req: Request, res: Response) => {
       await handleAsync(
         tx
           .delete(EducationsTable)
-          .where(inArray(EducationsTable.id, formData.removedEducationIds))
+          .where(
+            inArray(
+              EducationsTable.id,
+              formData.removedEducationIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -179,7 +200,12 @@ const updateSeller = async (req: Request, res: Response) => {
       await handleAsync(
         tx
           .delete(SocialLinksTable)
-          .where(inArray(SocialLinksTable.id, formData.removedSocialLinkIds))
+          .where(
+            inArray(
+              SocialLinksTable.id,
+              formData.removedSocialLinkIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -210,7 +236,12 @@ const updateSeller = async (req: Request, res: Response) => {
       await handleAsync(
         tx
           .delete(CertificatesTable)
-          .where(inArray(CertificatesTable.id, formData.removedCertificateIds))
+          .where(
+            inArray(
+              CertificatesTable.id,
+              formData.removedCertificateIds.map((obj) => obj.id)
+            )
+          )
           .returning()
       );
 
@@ -260,3 +291,202 @@ const updateSeller = async (req: Request, res: Response) => {
 };
 
 export default updateSeller;
+
+// ====================================== Try new =================
+
+// import { handleAsync } from "@fvoid/shared-lib";
+// import { db } from "@src/drizzle/db";
+// import {
+//   CertificatesTable,
+//   EducationsTable,
+//   ExperiencesTable,
+//   LanguagesTable,
+//   SellersTable,
+//   SkillsTable,
+//   SocialLinksTable,
+// } from "@src/drizzle/schemas";
+// import type { UpdateSellerInput } from "@src/validations/update-seller.validation";
+// import {
+//   eq,
+//   inArray,
+//   sql,
+//   type InferInsertModel,
+//   type UpdateSet,
+// } from "drizzle-orm";
+// import type { PgTable, PgTransaction } from "drizzle-orm/pg-core";
+// import type { Request, Response } from "express";
+// // Refactor the repetitive "remove and upsert" logic into a generic function
+
+// const syncRelations = async <
+//   TTable extends PgTable,
+//   TItem extends { id: string | undefined }
+// >(
+//   tx: PgTransaction<any, any, any>,
+//   table: TTable,
+//   removedIds: string[],
+//   itemsToUpsert: TItem[],
+//   set: UpdateSet // ✅ not generic in your Drizzle version
+// ) => {
+//   if (removedIds.length > 0) {
+//     await tx.delete(table).where(inArray((table as any).id, removedIds));
+//   }
+
+//   if (itemsToUpsert.length > 0) {
+//     await tx
+//       .insert(table)
+//       .values(itemsToUpsert as InferInsertModel<TTable>[])
+//       .onConflictDoUpdate({
+//         target: (table as any).id,
+//         set,
+//       });
+//   }
+// };
+
+// const updateSeller = async (req: Request, res: Response) => {
+//   const formData = req.body as UpdateSellerInput;
+
+//   const result = await handleAsync(
+//     db.transaction(async (tx) => {
+//       // Update seller
+//       await tx
+//         .update(SellersTable)
+//         .set({
+//           fullName: formData.fullName,
+//           description: formData.description,
+//           oneliner: formData.oneliner,
+//         })
+//         .where(eq(SellersTable.id, formData.id));
+
+//       // Languages
+//       await syncRelations(
+//         tx,
+//         LanguagesTable,
+//         formData.removedLangIds,
+//         formData.languages.map((lang) => ({
+//           id: lang.id || undefined,
+//           sellerId: formData.id,
+//           language: lang.language,
+//           level: lang.level,
+//         })),
+//         {
+//           language: sql`excluded.language`,
+//           level: sql`excluded.level`,
+//         }
+//       );
+
+//       // Skills
+//       await syncRelations(
+//         tx,
+//         SkillsTable,
+//         formData.removedSkillIds,
+//         formData.skills.map((skill) => ({
+//           id: skill.id || undefined,
+//           sellerId: formData.id,
+//           name: skill.name,
+//         })),
+//         { name: sql`excluded.name` }
+//       );
+
+//       // Experiences
+//       await syncRelations(
+//         tx,
+//         ExperiencesTable,
+//         formData.removedExperienceIds,
+//         formData.experience.map((exp) => ({
+//           id: exp.id || undefined,
+//           sellerId: formData.id,
+//           company: exp.company,
+//           title: exp.title,
+//           startDate: exp.startDate,
+//           endDate: exp.endDate,
+//           description: exp.description,
+//           currentlyWorkingHere: exp.currentlyWorkingHere,
+//         })),
+//         {
+//           company: sql`excluded.company`,
+//           title: sql`excluded.title`,
+//           startDate: sql`excluded.start_date`,
+//           endDate: sql`excluded.end_date`,
+//           description: sql`excluded.description`,
+//           currentlyWorkingHere: sql`excluded.currently_working_here`,
+//         }
+//       );
+
+//       // Educations
+//       await syncRelations(
+//         tx,
+//         EducationsTable,
+//         formData.removedEducationIds,
+//         formData.education.map((edu) => ({
+//           id: edu.id || undefined,
+//           sellerId: formData.id,
+//           university: edu.university,
+//           title: edu.title,
+//           major: edu.major,
+//           year: edu.year,
+//           country: edu.country,
+//         })),
+//         {
+//           university: sql`excluded.university`,
+//           title: sql`excluded.title`,
+//           major: sql`excluded.major`,
+//           year: sql`excluded.year`,
+//           country: sql`excluded.country`,
+//         }
+//       );
+
+//       // Social Links
+//       await syncRelations(
+//         tx,
+//         SocialLinksTable,
+//         formData.removedSocialLinkIds,
+//         formData.socialLinks.map((link) => ({
+//           id: link.id || undefined,
+//           sellerId: formData.id,
+//           platform: link.platform,
+//           link: link.link,
+//         })),
+//         {
+//           platform: sql`excluded.platform`,
+//           link: sql`excluded.link`,
+//         }
+//       );
+
+//       // Certificates
+//       await syncRelations(
+//         tx,
+//         CertificatesTable,
+//         formData.removedCertificateIds,
+//         formData.certificates.map((cert) => ({
+//           id: cert.id || undefined,
+//           sellerId: formData.id,
+//           name: cert.name,
+//           from: cert.from,
+//           year: cert.year,
+//         })),
+//         {
+//           name: sql`excluded.name`,
+//           from: sql`excluded.from`,
+//           year: sql`excluded.year`,
+//         }
+//       );
+
+//       // Fetch and return the updated seller
+//       return await tx.query.SellersTable.findFirst({
+//         where: eq(SellersTable.id, formData.id),
+//         with: {
+//           languages: true,
+//           skills: true,
+//           experience: true,
+//           education: true,
+//           socialLinks: true,
+//           certificates: true,
+//         },
+//       });
+//     })
+//   );
+
+//   return res.json(result);
+// };
+
+// export default updateSeller;
