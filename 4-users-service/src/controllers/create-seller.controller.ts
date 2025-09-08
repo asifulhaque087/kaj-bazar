@@ -60,6 +60,7 @@ const createSeller = async (req: Request, res: Response) => {
       const [newSeller] = await tx
         .insert(SellersTable)
         .values({
+          id: formData.id,
           fullName: formData.fullName,
           username: formData.username,
           email: formData.email,
