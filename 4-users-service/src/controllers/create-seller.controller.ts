@@ -30,7 +30,7 @@ const createSeller = async (req: Request, res: Response) => {
 
   const formData = req.body as CreateSellerInput;
 
-  console.log("I am from ********************************** ", formData);
+  // console.log("I am from ********************************** ", formData);
 
   // 1. Start a transaction
   // This ensures that if any part of the insertion fails, all changes are rolled back.
@@ -55,7 +55,7 @@ const createSeller = async (req: Request, res: Response) => {
           .then((res) => res[0])
       );
 
-      console.log("check is ", check);
+      // console.log("check is ", check);
 
       const [newSeller] = await tx
         .insert(SellersTable)
