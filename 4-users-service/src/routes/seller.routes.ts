@@ -13,11 +13,13 @@ import { createSellerSchema } from "@src/validations/create-serller.validation";
 
 const sellerRouter = Router();
 
-sellerRouter.get("/id/:sellerId", getSellerById);
 sellerRouter.get("/username/:username", getSellerByName);
 sellerRouter.get("/random/:size", getRandomSellers);
+sellerRouter.get("/:sellerId", getSellerById);
+
 sellerRouter.post("/create", validateData(createSellerSchema), createSeller);
-sellerRouter.put("/:sellerId", updateSeller);
+
 sellerRouter.put("/seed/:count", seedSeller);
+sellerRouter.put("/update", updateSeller);
 
 export default sellerRouter;
