@@ -1,6 +1,12 @@
-import { createSeller } from "@/api/sellers/seller.service";
-import { UseCreateSellerProps } from "@/api/sellers/seller.types";
-import { CreateSellerPayload } from "@/schemas/seller.schema";
+import { createSeller, updateSeller } from "@/api/sellers/seller.service";
+import {
+  UseCreateSellerProps,
+  UseUpdateSellerProps,
+} from "@/api/sellers/seller.types";
+import {
+  CreateSellerPayload,
+  UpdateSellerPayload,
+} from "@/schemas/seller.schema";
 import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -18,6 +24,27 @@ export const useCreateSeller = (props: UseCreateSellerProps) => {
     onSuccess: (data) => {
       toast.success("Login successfully");
       reset();
+    },
+
+    onError: (error: AxiosError) => {
+      const { errors } = error.response?.data as ApiValidationError;
+      errors.forEach((err) =>
+        setError(err.field as "root", { message: err.message })
+      );
+    },
+  });
+};
+
+export const useUpdateSeller = (props: UseUpdateSellerProps) => {
+  // ** Props
+  const { reset, setError } = props;
+
+  return useMutation({
+    mutationFn: (data: UpdateSellerPayload) => updateSeller(data),
+
+    onSuccess: (data) => {
+      toast.success("Seller Updated Successfully");
+      // reset();
     },
 
     onError: (error: AxiosError) => {
