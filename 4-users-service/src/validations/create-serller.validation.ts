@@ -51,6 +51,7 @@ export const certificateSchema = z.object({
 
 // ** --- Main create seller validation ---
 export const createSellerSchema = z.object({
+  id: z.string().min(1, "Id is required"),
   fullName: z
     .string()
     .min(1, "Full name is required")
