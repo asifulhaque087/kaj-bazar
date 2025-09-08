@@ -1,7 +1,9 @@
 import { config } from "@src/config";
 import createSeller from "@src/controllers/sellers/create-seller.controller";
 import seedSellers from "@src/controllers/sellers/seed-sellers.controller";
+import getSellerById from "@src/controllers/sellers/seller-by-id.controller";
 import getSellerByName from "@src/controllers/sellers/seller-by-name.controller";
+import updateSeller from "@src/controllers/sellers/update-seller.controller";
 import { apiMiddleware } from "@src/middlewares/api.middleware";
 import { verifyJwtToken } from "@src/middlewares/verify-jwt.middleware";
 import { Router } from "express";
@@ -13,7 +15,11 @@ sellerRouter.use(
 );
 
 sellerRouter.post("/create", createSeller);
+
 sellerRouter.put("/seed/:count", seedSellers);
+sellerRouter.put("/update", verifyJwtToken, updateSeller);
+
 sellerRouter.get("/username/:username", verifyJwtToken, getSellerByName);
+sellerRouter.get("/:sellerId", verifyJwtToken, getSellerById);
 
 export default sellerRouter;
