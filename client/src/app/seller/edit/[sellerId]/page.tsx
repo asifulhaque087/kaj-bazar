@@ -1,0 +1,1026 @@
+"use client";
+
+// ** Third Party Imports
+import { useEffect } from "react";
+import Link from "next/link";
+import { format } from "date-fns";
+import { CalendarIcon, PlusCircle, MinusCircle } from "lucide-react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// ** Component Imports
+import { Button } from "@/components/ui/button";
+
+// ** Form Imports
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/use-auth.store";
+import { useSellerById, useUpdateSeller } from "@/api/sellers";
+import { updateSellerDefaultForm } from "@/forms";
+import { updateSellerForm, UpdateSellerForm } from "@/schemas";
+import Container from "@/components/container";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useParams } from "next/navigation";
+
+function ProfileForm() {
+  //   ** Params
+  const params = useParams<{ sellerId: string }>();
+
+  // ** Queries
+  const {
+    data: seller,
+    isLoading,
+    error,
+  } = useSellerById({
+    sellerId: params.sellerId,
+  });
+
+  // ** Forms
+  const form = useForm<UpdateSellerForm>({
+    resolver: zodResolver(updateSellerForm),
+    defaultValues: updateSellerDefaultForm(null),
+    mode: "onSubmit",
+  });
+
+  useEffect(() => {
+    if (seller) {
+      // Only reset if authUser exists
+      form.reset(updateSellerDefaultForm(seller));
+    }
+  }, [seller, form]);
+
+  // Field Arrays for dynamic language list
+  const {
+    fields: languageFields,
+    append: appendLanguage,
+    remove: removeLanguage,
+  } = useFieldArray({
+    control: form.control,
+    name: "languages",
+    keyName: "_id", // <- change RHF’s generated id
+  });
+
+  const { append: appendRemovedLangId } = useFieldArray({
+    control: form.control,
+    name: "removedLangIds",
+  });
+
+  // Field Arrays for dynamic skill list
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+  } = useFieldArray({
+    control: form.control,
+    name: "skills",
+    keyName: "_id",
+  });
+
+  const { append: appendRemovedSkillId } = useFieldArray({
+    control: form.control,
+    name: "removedSkillIds",
+  });
+
+  // Field Arrays for dynamic experience list
+  const {
+    fields: experienceFields,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray({
+    control: form.control,
+    name: "experience",
+    keyName: "_id", // <- change RHF’s generated id
+  });
+
+  const { append: appendRemovedExId } = useFieldArray({
+    control: form.control,
+    name: "removedExperienceIds",
+  });
+
+  // Field Arrays for dynamic education list
+  const {
+    fields: educationFields,
+    append: appendEducation,
+    remove: removeEducation,
+  } = useFieldArray({
+    control: form.control,
+    name: "education",
+    keyName: "_id",
+  });
+
+  const { append: appendRemovedEdId } = useFieldArray({
+    control: form.control,
+    name: "removedEducationIds",
+  });
+
+  // Field Arrays for dynamic social link list
+  const {
+    fields: socialLinkFields,
+    append: appendSocialLink,
+    remove: removeSocialLink,
+  } = useFieldArray({
+    control: form.control,
+    name: "socialLinks",
+    keyName: "_id",
+  });
+
+  const { append: appendRemovedSLId } = useFieldArray({
+    control: form.control,
+    name: "removedSocialLinkIds",
+  });
+
+  // Field Arrays for dynamic certificate list
+  const {
+    fields: certificateFields,
+    append: appendCertificate,
+    remove: removeCertificate,
+  } = useFieldArray({
+    control: form.control,
+    name: "certificates",
+    keyName: "_id",
+  });
+
+  const { append: appendRemovedCLId } = useFieldArray({
+    control: form.control,
+    name: "removedCertificateIds",
+  });
+
+  //   ** Mutations
+  const { isPending, mutate: updateSeller } = useUpdateSeller({
+    reset: form.reset,
+    setError: form.setError,
+  });
+
+  console.log("error are ", form.formState.errors);
+
+  return (
+    <Container>
+      {/* Breadcum */}
+      <nav
+        className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb"
+      >
+        <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <li className="inline-flex items-center">
+            <a
+              href="#"
+              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+            >
+              <svg
+                className="w-3 h-3 me-2.5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+              </svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <div className="flex items-center">
+              <svg
+                className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 "
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <Link
+                href="/gigs"
+                className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white"
+              >
+                Gigs
+              </Link>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div className="flex items-center">
+              <svg
+                className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
+                Edit
+              </span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) => updateSeller(data))}
+          // onSubmit={form.handleSubmit((data) => console.log(data))}
+          className="flex flex-col gap-y-[24px]"
+        >
+          {/* <h2 className="text-2xl font-bold">Personal Information</h2> */}
+          <Card className="px-[24px] shadow-lg">
+            <CardTitle>
+              <h2 className="text-2xl font-bold">Personal Information</h2>
+            </CardTitle>
+            <CardContent className="p-0 grid grid-cols-1 xl:grid-cols-2 gap-[24px]">
+              <div className="flex flex-col gap-y-[24px]">
+                <FormField
+                  control={form.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="oneliner"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel>Bio</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Your go-to full-stack developer for robust web apps!"
+                          {...field}
+                        />
+                      </FormControl>
+                      {/* <FormDescription>
+                        A short, catchy phrase about yourself.
+                      </FormDescription> */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us about yourself..."
+                          className="resize-y min-h-[100px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        A detailed description of your experience and passion.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Languages Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Languages</h2>
+            </CardHeader>
+            <CardContent className="p-0 flex flex-col gap-y-[24px]">
+              {languageFields.map((field, index) => (
+                <div key={field._id} className="border p-4 rounded-md">
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <FormField
+                      control={form.control}
+                      name={`languages.${index}.language`}
+                      render={({ field: languageField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Language</FormLabel>
+                          <FormControl>
+                            <Input placeholder="English" {...languageField} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`languages.${index}.level`}
+                      render={({ field: levelField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Level</FormLabel>
+                          <Select
+                            onValueChange={levelField.onChange}
+                            defaultValue={levelField.value}
+                          >
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a level" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Native">Native</SelectItem>
+                              <SelectItem value="Fluent">Fluent</SelectItem>
+                              <SelectItem value="Intermediate">
+                                Conversational
+                              </SelectItem>
+                              <SelectItem value="Basic">Basic</SelectItem>
+                              <SelectItem value="Beginner">Beginner</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[10px]">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      className="cursor-pointer"
+                      // size="icon"
+                      onClick={() => {
+                        removeLanguage(index);
+                        // console.log("from field =======", field);
+                        field.id && appendRemovedLangId({ id: field.id });
+
+                        // Get the form field value at the current index
+
+                        // Check if the language object has a backend ID (e.g., `_id` or `id`)
+                        // and if it's not a newly added item
+
+                        // Then, remove the field from the form array
+                      }}
+                    >
+                      {/* <MinusCircle className="h-4 w-4" /> */}
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <CardFooter className="p-0">
+              <Button
+                type="button"
+                className="cursor-pointer"
+                onClick={() =>
+                  appendLanguage({ id: "", language: "", level: "" })
+                }
+              >
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Language
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Skills Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Skills</h2>
+            </CardHeader>
+
+            <CardContent className="p-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[16px]">
+              {skillFields.map((field, index) => (
+                <div className="rounded-md" key={field._id}>
+                  <div className="flex gap-4 items-center">
+                    <FormField
+                      control={form.control}
+                      name={`skills.${index}.name`} // --- CHANGE THIS LINE ---
+                      render={({ field: skillField }) => (
+                        <FormItem className="flex-1">
+                          {/* <FormLabel>Skill</FormLabel> */}
+                          <FormControl>
+                            <Input placeholder="JavaScript" {...skillField} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      className="cursor-pointer"
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => {
+                        removeSkill(index);
+                        field.id && appendRemovedSkillId({ id: field.id });
+                      }}
+                    >
+                      <MinusCircle className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center">
+                <Button
+                  type="button"
+                  className="cursor-pointer"
+                  onClick={() => appendSkill({ id: "", name: "" })}
+                >
+                  <PlusCircle className="mr-2 h-4 w-4" /> Add Skill
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Experience Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Experiences</h2>
+            </CardHeader>
+
+            <CardContent className="flex p-0 flex-col gap-y-[24px]">
+              {experienceFields.map((field, index) => (
+                <div key={field._id} className="border p-4 rounded-md">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
+                    <div className="flex flex-col gap-y-[24px]">
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.company`}
+                        render={({ field: expField }) => (
+                          <FormItem>
+                            <FormLabel>Company</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Tech Solutions Inc."
+                                {...expField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.title`}
+                        render={({ field: expField }) => (
+                          <FormItem>
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Senior Software Engineer"
+                                {...expField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.description`}
+                        render={({ field: expField }) => (
+                          <FormItem className="col-span-1 md:col-span-2">
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Responsibilities and achievements..."
+                                {...expField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-y-[24px]">
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.startDate`}
+                        render={({ field: expField }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Start Date</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-full pl-3 text-left font-normal",
+                                      !expField.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {expField.value ? (
+                                      format(new Date(expField.value), "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={
+                                    expField.value
+                                      ? new Date(expField.value)
+                                      : undefined
+                                  }
+                                  onSelect={(date) =>
+                                    expField.onChange(
+                                      date?.toISOString().split("T")[0]
+                                    )
+                                  } // Store as "YYYY-MM-DD"
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.endDate`}
+                        render={({ field: expField }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>End Date</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-full pl-3 text-left font-normal",
+                                      !expField.value &&
+                                        "text-muted-foreground",
+                                      form.watch(
+                                        `experience.${index}.currentlyWorkingHere`
+                                      ) && "pointer-events-none opacity-50"
+                                    )}
+                                    disabled={form.watch(
+                                      `experience.${index}.currentlyWorkingHere`
+                                    )}
+                                  >
+                                    {expField.value ? (
+                                      format(new Date(expField.value), "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={
+                                    expField.value
+                                      ? new Date(expField.value)
+                                      : undefined
+                                  }
+                                  onSelect={(date) =>
+                                    expField.onChange(
+                                      date?.toISOString().split("T")[0]
+                                    )
+                                  }
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`experience.${index}.currentlyWorkingHere`}
+                        render={({ field: expField }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 col-span-1 md:col-span-2">
+                            <FormControl>
+                              <Checkbox
+                                checked={expField.value}
+                                onCheckedChange={(checked) => {
+                                  expField.onChange(checked);
+                                  if (checked) {
+                                    form.setValue(
+                                      `experience.${index}.endDate`,
+                                      undefined
+                                    ); // Clear end date if currently working
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Currently working here</FormLabel>
+                              <FormDescription>
+                                Check if this is your current position.
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-[20px]">
+                    <Button
+                      type="button"
+                      className="cursor-pointer"
+                      variant="destructive"
+                      // size="icon"
+                      onClick={() => {
+                        removeExperience(index);
+                        field.id && appendRemovedExId({ id: field.id });
+                      }}
+                    >
+                      {/* <MinusCircle className="h-4 w-4" /> */}
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <CardFooter className="p-0">
+              <Button
+                type="button"
+                onClick={() =>
+                  appendExperience({
+                    id: "",
+                    company: "",
+                    title: "",
+                    startDate: "",
+                    currentlyWorkingHere: false,
+                  })
+                }
+              >
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Experience
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Education Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Education</h2>
+            </CardHeader>
+
+            <CardContent className="flex p-0 flex-col gap-y-[24px]">
+              {educationFields.map((field, index) => (
+                <div
+                  key={field._id}
+                  className="border p-6 rounded-md space-y-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-y-[24px]">
+                      <FormField
+                        control={form.control}
+                        name={`education.${index}.country`}
+                        render={({ field: eduField }) => (
+                          <FormItem>
+                            <FormLabel>Country</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="United States"
+                                {...eduField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`education.${index}.university`}
+                        render={({ field: eduField }) => (
+                          <FormItem>
+                            <FormLabel>University</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="State University"
+                                {...eduField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`education.${index}.title`}
+                        render={({ field: eduField }) => (
+                          <FormItem>
+                            <FormLabel>Degree Title</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Bachelor of Science"
+                                {...eduField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-y-[24px]">
+                      <FormField
+                        control={form.control}
+                        name={`education.${index}.major`}
+                        render={({ field: eduField }) => (
+                          <FormItem>
+                            <FormLabel>Major</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Computer Science"
+                                {...eduField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`education.${index}.year`}
+                        render={({ field: eduField }) => (
+                          <FormItem>
+                            <FormLabel>Year of Graduation</FormLabel>
+                            <FormControl>
+                              <Input placeholder="2018" {...eduField} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-[20px]">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      // size="icon"
+                      onClick={() => {
+                        removeEducation(index);
+                        field.id && appendRemovedEdId({ id: field.id });
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <CardFooter className="p-0">
+              <Button
+                type="button"
+                onClick={() =>
+                  appendEducation({
+                    id: "",
+                    country: "",
+                    university: "",
+                    title: "",
+                    major: "",
+                    year: "",
+                  })
+                }
+              >
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Education
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Social Links Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Social Links</h2>
+            </CardHeader>
+
+            <CardContent className="flex p-0 flex-col gap-y-[24px]">
+              {socialLinkFields.map((field, index) => (
+                <div
+                  key={field._id}
+                  className="border p-6 rounded-md space-y-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name={`socialLinks.${index}.platform`}
+                      render={({ field: socialField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Platform</FormLabel>
+                          <FormControl>
+                            <Input placeholder="LinkedIn" {...socialField} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`socialLinks.${index}.link`}
+                      render={({ field: socialField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Link</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://linkedin.com/in/johndoe"
+                              {...socialField}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="mt-[20px]">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => {
+                        removeSocialLink(index);
+                        field.id && appendRemovedSLId({ id: field.id });
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <CardFooter className="p-0">
+              <Button
+                type="button"
+                onClick={() =>
+                  appendSocialLink({ id: "", platform: "", link: "" })
+                }
+              >
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Social Link
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Certificates Section */}
+          <Card className="px-[24px] shadow-lg">
+            <CardHeader className="p-0">
+              <h2 className="text-2xl font-bold">Certificates</h2>
+            </CardHeader>
+
+            <CardContent className="flex p-0 flex-col gap-y-[24px]">
+              {certificateFields.map((field, index) => (
+                <div
+                  key={field._id}
+                  className="border p-6 rounded-md space-y-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* <div>
+
+                    </div> */}
+                    <FormField
+                      control={form.control}
+                      name={`certificates.${index}.name`}
+                      render={({ field: certField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Certificate Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="AWS Certified Developer – Associate"
+                              {...certField}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`certificates.${index}.from`}
+                      render={({ field: certField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Issued By</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Amazon Web Services"
+                              {...certField}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`certificates.${index}.year`}
+                      render={({ field: certField }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Year</FormLabel>
+                          <FormControl>
+                            <Input placeholder="2022" {...certField} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="mt-[20px]">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => {
+                        removeCertificate(index);
+                        field.id && appendRemovedCLId({ id: field.id });
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <CardFooter className="p-0">
+              <Button
+                type="button"
+                onClick={() =>
+                  appendCertificate({ id: "", name: "", from: "", year: "" })
+                }
+              >
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Certificate
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* <Button type="submit" className="mt-8">
+            Save Profile
+          </Button> */}
+          <div className="col-span-12 xl:col-span-12">
+            <Card className="px-[24px] shadow-lg h-full">
+              <Button
+                disabled={isPending}
+                type="submit"
+                className="cursor-pointer bg-[#6392D8] text-white py-[20px]"
+              >
+                {isPending ? "Updating..." : "Update Profile"}
+              </Button>
+            </Card>
+          </div>
+        </form>
+      </Form>
+    </Container>
+  );
+}
+
+export default ProfileForm;
