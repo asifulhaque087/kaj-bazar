@@ -13,6 +13,7 @@ import "swiper/css";
 import GigCard from "@/components/gig-card";
 import { Gig } from "@/schemas";
 import { useRouter } from "next/navigation";
+import { gigsLimit } from "@/constants";
 
 interface IGigSlider {
   gigs: Gig[];
@@ -45,7 +46,7 @@ const GigSlider = (props: IGigSlider) => {
             router.push(
               `/gigs?category=${encodeURIComponent(
                 currentCategory
-              )}&page=1&limit=5`
+              )}&page=1&limit=${gigsLimit}`
             )
           }
         >
