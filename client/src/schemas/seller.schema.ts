@@ -99,6 +99,17 @@ export const sellerSchema = z.object({
   education: z.array(EducationSchema).optional(),
   socialLinks: z.array(SocialLinkSchema).optional(),
   certificates: z.array(CertificateSchema).optional(),
+  ratingsCount: z.number().int().optional(),
+  ratingSum: z.number().int().optional(),
+  ratingCategories: z
+    .object({
+      five: z.object({ star: z.number().int(), count: z.number().int() }),
+      four: z.object({ star: z.number().int(), count: z.number().int() }),
+      three: z.object({ star: z.number().int(), count: z.number().int() }),
+      two: z.object({ star: z.number().int(), count: z.number().int() }),
+      one: z.object({ star: z.number().int(), count: z.number().int() }),
+    })
+    .optional(),
 });
 export type Seller = z.infer<typeof sellerSchema>;
 
