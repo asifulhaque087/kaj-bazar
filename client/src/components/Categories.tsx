@@ -1,18 +1,8 @@
 "use client";
 
+import { categories, gigsLimit } from "@/constants";
 import { useRouter } from "next/navigation";
 
-const categories = [
-  "Graphics & Design",
-  "Digital Marketing",
-  "Writing & Translation",
-  "Video & Animation",
-  "Music & Audio",
-  "Programming & Tech",
-  "Photography",
-  "Data",
-  "Business",
-];
 const Categories = () => {
   const router = useRouter();
 
@@ -22,7 +12,9 @@ const Categories = () => {
         <button
           onClick={() =>
             router.push(
-              `/gigs?category=${encodeURIComponent(cat)}&page=1&limit=5`
+              `/gigs?category=${encodeURIComponent(
+                cat
+              )}&page=1&limit=${gigsLimit}`
             )
           }
           key={i}
