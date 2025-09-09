@@ -18,7 +18,7 @@ import Footer from "@/components/footer";
 
 const roboto = Roboto({
   variable: "--font-robot",
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
