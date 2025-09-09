@@ -31,7 +31,7 @@ const page = () => {
       <section className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-[16px]">
         {/* box 1 */}
         <div
-          className="col-span-4 md:col-span-5 flex flex-col min-h-[260px] xl:min-h-[344px]] px-[15px] pb-[28px] rounded-[10px] overflow-hidden"
+          className="col-span-4 md:col-span-5 flex flex-col px-[15px] pb-[28px] rounded-[10px] overflow-hidden"
           style={{
             backgroundImage: `linear-gradient(to bottom,rgba(255,255,255,.2),
                 rgba(0,0,0, .7)), url(${seller?.profilePicture})`,
