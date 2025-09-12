@@ -1,7 +1,7 @@
 "use client";
 
 // ** Third Party Imports
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,8 +28,11 @@ interface ModalProps {
   setShowModal: Dispatch<SetStateAction<number>>;
 }
 
+// let renderCount = 1;
+
 const LoginModal = (props: ModalProps) => {
   const { showModal, setShowModal } = props;
+  const renderCount = useRef(1);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginForm),
@@ -41,11 +44,15 @@ const LoginModal = (props: ModalProps) => {
     mode: "onSubmit", // Validate on submit
   });
 
+  // console.log("this is first @#@#@#");
   const { mutate: login } = useLogin({
     reset: form.reset,
     setError: form.setError,
     setShowModal,
   });
+
+  console.log("Login Modal render count is ", renderCount.current);
+  renderCount.current += 1;
 
   return (
     <BaseModal
