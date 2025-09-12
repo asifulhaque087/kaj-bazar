@@ -2,11 +2,9 @@
 
 import CategoryTab from "@/components/CategoryTab";
 import Hero from "@/components/Hero";
-import Navigation from "@/components/Navigation";
 import { useState } from "react";
 import GigSlider from "@/components/gig-slider";
 import { useSearch } from "@/api/gigs";
-import Container from "@/components/container";
 
 export default function Home() {
   const [currentCategory, setCurrentCategory] =
@@ -24,12 +22,7 @@ export default function Home() {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Container>
-      {/* --- Navigation --- */}
-      <div className="mt-[24px]">
-        <Navigation />
-      </div>
-
+    <>
       {/* --- Hero --- */}
       <div className="mt-[24px]">
         <Hero />
@@ -46,6 +39,6 @@ export default function Home() {
       <div className="mt-[24px]">
         <GigSlider gigs={data?.data || []} currentCategory={currentCategory} />
       </div>
-    </Container>
+    </>
   );
 }
