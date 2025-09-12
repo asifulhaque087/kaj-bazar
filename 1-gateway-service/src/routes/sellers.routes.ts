@@ -1,5 +1,6 @@
 import { config } from "@src/config";
 import createSeller from "@src/controllers/sellers/create-seller.controller";
+import getCurrentSeller from "@src/controllers/sellers/get-current-seller.controller";
 import seedSellers from "@src/controllers/sellers/seed-sellers.controller";
 import getSellerById from "@src/controllers/sellers/seller-by-id.controller";
 import getSellerByName from "@src/controllers/sellers/seller-by-name.controller";
@@ -20,6 +21,7 @@ sellerRouter.put("/seed/:count", seedSellers);
 sellerRouter.put("/update", verifyJwtToken, updateSeller);
 
 sellerRouter.get("/username/:username", verifyJwtToken, getSellerByName);
+sellerRouter.get("/current-seller", verifyJwtToken, getCurrentSeller);
 sellerRouter.get("/:sellerId", verifyJwtToken, getSellerById);
 
 export default sellerRouter;
