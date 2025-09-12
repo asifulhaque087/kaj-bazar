@@ -7,6 +7,7 @@ import getBuyerByName from "@src/controllers/buyer-by-name.controller";
 import currentBuyer from "@src/controllers/current-buyer.controller";
 import { verifyClientToken } from "@fvoid/shared-lib";
 import { config } from "@src/config";
+import getBuyerById from "@src/controllers/buyer-by-id.controller";
 
 const buyerRouter = Router();
 
@@ -20,5 +21,6 @@ buyerRouter.get(
 );
 
 buyerRouter.get("/username/:username", getBuyerByName);
+buyerRouter.get("/:id", getBuyerById);
 
 export default buyerRouter;
