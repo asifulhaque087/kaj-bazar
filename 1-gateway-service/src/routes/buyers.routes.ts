@@ -1,4 +1,5 @@
 import { config } from "@src/config";
+import getBuyerById from "@src/controllers/buyers/buyer-by-id.controller";
 import getBuyerByName from "@src/controllers/buyers/buyer-by-name.controller";
 import currentBuyer from "@src/controllers/buyers/curren-buyer.controller";
 import { apiMiddleware } from "@src/middlewares/api.middleware";
@@ -13,5 +14,6 @@ buyerRouter.use(
 
 buyerRouter.get("/current-buyer", verifyJwtToken, currentBuyer);
 buyerRouter.get("/username/:username", verifyJwtToken, getBuyerByName);
+buyerRouter.get("/:id", verifyJwtToken, getBuyerById);
 
 export default buyerRouter;
