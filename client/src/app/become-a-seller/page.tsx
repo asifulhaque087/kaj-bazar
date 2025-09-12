@@ -45,6 +45,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import OnlyBuyerPage from "@/components/protected-pages/only-buyer-page";
 
 function ProfileForm() {
   const { buyer } = useAuthStore();
@@ -127,9 +128,12 @@ function ProfileForm() {
   // );
 
   // console.log("buyer is !!!!!!!!!!!!!!!!! ", buyer);
+  // const router = useRouter();
+
+  // if (!buyer?.isSeller) return router.push("/");
 
   return (
-    <Container>
+    <OnlyBuyerPage>
       {/* Breadcum */}
       <nav
         className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
@@ -926,7 +930,7 @@ function ProfileForm() {
           </div>
         </form>
       </Form>
-    </Container>
+    </OnlyBuyerPage>
   );
 }
 
