@@ -20,3 +20,8 @@ export const getSellerById = async (sellerId: string) => {
   const response = await seller__axios.get<Seller>(`/${sellerId}`);
   return response.data;
 };
+
+export const getCurrentSeller = async () => {
+  const response = await seller__axios.get<Seller>(`/current-seller`);
+  return response.data;
+};
