@@ -15,9 +15,13 @@ export const useLogin = (props: UseLoginProps) => {
 
   // ** --- Store ---
   const { connectSocket } = useChatStore();
-  const { setAuthUser, authUser } = useAuthStore();
+  // const { setAuthUser, authUser, } = useAuthStore();
+  const { setAuthUser, authUser, role} = useAuthStore();
 
-  useCurrentBuyer(authUser?.id);
+  // useCurrentBuyer(authUser?.id);
+  // console.log("I am calling")
+  // useCurrentBuyer(authUser?.id);
+  useCurrentBuyer();
 
   // const queryClient = useQueryClient();
 
