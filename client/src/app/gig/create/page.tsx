@@ -31,11 +31,10 @@ import { useAuthStore } from "@/store/use-auth.store";
 import { useCreateGig } from "@/api/gigs/gig.mutations";
 import Container from "@/components/container";
 import { Card } from "@/components/ui/card";
-import ImageField from "@/components/image-field";
-// import { DevTool } from "@hookform/devtools";
 import { useBrowser } from "@/hooks/use-browser.hook";
 import Navigation from "@/components/Navigation";
 import Link from "next/link";
+import SellerPage from "@/components/protected-pages/seller-page";
 
 export default function GigForm() {
   // ** --- States ---
@@ -98,7 +97,7 @@ export default function GigForm() {
   // console.log("wathc images are ", watchedImages);
 
   return (
-    <Container>
+    <SellerPage>
       {/* header */}
       <Navigation />
 
@@ -468,7 +467,7 @@ export default function GigForm() {
         </form>
       </Form>
       {/* <DevTool control={form.control} /> */}
-    </Container>
+    </SellerPage>
   );
 
   function handleKeyDownTags(e: React.KeyboardEvent<HTMLInputElement>) {
