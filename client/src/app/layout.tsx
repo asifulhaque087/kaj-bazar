@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import AuthProvider from "@/providers/auth.provider";
 import Footer from "@/components/footer";
+import Container from "@/components/container";
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -36,7 +37,9 @@ export default function RootLayout({
       <body className={`${roboto.className}  bg-[#F4F3F2] antialiased`}>
         <Toaster />
         <ReactQueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <Container>{children}</Container>
+          </AuthProvider>
         </ReactQueryProvider>
 
         {/* <Footer /> */}
