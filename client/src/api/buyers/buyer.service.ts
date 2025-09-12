@@ -10,3 +10,8 @@ export const getBuyerByName = async (username: string) => {
   const response = await buyer__axios.get<Buyer>(`/username/${username}`);
   return response.data;
 };
+
+export const getBuyerById = async (id: string) => {
+  const response = await buyer__axios.get<Buyer>(`/${id}`);
+  return response.data;
+};
