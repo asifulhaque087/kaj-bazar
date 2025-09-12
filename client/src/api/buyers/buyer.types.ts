@@ -5,3 +5,6 @@ export interface UseBuyerByNameProps {
   isBuyer: boolean;
   authUser: Auth | null;
 }
+export interface UseBuyerByIdProps {
+  id: string;
+}
