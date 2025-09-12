@@ -160,12 +160,6 @@ const AuthButton = (props: AuthButtonProps) => {
 
   const router = useRouter();
 
-  // console.log("rolw is ", role)
-  // console.log("buyer is ", buyer)
-
-  // if (!role || !buyer) return <span>...</span>;
-  if (!role) return <span>...</span>;
-
   let buttonToRender;
 
   if (role === "buyer" && buyer?.isSeller) {

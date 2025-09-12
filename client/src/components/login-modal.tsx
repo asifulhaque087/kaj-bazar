@@ -51,7 +51,7 @@ const LoginModal = (props: ModalProps) => {
     setShowModal,
   });
 
-  console.log("Login Modal render count is ", renderCount.current);
+  // console.log("Login Modal render count is ", renderCount.current);
   renderCount.current += 1;
 
   return (
