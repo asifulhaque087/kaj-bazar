@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { Buyer } from "@/schemas";
+import { Buyer, Seller } from "@/schemas";
 
 const Navigation = () => {
   const [activeItem, setActiveItem] = useState(-1);
@@ -35,6 +35,7 @@ const Navigation = () => {
         <div
           className="hidden md:flex items-center gap-x-[6px] cursor-pointer"
           onClick={() => router.push("/")}
+          // onClick={() => router.replace("/")}
         >
           <div className="flex gap-x-[2px] items-end">
             <span className="w-[7px] h-[15px] bg-[#27C9BE] rounded-[2px]" />
@@ -73,8 +74,12 @@ const Navigation = () => {
                 </div>
               ))}
               <button
+                // onClick={() => setActiveItem(1)}
                 className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] hidden xl:flex items-center gap-x-[4px] cursor-pointer"
-                onClick={() => router.push("/become-a-seller")}
+                onClick={() => {
+                  if (authUser) return router.push("/become-a-seller");
+                  setActiveItem(1);
+                }}
               >
                 <span>Become a seller</span>
                 <span>
@@ -86,7 +91,7 @@ const Navigation = () => {
 
           {authUser && (
             <Fragment>
-              <AuthButton role={role} buyer={buyer!} />
+              <AuthButton role={role} buyer={buyer} seller={seller} />
 
               <div>
                 <DropdownMenu>
@@ -123,6 +128,20 @@ const Navigation = () => {
           showModal={activeItem == 1 ? true : false}
           setShowModal={setActiveItem}
         />
+
+        {/* {activeItem === 0 && (
+          <LoginModal
+            showModal={activeItem == 0 ? true : false}
+            setShowModal={setActiveItem}
+          />
+        )}
+
+        {activeItem === 1 && (
+          <RegisterModal
+            showModal={activeItem == 1 ? true : false}
+            setShowModal={setActiveItem}
+          />
+        )} */}
       </div>
     </>
   );
@@ -133,14 +152,19 @@ export default Navigation;
 interface AuthButtonProps {
   role: "buyer" | "seller" | null;
   buyer: Buyer | null;
+  seller: Seller | null;
 }
 
 const AuthButton = (props: AuthButtonProps) => {
-  const { role, buyer } = props;
+  const { role, buyer, seller } = props;
 
   const router = useRouter();
 
-  if (!role || !buyer) return <span>...</span>;
+  // console.log("rolw is ", role)
+  // console.log("buyer is ", buyer)
+
+  // if (!role || !buyer) return <span>...</span>;
+  if (!role) return <span>...</span>;
 
   let buttonToRender;
 
@@ -148,7 +172,7 @@ const AuthButton = (props: AuthButtonProps) => {
     buttonToRender = (
       <button
         className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] flex items-center gap-x-[4px] cursor-pointer"
-        onClick={() => router.push("/become-a-seller")}
+        onClick={() => router.push(`/seller/profile/${buyer.id}`)}
       >
         <span>switch to seller</span>
         <span>
@@ -160,7 +184,8 @@ const AuthButton = (props: AuthButtonProps) => {
     buttonToRender = (
       <button
         className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] flex items-center gap-x-[4px] cursor-pointer"
-        onClick={() => router.push("/become-a-seller")}
+        // onClick={() => router.push("/become-a-seller")}
+        onClick={() => router.push(`/buyer/profile/${seller?.id}`)}
       >
         <span>switch to buyer</span>
         <span>
