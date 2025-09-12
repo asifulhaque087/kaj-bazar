@@ -1,7 +1,5 @@
 "use client";
 import { useSellerById } from "@/api/sellers";
-import Container from "@/components/container";
-import Navigation from "@/components/Navigation";
 import ReviewCard from "@/components/review-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,14 +18,10 @@ const page = () => {
   } = useSellerById({
     sellerId: params.id,
   });
-  console.log("seller is ", seller);
+  // console.log("seller is ", seller);
 
   return (
-    <Container>
-      <header>
-        <Navigation />
-      </header>
-
+    <>
       <section className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-[16px]">
         {/* box 1 */}
         <div
@@ -85,7 +79,7 @@ const page = () => {
 
 
       </section> */}
-    </Container>
+    </>
   );
 };
 
