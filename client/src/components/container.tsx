@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Navigation from "@/components/Navigation";
 
 interface Props {
@@ -12,6 +13,10 @@ const Container = (props: Props) => {
       </header>
 
       {children}
+
+      <div className="mt-[100px]">
+        <Footer />
+      </div>
     </div>
   );
 };
