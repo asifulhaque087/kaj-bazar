@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import { useState } from "react";
 import GigSlider from "@/components/gig-slider";
 import { useSearch } from "@/api/gigs";
+import HowItWorks from "@/components/how-it-works";
 
 export default function Home() {
   const [currentCategory, setCurrentCategory] =
@@ -38,6 +39,10 @@ export default function Home() {
       {/* --- Gig Slider --- */}
       <div className="mt-[24px]">
         <GigSlider gigs={data?.data || []} currentCategory={currentCategory} />
+      </div>
+
+      <div className="mt-[100px]">
+        <HowItWorks />
       </div>
     </>
   );
