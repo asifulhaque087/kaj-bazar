@@ -27,7 +27,7 @@ const Footer = () => {
     },
   ];
   return (
-    <footer className="rounded-[10px] bg-white grid gap-y-[24px] gap-x-[16px] grid-cols-4 md:grid-cols-8 xl:grid-cols-12 mb-[100px] p-[24px]">
+    <footer className="rounded-[10px] bg-white grid gap-y-[24px] gap-x-[16px] grid-cols-4 md:grid-cols-8 xl:grid-cols-12 mb-[30px] p-[24px]">
       {/* 1st box */}
       <div className="col-span-4 md:col-span-4 xl:col-span-4 flex flex-col gap-y-[22px]">
         <FooterLogo />
@@ -57,20 +57,25 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="col-span-4 md:col-span-2 md:col-start-5 md:col-end-7 xl:col-span-2">
+      <div className="col-span-4 sm:col-span-2 md:col-span-2 md:col-start-5 md:col-end-7 xl:col-span-2">
         <FooterList section={footerData[0]} />
       </div>
 
-      <div className="col-span-4 md:col-span-2 md:col-start-7 md:col-end-8 xl:col-span-2">
+      <div className="col-span-4 sm:col-span-2 md:col-span-2 md:col-start-7 md:col-end-8 xl:col-span-2">
         <FooterList section={footerData[1]} />
       </div>
 
-      <div className="col-span-4 md:hidden xl:block md:col-end-8 xl:col-span-2">
+      <div className="col-span-4 sm:col-span-2 md:hidden xl:block md:col-end-8 xl:col-span-2">
         <FooterList section={footerData[2]} />
       </div>
 
-      <div className="col-span-4 md:hidden xl:block md:col-end-8 xl:col-span-2">
+      <div className="col-span-4 sm:col-span-2 md:hidden xl:block md:col-end-8 xl:col-span-2">
         <FooterList section={footerData[3]} />
+      </div>
+      <div className="col-span-4 md:col-span-8 xl:col-span-12 border-t pt-[20px]">
+        <p className="font-[Roboto] text-[12px] text-[#74767E] font-normal tracking-[0.24] text-center">
+          Kajbazar @ 2025, All Rights Reserved
+        </p>
       </div>
     </footer>
   );
