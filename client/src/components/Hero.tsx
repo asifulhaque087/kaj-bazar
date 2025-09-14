@@ -37,14 +37,16 @@ const Hero = () => {
             <ArrowRight className="-rotate-[35deg]" size={18} color="white" />
           </button>
 
-          <h1 className="font-[roboto] text-[30px] font-[700] text-white text-center mt-[34px] tracking-[1.2px] leading-[1.4633]">
-            Let’s Hunt For Your Dream
-            <span className="text-[#6594D3]"> Property </span>
+          <h1 className="font-[roboto] text-[30px] font-[700] text-white text-center mt-[34px] tracking-[1.2px] leading-[1.4633] capitalize">
+            {/* Let’s Hunt For Your Dream
+            <span className="text-[#6594D3]"> Property </span> */}
+            Your one-stop freelance
+            <span className="text-[#6594D3]"> marketplace</span>
           </h1>
 
           <p className="text-[14px] tracking-[0.56px] text-[#fff] mt-[12px] text-center leading-[1.71]">
-            Explore our range of beautiful properties with the addition of
-            separate accommodation suitable for you.
+            Connect with skilled professionals across a variety of fields and
+            turn your ideas into reality.
           </p>
 
           {/* Search Box */}
@@ -84,47 +86,47 @@ const Hero = () => {
 
       {/* --- 2nd box --- */}
       <div
-        className="col-span-6 xl:col-span-3  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px]"
+        className="col-span-6 xl:col-span-3  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] flex items-center justify-center"
         style={{
-          backgroundImage: `url("https://plus.unsplash.com/premium_photo-1681487178876-a1156952ec60?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1681487178876-a1156952ec60?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
-        {/* <button className="px-6 py-3 rounded-[9px] text-white text-xl font-semibold blur-[20] bg-[rgba(39,201,190,10)]">
+        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
           Architect
-        </button> */}
+        </button>
       </div>
 
       {/* --- 3rd box --- */}
       <div
-        className="col-span-6 xl:col-span-3  row-span-1 overflow-hidden rounded-[13px]"
+        className="col-span-6 xl:col-span-3  row-span-1 overflow-hidden rounded-[13px] flex items-center justify-center"
         style={{
-          backgroundImage: `url("https://plus.unsplash.com/premium_photo-1661904185181-ea4531c2116c?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1661904185181-ea4531c2116c?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
-        {/* <button className="px-6 py-3 rounded-[9px] text-white text-xl font-semibold blur-[20] bg-[rgba(39,201,190,10)]">
-          Architect
-        </button> */}
+        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
+          UI/UX
+        </button>
       </div>
 
       {/* --- 4th box --- */}
       <div
-        className="col-span-12 xl:col-span-6  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px]"
+        className="col-span-12 xl:col-span-6  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] flex items-center justify-center"
         style={{
-          backgroundImage: `url("https://plus.unsplash.com/premium_photo-1661903986017-673f1bd6b47e?q=80&w=1520&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1661903986017-673f1bd6b47e?q=80&w=1520&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
-        {/* <button className="px-6 py-3 rounded-[9px] text-white text-xl font-semibold blur-[20] bg-[rgba(39,201,190,10)]">
-          Architect
-        </button> */}
+        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
+          Web Development
+        </button>
       </div>
     </div>
   );
