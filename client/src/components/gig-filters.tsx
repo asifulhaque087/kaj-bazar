@@ -28,106 +28,118 @@ const GigFilters = ({
   clearFilters,
 }: GigFiltersProps) => {
   return (
-    <div className="w-1/4 p-4 border-r border-gray-200">
-      <h2 className="text-xl font-bold mb-4">Filters</h2>
-      <div className="mb-4">
-        <label
-          htmlFor="searchKey"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Search Keyword
-        </label>
+    <div className="flex flex-wrap gap-3 items-center justify-center py-[10px]">
+      {/* Search */}
+      <input
+        type="text"
+        id="searchKey"
+        name="searchKey"
+        value={filters.searchKey}
+        placeholder="Search"
+        onChange={handleFilterChange}
+        className="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
+      />
+
+      {/* Price Range */}
+      <div className="flex bg-white items-center border border-gray-300 rounded-md overflow-hidden">
         <input
-          type="text"
-          id="searchKey"
-          name="searchKey"
-          value={filters.searchKey}
+          type="number"
+          name="minPrice"
+          value={filters.minPrice}
           onChange={handleFilterChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Min"
+          className="w-20 px-3 py-2 text-sm border-r border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400"
+        />
+        <input
+          type="number"
+          name="maxPrice"
+          value={filters.maxPrice}
+          onChange={handleFilterChange}
+          placeholder="Max"
+          className="w-20 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
         />
       </div>
-      <div className="mb-4">
-        <label
-          htmlFor="category"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Category
-        </label>
+
+      {/* Category */}
+      <div className="relative">
         <select
           id="category"
           name="category"
           value={filters.category}
           onChange={handleFilterChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="pr-10 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm appearance-none w-full focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
         >
-          <option value="">All Categories</option>
+          <option value="">Category</option>
           {categories.map((category) => (
             <option key={category} value={category}>
               {category}
             </option>
           ))}
         </select>
+
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-700">
+          <svg
+            className="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
       </div>
-      <div className="mb-4">
-        <label
-          htmlFor="deliveryTime"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Delivery Time
-        </label>
+
+      {/* Delivery Time */}
+      <div className="relative">
         <select
           id="deliveryTime"
           name="deliveryTime"
           value={filters.deliveryTime}
           onChange={handleFilterChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="pr-10 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm appearance-none w-full focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
         >
-          <option value="">Anytime</option>
+          <option value="">Delivery Time</option>
           {expectedDelivery.map((delivery) => (
             <option key={delivery} value={delivery}>
               {delivery}
             </option>
           ))}
         </select>
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Price Range
-        </label>
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="number"
-            name="minPrice"
-            value={filters.minPrice}
-            onChange={handleFilterChange}
-            placeholder="Min"
-            className="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          />
-          <span className="text-gray-500">-</span>
-          <input
-            type="number"
-            name="maxPrice"
-            value={filters.maxPrice}
-            onChange={handleFilterChange}
-            placeholder="Max"
-            className="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          />
+
+        {/* Custom dropdown icon */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-700">
+          <svg
+            className="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
         </div>
       </div>
-      <div className="flex gap-2">
-        <button
-          onClick={applyFilters}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        >
-          Apply Filters
-        </button>
-        <button
-          onClick={clearFilters}
-          className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-200 focus:ring-opacity-50"
-        >
-          Clear
-        </button>
-      </div>
+
+      {/* Actions */}
+      <button
+        onClick={applyFilters}
+        className="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-gray-400 text-white cursor-pointer"
+      >
+        Apply
+      </button>
+      <button
+        onClick={clearFilters}
+        className="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium bg-red-500 hover:bg-red-600 text-white focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
+      >
+        Clear
+      </button>
     </div>
   );
 };
