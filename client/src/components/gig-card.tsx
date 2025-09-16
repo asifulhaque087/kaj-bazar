@@ -4,11 +4,12 @@ import Link from "next/link";
 
 interface IGigCard {
   gig: Gig;
+  fluid?: boolean;
 }
 
 const GigCard = (props: IGigCard) => {
   // ** --- Props ---
-  const { gig } = props;
+  const { gig, fluid = false } = props;
 
   // console.log("gig is ", gig);
 
@@ -17,11 +18,13 @@ const GigCard = (props: IGigCard) => {
 
   return (
     <>
-      {/* main 200px 640 oile 150px  r tailwind a sm oise 767 porjonto mane 768 oile md suru */}
-      {/* <div className="shadow-md w-[150px] sm:w-[200px]  border-[10px] border-red-500"> */}
-      <div className="w-[262px] rounded-[24px] shadow-lg border border-[#E4E5E7] ">
+      {/* <div className="w-[262px] rounded-[24px] shadow-lg border border-[#E4E5E7] "> */}
+      <div
+        className={`${
+          fluid ? "w-full" : "max-w-[262px]"
+        } rounded-[24px] shadow-lg border bg-white border-[#E4E5E7]`}
+      >
         {/* Header */}
-
         <div className="flex items-center gap-x-[12px] px-[12px] py-[15px]">
           {/* left */}
           <div className="w-[24px] h-[24px] rounded-full overflow-hidden">
