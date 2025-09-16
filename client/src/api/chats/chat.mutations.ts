@@ -3,12 +3,20 @@ import {
   createMessage,
   findOrCreateConversationApi,
 } from "@/api/chats/chat.service";
-import { CreateConversationForm, CreateMessageForm } from "@/schemas";
+import {
+  Auth,
+  Conversation,
+  CreateConversationForm,
+  CreateMessageForm,
+} from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
+import { useRouter } from "next/navigation";
 
 export const useFindOrCreateConversation = () => {
   const { setSelectedConversation, setMessages } = useChatStore();
+  const { authUser } = useAuthStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: (data: CreateConversationForm) =>
@@ -17,8 +25,16 @@ export const useFindOrCreateConversation = () => {
       setSelectedConversation(data);
       setMessages(data.messages);
       // console.log("data after success is ", data);
+
+      router.push(`/inbox/${data.id}?other=${findOtherUser(authUser, data)}`);
     },
   });
+
+  function findOtherUser(authUser: Auth | null, con: Conversation): string {
+    return authUser?.username === con.receiverUsername
+      ? con.senderUsername
+      : con.receiverUsername;
+  }
 };
 
 export const useCreateMessage = () => {
