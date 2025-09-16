@@ -80,9 +80,11 @@ const GigSlider = (props: IGigSlider) => {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        className="!p-[2px] "
+        // className="!p-[2px]"
+        className="!p-[2px]"
       >
         {gigs.map((gig, i) => (
+          // <SwiperSlide key={i} className="!w-fit py-[10px]">
           <SwiperSlide key={i} className="!w-fit py-[10px]">
             <GigCard gig={gig} />
           </SwiperSlide>
