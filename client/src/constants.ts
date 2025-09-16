@@ -43,15 +43,9 @@ export const steps = [
 ];
 
 export const footerData = [
-
   {
     heading: "RESOURCES",
-    links: [
-      "Free eBooks",
-      "Development Tutorial",
-      "How to - Blog",
-      "Youtube Playlist",
-    ],
+    links: ["eBooks", "Tutorial", "Blog", "Playlist"],
   },
 
   {
@@ -69,7 +63,6 @@ export const footerData = [
   },
   {
     heading: "FAQ",
-    links: ["Account", "Manage Deliveries", "Orders", "Payments"],
+    links: ["Account", "Deliveries", "Orders", "Payments"],
   },
 ];
-
