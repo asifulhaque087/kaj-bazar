@@ -1,5 +1,5 @@
 import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
-import Overview from "@/app/seller/profile/[id]/overview";
+import Overview from "@/app/seller/profile/[id]/overview/index";
 import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
 import { useState } from "react";
 
