@@ -6,6 +6,7 @@ import { useState } from "react";
 import GigSlider from "@/components/gig-slider";
 import { useSearch } from "@/api/gigs";
 import HowItWorks from "@/components/how-it-works";
+import Container from "@/components/container";
 
 export default function Home() {
   const [currentCategory, setCurrentCategory] =
@@ -25,25 +26,25 @@ export default function Home() {
   return (
     <>
       {/* --- Hero --- */}
-      <div className="mt-[24px]">
+      <Container className="mt-[24px]">
         <Hero />
-      </div>
+      </Container>
 
       {/* --- Category Tab --- */}
-      <div className="mt-[24px]">
+      <Container className="mt-[24px]">
         <CategoryTab
           setActiveCategory={setCurrentCategory}
           activeCategory={currentCategory}
         />
-      </div>
+      </Container>
       {/* --- Gig Slider --- */}
-      <div className="mt-[24px]">
+      <Container className="mt-[24px]">
         <GigSlider gigs={data?.data || []} currentCategory={currentCategory} />
-      </div>
+      </Container>
 
-      <div className="mt-[100px]">
+      <Container className="mt-[100px]">
         <HowItWorks />
-      </div>
+      </Container>
     </>
   );
 }

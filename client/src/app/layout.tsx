@@ -6,6 +6,7 @@ import ReactQueryProvider from "@/providers/react-query-provider";
 import AuthProvider from "@/providers/auth.provider";
 import Footer from "@/components/footer";
 import Container from "@/components/container";
+import Navigation from "@/components/Navigation";
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -38,7 +39,15 @@ export default function RootLayout({
         <Toaster />
         <ReactQueryProvider>
           <AuthProvider>
-            <Container>{children}</Container>
+            {/* <Container>{children}</Container> */}
+
+            <Container className="mt-[24px]">
+              <Navigation />
+            </Container>
+            {children}
+            <Container className="mt-[100px] bg-white">
+              <Footer />
+            </Container>
           </AuthProvider>
         </ReactQueryProvider>
       </body>
