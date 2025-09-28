@@ -17,6 +17,11 @@ import GigBasicDetails from "@/app/gig/[gigId]/gig-basic-details";
 import Container from "@/components/container";
 import MetaDetails from "@/app/gig/[gigId]/gig-meta-details";
 import GigAndSeller from "@/app/gig/[gigId]/gig-and-seller";
+import useTabs from "@/hooks/useTabs";
+import { gigDetailsTabs } from "@/constants";
+import GigDescription from "@/app/gig/[gigId]/gig-description";
+import GigReviews from "@/app/gig/[gigId]/gig-reviews";
+import Tabs from "@/app/seller/profile/[id]/tabs";
 
 const tags = ["ui/ux", "react", "tailwind", "figma", "responsive"];
 
@@ -42,6 +47,10 @@ const page = () => {
     id: params.gigId,
   });
 
+  const { currentTabIndex, handleTabIndex, tabs } = useTabs({
+    tabs: gigDetailsTabs,
+  });
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!gig) return <div>Error: No gigs found</div>;
@@ -60,9 +69,21 @@ const page = () => {
         </div>
       </Container>
 
-
       <Container className="pt-[28px]">
         <GigAndSeller />
+      </Container>
+
+      <Container className="pt-[28px]">
+        <Tabs
+          currentTabIndex={currentTabIndex}
+          handleTabIndex={handleTabIndex}
+          tabs={tabs}
+        />
+      </Container>
+
+      <Container className="pt-[28px]">
+        {currentTabIndex === 0 && <GigDescription />}
+        {currentTabIndex === 1 && <GigReviews />}
       </Container>
     </>
   );
