@@ -4,27 +4,27 @@ import clsx from "clsx";
 
 interface Tab {
   title: string;
-  component: () => React.JSX.Element;
 }
 
-interface Props {
-  tabs: Tab[];
-  currentTab: Tab;
-  handleTab: (i: number) => void;
+interface Props<T extends Tab> {
+  tabs: T[];
+  // tabs: Tab[];
+  currentTabIndex: number;
+  handleTabIndex: (i: number) => void;
 }
 
-export default function Tabs(props: Props) {
-  const { tabs, currentTab, handleTab } = props;
+const Tabs = <T extends Tab>(props: Props<T>) => {
+  const { tabs, currentTabIndex, handleTabIndex } = props;
 
   return (
     <div className="flex items-center space-x-4 border-b bg-white p-[5px] rounded-[10px] border-gray-200 max-w-[400px] overflow-x-auto gray-scroll">
       {tabs.map((tab, index) => (
         <div key={tab.title} className="flex items-center">
           <button
-            onClick={() => handleTab(index)}
+            onClick={() => handleTabIndex(index)}
             className={clsx(
               "relative px-3 py-2 text-sm font-normal transition-colors capitalize whitespace-nowrap cursor-pointer",
-              currentTab.title === tab.title
+              currentTabIndex === index
                 ? "bg-gray-300 rounded-[10px] text-black font-medium"
                 : "text-gray-500 hover:text-gray-700"
             )}
@@ -40,4 +40,6 @@ export default function Tabs(props: Props) {
       ))}
     </div>
   );
-}
+};
+
+export default Tabs;
