@@ -7,18 +7,18 @@ interface Props<T extends object> {
 const useTabs = <T extends object>(props: Props<T>) => {
   const { tabs } = props;
 
-  const [currentTab, setCurrentTab] = useState<T>(tabs[0]);
+  const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
-  const handleTab = (i: number) => {
+  const handleTabIndex = (i: number) => {
     if (i >= 0 && i < tabs.length) {
-      setCurrentTab(tabs[i]);
+      setCurrentTabIndex(i);
     }
   };
 
   return {
     tabs,
-    currentTab,
-    handleTab,
+    currentTabIndex,
+    handleTabIndex,
   };
 };
 
