@@ -13,6 +13,10 @@ import { useGetGigById } from "@/api/gigs";
 import { useFindOrCreateConversation } from "@/api/chats";
 import Navigation from "@/components/Navigation";
 import ReviewCard from "@/components/review-card";
+import GigBasicDetails from "@/app/gig/[gigId]/gig-basic-details";
+import Container from "@/components/container";
+import MetaDetails from "@/app/gig/[gigId]/gig-meta-details";
+import GigAndSeller from "@/app/gig/[gigId]/gig-and-seller";
 
 const tags = ["ui/ux", "react", "tailwind", "figma", "responsive"];
 
@@ -41,6 +45,27 @@ const page = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!gig) return <div>Error: No gigs found</div>;
+
+  return (
+    <>
+      <Container>
+        <GigBasicDetails />
+      </Container>
+
+      <Container className="pt-[28px]">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-[16px]">
+          {[...Array(6)].map((item, index) => (
+            <MetaDetails key={index} />
+          ))}
+        </div>
+      </Container>
+
+
+      <Container className="pt-[28px]">
+        <GigAndSeller />
+      </Container>
+    </>
+  );
 
   return (
     <div>
