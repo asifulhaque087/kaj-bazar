@@ -1,7 +1,7 @@
 "use client";
 import { useSellerById } from "@/api/sellers";
 import Tabs from "@/app/seller/profile/[id]/tabs";
-import useTabs from "@/app/seller/profile/[id]/useTabs";
+import useTabs from "@/hooks/useTabs";
 import Container from "@/components/container";
 import ReviewCard from "@/components/review-card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ const page = () => {
   });
   // console.log("seller is ", seller);
 
-  const { currentTab, handleTab, tabs } = useTabs({ tabs: alltabs });
+  const { currentTabIndex, handleTabIndex, tabs } = useTabs({ tabs: alltabs });
 
   return (
     <>
@@ -85,13 +85,17 @@ const page = () => {
 
       <Container>
         <section className="mt-[24px]">
-          <Tabs tabs={tabs} currentTab={currentTab} handleTab={handleTab} />
+          <Tabs
+            tabs={tabs}
+            currentTabIndex={currentTabIndex}
+            handleTabIndex={handleTabIndex}
+          />
         </section>
       </Container>
 
       <Container>
         <section className="mt-[24px]">
-          <currentTab.component />
+          {tabs[currentTabIndex].component()}
         </section>
       </Container>
     </>
