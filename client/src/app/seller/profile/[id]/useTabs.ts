@@ -1,29 +1,18 @@
-import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
-import Overview from "@/app/seller/profile/[id]/overview/index";
-import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
 import { useState } from "react";
 
-const tabs = [
-  {
-    title: "overview",
-    component: Overview,
-  },
-  {
-    title: "active gigs",
-    component: ActiveGigs,
-  },
+interface Props<T extends object> {
+  tabs: T[];
+}
 
-  {
-    title: "ratings & reviews",
-    component: RaitingAndReviews,
-  },
-];
+const useTabs = <T extends object>(props: Props<T>) => {
+  const { tabs } = props;
 
-const useTabs = () => {
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
+  const [currentTab, setCurrentTab] = useState<T>(tabs[0]);
 
   const handleTab = (i: number) => {
-    setCurrentTab(tabs[i]);
+    if (i >= 0 && i < tabs.length) {
+      setCurrentTab(tabs[i]);
+    }
   };
 
   return {
@@ -32,4 +21,5 @@ const useTabs = () => {
     handleTab,
   };
 };
+
 export default useTabs;
