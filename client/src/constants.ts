@@ -1,3 +1,7 @@
+import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
+import Overview from "@/app/seller/profile/[id]/overview";
+import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
+
 export const categories: string[] = [
   "Graphics & Design",
   "Digital Marketing",
@@ -64,5 +68,21 @@ export const footerData = [
   {
     heading: "FAQ",
     links: ["Account", "Deliveries", "Orders", "Payments"],
+  },
+];
+
+export const alltabs = [
+  {
+    title: "overview",
+    component: Overview,
+  },
+  {
+    title: "active gigs",
+    component: ActiveGigs,
+  },
+
+  {
+    title: "ratings & reviews",
+    component: RaitingAndReviews,
   },
 ];

@@ -6,6 +6,7 @@ import Container from "@/components/container";
 import ReviewCard from "@/components/review-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
 
@@ -23,7 +24,7 @@ const page = () => {
   });
   // console.log("seller is ", seller);
 
-  const { currentTab, handleTab, tabs } = useTabs();
+  const { currentTab, handleTab, tabs } = useTabs({ tabs: alltabs });
 
   return (
     <>
