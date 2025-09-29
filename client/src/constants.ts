@@ -13,6 +13,37 @@ export const categories: string[] = [
   "Data",
   "Business",
 ];
+
+// export const categories = [
+//   {
+//     title: "Graphics & Design",
+//   },
+//   {
+//     title: "Digital Marketing",
+//   },
+//   {
+//     title: "Writing & Translation",
+//   },
+//   {
+//     title: "Video & Animation",
+//   },
+//   {
+//     title: "Music & Audio",
+//   },
+//   {
+//     title: "Programming & Tech",
+//   },
+//   {
+//     title: "Photography",
+//   },
+//   {
+//     title: "Data",
+//   },
+//   {
+//     title: "Business",
+//   },
+// ];
+
 export const expectedDelivery: string[] = [
   "1 Day Delivery",
   "2 Days Delivery",
