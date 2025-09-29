@@ -6,9 +6,9 @@ import React from "react";
 
 const Overview = () => {
   return (
-    <div className="grid grid-cols-12 gap-[16px] ">
+    <div className="grid grid-cols-12 gap-[16px]">
       {/* left box */}
-      <div className="col-span-5  rounded-[8px] bg-white border border-[#ECF1E7] overflow-hidden">
+      <div className="col-span-12 xl:col-span-5  rounded-[8px] bg-white border border-[#ECF1E7] overflow-hidden">
         {/* about me */}
         <div>
           <div className="border-b border-[#ECF1E7] min-h-[48px] grid place-items-center">
@@ -102,7 +102,7 @@ const Overview = () => {
         </div>
       </div>
       {/* right box */}
-      <div className="col-span-7 rounded-[8px] bg-white border border-[#ECF1E7] overflow-hidden">
+      <div className="col-span-12 xl:col-span-7 rounded-[8px] bg-white border border-[#ECF1E7] overflow-hidden">
         {/* Desciption */}
         <div className="">
           <div className="border-b border-[#ECF1E7] min-h-[48px] grid place-items-center">
@@ -133,7 +133,7 @@ const Overview = () => {
             </span>
           </div>
 
-          <div className="p-[24px] grid grid-cols-2 gap-[20px]">
+          <div className="p-[24px] grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
             <ExperienceCard
               company="google"
               role="Fullstack developer"
@@ -155,7 +155,7 @@ const Overview = () => {
             </span>
           </div>
 
-          <div className="p-[24px] grid grid-cols-2 gap-[20px]">
+          <div className="p-[24px] grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
             <EducationCard
               major="BSC in CSE"
               institution="SouthEast University"
