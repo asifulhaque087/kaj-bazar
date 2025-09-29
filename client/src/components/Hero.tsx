@@ -1,6 +1,7 @@
 "use client";
 
 import Categories from "@/components/Categories";
+import { categories, gigsLimit } from "@/constants";
 import { ArrowRight, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -17,6 +18,10 @@ const Hero = () => {
       searchInput: "",
     },
   });
+
+  // const catFor2ndBox =  categories[generateRandomInt(0, 9)]
+  // const catFor3rdBox =  categories[generateRandomInt(0, 9)]
+  // const catFor4thBox =  categories[generateRandomInt(0, 9)]
 
   return (
     <div className="grid grid-cols-12 row-span-2 gap-[24px]">
@@ -71,7 +76,7 @@ const Hero = () => {
 
             <button
               type="submit"
-              className=" bg-[#CDC0A8]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#20A89F] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
+              className=" bg-[#CDC0A8]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#A49A86] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
             >
               <SearchIcon size={20} color="white" />
             </button>
@@ -94,8 +99,17 @@ const Hero = () => {
           backgroundSize: "cover",
         }}
       >
-        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
-          Architect
+        <button
+          className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px] cursor-pointer"
+          onClick={() =>
+            router.push(
+              `/gigs?category=${encodeURIComponent(
+                "Digital Marketing"
+              )}&page=1&limit=${gigsLimit}`
+            )
+          }
+        >
+          Digital Marketing
         </button>
       </div>
 
@@ -109,8 +123,17 @@ const Hero = () => {
           backgroundSize: "cover",
         }}
       >
-        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
-          UI/UX
+        <button
+          className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px] cursor-pointer"
+          onClick={() =>
+            router.push(
+              `/gigs?category=${encodeURIComponent(
+                "Programming & Tech"
+              )}&page=1&limit=${gigsLimit}`
+            )
+          }
+        >
+          Programming & Tech
         </button>
       </div>
 
@@ -124,16 +147,21 @@ const Hero = () => {
           backgroundSize: "cover",
         }}
       >
-        <button className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px]">
-          Web Development
+        <button
+          className="px-[24px] py-[6px] rounded-[10px] text-white text-[16px] font-medium  bg-[rgba(39,201,190,0.1)] backdrop-blur-[20px] cursor-pointer"
+          onClick={() =>
+            router.push(
+              `/gigs?category=${encodeURIComponent(
+                "Business"
+              )}&page=1&limit=${gigsLimit}`
+            )
+          }
+        >
+          Business
         </button>
       </div>
     </div>
   );
-
-  function onSubmit(data: FormValue) {
-    console.log("the new combination data is ", data);
-  }
 };
 
 export default Hero;
