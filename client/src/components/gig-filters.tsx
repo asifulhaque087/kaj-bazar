@@ -48,7 +48,7 @@ const GigFilters = ({
           value={filters.minPrice}
           onChange={handleFilterChange}
           placeholder="Min"
-          className="w-20 px-3 py-2 text-sm border-r border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400"
+          className="grow px-3 py-2 text-sm border-r border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400"
         />
         <input
           type="number"
@@ -56,7 +56,7 @@ const GigFilters = ({
           value={filters.maxPrice}
           onChange={handleFilterChange}
           placeholder="Max"
-          className="w-20 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
+          className="grow px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
         />
       </div>
 
