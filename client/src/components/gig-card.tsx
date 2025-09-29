@@ -22,7 +22,7 @@ const GigCard = (props: IGigCard) => {
       <div
         className={`${
           fluid ? "w-full" : "max-w-[262px]"
-        } rounded-[24px] shadow-lg border bg-white border-[#E4E5E7]`}
+        } rounded-[24px] shadow-lgg border bg-white border-[#E4E5E7]`}
       >
         {/* Header */}
         <div className="flex items-center gap-x-[12px] px-[12px] py-[15px]">

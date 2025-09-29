@@ -41,7 +41,7 @@ const GigSlider = (props: IGigSlider) => {
       {/* controll */}
       <div className="flex items-center gap-[10px] pb-[14px]">
         <button
-          className="capitalize px-[14px] py-[10px]  outline-none rounded-[4px] border border-[#62646A] cursor-pointer"
+          className="capitalize px-[16px] py-[8px]  outline-none rounded-[4px] border border-[#62646A] cursor-pointer font-normal font-roboto text-sm text-[#62646A]"
           onClick={() =>
             router.push(
               `/gigs?category=${encodeURIComponent(
