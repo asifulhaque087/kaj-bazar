@@ -42,7 +42,7 @@ const SearchBox = (props: Props) => {
 
       <button
         type="submit"
-        className=" bg-[#27C9BE]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#20A89F] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
+        className=" bg-[#CDC0A8]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#20A89F] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
       >
         <SearchIcon size={20} color="white" />
       </button>
