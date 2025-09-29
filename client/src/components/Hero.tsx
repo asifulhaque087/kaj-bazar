@@ -21,7 +21,7 @@ const Hero = () => {
   return (
     <div className="grid grid-cols-12 row-span-2 gap-[24px]">
       {/* --- 1st box --- */}
-      <div className="col-span-12 xl:col-span-6  row-span-2 rounded-[14px] bg-[#0D0E12] min-h-[474px] xl:min-h-[574px] relative overflow-hidden px-[14px] flex justify-center items-center">
+      <div className="col-span-12 xl:col-span-6  row-span-2 rounded-[14px] bg-[#0D0E12] min-h-[474px] xl:min-h-[574px] relative overflow-hidden px-[16px] md:px-[24px] flex justify-center items-center">
         <div className="flex gap-x-[24px] rotate-[15deg] items-end opacity-[5%] absolute -top-[2%] left-[15%]">
           <span className="w-[94px] h-[292px] bg-[#27C9BE]  rounded-[12px]" />
           <span className="w-[94px] h-[292px]  bg-[#6392D8] rounded-[12px]" />
@@ -30,7 +30,7 @@ const Hero = () => {
 
         {/* main content */}
         <main className="w-full">
-          <button className="capitalize bg-[#6594D3] outline-none border-none px-[24px] py-[8px] flex items-center gap-x-[4px] rounded-[19px] mt-[60px] mx-auto">
+          <button className="capitalize bg-[#616BA4] outline-none border-none px-[24px] py-[8px] flex items-center gap-x-[4px] rounded-[19px] mt-[60px] mx-auto">
             <span className="-tracking-[0.14px] text-white font-[500]">
               join us
             </span>
@@ -71,7 +71,7 @@ const Hero = () => {
 
             <button
               type="submit"
-              className=" bg-[#27C9BE]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#20A89F] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
+              className=" bg-[#CDC0A8]  p-[8px] grid place-items-center rounded-[8px] cursor-pointer hover:bg-[#20A89F] transition-all duration-200 ease-in- transform hover:scale-105 active:scale-95"
             >
               <SearchIcon size={20} color="white" />
             </button>
