@@ -1,15 +1,22 @@
 import { useRouter } from "next/navigation";
 
+interface Props {
+  className?: string;
+}
+
 const navs = [
   { title: "sign up", path: "" },
   { title: "sign in", path: "" },
   { title: "gigs", path: "/gigs" },
 ];
 
-const UnprotectedNavs = () => {
+const UnprotectedNavs = (props: Props) => {
+  const { className } = props;
   const router = useRouter();
   return (
-    <div className="flex items-center gap-x-[24px]">
+    <div
+      className={`flex items-center justify-center gap-x-[24px] ${className}`}
+    >
       {navs.map((nav, i) => (
         <p
           key={i}

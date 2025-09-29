@@ -33,21 +33,13 @@ const Header = () => {
 
   return (
     <Container className="bg-[#616BA4]">
-      <div className="min-h-[114px] grid grid-cols-12 gap-[16px] py-[16px] md:py-[24px]">
-        <div className="order-1 col-span-6 md:col-span-3 xl:col-span-2 flex items-center justify-start xl:justify-start">
-          <Logo />
-        </div>
-        <div className="order-3 md:order-4 xl:order-2 col-span-12 xl:col-span-6 grid place-items-center">
-          <SearchBox />
-        </div>
+      <div className="min-h-[114px] grid items-center grid-cols-12  gap-[16px] py-[16px] md:py-[24px]">
+        <Logo className="order-1 col-span-7 sm:col-span-9 md:col-span-3 lg:col-span-4 xl:col-span-2 2xl:col-span-2" />
+        <SearchBox className="order-3 col-span-12 md:order-4 xl:order-2  xl:col-span-4 2xl:col-span-5" />
 
-        <div className="order-4 md:order-2 md:col-span-6 xl:order-3 col-span-12 xl:col-span-2 flex items-center justify-center xl:justify-end">
-          <UnprotectedNavs />
-        </div>
+        <UnprotectedNavs className="order-4 md:order-2 md:col-span-6 xl:order-3 col-span-12 xl:col-span-4 2xl:col-span-3" />
 
-        <div className="order-2 md:order-3 md:col-span-3 xl:order-4 col-span-6 xl:col-span-2 flex justify-end items-center">
-          <BecomeASeller />
-        </div>
+        <BecomeASeller className="order-2 col-span-5 sm:col-span-3 md:order-3 lg:col-span-2 md:col-span-3 xl:order-4  xl:col-span-2    2xl:col-span-2" />
       </div>
     </Container>
   );
