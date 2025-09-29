@@ -1,31 +1,20 @@
 "use client";
 
-import { DOTS, usePagination } from "@/hooks/use-pagination.hook";
+import {
+  DOTS,
+  PaginationItem,
+  usePagination,
+} from "@/hooks/use-pagination.hook";
 import React from "react";
 
 interface IPagination {
   onPageChange: (page: number) => void;
-  totalCount: number;
-  siblingCount?: number;
+  paginationRange: PaginationItem[] | undefined;
   currentPage: number;
-  pageSize: number;
 }
 
 export const Pagination = (props: IPagination) => {
-  const {
-    onPageChange,
-    totalCount,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-  } = props;
-
-  const paginationRange = usePagination({
-    currentPage,
-    totalCount,
-    siblingCount,
-    pageSize,
-  });
+  const { onPageChange, currentPage, paginationRange } = props;
 
   if (currentPage === 0 || paginationRange!.length < 2) {
     return null;
@@ -73,10 +62,10 @@ export const Pagination = (props: IPagination) => {
         return (
           <li
             key={i}
-            className={`box-border flex items-center justify-center  rounded-[4px] cursor-pointer  text-[13px] leading-[20px] tracking-[1px] hover:bg-[#317AF5] hover:text-white ${
+            className={`box-border flex items-center justify-center  rounded-[4px] cursor-pointer  text-[13px] leading-[20px] tracking-[1px] hover:bg-[#616BA4] hover:text-[#FEFEFF] ${
               pageNumber === currentPage
-                ? "text-[18px] font-[600] leading-[27px] h-[35px] w-[35px] bg-[#317AF5] text-white"
-                : "h-[25px] w-[25px] font-[600] text-white bg-[#317AF5]"
+                ? "text-[18px] font-[600] leading-[27px] h-[35px] w-[35px] bg-[#9FBB89] text-[#FEFEFF]"
+                : "h-[25px] w-[25px] font-[600] text-[#FEFEFF] bg-[#616BA4]"
             }`}
             onClick={() => onPageChange(pageNumber)}
           >

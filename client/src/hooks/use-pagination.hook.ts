@@ -3,7 +3,16 @@ import { useMemo } from "react";
 
 export const DOTS = "...";
 
-const range = (start: any, end: any) => {
+export type PaginationItem = number | typeof DOTS;
+
+export interface Props {
+  totalCount: number;
+  pageSize: number;
+  siblingCount?: number;
+  currentPage: number;
+}
+
+const range = (start: number, end: number): number[] => {
   let length = end - start + 1;
   return Array.from({ length }, (_, idx) => idx + start);
 };
@@ -13,17 +22,12 @@ export const usePagination = ({
   pageSize,
   siblingCount = 1,
   currentPage,
-}: any) => {
-  const paginationRange = useMemo(() => {
+}: Props): PaginationItem[] | undefined => {
+  const paginationRange = useMemo<PaginationItem[] | undefined>(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
 
-    // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
-    const totalPageNumbers = siblingCount + 5;
+    const totalPageNumbers = siblingCount * 2 + 5;
 
-    /*
-      If the number of pages is less than the page numbers we want to show in our
-      paginationComponent, we return the range [1..totalPageCount]
-    */
     if (totalPageNumbers >= totalPageCount) {
       return range(1, totalPageCount);
     }
@@ -34,13 +38,8 @@ export const usePagination = ({
       totalPageCount
     );
 
-    /*
-      We do not want to show dots if there is only one position left 
-      after/before the left/right page count as that would lead to a change if our Pagination
-      component size which we do not want
-    */
     const shouldShowLeftDots = leftSiblingIndex > 2;
-    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 1;
 
     const firstPageIndex = 1;
     const lastPageIndex = totalPageCount;
@@ -65,6 +64,8 @@ export const usePagination = ({
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
     }
+
+    return range(1, totalPageCount);
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
   return paginationRange;

@@ -5,6 +5,7 @@ import Gig from "@/components/gig-card";
 import GigFilters from "@/components/gig-filters";
 import { Pagination } from "@/components/pagination";
 import useGigFilters from "@/hooks/use-gigs-flter.hook";
+import { usePagination } from "@/hooks/use-pagination.hook";
 
 const Page = () => {
   const {
@@ -22,6 +23,13 @@ const Page = () => {
     q: baseQueryString,
     page: currentPage,
     limit: limit,
+  });
+
+  const paginationRange = usePagination({
+    currentPage,
+    totalCount: data?.totalCount || 0,
+    siblingCount: 1,
+    pageSize: limit,
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -51,9 +59,8 @@ const Page = () => {
 
       <Container className="mt-[72px]">
         <Pagination
+          paginationRange={paginationRange}
           currentPage={currentPage}
-          totalCount={data?.totalCount || 0}
-          pageSize={limit}
           onPageChange={handlePageChange}
         />
       </Container>
