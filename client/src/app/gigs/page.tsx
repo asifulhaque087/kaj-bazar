@@ -1,5 +1,6 @@
 "use client";
 import { useSearch } from "@/api/gigs";
+import Container from "@/components/container";
 import Gig from "@/components/gig-card";
 import GigFilters from "@/components/gig-filters";
 import { Pagination } from "@/components/pagination";
@@ -27,19 +28,18 @@ const Page = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="">
+    <>
       {/* Filter Section */}
-      <div className="">
+      <Container className="mt-[72px]">
         <GigFilters
           filters={filters}
           handleFilterChange={handleFilterChange}
           applyFilters={applyFilters}
           clearFilters={clearFilters}
         />
-      </div>
-      {/* Gig Display Section */}
-      <div className="pt-[20px]">
-        {/* <h1 className="text-3xl font-bold mb-6">Gigs</h1> */}
+      </Container>
+
+      <Container className="mt-[72px]">
         <div className="flex gap-[10px] flex-wrap items-center justify-center">
           {(data?.data || []).map((gig) => (
             <div key={gig.id} className="grow basis-[262px]">
@@ -47,16 +47,17 @@ const Page = () => {
             </div>
           ))}
         </div>
-        <div className="mt-[50px] mb-[50px]">
-          <Pagination
-            currentPage={currentPage}
-            totalCount={data?.totalCount || 0}
-            pageSize={limit}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      </div>
-    </div>
+      </Container>
+
+      <Container className="mt-[72px]">
+        <Pagination
+          currentPage={currentPage}
+          totalCount={data?.totalCount || 0}
+          pageSize={limit}
+          onPageChange={handlePageChange}
+        />
+      </Container>
+    </>
   );
 };
 export default Page;
