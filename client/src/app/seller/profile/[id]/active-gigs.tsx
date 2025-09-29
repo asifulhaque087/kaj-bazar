@@ -1,9 +1,12 @@
-import React from 'react'
+import GigsBox from "@/app/gigs-box";
+import React from "react";
 
 const ActiveGigs = () => {
   return (
-    <div>ActiveGigs</div>
-  )
-}
+    <div>
+      <GigsBox />
+    </div>
+  );
+};
 
-export default ActiveGigs
+export default ActiveGigs;

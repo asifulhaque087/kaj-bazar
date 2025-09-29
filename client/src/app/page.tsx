@@ -31,20 +31,8 @@ export default function Home() {
         <Hero />
       </Container>
 
-      {/* --- Category Tab --- */}
-      {/* <Container className="mt-[24px]">
-        <CategoryTab
-          setActiveCategory={setCurrentCategory}
-          activeCategory={currentCategory}
-        />
-      </Container> */}
-      {/* --- Gig Slider --- */}
-      {/* <Container className="mt-[24px]">
-        <GigSlider gigs={data?.data || []} currentCategory={currentCategory} />
-      </Container> */}
-
       <Container className="mt-[72px]">
-        <GigsBox  />
+        <GigsBox />
       </Container>
 
       <Container className="mt-[100px]">
