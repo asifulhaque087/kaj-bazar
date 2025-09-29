@@ -26,7 +26,6 @@ import UnprotectedNavs from "@/components/header/unprotected-navs";
 import BecomeASeller from "@/components/header/button";
 
 const Header = () => {
-  const [activeItem, setActiveItem] = useState(-1);
   const router = useRouter();
 
   const { authUser, buyer, seller, role } = useAuthStore();
