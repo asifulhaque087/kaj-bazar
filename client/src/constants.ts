@@ -252,3 +252,17 @@ export const testReviewDescriptions = [
       "A focused module on competitor analysis using various SEO tools to reverse-engineer success, identify top-performing local keywords, and benchmark your website's performance against the top three businesses in your service area.",
   },
 ];
+
+export const buyerProfileTabs = [
+  {
+    title: "active",
+  },
+
+  {
+    title: "completed",
+  },
+
+  {
+    title: "cancel",
+  },
+];
