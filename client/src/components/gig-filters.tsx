@@ -37,11 +37,11 @@ const GigFilters = ({
         value={filters.searchKey}
         placeholder="Search"
         onChange={handleFilterChange}
-        className="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
+        className="px-4 py-2 grow rounded-md border border-gray-300 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
       />
 
       {/* Price Range */}
-      <div className="flex bg-white items-center border border-gray-300 rounded-md overflow-hidden">
+      <div className="flex grow bg-white items-center border border-gray-300 rounded-md overflow-hidden">
         <input
           type="number"
           name="minPrice"
@@ -61,7 +61,7 @@ const GigFilters = ({
       </div>
 
       {/* Category */}
-      <div className="relative">
+      <div className="relative grow">
         <select
           id="category"
           name="category"
@@ -94,7 +94,7 @@ const GigFilters = ({
       </div>
 
       {/* Delivery Time */}
-      <div className="relative">
+      <div className="relative grow">
         <select
           id="deliveryTime"
           name="deliveryTime"
