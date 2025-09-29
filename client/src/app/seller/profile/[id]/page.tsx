@@ -28,11 +28,11 @@ const page = () => {
 
   return (
     <>
-      <Container>
+      <Container className="mt-[72px]">
         <section className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-[16px]">
           {/* box 1 */}
           <div
-            className="col-span-4 md:col-span-5 flex flex-col px-[15px] pb-[28px] rounded-[10px] overflow-hidden"
+            className="min-h-[344px] col-span-4 md:col-span-5 flex flex-col px-[15px] pb-[28px] rounded-[10px] overflow-hidden"
             style={{
               backgroundImage: `linear-gradient(to bottom,rgba(255,255,255,.2),
                 rgba(0,0,0, .7)), url(${seller?.profilePicture})`,
@@ -57,7 +57,7 @@ const page = () => {
           </div>
 
           {/* box 2 */}
-          <div className="col-span-4 md:col-span-3 rounded-[10px] overflow-hidden">
+          <div className="min-h-[344px] col-span-4 md:col-span-3 rounded-[10px] overflow-hidden">
             <ReviewCard
               ratingSum={seller?.ratingSum!}
               ratingsCount={seller?.ratingsCount!}
@@ -67,7 +67,7 @@ const page = () => {
 
           {/* box 3 */}
 
-          <div className="w-full col-span-4 md:col-span-8 xl:col-span-4 grid grid-cols-4 rounded-[10px] overflow-hidden gap-[1px] border-[1px] border-gray-200 bg-gray-200">
+          <div className="min-h-[344px] w-full col-span-4 md:col-span-8 xl:col-span-4 grid grid-cols-4 rounded-[10px] overflow-hidden gap-[1px] border-[1px] border-gray-200 bg-gray-200">
             {[...Array(4)].map((item, index) => (
               <Card
                 key={index}
@@ -84,7 +84,7 @@ const page = () => {
       </Container>
 
       <Container>
-        <section className="mt-[24px]">
+        <section className="mt-[72px]">
           <Tabs
             tabs={tabs}
             currentTabIndex={currentTabIndex}
@@ -94,7 +94,7 @@ const page = () => {
       </Container>
 
       <Container>
-        <section className="mt-[24px]">
+        <section className="mt-[72px]">
           {tabs[currentTabIndex].component()}
         </section>
       </Container>
