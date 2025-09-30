@@ -5,7 +5,7 @@ import ExperienceCard from "@/app/seller/profile/[id]/overview/experience-card";
 import LanguageCard from "@/app/seller/profile/[id]/overview/language-card";
 import { Seller } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
-import React from "react";
+import { format, parseISO } from "date-fns";
 
 interface Props {
   seller: Seller;
@@ -38,7 +38,8 @@ const Overview = (props: Props) => {
                   </p>
 
                   <h2 className="font-[Roboto] text-[20px] font-bold text-[#3E3F47] leading-none">
-                    19 April 2022
+                    {seller?.createdAt &&
+                      format(parseISO(seller.createdAt), "dd MMMM yyyy")}
                   </h2>
                 </div>
 
@@ -48,7 +49,7 @@ const Overview = (props: Props) => {
                   </p>
 
                   <h2 className="font-[Roboto] text-[20px] font-bold text-[#3E3F47] leading-none">
-                    1 Hour
+                    {seller?.responseTime} Hour
                   </h2>
                 </div>
 
@@ -58,7 +59,7 @@ const Overview = (props: Props) => {
                   </p>
 
                   <h2 className="font-[Roboto] text-[20px] font-bold text-[#3E3F47] leading-none">
-                    Bangladesh
+                    {seller?.country}
                   </h2>
                 </div>
               </div>

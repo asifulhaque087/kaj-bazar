@@ -110,6 +110,9 @@ export const sellerSchema = z.object({
       one: z.object({ star: z.number().int(), count: z.number().int() }),
     })
     .optional(),
+
+  createdAt: z.string().optional(),
+  responseTime: z.string().optional(),
 });
 export type Seller = z.infer<typeof sellerSchema>;
 

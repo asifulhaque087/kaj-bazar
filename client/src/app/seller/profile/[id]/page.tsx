@@ -13,6 +13,8 @@ import { findOrCreateConversationApi } from "@/api/chats/chat.service";
 import { useAuthStore } from "@/store/use-auth.store";
 import StatisticCard from "@/app/seller/profile/[id]/statistic-card";
 import Overview from "@/app/seller/profile/[id]/overview";
+import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
+import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
 
 const page = () => {
   //   ** Params
@@ -116,8 +118,9 @@ const page = () => {
 
       <Container className="mt-[72px]">
         {/* {tabs[currentTabIndex].component()} */}
-
-        {currentTabIndex === 0 && <Overview seller={seller} />}
+        {currentTabIndex === 0 && <Overview seller={seller!} />}
+        {currentTabIndex === 1 && <ActiveGigs />}
+        {currentTabIndex === 2 && <RaitingAndReviews />}
       </Container>
     </>
   );
