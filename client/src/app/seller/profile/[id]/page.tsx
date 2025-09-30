@@ -9,10 +9,17 @@ import { Card } from "@/components/ui/card";
 import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
+import { findOrCreateConversationApi } from "@/api/chats/chat.service";
+import { useAuthStore } from "@/store/use-auth.store";
+import StatisticCard from "@/app/seller/profile/[id]/statistic-card";
+import Overview from "@/app/seller/profile/[id]/overview";
 
 const page = () => {
   //   ** Params
   const params = useParams<{ id: string }>();
+
+  // ** Store
+  const { authUser } = useAuthStore();
 
   // ** Queries
   const {
@@ -22,7 +29,7 @@ const page = () => {
   } = useSellerById({
     sellerId: params.id,
   });
-  // console.log("seller is ", seller);
+  console.log("seller is ", seller);
 
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({ tabs: alltabs });
 
@@ -46,13 +53,23 @@ const page = () => {
               <span className="hidden">flag</span>
               <div className="flex flex-col gap-y-[8px] max-w-[168px] text-white font-[Roboto]">
                 <h4 className="font-medium tracking-[0.56] leading-none text-sm">
-                  Asiful Haque Mridul
+                  {seller?.username}
                 </h4>
                 <p className="text-xs font-extralight leading-none">
-                  I am a fullstack web developer. I create website here
+                  {seller?.oneliner}
                 </p>
               </div>
-              <Button className="bg-[#6392D8] text-white">Contact</Button>
+              <Button
+                className="bg-[#6392D8] text-white"
+                onClick={() =>
+                  findOrCreateConversationApi({
+                    receiverUsername: seller?.username!,
+                    senderUsername: authUser?.username!,
+                  })
+                }
+              >
+                Contact
+              </Button>
             </div>
           </div>
 
@@ -68,17 +85,21 @@ const page = () => {
           {/* box 3 */}
 
           <div className="min-h-[344px] w-full col-span-4 md:col-span-8 xl:col-span-4 grid grid-cols-4 rounded-[10px] overflow-hidden gap-[1px] border-[1px] border-gray-200 bg-gray-200">
-            {[...Array(4)].map((item, index) => (
-              <Card
-                key={index}
-                className="col-span-2 grid place-items-center rounded-none border-none shadow-none"
-              >
-                <div className="grid place-items-center gap-y-[4px]">
-                  <p className="text-sm font-normal">Total Gigs</p>
-                  <span className="text-sm font-bold">0</span>
-                </div>
-              </Card>
-            ))}
+            <StatisticCard
+              className="col-span-2"
+              title="total gigs"
+              count={6}
+            />
+            <StatisticCard
+              className="col-span-2"
+              title="completed orders"
+              count={10}
+            />
+            <StatisticCard
+              className="col-span-4"
+              title="ongoing orders"
+              count={3}
+            />
           </div>
         </section>
       </Container>
@@ -93,10 +114,10 @@ const page = () => {
         </section>
       </Container>
 
-      <Container>
-        <section className="mt-[72px]">
-          {tabs[currentTabIndex].component()}
-        </section>
+      <Container className="mt-[72px]">
+        {/* {tabs[currentTabIndex].component()} */}
+
+        {currentTabIndex === 0 && <Overview seller={seller} />}
       </Container>
     </>
   );

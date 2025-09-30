@@ -1,10 +1,22 @@
+import { findOrCreateConversationApi } from "@/api/chats/chat.service";
 import CertificateCard from "@/app/seller/profile/[id]/overview/certificate-card";
 import EducationCard from "@/app/seller/profile/[id]/overview/education-card";
 import ExperienceCard from "@/app/seller/profile/[id]/overview/experience-card";
 import LanguageCard from "@/app/seller/profile/[id]/overview/language-card";
+import { Seller } from "@/schemas";
+import { useAuthStore } from "@/store/use-auth.store";
 import React from "react";
 
-const Overview = () => {
+interface Props {
+  seller: Seller;
+}
+
+const Overview = (props: Props) => {
+  const { seller } = props;
+
+  // ** Store
+  const { authUser } = useAuthStore();
+
   return (
     <div className="grid grid-cols-12 gap-[16px]">
       {/* left box */}
@@ -18,12 +30,8 @@ const Overview = () => {
           </div>
 
           <div className="p-[24px]">
-            <p className="font-[Roboto] text-[16px] font-normal text-[#0E0F19] max-w-[422px]">
-              Passionate about cricket and football️, following the legendary
-              CR7 and the mighty Real Madrid
-            </p>
             <div className="grid grid-cols-3">
-              <div className="col-span-2 flex flex-col gap-y-[16px] mt-[44px]">
+              <div className="col-span-2 flex flex-col gap-y-[16px]">
                 <div className="flex flex-col gap-y-[4px]">
                   <p className="font-[Roboto] text-[12px] font-normal text-[#3E3F47]">
                     Member since
@@ -54,7 +62,15 @@ const Overview = () => {
                   </h2>
                 </div>
               </div>
-              <div className="col-span-1 bg-[#6392D8] rounded-[8px] grid place-items-center">
+              <div
+                className="col-span-1 bg-[#6392D8] rounded-[8px] grid place-items-center cursor-pointer"
+                onClick={() =>
+                  findOrCreateConversationApi({
+                    receiverUsername: seller?.username!,
+                    senderUsername: authUser?.username!,
+                  })
+                }
+              >
                 <span className="font-[Roboto] font-bold text-[20px] text-[#F7F7FA]">
                   Contact
                 </span>
@@ -72,10 +88,13 @@ const Overview = () => {
             </span>
           </div>
           <div className="p-[24px] grid grid-cols-2 gap-[20px]">
-            <LanguageCard title="english" level="beginner" />
-            <LanguageCard title="bangla" level="native" />
-            <LanguageCard title="hindi" level="advance" />
-            <LanguageCard title="urdu" level="advance" />
+            {seller?.languages?.map((lan, i) => (
+              <LanguageCard
+                key={lan.id}
+                title={lan.language}
+                level={lan.level}
+              />
+            ))}
           </div>
         </div>
 
@@ -87,17 +106,14 @@ const Overview = () => {
             </span>
           </div>
           <div className="p-[24px] grid grid-cols-1 gap-[20px]">
-            <CertificateCard
-              title="Solution Architect"
-              company="amazon"
-              time="beginner"
-            />
-
-            <CertificateCard
-              title="Solution Architect"
-              company="amazon"
-              time="beginner"
-            />
+            {seller?.certificates?.map((cert) => (
+              <CertificateCard
+                key={cert.id}
+                title={cert.name}
+                company={cert.from}
+                time={cert.year}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -112,16 +128,7 @@ const Overview = () => {
           </div>
 
           <p className="font-[Roboto] text-[14px] text-[#0E0F19] p-[24px]">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
+            {seller?.description}
           </p>
         </div>
 
@@ -134,16 +141,14 @@ const Overview = () => {
           </div>
 
           <div className="p-[24px] grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
-            <ExperienceCard
-              company="google"
-              role="Fullstack developer"
-              description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its "
-            />
-            <ExperienceCard
-              company="google"
-              role="Fullstack developer"
-              description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its "
-            />
+            {seller?.experience?.map((ex) => (
+              <ExperienceCard
+                key={ex.id}
+                company={ex.company}
+                role={ex.title}
+                description={ex?.description!}
+              />
+            ))}
           </div>
         </div>
 
@@ -156,17 +161,14 @@ const Overview = () => {
           </div>
 
           <div className="p-[24px] grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
-            <EducationCard
-              major="BSC in CSE"
-              institution="SouthEast University"
-              location="Bangladesh"
-            />
-
-            <EducationCard
-              major="HSC"
-              institution="SouthEast University"
-              location="Bangladesh"
-            />
+            {seller?.education?.map((ed) => (
+              <EducationCard
+                key={ed.id}
+                major={ed.major}
+                institution={ed.university}
+                location={ed.country}
+              />
+            ))}
           </div>
         </div>
 
@@ -178,10 +180,15 @@ const Overview = () => {
             </span>
           </div>
 
-          <div className="p-[24px] flex flex-wrap gap-[20px]">
-            <div className="capitalize rounded-[8px] px-[20px] py-[8px] bg-[#CFCFD1] text-[#3E3F47] font-medium font-[Roboto] text-[16px]">
-              node js
-            </div>
+          <div className="p-[24px] flex flex-wrap gap-[20px] items-center justify-center">
+            {seller?.skills?.map((sk) => (
+              <div
+                key={sk.id}
+                className="capitalize rounded-[8px] px-[20px] py-[8px] bg-[#CFCFD1] text-[#3E3F47] font-medium font-[Roboto] text-[16px]"
+              >
+                {sk.name}
+              </div>
+            ))}
           </div>
         </div>
       </div>
