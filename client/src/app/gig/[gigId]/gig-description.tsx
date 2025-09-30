@@ -1,7 +1,12 @@
-const GigDescription = () => {
+interface Props {
+  description: string;
+}
+
+const GigDescription = (props: Props) => {
+  const { description } = props;
   return (
-    <div className="bg-[#FEFEFF] rounded-[4px] min-h-[316px] grid place-items-center">
-      This is gig description
+    <div className="bg-[#FEFEFF] rounded-[4px] min-h-[316px] p-[24px]">
+      {description}
     </div>
   );
 };

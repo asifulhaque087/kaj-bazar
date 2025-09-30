@@ -1,12 +1,23 @@
+import { findOrCreateConversationApi } from "@/api/chats/chat.service";
+import { Gig } from "@/schemas";
+import { useAuthStore } from "@/store/use-auth.store";
 import { Star } from "lucide-react";
 
-const GigAndSeller = () => {
+interface Props {
+  gig: Gig;
+}
+
+const GigAndSeller = (props: Props) => {
+  const { gig } = props;
+
+  const { authUser, seller, role } = useAuthStore();
+
   return (
     <div className="grid grid-cols-12 rounded-[4px] bg-[#FEFEFF] gap-[12px] p-[12px]">
       <div className="col-span-12 md:col-span-7 xl:col-span-8 rounded-[4px] min-h-[400px] overflow-hidden h-[458px]">
         <img
           className="w-full h-full object-cover object-center"
-          src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/248347534/original/3f3a487e81848f53a40be787069783efb31ea61e/create-attractive-gig-image-e1fd.jpg"
+          src={gig.coverImage}
           alt="gig"
         />
       </div>
@@ -16,7 +27,7 @@ const GigAndSeller = () => {
         <div className="h-[288px] rounded-[4px] overflow-hidden relative">
           <img
             className="w-full h-full object-center object-cover"
-            src="https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={gig.profilePicture}
             alt="seller"
           />
 
@@ -34,7 +45,7 @@ const GigAndSeller = () => {
 
           <div>
             <h4 className="capitalize font-[Roboto] text-[20px] font-normal text-[#0E0F19] mt-[18px]]">
-              Haris Khan
+              {gig.username}
             </h4>
             <p className="capitalize font-[Roboto] text-[14px] font-normal text-[#35373F] mt-[10px]]">
               Fullstack Developer
@@ -51,7 +62,15 @@ const GigAndSeller = () => {
             ))}
           </div>
 
-          <button className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium mt-[20px]] w-full">
+          <button
+            className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
+            onClick={() =>
+              findOrCreateConversationApi({
+                receiverUsername: gig.username,
+                senderUsername: authUser?.username!,
+              })
+            }
+          >
             contact
           </button>
         </div>

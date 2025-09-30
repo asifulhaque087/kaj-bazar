@@ -58,7 +58,7 @@ const page = () => {
   return (
     <>
       <Container>
-        <GigBasicDetails />
+        <GigBasicDetails gig={gig} />
       </Container>
 
       <Container className="pt-[28px]">
@@ -70,7 +70,7 @@ const page = () => {
       </Container>
 
       <Container className="pt-[28px]">
-        <GigAndSeller />
+        <GigAndSeller gig={gig} />
       </Container>
 
       <Container className="pt-[28px]">
@@ -82,7 +82,9 @@ const page = () => {
       </Container>
 
       <Container className="pt-[28px]">
-        {currentTabIndex === 0 && <GigDescription />}
+        {currentTabIndex === 0 && (
+          <GigDescription description={gig.description} />
+        )}
         {currentTabIndex === 1 && <GigReviews />}
       </Container>
     </>
