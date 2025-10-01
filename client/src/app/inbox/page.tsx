@@ -1,6 +1,9 @@
 "use client";
 
 import { useGetConversationsByUsername } from "@/api/chats";
+import ConversationList from "@/app/inbox/conversation-list";
+import MessageList from "@/app/inbox/message-list";
+import Container from "@/components/container";
 import { Conversation } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
@@ -21,12 +24,17 @@ const page = () => {
   if (isLoading) return <div>loading conversatino list</div>;
 
   return (
+    <Container className="mt-[40px]">
+      <div className="grid grid-cols-12 gap-[16px]">
+        <ConversationList conversations={data} className="col-span-4" />
+        <MessageList className="col-span-8" />
+      </div>
+    </Container>
+  );
+
+  return (
     <div>
       {data?.map((con) => (
-        // <Link
-        //   href={`/inbox/${con.id}?other=${findOtherUser(con)}`}
-        //   key={con.id}
-        // >
         <div
           key={con.id}
           onClick={() => {
@@ -37,7 +45,6 @@ const page = () => {
           <h1>{con.senderUsername}</h1>
           <p>{con.messages[0]?.body}</p>
         </div>
-        // </Link>
       ))}
     </div>
   );
