@@ -35,7 +35,8 @@ export const messageSchema = z.object({
   isRead: z.boolean().optional(),
   hasOffer: z.boolean().optional(),
   offer: OfferSchema.optional(),
-  createdAt: z.date().optional(), // Drizzle's defaultNow maps to a Date object, optional for creation
+  // createdAt: z.date().optional(), // Drizzle's defaultNow maps to a Date object, optional for creation
+  createdAt: z.string().optional(), // Drizzle's defaultNow maps to a Date object, optional for creation
 });
 
 export type Message = z.infer<typeof messageSchema>;
