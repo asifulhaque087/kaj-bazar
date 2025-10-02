@@ -23,8 +23,8 @@ export const messageSchema = z.object({
   receiverUsername: z.string().min(1, "receiver name is required"),
   senderPicture: z.string().min(1, "sender picture is required"),
   receiverPicture: z.string().min(1, "receiver picture is required"),
-  buyerId: z.string().uuid().min(1, "buyer id is required"),
-  sellerId: z.string().uuid().min(1, "seller id is required"),
+  // buyerId: z.string().uuid().min(1, "buyer id is required"),
+  // sellerId: z.string().uuid().min(1, "seller id is required"),
 
   // ** optional
   body: z.string().optional(),
@@ -56,7 +56,9 @@ export type CreateMessageForm = z.infer<typeof createMessageForm>;
 export const conversationSchema = z.object({
   id: z.uuid(),
   senderUsername: z.string().min(1, "sender name is required"),
+  senderProfilePhoto: z.string().min(1, "sender profile is required"),
   receiverUsername: z.string().min(1, "receiver name is required"),
+  receiverProfilePhoto: z.string().min(1, "receiver profile photo is required"),
   messages: z.array(messageSchema).default([]),
 });
 
