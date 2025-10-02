@@ -1,6 +1,7 @@
 import { Conversation as ConversationType } from "@/schemas";
 
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
+import { useRouter } from "next/navigation";
 
 interface Props {
   conversation: ConversationType;
@@ -8,8 +9,18 @@ interface Props {
 
 const Conversation = (props: Props) => {
   const { conversation } = props;
+
+  const router = useRouter();
+
   return (
-    <div className="flex items-center gap-x-[12px] border-b border-[#E7E7E8] py-[20px] px-[24px]">
+    <div
+      className="flex items-center gap-x-[12px] border-b border-[#E7E7E8] py-[20px] px-[24px] cursor-pointer"
+      onClick={() => {
+        // setSelectedConversation(con);
+        // router.push(`/inbox/${conversation.id}?other=${findOtherUser(con)}`);
+        router.push(`/inbox?conversation=${conversation.id}`);
+      }}
+    >
       <div className="w-[48px] h-[48px] rounded-full overflow-hidden">
         <img
           className="w-full h-full object-cover object-center"
@@ -37,6 +48,12 @@ const Conversation = (props: Props) => {
       </div>
     </div>
   );
+
+  // function findOtherUser(con: Conversation): string {
+  //   return authUser?.username === con.receiverUsername
+  //     ? con.senderUsername
+  //     : con.receiverUsername;
+  // }
 };
 
 export default Conversation;
