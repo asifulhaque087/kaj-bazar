@@ -1,13 +1,18 @@
 import { useCreateMessage } from "@/api/chats";
+import SendOfferModal from "@/components/send-offer-modal";
 import { createMessageDefaultForm } from "@/forms";
 import { createMessageForm, CreateMessageForm } from "@/schemas";
 import { useChatStore } from "@/store/use-chat.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinkIcon, Send } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const SendMessageForm = () => {
+  // ** --- States ---
+
+  const [isOfferModal, setIsOfferModal] = useState<boolean>(false);
+
   // ** --- Mutation ---
   const { mutate: createMessage } = useCreateMessage();
 
@@ -33,45 +38,71 @@ const SendMessageForm = () => {
     }
   }, [messageSenderUser, messageReceiverUser, selectedConversation]);
 
-  // console.log("errors are ##### ", form.formState.errors)
+  console.log("errors are ##### ", form.formState.errors);
 
   return (
-    <form
-      className="flex gap-x-[8px] px-[24px] h-[40px] w-full"
-      // onSubmit={sendMessage}
-      onSubmit={form.handleSubmit(onSubmit)}
-    >
-      <input
-        {...form.register("body")}
-        type="text"
-        className="bg-[#FEFEFF] rounded-[8px] outline-none p-[12px] border border-[#E7E7E8] font-roboto text-[#3E3F47] text-sm  placeholder:font-roboto placeholder:text-[#6E6F75] placeholder:text-sm grow"
-        placeholder="Type message ..."
+    <>
+      <form
+        className="flex gap-x-[8px] px-[24px] h-[40px] w-full"
+        id="create-message-form"
+        // onSubmit={sendMessage}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <input
+          {...form.register("body")}
+          type="text"
+          className="bg-[#FEFEFF] rounded-[8px] outline-none p-[12px] border border-[#E7E7E8] font-roboto text-[#3E3F47] text-sm  placeholder:font-roboto placeholder:text-[#6E6F75] placeholder:text-sm grow"
+          placeholder="Type message ..."
+        />
+
+        <button
+          type="button"
+          className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal cursor-pointer"
+        >
+          <LinkIcon className="w-[12px] h-[12px]" />
+        </button>
+
+        <button
+          type="button"
+          className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal cursor-pointer"
+          onClick={() => setIsOfferModal(true)}
+        >
+          offer
+        </button>
+
+        <button
+          type="submit"
+          className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal cursor-pointer"
+        >
+          <Send className="w-[12px] h-[12px]" />
+        </button>
+      </form>
+      <SendOfferModal
+        showModal={isOfferModal}
+        setShowModal={setIsOfferModal}
+        setValue={form.setValue}
+        control={form.control}
+        handleSubmit={form.handleSubmit}
+        onSubmit={onSubmit}
       />
-
-      <button className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal">
-        <LinkIcon className="w-[12px] h-[12px]" />
-      </button>
-
-      <button className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal">
-        offer
-      </button>
-
-      <button className="border-none outline-none h-full rounded-[8px] bg-[#616BA4] text-[#F7F7FA] capitalize px-[12px] py-[8px] font-roboto text-xs font-normal">
-        <Send className="w-[12px] h-[12px]" />
-      </button>
-    </form>
+    </>
   );
 
-  function sendMessage(e: any) {
-    e.preventDefault();
-    console.log("send message data is ");
-  }
+  // function onSubmit(data: CreateMessageForm) {
+  //   if (!data.body) return;
+  //   createMessage(data);
+  //   form.reset();
+  // }
 
   function onSubmit(data: CreateMessageForm) {
-    // console.log("send message data is ");
+    if (!data.body && !data.hasOffer) return;
+
     createMessage(data);
+
+    // ✅ Close modal if it was an offer
+    if (data.hasOffer) setIsOfferModal(false);
+
     form.reset();
-    // form.reset({ ...data, body: "", file: "", hasOffer: false, offer: null });
   }
 };
 
