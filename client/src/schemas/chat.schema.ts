@@ -15,6 +15,8 @@ export const OfferSchema = z.object({
   cancelled: z.boolean().optional(),
 });
 
+export type MessageOffer = z.infer<typeof OfferSchema>;
+
 // Zod schema for the MessagesTable
 export const messageSchema = z.object({
   id: z.string().uuid(), // UUID is generated, so optional for creation
