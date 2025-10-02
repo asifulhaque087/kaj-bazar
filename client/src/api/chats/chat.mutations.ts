@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 
 export const useFindOrCreateConversation = () => {
   const { setSelectedConversation, setMessages } = useChatStore();
-  const { authUser } = useAuthStore();
+  // const { authUser } = useAuthStore();
   const router = useRouter();
 
   return useMutation({
@@ -26,7 +26,8 @@ export const useFindOrCreateConversation = () => {
       setMessages(data.messages);
       // console.log("data after success is ", data);
 
-      router.push(`/inbox/${data.id}?other=${findOtherUser(authUser, data)}`);
+      // router.push(`/inbox?conversation=${data.id}?other=${findOtherUser(authUser, data)}`);
+      router.push(`/inbox?conversation=${data.id}`);
     },
   });
 

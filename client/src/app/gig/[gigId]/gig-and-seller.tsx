@@ -1,4 +1,4 @@
-import { findOrCreateConversationApi } from "@/api/chats/chat.service";
+import { useFindOrCreateConversation } from "@/api/chats";
 import { Gig } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { Star } from "lucide-react";
@@ -9,6 +9,14 @@ interface Props {
 
 const GigAndSeller = (props: Props) => {
   const { gig } = props;
+
+  const { isPending, mutate: findOrCreateConversation } =
+    useFindOrCreateConversation();
+
+  // const { isPending, mutate: createSeller } = useCreateSeller({
+  //   reset: form.reset,
+  //   setError: form.setError,
+  // });
 
   const { authUser, seller, role } = useAuthStore();
 
@@ -65,13 +73,15 @@ const GigAndSeller = (props: Props) => {
           <button
             className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
             onClick={() =>
-              findOrCreateConversationApi({
+              findOrCreateConversation({
                 receiverUsername: gig.username,
+                receiverProfilePhoto: gig.profilePicture,
                 senderUsername: authUser?.username!,
+                senderProfilePhoto: authUser?.profilePicture!,
               })
             }
           >
-            contact
+            {isPending ? "contacting..." : "contact"}
           </button>
         </div>
       </div>
