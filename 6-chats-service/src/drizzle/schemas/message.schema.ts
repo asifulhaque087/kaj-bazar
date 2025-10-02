@@ -45,8 +45,8 @@ export const MessagesTable = pgTable("messages_table", {
   receiverUsername: text("receiver_username").notNull(),
   senderPicture: text("sender_picture").notNull(),
   receiverPicture: text("receiver_picture").notNull(),
-  buyerId: uuid("buyer_id").notNull(),
-  sellerId: uuid("seller_id").notNull(),
+  // buyerId: uuid("buyer_id").notNull(),
+  // sellerId: uuid("seller_id").notNull(),
 
   // ** optional
   body: text("body").default(""),

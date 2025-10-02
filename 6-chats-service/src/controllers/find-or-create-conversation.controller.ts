@@ -6,8 +6,12 @@ import { and, eq, or } from "drizzle-orm";
 import type { Request, Response } from "express";
 
 const findOrCreateConversation = async (req: Request, res: Response) => {
-  const { senderUsername, receiverUsername } =
-    req.body as FindOrCreateConversationInput;
+  const {
+    senderUsername,
+    receiverUsername,
+    receiverProfilePhoto,
+    senderProfilePhoto,
+  } = req.body as FindOrCreateConversationInput;
 
   // 1. Try to find an existing conversation with messages
   const existingConversations = await handleAsync(
@@ -40,6 +44,8 @@ const findOrCreateConversation = async (req: Request, res: Response) => {
       .values({
         receiverUsername: receiverUsername,
         senderUsername: senderUsername,
+        senderProfilePhoto: senderProfilePhoto,
+        receiverProfilePhoto: receiverProfilePhoto,
       })
       .returning() // This returns the *inserted conversation object*
   );

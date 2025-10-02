@@ -23,8 +23,8 @@ export const messageSchema = z.object({
   receiverUsername: z.string().min(1, "receiver name is required"),
   senderPicture: z.string().min(1, "sender picture is required"),
   receiverPicture: z.string().min(1, "receiver picture is required"),
-  buyerId: z.string().uuid().min(1, "buyer id is required"),
-  sellerId: z.string().uuid().min(1, "seller id is required"),
+  // buyerId: z.string().uuid().min(1, "buyer id is required"),
+  // sellerId: z.string().uuid().min(1, "seller id is required"),
 
   // ** optional
   // body: z.string().min(1, "should atleast 1 char long").optional(),

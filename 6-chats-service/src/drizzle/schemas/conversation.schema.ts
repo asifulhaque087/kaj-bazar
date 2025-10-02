@@ -6,7 +6,9 @@ import { pgTable, text, uuid } from "drizzle-orm/pg-core";
 export const ConversationsTable = pgTable("conversations_table", {
   id: uuid("id").primaryKey().defaultRandom(),
   senderUsername: text("sender_username").notNull(),
+  senderProfilePhoto: text("sender_profile_photo").notNull(),
   receiverUsername: text("receiver_username").notNull(),
+  receiverProfilePhoto: text("receiver_profile_photo").notNull(),
 });
 
 // --- Relationships ---

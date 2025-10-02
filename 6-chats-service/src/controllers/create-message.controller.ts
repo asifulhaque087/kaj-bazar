@@ -14,8 +14,8 @@ const createMessage = async (req: Request, res: Response) => {
     receiverUsername,
     senderPicture,
     receiverPicture,
-    buyerId,
-    sellerId,
+    // buyerId,
+    // sellerId,
     // optional
     hasOffer,
     body,
@@ -25,11 +25,11 @@ const createMessage = async (req: Request, res: Response) => {
 
   // ** Prepare data
   const messageData = {
-    buyerId,
+    // buyerId,
     conversationId,
     receiverPicture,
     receiverUsername,
-    sellerId,
+    // sellerId,
     senderPicture,
     senderUsername,
     hasOffer,
