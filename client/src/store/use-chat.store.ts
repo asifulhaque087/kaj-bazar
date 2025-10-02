@@ -4,15 +4,24 @@ import { Conversation, Message } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { config } from "@/config";
 
+export interface ChatUser {
+  name: string;
+  profilePhoto: string;
+}
+
 type States = {
   conversations: Conversation[];
   selectedConversation: Conversation | null;
   messages: Message[];
   socket: Socket | null;
+  messageSenderUser: ChatUser | null;
+  messageReceiverUser: ChatUser | null;
 };
 
 type Actions = {
   setSelectedConversation: (conversation: Conversation) => void;
+  setMessageSenderUser: (user: ChatUser) => void;
+  setMessageReceiverUser: (user: ChatUser) => void;
   setMessages: (messages: Message[]) => void;
   connectSocket: () => void;
   disconnectSocket: () => void;
@@ -26,7 +35,18 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   conversations: [],
   selectedConversation: null,
   messages: [],
+  messageSenderUser: null,
+  messageReceiverUser: null,
   socket: null,
+  setMessageReceiverUser: (user) =>
+    set({
+      messageReceiverUser: user,
+    }),
+
+  setMessageSenderUser: (user) =>
+    set({
+      messageSenderUser: user,
+    }),
 
   setSelectedConversation: (conversation) =>
     set({ selectedConversation: conversation }),
