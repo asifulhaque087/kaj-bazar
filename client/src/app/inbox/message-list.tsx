@@ -1,3 +1,4 @@
+import MessageBox from "@/app/inbox/message-box";
 import SendMessageForm from "@/app/inbox/send-message-form";
 import TextMessage from "@/app/inbox/text-message";
 import { Conversation } from "@/schemas";
@@ -43,12 +44,16 @@ const MessageList = (props: Props) => {
       >
         {messages.map((msg) => (
           // <TextMessage key={msg.id} reverse={index % 2 === 0 ? true : false} />
-          <TextMessage
+          <MessageBox
             key={msg.id}
-            // body={msg.body}
             msg={msg}
             reverse={msg.senderUsername === authUser?.username ? true : false}
           />
+          // <TextMessage
+          //   key={msg.id}
+          //   msg={msg}
+          //   reverse={msg.senderUsername === authUser?.username ? true : false}
+          // />
         ))}
       </div>
 
