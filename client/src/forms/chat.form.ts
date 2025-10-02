@@ -103,7 +103,7 @@ export const createMessageDefaultForm = (
       gigId: "",
       description: "",
       price: 0,
-      deliveryInDays: 0,
+      deliveryInDays: 1,
       // ** optional
       oldDeliveryDate: "",
       newDeliveryDate: "",

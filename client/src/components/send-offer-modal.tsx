@@ -432,6 +432,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { expectedDeliveryOptions } from "@/constants";
 
 // ** Component Props
 interface ModalProps {
@@ -491,7 +492,7 @@ const SendOfferModal = (props: ModalProps) => {
           control={control}
           render={({ field }) => (
             <div className={`${formItemClassName} w-full`}>
-              <label className={labelClassName}>Gig Title</label>
+              <label className={labelClassName}>Gig</label>
               <Select
                 {...field}
                 onValueChange={(value) => {
@@ -569,7 +570,7 @@ const SendOfferModal = (props: ModalProps) => {
         />
 
         {/* Delivery In Days */}
-        <Controller
+        {/* <Controller
           name="offer.deliveryInDays"
           control={control}
           render={({ field }) => (
@@ -583,6 +584,85 @@ const SendOfferModal = (props: ModalProps) => {
                 onChange={(e) => field.onChange(parseFloat(e.target.value))}
                 value={field.value ?? ""}
               />
+            </div>
+          )}
+        /> */}
+
+        {/* <label className={labelClassName}>Delivery Time</label>
+        <select
+          id="deliveryTime"
+          name="deliveryTime"
+          // value={filters.deliveryTime}
+          // onChange={handleFilterChange}
+          className="pr-10 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm appearance-none w-full focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
+        >
+          <option value="" className="">
+            Select Delivery Time
+          </option>
+          {expectedDelivery.map((delivery) => (
+            <option key={delivery} value={delivery}>
+              {delivery}
+            </option>
+          ))}
+        </select> */}
+        {/* Delivery In Days */}
+        {/* <Controller
+          name="offer.deliveryInDays"
+          control={control}
+          render={({ field }) => (
+            <div className={formItemClassName}>
+              <label className={labelClassName}>Delivery In Days</label>
+              <Select
+                {...field}
+                onValueChange={(value) => field.onChange(value)}
+                value={field.value}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select delivery in days" />
+                </SelectTrigger>
+                <SelectContent>
+                  {expectedDelivery.map((delivery) => (
+                    <SelectItem key={delivery} value={delivery}>
+                      {delivery}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        /> */}
+
+        {/* Delivery In Days */}
+        <Controller
+          name="offer.deliveryInDays"
+          control={control}
+          render={({ field }) => (
+            <div className={formItemClassName}>
+              <label className={labelClassName}>Delivery In Days</label>
+              <Select
+                {...field}
+                // NOTE: Select passes a string, so we must parse it back to a number
+                onValueChange={(value) => field.onChange(parseInt(value, 10))}
+                // The Select component expects a string, so we convert the number back to a string for comparison
+                value={String(field.value) || ""}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select delivery in days" />
+                </SelectTrigger>
+                <SelectContent>
+                  {/* Mapping over the new array of objects */}
+                  {expectedDeliveryOptions.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      // The SelectItem value is the numeric day, converted to a string
+                      value={String(option.value)}
+                    >
+                      {/* Display the full, friendly label */}
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           )}
         />

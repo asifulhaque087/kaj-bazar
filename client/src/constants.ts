@@ -52,6 +52,14 @@ export const expectedDelivery: string[] = [
   "5 Days Delivery",
 ];
 
+export const expectedDeliveryOptions = [
+  { value: 1, label: "1 Day Delivery" },
+  { value: 2, label: "2 Days Delivery" },
+  { value: 3, label: "3 Days Delivery" },
+  { value: 4, label: "4 Days Delivery" },
+  { value: 5, label: "5 Days Delivery" },
+];
+
 export const gigsLimit = "10";
 
 export const steps = [
