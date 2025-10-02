@@ -1,6 +1,9 @@
 "use client";
 
-import { useGetConversationsByUsername } from "@/api/chats";
+import {
+  useGetConversationsById,
+  useGetConversationsByUsername,
+} from "@/api/chats";
 import ConversationList from "@/app/inbox/conversation-list";
 import MessageList from "@/app/inbox/message-list";
 import Container from "@/components/container";
@@ -8,25 +11,41 @@ import { Conversation } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
   const { authUser } = useAuthStore();
 
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const conversationId = searchParams.get("conversation") || "";
+
   // const { setSelectedConversation } = useChatStore();
 
-  const { data, isLoading, isError } = useGetConversationsByUsername({
+  const {
+    data: allConversations,
+    isLoading: allConversationsLoading,
+    isError,
+  } = useGetConversationsByUsername({
     authUser,
   });
 
-  if (isLoading) return <div>loading conversatino list</div>;
+  // console.log("conversation id is ================ ", conversationId);
+
+  // const { data: conversation } = useGetConversationsById({ conversationId });
+  useGetConversationsById({ conversationId });
+
+  if (allConversationsLoading) return <div>loading conversatino list</div>;
 
   return (
     <Container className="mt-[40px]">
       <div className="grid grid-cols-12 gap-[16px]">
-        <ConversationList conversations={data} className="col-span-4" />
+        <ConversationList
+          conversations={allConversations}
+          className="col-span-4"
+        />
+        {/* <MessageList className="col-span-8" conversation={conversation} /> */}
         <MessageList className="col-span-8" />
       </div>
     </Container>
@@ -34,7 +53,7 @@ const page = () => {
 
   return (
     <div>
-      {data?.map((con) => (
+      {allConversations?.map((con) => (
         <div
           key={con.id}
           onClick={() => {
