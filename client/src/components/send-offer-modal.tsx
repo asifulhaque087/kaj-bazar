@@ -670,7 +670,7 @@ const SendOfferModal = (props: ModalProps) => {
         {/* Submit Button */}
         <Button
           type="submit"
-          className="mt-4 w-full bg-[#616BA4] hover:bg-[#4E5683]"
+          className="mt-4 w-full bg-[#616BA4] hover:bg-[#4E5683] cursor-pointer"
         >
           Send Offer
         </Button>

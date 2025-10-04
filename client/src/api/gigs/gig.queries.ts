@@ -6,10 +6,10 @@ import {
 } from "@/api/gigs/gig.service";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
 
-export const useGetGigById = ({ id }: { id: string }) => {
+export const useGetGigById = ({ id }: { id: string | undefined }) => {
   return useQuery({
     queryKey: ["gig", id],
-    queryFn: () => getGigById(id),
+    queryFn: () => getGigById(id!),
     enabled: !!id,
     refetchOnWindowFocus: false, // ⬅️ Add this line
   });
