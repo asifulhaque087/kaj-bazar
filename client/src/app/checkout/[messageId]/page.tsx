@@ -80,8 +80,6 @@
 
 // export default page;
 
-
-
 // ================  new design
 
 "use client";
@@ -90,7 +88,14 @@ import { useGetMessageById } from "@/api/chats";
 import { useGetGigById } from "@/api/gigs";
 import { useCreateOrder } from "@/api/orders";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 // import { Separator } from "@/components/ui/separator";
 import { CreateOrderPayload } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
@@ -103,11 +108,13 @@ const Page = () => {
   const router = useRouter();
   const { authUser } = useAuthStore();
 
-  const { data: message, isLoading: isMessageLoading } = useGetMessageById({ id: messageId });
+  const { data: message, isLoading: isMessageLoading } = useGetMessageById({
+    id: messageId,
+  });
   const { data: gig, isLoading: isGigLoading } = useGetGigById({
     id: message?.offer?.gigId,
   });
-  const { mutate: createOrder, isLoading: isCreatingOrder } = useCreateOrder();
+  const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
 
   if (isMessageLoading || isGigLoading || !message || !gig || !authUser) {
     return (
@@ -156,17 +163,19 @@ const Page = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-2xl shadow-lg dark:bg-gray-800">
+    <div className="flex items-center justify-center  py-[72px]">
+      <Card className="w-full max-w-[600px] border border-[#E7E7E8] bg-[#FEFEFF]">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-gray-900 dark:text-gray-50">Confirm & Pay</CardTitle>
-          <CardDescription className="text-gray-500 dark:text-gray-400">
+          <CardTitle className="font-roboto text-[28px] font-medium text-gray-[#0E0F19]">
+            Confirm & Pay
+          </CardTitle>
+          <CardDescription className="font-roboto text-[16px] text-[#3E3F47]">
             Review your order before completing the payment.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Order Summary */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b border-dashed border-[#E7E7E8] pb-[24px]">
             <div className="relative w-32 h-24 sm:w-40 sm:h-32 rounded-lg overflow-hidden flex-shrink-0">
               <Image
                 src={gig.coverImage}
@@ -176,22 +185,29 @@ const Page = () => {
               />
             </div>
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-50">{gig.title}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Offered by <span className="font-medium text-blue-600 dark:text-blue-400">{gig.username}</span>
+              <h2 className="font-roboto text-[20px] font-medium text-[#0E0F19]">
+                {gig.title}
+              </h2>
+              <p className="text-[#4E3F47] text-[16px] font-normal font-roboto mt-1">
+                Offered by{" "}
+                <span className="font-medium  text-[#616BA4]">
+                  {gig.username}
+                </span>
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 italic">"{message.offer?.description}"</p>
+              <p className="font-roboto font-normal text-[#6E6F75] text-[14px]  mt-2 italic">
+                "{message.offer?.description}"
+              </p>
             </div>
           </div>
           {/* <Separator className="bg-gray-200 dark:bg-gray-700" /> */}
           {/* Pricing Details */}
           <div className="space-y-3">
-            <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Price</span>
+            <div className="flex justify-between items-center ">
+              <span className="font-normal">Price</span>
               <span>${message.offer?.price}</span>
             </div>
-            <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Delivery Time</span>
+            <div className="flex justify-between items-center">
+              <span className="font-normal">Delivery Time</span>
               <span>{message.offer?.deliveryInDays} days</span>
             </div>
             <div className="flex justify-between items-center text-lg font-bold text-gray-900 dark:text-gray-50 pt-2 border-t border-dashed border-gray-300 dark:border-gray-600">
@@ -203,7 +219,7 @@ const Page = () => {
         <CardFooter className="flex flex-col space-y-4">
           <Button
             onClick={submitOrder}
-            className="w-full h-12 text-lg font-semibold bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition-colors"
+            className="w-full h-12 text-lg font-semibold bg-[#616BA4]  transition-colors"
             disabled={isCreatingOrder}
           >
             {isCreatingOrder ? (
