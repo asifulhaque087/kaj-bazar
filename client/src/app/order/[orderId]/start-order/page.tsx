@@ -86,8 +86,17 @@
 
 "use client";
 import { useStartOrder } from "@/api/orders";
+import DescriptionBox from "@/app/order/[orderId]/start-order/description-box";
+import Welcome from "@/app/order/[orderId]/start-order/welcome";
+import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -107,7 +116,7 @@ import { useForm } from "react-hook-form";
 
 const Page = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const { mutate: startOrder, isLoading, isSuccess } = useStartOrder();
+  const { mutate: startOrder, isPending, isSuccess } = useStartOrder();
 
   const form = useForm<StartOrderForm>({
     resolver: zodResolver(startOrderForm),
@@ -129,6 +138,18 @@ const Page = () => {
   };
 
   return (
+    <>
+      <Container className="pt-[28px]">
+        <Welcome />
+      </Container>
+
+      <Container className="pt-[28px]">
+        <DescriptionBox />
+      </Container>
+    </>
+  );
+
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
       <Card className="w-full max-w-xl shadow-lg dark:bg-gray-800">
         <CardHeader className="text-center">
@@ -136,7 +157,8 @@ const Page = () => {
             Submit Your Requirements
           </CardTitle>
           <CardDescription className="text-gray-500 dark:text-gray-400 mt-2">
-            This is the final step to start your order. Provide all the necessary details to help the seller get started.
+            This is the final step to start your order. Provide all the
+            necessary details to help the seller get started.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -147,12 +169,16 @@ const Page = () => {
                 Requirements Submitted!
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Your order has been started. The seller will begin working shortly.
+                Your order has been started. The seller will begin working
+                shortly.
               </p>
             </div>
           ) : (
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="requirement"
@@ -169,18 +195,19 @@ const Page = () => {
                         />
                       </FormControl>
                       <FormDescription className="text-gray-500 dark:text-gray-400">
-                        Share any information, files, or specific instructions for the seller.
+                        Share any information, files, or specific instructions
+                        for the seller.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-12 text-lg font-semibold bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
-                  {isLoading ? (
+                  {isPending? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Submitting...
