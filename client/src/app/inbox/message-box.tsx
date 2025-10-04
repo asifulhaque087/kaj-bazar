@@ -34,7 +34,11 @@ const MessageBox = (props: Props) => {
       <div className="flex flex-col gap-y-1 w-full max-w-[300px]">
         {msg.body && <TextMessage body={msg.body} reverse={reverse} />}
         {msg.hasOffer && msg.offer && (
-          <OfferMessage offer={msg.offer} reverse={reverse} />
+          <OfferMessage
+            offer={msg.offer}
+            reverse={reverse}
+            messageId={msg.id}
+          />
         )}
 
         {/* Time */}

@@ -1,15 +1,17 @@
 import { Message, MessageOffer } from "@/schemas";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
   reverse?: boolean;
   offer: MessageOffer;
+  messageId: string;
 }
 
 const OfferMessage = (props: Props) => {
-  const { reverse, offer } = props;
+  const { reverse, offer, messageId } = props;
 
-  console.log("%%%%%%%%%%% ", offer)
+  const router = useRouter();
 
   return (
     <div
@@ -32,11 +34,14 @@ const OfferMessage = (props: Props) => {
       </div>
 
       <div className="mt-[12px] flex gap-x-[16px] justify-end">
-        <button className="border-none outline-none rounded-[4px] bg-[#9FBB89] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px]">
+        <button
+          className="border-none outline-none rounded-[4px] bg-[#9FBB89] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer"
+          onClick={() => router.push(`/checkout/${messageId}`)}
+        >
           Accept
         </button>
 
-        <button className="border-none outline-none rounded-[4px] bg-[#FF6666] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px]">
+        <button className="border-none outline-none rounded-[4px] bg-[#FF6666] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer">
           Reject
         </button>
       </div>
