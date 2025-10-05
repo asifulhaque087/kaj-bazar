@@ -23,7 +23,7 @@ const SearchBox = (props: Props) => {
 
   return (
     <form
-      className={`flex items-center bg-[#E8E7D9] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] grow ${className}`}
+      className={`flex items-center bg-[#F7F7FA] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-[16px] pr-[6px] py-[5px] grow ${className}`}
       onSubmit={handleSubmit((data) =>
         router.push(
           `/gigs?searchKey=${encodeURIComponent(
@@ -37,7 +37,7 @@ const SearchBox = (props: Props) => {
         {...register("searchInput")}
         type="text"
         placeholder="Search For Gigs"
-        className="placeholder:tracking-[0.14px] placeholder:text-[16px] placeholder:font-[500]   placeholder-[#735858] bg-transparent outline-none focus:outline-none font-inter grow"
+        className="placeholder:tracking-[0.14px] placeholder:text-[14px] placeholder:font-medium   placeholder:text-[#9F9FA3] outline-none focus:outline-none font-inter grow"
       />
 
       <button
