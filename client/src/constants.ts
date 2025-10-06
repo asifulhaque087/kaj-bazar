@@ -1,6 +1,7 @@
 import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
 import Overview from "@/app/seller/profile/[id]/overview";
 import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
+import { LayoutDashboard, PackagePlus, UserCog } from "lucide-react";
 
 export const categories: string[] = [
   "Graphics & Design",
@@ -272,5 +273,39 @@ export const buyerProfileTabs = [
 
   {
     title: "cancel",
+  },
+];
+
+export const sellerHeaderDropdownMenus = [
+  {
+    icon: UserCog,
+    title: "switch to buying",
+    link: "",
+  },
+
+  {
+    icon: PackagePlus,
+    title: "Add a new gig",
+    link: "/gig/create",
+  },
+
+  {
+    icon: LayoutDashboard,
+    title: "Dashboard",
+    link: "/seller/profile",
+  },
+];
+
+export const buyerHeaderDropdownMenus = [
+  {
+    icon: UserCog,
+    title: "switch to selling",
+    link: "",
+  },
+
+  {
+    icon: LayoutDashboard,
+    title: "Dashboard",
+    link: "/buyer/profile",
   },
 ];

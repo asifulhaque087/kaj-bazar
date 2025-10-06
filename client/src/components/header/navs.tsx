@@ -3,6 +3,7 @@ import ProfileDropdown from "@/components/header/profile-dropdown";
 import LoginModal from "@/components/login-modal";
 import RegisterModal from "@/components/register-modal";
 import { useAuthStore } from "@/store/use-auth.store";
+import { useChatStore } from "@/store/use-chat.store";
 import { Bell, MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
@@ -32,9 +33,12 @@ const Navs = (props: Props) => {
   const [activeItem, setActiveItem] = useState(-1);
 
   // ** --- Stores ---
-  const { authUser } = useAuthStore();
+  const { authUser, buyer } = useAuthStore();
+  const { unreadMessages } = useChatStore();
 
   const router = useRouter();
+
+  console.log("@############### ", unreadMessages);
 
   return (
     <>
@@ -54,14 +58,19 @@ const Navs = (props: Props) => {
                 {nav.title}
               </p>
 
-              {i === 0 && <BecomeASeller className="order-0 md:order-1" />}
+              {i === 0 && (
+                <BecomeASeller
+                  className="order-0 md:order-1"
+                  onClick={() => setActiveItem(1)}
+                />
+              )}
             </Fragment>
           ))}
 
         {authUser &&
           protectedNavs.map((nav, i) => (
             <Fragment key={i}>
-              <p
+              <div
                 key={i}
                 className="font-roboto text-[14px] text-[#F7F7FA] whitespace-nowrap capitalize cursor-pointer"
                 onClick={() =>
@@ -70,12 +79,15 @@ const Navs = (props: Props) => {
               >
                 {/* {nav.title} */}
                 <div className="relative">
-                  <nav.icon strokeWidth={1} className="w-[20px] h-[20px] text-[#FEFEFF]" />
+                  <nav.icon
+                    strokeWidth={1}
+                    className="w-[20px] h-[20px] text-[#FEFEFF]"
+                  />
                   <span className="absolute top-0 right-0 w-[8px] h-[8px] rounded-full bg-red-500" />
                 </div>
-              </p>
+              </div>
 
-              {i === 1 && <BecomeASeller className="" />}
+              {i === 1 && !buyer?.isSeller && <BecomeASeller />}
               {i === 1 && <ProfileDropdown />}
             </Fragment>
           ))}

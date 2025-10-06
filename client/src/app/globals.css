@@ -157,5 +157,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-y: auto !important;
+    margin: 0 !important;
   }
+
+  /* body {
+    overflow-y: auto !important;
+    margin: 0 !important;
+  } */
 }
