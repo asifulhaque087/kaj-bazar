@@ -1,9 +1,7 @@
-# docker compose up -d redis redis-commander mongodb auth-mysql postgres rabbitmq
-# version: '3.9'
-
 name: kaj-bazar-dev
 
 services:
+  # ==================================== Infrastructure ==============================
   redis:
     container_name: redis_container
     image: redis:alpine
@@ -11,66 +9,27 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --loglevel warning
-    # volumes:
-    #   - ./docker-volumes/cache:/data
-
-  # redis-commander:
-  #   container_name: redis-commander
-  #   image: ghcr.io/joeferner/redis-commander:latest
-  #   restart: always
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     - REDIS_HOSTS=local:redis_container:6379
-
-  # mongodb:
-  #   container_name: mongodb_container
-  #   image: mongo:latest
-  #   restart: always
-  #   ports:
-  #     - 27017:27017
-  # volumes:
-  #   - ./docker-volumes/data:/data/db
-
-  # auth-mysql:
-  #   container_name: auth_mysql_container
-  #   image: mysql:latest
-  #   restart: always
-  #   environment:
-  #     - MYSQL_USER=auth
-  #     - MYSQL_DATABASE=auth_db
-  #     - MYSQL_ROOT_PASSWORD=api
-  #     - MYSQL_PASSWORD=api
-  #   ports:
-  #     - "3306:3306"
-  #   healthcheck:
-  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-papi"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+    # No user mapping needed for standard infra services
 
   auth-db:
-    container_name: auth_postgres_container # FIX: Changed from review_postgres_container
+    container_name: auth_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_USER=auth
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=auths
-
-    # ports:
-    # - "5432:5432"
-    # volumes:
-    #   - ./docker-volumes/postgres:/var/lib/postgresql
+    # No user mapping needed for standard infra services
 
   user-postgres:
-    container_name: user_postgres_container # FIX: Changed from review_postgres_container
+    container_name: user_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=users
+    # No user mapping needed for standard infra services
 
   gig-postgres:
     container_name: gig_postgres_container
@@ -80,6 +39,7 @@ services:
       - POSTGRES_USER=gig
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=gigs
+    # No user mapping needed for standard infra services
 
   chat-postgres:
     container_name: chat_postgres_container
@@ -89,16 +49,17 @@ services:
       - POSTGRES_USER=chat
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=chats
+    # No user mapping needed for standard infra services
 
   order-db:
     container_name: order_postgres_container
-    # image: postgres:14.18-alpine3.22
     image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_USER=order
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=orders
+    # No user mapping needed for standard infra services
 
   review-db:
     container_name: review_postgres_container
@@ -108,6 +69,7 @@ services:
       - POSTGRES_USER=review
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=reviews
+    # No user mapping needed for standard infra services
 
   rabbitmq:
     container_name: rabbitmq_container
@@ -124,7 +86,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  # ==================================== Application==============================
+    # No user mapping needed for standard infra services
+
+  # ==================================== Application Services ==============================
 
   client:
     container_name: client_container
@@ -145,6 +109,8 @@ services:
       - /home/app/node_modules
     depends_on:
       - gateway
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   gateway:
     container_name: gateway_container
@@ -173,11 +139,13 @@ services:
       - /home/app/node_modules
     depends_on:
       - redis
-      - chats # FIX: Changed from chat
-      - orders # FIX: Changed from order
+      - chats
+      - orders
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  email: # FIX: Changed from notification
-    container_name: email_container # FIX: Changed from notification_container
+  email:
+    container_name: email_container
     build:
       context: 2-email-service
       dockerfile: Dockerfile.dev
@@ -197,6 +165,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   auth:
     container_name: auth_container
@@ -223,10 +193,11 @@ services:
       - /home/app/node_modules
     depends_on:
       auth-db:
-        # condition: service_healthy
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   users:
     container_name: users_container
@@ -256,9 +227,11 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  gigs: # FIX: Changed from gig
-    container_name: gigs_container # FIX: Changed from gig_container
+  gigs:
+    container_name: gigs_container
     build:
       context: 5-gigs-service
       dockerfile: Dockerfile.dev
@@ -285,9 +258,11 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  chats: # FIX: Changed from chat
-    container_name: chats_container # FIX: Changed from chat_container
+  chats:
+    container_name: chats_container
     build:
       context: 6-chats-service
       dockerfile: Dockerfile.dev
@@ -316,9 +291,11 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  orders: # FIX: Changed from order
-    container_name: orders_container # FIX: Changed from order_container
+  orders:
+    container_name: orders_container
     build:
       context: 7-orders-service
       dockerfile: Dockerfile.dev
@@ -348,9 +325,11 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  reviews: # FIX: Changed from review
-    container_name: reviews_container # FIX: Changed from review_container
+  reviews:
+    container_name: reviews_container
     build:
       context: 8-reviews-service
       dockerfile: Dockerfile.dev
@@ -360,7 +339,6 @@ services:
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - DATABASE_URL=${REVIEWS_DB_URL}
-      # - CLUSTER_TYPE=${REVIEW_DB_CLUSTER_TYPE}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
@@ -374,8 +352,10 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
-  # Studios
+  # ==================================== Studio Services ==============================
 
   auth-studio:
     container_name: auth_studio_container
@@ -384,23 +364,20 @@ services:
       dockerfile: Dockerfile.studio
     restart: always
     ports:
-      # - 4984:4984
       - 4983:4983
-
     environment:
       - DATABASE_URL=${AUTH_DB_URL}
-
     profiles: ["exclude"]
-
     volumes:
       - ./3-auth-service:/home/app
-
     depends_on:
       - auth-db
       - auth
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   user-studio:
-    container_name: users_studio_container # FIX: Changed from user_studio_container
+    container_name: users_studio_container
     build:
       context: 4-users-service
       dockerfile: Dockerfile.studio
@@ -410,12 +387,13 @@ services:
     environment:
       - DATABASE_URL=${USERS_DB_URL}
     profiles: ["exclude"]
-
     volumes:
       - ./4-users-service:/home/app
     depends_on:
       - user-postgres
       - users
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   gig-studio:
     container_name: gigs_studio_container
@@ -428,12 +406,13 @@ services:
     environment:
       - DATABASE_URL=${GIGS_DB_URL}
     profiles: ["exclude"]
-
     volumes:
       - ./5-gigs-service:/home/app
     depends_on:
       - gig-postgres
       - gigs
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   chat-studio:
     container_name: chats_studio_container
@@ -446,12 +425,13 @@ services:
     environment:
       - DATABASE_URL=${CHATS_DB_URL}
     profiles: ["exclude"]
-
     volumes:
       - ./6-chats-service:/home/app
     depends_on:
       - chat-postgres
       - chats
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   order-studio:
     container_name: orders_studio_container
@@ -464,12 +444,13 @@ services:
     environment:
       - DATABASE_URL=${ORDERS_DB_URL}
     profiles: ["exclude"]
-
     volumes:
       - ./7-orders-service:/home/app
     depends_on:
       - order-db
       - orders
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
 
   review-studio:
     container_name: reviews_studio_container
@@ -482,9 +463,10 @@ services:
     environment:
       - DATABASE_URL=${REVIEWS_DB_URL}
     profiles: ["exclude"]
-
     volumes:
       - ./8-reviews-service:/home/app
     depends_on:
       - review-db
       - reviews
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
