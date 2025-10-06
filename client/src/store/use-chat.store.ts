@@ -16,6 +16,7 @@ type States = {
   socket: Socket | null;
   messageSenderUser: ChatUser | null;
   messageReceiverUser: ChatUser | null;
+  unreadMessages: Message[];
 };
 
 type Actions = {
@@ -35,6 +36,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   conversations: [],
   selectedConversation: null,
   messages: [],
+  unreadMessages: [],
   messageSenderUser: null,
   messageReceiverUser: null,
   socket: null,
@@ -100,12 +102,23 @@ export const useChatStore = create<States & Actions>((set, get) => ({
     set({ socket: null }); // Clear socket reference
   },
   subscribeToMessages: () => {
+    const authUser = useAuthStore.getState().authUser;
+
     const socket = get().socket;
 
-    socket?.on("newMessage", (newMessage) => {
+    socket?.on("newMessage", (newMessage: Message) => {
       set({
         messages: [...get().messages, newMessage],
       });
+
+      if (
+        get().selectedConversation?.id !== newMessage.conversationId &&
+        newMessage.receiverUsername === authUser?.username
+      ) {
+        set({
+          unreadMessages: [...get().unreadMessages, newMessage],
+        });
+      }
     });
 
     socket?.on("updateMessage", (upMsg) => {
