@@ -311,7 +311,7 @@ import { useForm } from "react-hook-form";
 import { useBrowser } from "@/hooks/use-browser.hook";
 import { useSellerByName } from "@/api/sellers";
 import { useBuyerByName } from "@/api/buyers";
-import SendOfferModal from "@/components/send-offer-modal";
+import SendOfferModal from "@/features/orders/components/send-offer-modal";
 import { cn } from "@/lib/utils"; // Assuming you have a utility for class names
 
 const Page = () => {

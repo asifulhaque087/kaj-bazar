@@ -85,9 +85,8 @@
 // ============== new design
 
 "use client";
-import { useStartOrder } from "@/api/orders";
-import DescriptionBox from "@/app/order/[orderId]/start-order/description-box";
-import Welcome from "@/app/order/[orderId]/start-order/welcome";
+import DescriptionBox from "@/features/orders/components/description-box";
+import Welcome from "@/features/orders/components/welcome-start-order";
 import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,12 +106,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { startOrderForm, StartOrderForm } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleCheck, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useStartOrder } from "@/features/orders/mutations/use-start-order.mutation";
+import { startOrderForm, StartOrderForm } from "@/features/orders/schemas/start-order.schema";
 
 const Page = () => {
   const { orderId } = useParams<{ orderId: string }>();

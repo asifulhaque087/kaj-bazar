@@ -1,20 +1,21 @@
 "use client";
-import { useSellerById } from "@/api/sellers";
-import Tabs from "@/app/seller/profile/[id]/tabs";
+import Tabs from "@/features/sellers/components/tabs";
 import useTabs from "@/hooks/useTabs";
 import Container from "@/components/container";
-import ReviewCard from "@/components/review-card";
+import ReviewCard from "@/features/reviews/components/review-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
-import { findOrCreateConversationApi } from "@/api/chats/chat.service";
 import { useAuthStore } from "@/store/use-auth.store";
-import StatisticCard from "@/app/seller/profile/[id]/statistic-card";
-import Overview from "@/app/seller/profile/[id]/overview";
-import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
-import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
+import StatisticCard from "@/features/sellers/components/statistic-card";
+import Overview from "@/features/sellers/components/overview";
+import ActiveGigs from "@/features/sellers/components/active-gigs";
+import RaitingAndReviews from "@/features/sellers/components/rating-and-review";
+import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
+import { findOrCreateConversationApi } from "@/features/chats/api/mutations.api";
+import { useFindOrCreateConversation } from "@/features/chats/mutations/use-get-or-create-conversation.mutation";
 
 const page = () => {
   //   ** Params
@@ -22,6 +23,10 @@ const page = () => {
 
   // ** Store
   const { authUser } = useAuthStore();
+
+  // ** Mutations
+
+  const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
 
   // ** Queries
   const {
@@ -64,8 +69,8 @@ const page = () => {
               <Button
                 className="bg-[#6392D8] text-white"
                 onClick={() =>
-                  findOrCreateConversationApi({
-                    receiverUsername: seller?.username!,
+                  findOrCreateConversation({
+                    receiverUsername: gig.username,
                     senderUsername: authUser?.username!,
                   })
                 }

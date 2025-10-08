@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/use-auth.store";
-import { useSellerById, useUpdateSeller } from "@/api/sellers";
 import { updateSellerDefaultForm } from "@/forms";
 import { updateSellerForm, UpdateSellerForm } from "@/schemas";
 import Container from "@/components/container";
@@ -51,6 +50,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useParams } from "next/navigation";
+import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
+import { useUpdateSeller } from "@/features/sellers/mutations/use-update-seller.mutation";
 
 function ProfileForm() {
   //   ** Params

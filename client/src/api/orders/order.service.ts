@@ -11,10 +11,6 @@ export const createOrder = async (data: CreateOrderPayload) => {
   return response.data;
 };
 
-export const getOrderById = async (id: string) => {
-  const response = await order__axios.get<Order>(`/${id}`);
-  return response.data;
-};
 
 export const startOrder = async (data: StartOrderPayload) => {
   const response = await order__axios.post<Order>(`/start-order`, data);

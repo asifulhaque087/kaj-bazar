@@ -1,17 +1,15 @@
 "use client";
 
-import {
-  useGetConversationsById,
-  useGetConversationsByUsername,
-} from "@/api/chats";
-import ConversationList from "@/app/inbox/conversation-list";
-import MessageList from "@/app/inbox/message-list";
+import ConversationList from "@/features/chats/components/conversation-list";
+import MessageList from "@/features/chats/components/message-list";
 import Container from "@/components/container";
 import { Conversation } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useGetConversationsByUsername } from "@/features/chats/queries/use-user-covnersations.query";
+import { useGetConversationsById } from "@/features/chats/queries/use-conversation.query";
 
 const page = () => {
   const { authUser } = useAuthStore();

@@ -4,8 +4,8 @@
 import { Fragment, useState } from "react";
 
 // ** Components Imports
-import LoginModal from "@/components/login-modal";
-import RegisterModal from "@/components/register-modal";
+import LoginModal from "@/features/auth/components/login-modal";
+import RegisterModal from "@/features/auth/components/register-modal";
 import { ArrowRight, MoveUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/use-auth.store";

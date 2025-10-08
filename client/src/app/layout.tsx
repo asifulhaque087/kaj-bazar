@@ -4,10 +4,10 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import AuthProvider from "@/providers/auth.provider";
-import Footer from "@/components/footer";
+import Footer from "@/components/widgets/footer";
 import Container from "@/components/container";
 import Navigation from "@/components/Navigation";
-import Header from "@/components/header";
+import Header from "@/components/widgets/header";
 
 // const inter = Inter({
 //   variable: "--font-inter",

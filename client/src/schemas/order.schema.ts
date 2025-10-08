@@ -15,31 +15,6 @@ const DeliveredWorkSchema = z.object({
 
 export type DeliveredWork = z.infer<typeof DeliveredWorkSchema>;
 
-export const deliveredWorkForm = z.object({
-  // message: z.string().optional(),
-  // file: z.string(),
-
-  file: z.instanceof(File, { message: "File is required." }),
-  message: z.string().min(1, { message: "Message is required." }).optional(),
-});
-
-// const deliveredWorkForm = z.object({
-//   file: z.instanceof(File, { message: "File is required." }),
-//   message: z.string().min(1, { message: "Message is required." }).optional(),
-// });
-
-// type DeliveredWorkForm = z.infer<typeof deliveredWorkForm>;
-
-export type DeliveredWorkForm = z.infer<typeof deliveredWorkForm>;
-
-export const deliveredWorkPalyload = z.object({
-  id: z.string(),
-  file: z.string(),
-  message: z.string().optional(),
-});
-
-export type DeliveredWorkPayload = z.infer<typeof deliveredWorkPalyload>;
-
 const ReviewSchema = z.object({
   rating: z.number(),
   review: z.string(),
@@ -96,19 +71,4 @@ export const orderSchema = z.object({
 
 export type Order = z.infer<typeof orderSchema>;
 
-export const createOrderForm = orderSchema.omit({
-  id: true,
-  orderStatus: true,
-  deliveryDueDate: true,
-});
 
-export type CreateOrderForm = z.infer<typeof createOrderForm>;
-export type CreateOrderPayload = z.infer<typeof createOrderForm>;
-
-export const startOrderForm = z.object({
-  id: z.string(),
-  requirement: z.string().optional(),
-});
-
-export type StartOrderForm = z.infer<typeof startOrderForm>;
-export type StartOrderPayload = z.infer<typeof startOrderForm>;

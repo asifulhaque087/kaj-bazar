@@ -221,38 +221,17 @@
 
 "use client";
 
-import { useApproveDelivery, useGetOrderById } from "@/api/orders";
-import { useBuyerReviewSeller, useSellerReviewBuyer } from "@/api/reviews";
-import BuyerReviewSellerModal from "@/components/buyer-review-seller-modal";
-import DeliveryModal from "@/components/deliver-modal";
-import SellerReviewBuyerModal from "@/components/seller-review-buyer-modal";
+import BuyerReviewSellerModal from "@/features/reviews/components/buyer-review-seller-modal";
+import DeliveryModal from "@/features/orders/components/deliver-modal";
+import SellerReviewBuyerModal from "@/features/reviews/components/seller-review-buyer-modal";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-// import { Separator } from "@/components/ui/separator";
-import { DeliveredWork, Order } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
-import {
-  CheckCircle2,
-  Clock,
-  FileText,
-  Package,
-  Star,
-  MessageSquare,
-} from "lucide-react";
+import { CheckCircle2, Clock, FileText, Star } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { cn } from "@/lib/utils"; // Assuming you have a utility for class names
-import Welcome from "@/app/order/[orderId]/activity/welcome";
-import Container from "@/components/container";
-import ActivityCard from "@/app/order/[orderId]/activity/activity-card";
-import DeliveredWorkComponent from "@/app/order/[orderId]/activity/delivered-work";
+import { useGetOrderById } from "@/features/orders/queries/use-order.query";
+import ActivityCard from "@/features/orders/components/activity-card";
+import DeliveredWorkComponent from "@/features/orders/components/delivered-work";
 
 const Page = () => {
   const { orderId } = useParams<{ orderId: string }>();

@@ -1,6 +1,6 @@
-import ActiveGigs from "@/app/seller/profile/[id]/active-gigs";
-import Overview from "@/app/seller/profile/[id]/overview";
-import RaitingAndReviews from "@/app/seller/profile/[id]/rating-and-review";
+import ActiveGigs from "@/features/sellers/components/active-gigs";
+import Overview from "@/features/sellers/components/overview";
+import RaitingAndReviews from "@/features/sellers/components/rating-and-review";
 import { LayoutDashboard, PackagePlus, UserCog } from "lucide-react";
 
 export const categories: string[] = [

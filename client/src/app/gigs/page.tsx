@@ -1,10 +1,10 @@
 "use client";
-import { useSearch } from "@/api/gigs";
 import Container from "@/components/container";
-import Gig from "@/components/gig-card";
-import GigFilters from "@/components/gig-filters";
 import { Pagination } from "@/components/pagination";
-import useGigFilters from "@/hooks/use-gigs-flter.hook";
+import GigCard from "@/features/gigs/components/gig-card";
+import GigFilters from "@/features/gigs/components/gig-filters";
+import useGigFilters from "@/features/gigs/hooks/use-gigs-flter.hook";
+import { useSearch } from "@/features/gigs/queries/use-gigs.query";
 import { usePagination } from "@/hooks/use-pagination.hook";
 
 const Page = () => {
@@ -51,7 +51,7 @@ const Page = () => {
         <div className="flex gap-[10px] flex-wrap items-center justify-center">
           {(data?.data || []).map((gig) => (
             <div key={gig.id} className="grow basis-[262px]">
-              <Gig gig={gig} fluid />
+              <GigCard gig={gig} fluid />
             </div>
           ))}
         </div>

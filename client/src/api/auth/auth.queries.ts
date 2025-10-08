@@ -1,4 +1,4 @@
-import { getAuthUser } from "@/api/auth/auth.service";
+import { getAuthUser } from "@/features/auth/api/queries.api";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";

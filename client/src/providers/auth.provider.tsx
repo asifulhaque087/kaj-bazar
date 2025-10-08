@@ -1,7 +1,7 @@
 "use client";
 import { useAuthUser } from "@/api/auth";
-import { useCurrentBuyer } from "@/api/buyers";
-import { useCurrentSeller } from "@/api/sellers";
+import { useCurrentBuyer } from "@/features/buyers/queries/use-current-buyer.query";
+import { useCurrentSeller } from "@/features/sellers/queries/use-current-seller.query";
 import { ReactNode, useRef } from "react";
 
 const AuthProvider = ({
