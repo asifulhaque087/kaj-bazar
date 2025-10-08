@@ -10,9 +10,11 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetConversationsByUsername } from "@/features/chats/queries/use-user-covnersations.query";
 import { useGetConversationsById } from "@/features/chats/queries/use-conversation.query";
+import { useEffect } from "react";
 
 const page = () => {
   const { authUser } = useAuthStore();
+  const { setSelectedConversation } = useChatStore();
 
   const router = useRouter();
 
@@ -33,6 +35,12 @@ const page = () => {
 
   // const { data: conversation } = useGetConversationsById({ conversationId });
   useGetConversationsById({ conversationId });
+
+  useEffect(() => {
+    return () => {
+      setSelectedConversation(null);
+    };
+  }, []);
 
   if (allConversationsLoading) return <div>loading conversatino list</div>;
 

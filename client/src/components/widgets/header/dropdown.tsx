@@ -13,6 +13,8 @@ interface CustomDropdownProps {
   align?: DropdownMenuContentProps["align"];
   contentClassName?: string;
   triggerClassName?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const CustomDropdown = (props: CustomDropdownProps) => {
@@ -22,10 +24,11 @@ const CustomDropdown = (props: CustomDropdownProps) => {
     align = "start",
     contentClassName,
     triggerClassName,
+    onOpenChange,
   } = props;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild className={triggerClassName}>
         {trigger}
       </DropdownMenuTrigger>

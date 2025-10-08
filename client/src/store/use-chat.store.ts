@@ -20,7 +20,8 @@ type States = {
 };
 
 type Actions = {
-  setSelectedConversation: (conversation: Conversation) => void;
+  setSelectedConversation: (conversation: Conversation | null) => void;
+  setUnreadMessages: (messages: Message[]) => void;
   setMessageSenderUser: (user: ChatUser) => void;
   setMessageReceiverUser: (user: ChatUser) => void;
   setMessages: (messages: Message[]) => void;
@@ -40,6 +41,17 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   messageSenderUser: null,
   messageReceiverUser: null,
   socket: null,
+  // setUnreadMessages: (messages) =>
+  //   set({
+  //     unreadMessages: messages,
+  //   }),
+
+  setUnreadMessages: (messages) => {
+    console.log("$$$$$$$$$$$$$$$ ", messages)
+    set({
+      unreadMessages: messages,
+    });
+  },
   setMessageReceiverUser: (user) =>
     set({
       messageReceiverUser: user,

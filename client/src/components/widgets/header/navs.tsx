@@ -1,5 +1,6 @@
 import BecomeASeller from "@/components/widgets/header/button";
 import ProfileDropdown from "@/components/widgets/header/profile-dropdown";
+import UnreadMessageDropdown from "@/components/widgets/header/unread-message-dropdown";
 import LoginModal from "@/features/auth/components/login-modal";
 import RegisterModal from "@/features/auth/components/register-modal";
 import { useAuthStore } from "@/store/use-auth.store";
@@ -67,7 +68,7 @@ const Navs = (props: Props) => {
             </Fragment>
           ))}
 
-        {authUser &&
+        {/* {authUser &&
           protectedNavs.map((nav, i) => (
             <Fragment key={i}>
               <div
@@ -77,7 +78,6 @@ const Navs = (props: Props) => {
                   nav.path ? router.push(nav.path) : setActiveItem(i)
                 }
               >
-                {/* {nav.title} */}
                 <div className="relative">
                   <nav.icon
                     strokeWidth={1}
@@ -90,7 +90,20 @@ const Navs = (props: Props) => {
               {i === 1 && !buyer?.isSeller && <BecomeASeller />}
               {i === 1 && <ProfileDropdown />}
             </Fragment>
-          ))}
+          ))} */}
+
+        {/* <div className="relative cursor-pointer">
+          <MessageSquare
+            strokeWidth={1}
+            className="w-[20px] h-[20px] text-[#FEFEFF]"
+          />
+          <span className="absolute top-0 right-0 w-[8px] h-[8px] rounded-full bg-red-500" />
+        </div> */}
+
+        <UnreadMessageDropdown />
+
+        {!buyer?.isSeller && <BecomeASeller />}
+        {<ProfileDropdown />}
       </div>
 
       <LoginModal
