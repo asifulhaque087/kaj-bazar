@@ -1,5 +1,6 @@
 # Dockerfile.bun
-FROM oven/bun:latest
+# FROM oven/bun:latest
+FROM oven/bun:1.2.21 
 
 WORKDIR /home/app
 
