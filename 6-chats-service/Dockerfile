@@ -1,37 +1,29 @@
-FROM node:21-alpine3.18 AS base
+# ** --- declare base ---
+FROM oven/bun:1.2.21-alpine AS base
 
-# Stage 1: Build Staff
-
+# ** --- builder stage ---
 FROM base AS builder
+WORKDIR /build
 
-WORKDIR /home/build
+COPY package.json .
+COPY bun.lock .
 
-COPY package*.json .
-
-# RUN npm install
-RUN npm ci
+RUN bun install
 
 COPY . .
 
-RUN npm run build
+RUN bun run build
 
-
-# Stage 2: Runner
-
+# ** --- runnner stage ---
 FROM base AS runner
 
-WORKDIR /home/app
+WORKDIR /app
 
-COPY --from=builder /home/build/build build/
-COPY --from=builder /home/build/package*.json .
+COPY --from=builder /build/package.json .
+COPY --from=builder /build/bun.lock .
+RUN bun install --production
+COPY --from=builder /build/dist ./dist
+COPY --from=builder /build/drizzle/migrations ./migrations
 
-RUN npm install -g pm2
-
-# RUN npm install --omit=dev
-RUN npm ci --omit=dev
-
-CMD [ "npm", "run", "start" ]
-
-
-
+CMD [ "bun", "run", "start" ]
 

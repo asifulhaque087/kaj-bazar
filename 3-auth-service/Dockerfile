@@ -26,4 +26,3 @@ COPY --from=builder /build/dist ./dist
 COPY --from=builder /build/drizzle/migrations ./migrations
 
 CMD [ "bun", "run", "start" ]
-
