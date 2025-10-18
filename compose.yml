@@ -1,6 +1,7 @@
 name: kaj-bazar
 
 services:
+  # ==================================== Infrastructure ==============================
   redis:
     container_name: redis_container
     image: redis:alpine
@@ -9,44 +10,60 @@ services:
       - "6379:6379"
     command: redis-server --loglevel warning
 
-  redis-commander:
-    container_name: redis-commander
-    image: ghcr.io/joeferner/redis-commander:latest
-    restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      - REDIS_HOSTS=local:redis_container:6379
-
-  mongodb:
-    container_name: mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - 27017:27017
-
-  mysql:
-    container_name: mysql_container
-    image: mysql:latest
+  auth-db:
+    container_name: auth_postgres_container
+    image: postgres:13-alpine
     restart: always
     environment:
-      - MYSQL_USER=kaj_bazar
-      - MYSQL_DATABASE=kaj_bazar_auth
-      - MYSQL_ROOT_PASSWORD=api
-      - MYSQL_PASSWORD=api
-    ports:
-      - "3306:3306"
-
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=kaj_bazar
+      - POSTGRES_USER=auth
       - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=kaj_bazar_reviews
-    ports:
-      - "5432:5432"
+      - POSTGRES_DB=auths
+
+  user-postgres:
+    container_name: user_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=users
+
+  gig-postgres:
+    container_name: gig_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=gig
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=gigs
+
+  chat-postgres:
+    container_name: chat_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=chat
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=chats
+
+  order-db:
+    container_name: order_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=order
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=orders
+
+  review-db:
+    container_name: review_postgres_container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=review
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=reviews
+    # No user mapping needed for standard infra services
 
   rabbitmq:
     container_name: rabbitmq_container
@@ -63,7 +80,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  # ==================================== Application==============================
+    # No user mapping needed for standard infra services
+
+  # ==================================== Application Services ==============================
 
   client:
     container_name: client_container
@@ -72,7 +91,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 3000:80
+      - 3000:3000
     environment:
       - VITE_NODE_ENV=${VITE_NODE_ENV}
       - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}
@@ -91,7 +110,6 @@ services:
     ports:
       - 4000:4000
     environment:
-      - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
@@ -101,20 +119,23 @@ services:
       - AUTH_BASE_URL=${AUTH_BASE_URL}
       - USERS_BASE_URL=${USERS_BASE_URL}
       - GIG_BASE_URL=${GIG_BASE_URL}
-      - MESSAGE_BASE_URL=${MESSAGE_BASE_URL}
+      - CHAT_BASE_URL=${CHAT_BASE_URL}
       - ORDER_BASE_URL=${ORDER_BASE_URL}
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
     depends_on:
-      - chat
-      - order
+      - redis
+      - chats
+      - orders
 
-  notifications:
-    container_name: notification_container
+  email:
+    container_name: email_container
     build:
-      context: 2-notification-service
+      context: 2-email-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4001:4001
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - NODE_ENV=${NODE_ENV}
@@ -132,6 +153,8 @@ services:
       context: 3-auth-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4002:4002
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
@@ -140,12 +163,12 @@ services:
       - CLIENT_URL=${CLIENT_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
-      - MYSQL_DB=${AUTH_DB_URL}
+      - DATABASE_URL=${AUTH_DB_URL}
       - CLOUD_NAME=${CLOUD_NAME}
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     depends_on:
-      mysql:
+      auth-db:
         condition: service_started
       rabbitmq:
         condition: service_healthy
@@ -156,6 +179,8 @@ services:
       context: 4-users-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4003:4003
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
@@ -169,23 +194,25 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     depends_on:
-      mongodb:
+      user-postgres:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  gig:
-    container_name: gig_container
+  gigs:
+    container_name: gigs_container
     build:
-      context: 5-gig-service
+      context: 5-gigs-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4004:4004
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${GIG_DB_URL}
+      - DATABASE_URL=${GIGS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - REDIS_HOST=${REDIS_HOST}
@@ -193,47 +220,54 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     depends_on:
-      mongodb:
+      gig-postgres:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  chat:
-    container_name: chat_container
+  chats:
+    container_name: chats_container
     build:
-      context: 6-chat-service
+      context: 6-chats-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4005:4005
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${CHAT_DB_URL}
+      - DATABASE_URL=${CHATS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - CLOUD_NAME=${CLOUD_NAME}
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
+      - REDIS_HOST=${REDIS_HOST}
     depends_on:
-      mongodb:
+      chat-postgres:
+        condition: service_started
+      redis:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  order:
-    container_name: order_container
+  orders:
+    container_name: orders_container
     build:
-      context: 7-order-service
+      context: 7-orders-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4006:4006
     environment:
       - ENABLE_APM=${ENABLE_APM}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
       - CLIENT_URL=${CLIENT_URL}
-      - DATABASE_URL=${ORDER_DB_URL}
+      - DATABASE_URL=${ORDERS_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - STRIPE_API_KEY=${STRIPE_API_KEY}
@@ -241,31 +275,31 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     depends_on:
-      mongodb:
+      order-db:
+        condition: service_started
+      redis:
         condition: service_started
       rabbitmq:
         condition: service_healthy
 
-  review:
-    container_name: review_container
+  reviews:
+    container_name: reviews_container
     build:
-      context: 8-review-service
+      context: 8-reviews-service
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 4007:4007
     environment:
       - ENABLE_APM=${ENABLE_APM}
-      - DATABASE_HOST=${REVIEW_DB_HOST}
-      - DATABASE_USER=${REVIEW_DB_USER}
-      - DATABASE_PASSWORD=${REVIEW_DB_PASSWORD}
-      - DATABASE_NAME=${REVIEW_DB_NAME}
-      - CLUSTER_TYPE=${REVIEW_DB_CLUSTER_TYPE}
+      - DATABASE_URL=${REVIEWS_DB_URL}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
     depends_on:
-      mongodb:
+      review-db:
         condition: service_started
       rabbitmq:
         condition: service_healthy
