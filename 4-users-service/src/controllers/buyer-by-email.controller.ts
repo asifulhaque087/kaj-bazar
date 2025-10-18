@@ -1,7 +1,3 @@
-import { handleAsync } from "@fvoid/shared-lib";
-// import { db } from "@src/drizzle/db";
-import { BuyersTable } from "@src/drizzle/schemas";
-import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 
 const getBuyerByEmail = async (req: Request, res: Response) => {

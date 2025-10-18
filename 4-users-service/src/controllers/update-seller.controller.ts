@@ -1,5 +1,5 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import {
   CertificatesTable,
   EducationsTable,
@@ -8,7 +8,7 @@ import {
   SellersTable,
   SkillsTable,
   SocialLinksTable,
-} from "@src/drizzle/schemas";
+} from "@src/schemas";
 import type { UpdateSellerInput } from "@src/validations/update-seller.validation";
 import { eq, inArray, sql } from "drizzle-orm";
 import type { Request, Response } from "express";

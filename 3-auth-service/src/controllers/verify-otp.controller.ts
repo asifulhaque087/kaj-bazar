@@ -8,8 +8,8 @@ import jwt from "jsonwebtoken";
 // ** Local Imports
 
 import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 
 const verifyOtp = async (req: Request, res: Response) => {
   // Extract OTP

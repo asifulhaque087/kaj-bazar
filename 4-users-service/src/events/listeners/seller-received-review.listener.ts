@@ -7,8 +7,8 @@ import {
   type Seller_Received_Review_Event,
   type SellerReceivedReviewQueues,
 } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { SellersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { SellersTable } from "@src/schemas";
 import type { ConsumeMessage } from "amqplib";
 import { eq } from "drizzle-orm";
 

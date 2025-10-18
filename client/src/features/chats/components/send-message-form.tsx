@@ -1,7 +1,7 @@
+import { createMessageDefaultForm } from "@/features/chats/default-form-values/chat.form";
 import { useCreateMessage } from "@/features/chats/mutations/use-create-message.mutation";
 import { createMessageForm, CreateMessageForm } from "@/features/chats/schemas/create-message.schema";
 import SendOfferModal from "@/features/orders/components/send-offer-modal";
-import { createMessageDefaultForm } from "@/forms";
 import { useChatStore } from "@/store/use-chat.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinkIcon, Send } from "lucide-react";

@@ -3,9 +3,9 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import type { CreteOrderInput } from "@src/validations/order.validation";
-import { OrdersTable } from "@src/drizzle/schemas";
+import { OrdersTable } from "@src/schemas";
 
 const createOrder = async (req: Request, res: Response) => {
   const {

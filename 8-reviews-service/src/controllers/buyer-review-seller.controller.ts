@@ -3,9 +3,9 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import type { BuyerReviewSellerInput } from "@src/validations/review.validation";
-import { ReviewsTable } from "@src/drizzle/schemas";
+import { ReviewsTable } from "@src/schemas";
 import { SellerReceivedReviewPublisher } from "@src/events/publishers/seller-received-review.publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 

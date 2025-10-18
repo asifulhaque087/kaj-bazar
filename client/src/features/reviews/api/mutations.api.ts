@@ -1,4 +1,4 @@
-import { review__axios } from "@/api/common/axios.service";
+import { review__axios } from "@/axios.service";
 import {
   BuyerReviewSellerPayload,
   Review,

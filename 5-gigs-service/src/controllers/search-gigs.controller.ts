@@ -1,6 +1,6 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { GigsTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { GigsTable } from "@src/schemas";
 import { and, eq, gte, ilike, lte, or, count } from "drizzle-orm"; // Import 'or' and 'count'
 import type { Request, Response } from "express";
 

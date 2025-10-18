@@ -1,4 +1,4 @@
-import { auth__axios } from "@/api/common/axios.service";
+import { auth__axios } from "@/axios.service";
 import { Auth } from "@/schemas";
 
 // ** --- Queries ---

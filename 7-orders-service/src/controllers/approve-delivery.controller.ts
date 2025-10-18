@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { OrdersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { OrdersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 import type { ApproveDeliveryInput } from "@src/validations/order.validation";
 

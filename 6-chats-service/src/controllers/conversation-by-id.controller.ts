@@ -1,6 +1,6 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { ConversationsTable, MessagesTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { ConversationsTable } from "@src/schemas";
 import { desc, eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 

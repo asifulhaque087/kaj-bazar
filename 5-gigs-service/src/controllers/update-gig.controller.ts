@@ -1,6 +1,6 @@
 import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { GigsTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { GigsTable } from "@src/schemas";
 import { updateImage } from "@src/utils/update-image-url.util";
 import type { UpdateGigInput } from "@src/validations/update-gig.validation";
 import { eq } from "drizzle-orm";

@@ -10,8 +10,8 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 
 const currentUser = async (req: Request, res: Response) => {
   // get current user email and find user

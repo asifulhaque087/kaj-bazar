@@ -7,8 +7,8 @@ import {
   RoutingKeys,
   type ReceiveSellersEvent,
 } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { GigsTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { GigsTable } from "@src/schemas";
 import type { ConsumeMessage } from "amqplib";
 import { sample } from "lodash";
 

@@ -1,5 +1,5 @@
 import { ConnectionError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import {
   CertificatesTable,
   EducationsTable,
@@ -8,7 +8,7 @@ import {
   SellersTable,
   SkillsTable,
   SocialLinksTable,
-} from "@src/drizzle/schemas";
+} from "@src/schemas";
 import type { CreateSellerInput } from "@src/validations/create-serller.validation";
 import { eq, or } from "drizzle-orm";
 import type { Request, Response } from "express";

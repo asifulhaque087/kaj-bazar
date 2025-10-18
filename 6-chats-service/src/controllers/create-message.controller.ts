@@ -1,6 +1,6 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { MessagesTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { MessagesTable } from "@src/schemas";
 import { gatewayClient } from "@src/sockets/gatewayClient";
 import type { CreateMessageForm } from "@src/validations/message.validations";
 import type { Request, Response } from "express";

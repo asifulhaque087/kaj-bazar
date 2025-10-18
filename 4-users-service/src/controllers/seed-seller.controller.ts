@@ -8,7 +8,7 @@ import { eq, sql } from "drizzle-orm";
 
 // ** --- DB Imports ---
 
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import {
   BuyersTable,
   CertificatesTable,
@@ -18,7 +18,7 @@ import {
   SellersTable,
   SkillsTable,
   SocialLinksTable,
-} from "@src/drizzle/schemas";
+} from "@src/schemas";
 
 // ** --- Seed Seller Controller ---
 

@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
 // import { useQuery } from "@tanstack/react-query";
 
-export const useGetAuthUserQuery = () => {
+export const useAuthUser = () => {
   // ** --- store ---
   const { connectSocket } = useChatStore();
   const { setAuthUser } = useAuthStore();

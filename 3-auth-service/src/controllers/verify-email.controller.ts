@@ -4,8 +4,8 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import type { VerifyEmailInput } from "@src/validations/verification.validation";
 
 const verifyEmail = async (req: Request, res: Response) => {

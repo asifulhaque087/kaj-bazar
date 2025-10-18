@@ -20,11 +20,13 @@ import Header from "@/components/widgets/header";
 // });
 
 const roboto = Roboto({
+  subsets:["latin"],
   variable: "--font-robot",
   weight: ["300", "400", "500", "700"],
 });
 
 const rodium_libre = Rhodium_Libre({
+  subsets:["latin"],
   variable: "--font-rodium-libre",
   weight: ["400"],
 });

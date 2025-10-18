@@ -1,4 +1,4 @@
-import { buyer__axios } from "@/api/common/axios.service";
+import { buyer__axios } from "@/axios.service";
 import { Buyer } from "@/schemas";
 
 export const currentBuyer = async (): Promise<Buyer> => {

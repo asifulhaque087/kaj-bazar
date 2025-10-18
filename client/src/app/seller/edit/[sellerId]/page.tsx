@@ -38,8 +38,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/store/use-auth.store";
-import { updateSellerDefaultForm } from "@/forms";
 import { updateSellerForm, UpdateSellerForm } from "@/schemas";
 import Container from "@/components/container";
 import {
@@ -52,6 +50,7 @@ import {
 import { useParams } from "next/navigation";
 import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
 import { useUpdateSeller } from "@/features/sellers/mutations/use-update-seller.mutation";
+import { updateSellerDefaultForm } from "@/features/auth/default-form-values/auth.form";
 
 function ProfileForm() {
   //   ** Params

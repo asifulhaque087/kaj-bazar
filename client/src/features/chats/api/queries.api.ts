@@ -1,4 +1,4 @@
-import { chat__axios } from "@/api/common/axios.service";
+import { chat__axios } from "@/axios.service";
 import { Conversation, Message } from "@/schemas";
 
 export const getConversationsByUsername = async (username: string) => {

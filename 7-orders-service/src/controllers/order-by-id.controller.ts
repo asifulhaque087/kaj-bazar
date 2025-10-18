@@ -3,8 +3,8 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { OrdersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { OrdersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 
 const getOrderById = async (req: Request, res: Response) => {

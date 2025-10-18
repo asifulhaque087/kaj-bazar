@@ -4,7 +4,6 @@ import useTabs from "@/hooks/useTabs";
 import Container from "@/components/container";
 import ReviewCard from "@/features/reviews/components/review-card";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -14,10 +13,9 @@ import Overview from "@/features/sellers/components/overview";
 import ActiveGigs from "@/features/sellers/components/active-gigs";
 import RaitingAndReviews from "@/features/sellers/components/rating-and-review";
 import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
-import { findOrCreateConversationApi } from "@/features/chats/api/mutations.api";
 import { useFindOrCreateConversation } from "@/features/chats/mutations/use-get-or-create-conversation.mutation";
 
-const page = () => {
+const Page = () => {
   //   ** Params
   const params = useParams<{ id: string }>();
 
@@ -68,12 +66,12 @@ const page = () => {
               </div>
               <Button
                 className="bg-[#6392D8] text-white"
-                onClick={() =>
-                  findOrCreateConversation({
-                    receiverUsername: gig.username,
-                    senderUsername: authUser?.username!,
-                  })
-                }
+                // onClick={() =>
+                //   findOrCreateConversation({
+                //     receiverUsername: gig.username!,
+                //     senderUsername: authUser?.username!,
+                //   })
+                // }
               >
                 Contact
               </Button>
@@ -131,4 +129,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

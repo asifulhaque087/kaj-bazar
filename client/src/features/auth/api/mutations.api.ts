@@ -1,5 +1,5 @@
 import { LoginApi } from "@/api/auth/auth.types";
-import { auth__axios } from "@/api/common/axios.service";
+import { auth__axios } from "@/axios.service";
 import { LoginForm } from "@/features/auth/schemas/login.schema";
 import { RegisterPayload } from "@/features/auth/schemas/register.schema";
 

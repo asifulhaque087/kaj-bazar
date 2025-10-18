@@ -1,6 +1,6 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { BuyersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { BuyersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -12,7 +12,6 @@ const getBuyerById = async (req: Request, res: Response) => {
   );
 
   return res.json(buyer);
-
 };
 
 export default getBuyerById;

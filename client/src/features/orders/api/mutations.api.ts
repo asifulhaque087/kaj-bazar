@@ -1,4 +1,4 @@
-import { order__axios } from "@/api/common/axios.service";
+import { order__axios } from "@/axios.service";
 import { CreateOrderPayload } from "@/features/orders/schemas/create-order.schema";
 import { DeliveredWorkPayload } from "@/features/orders/schemas/deliver-work.schema";
 import { StartOrderPayload } from "@/features/orders/schemas/start-order.schema";

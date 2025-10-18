@@ -1,4 +1,4 @@
-import { seller__axios } from "@/api/common/axios.service";
+import { seller__axios } from "@/axios.service";
 import { CreateSellerPayload, UpdateSellerPayload } from "@/schemas";
 
 export const createSeller = async (data: CreateSellerPayload) => {

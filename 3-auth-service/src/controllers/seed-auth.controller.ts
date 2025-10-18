@@ -8,8 +8,8 @@ import { handleAsync } from "@fvoid/shared-lib";
 import { hashPassword } from "@src/utils/hashing.util";
 
 // ** DB
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import { RemoveBuyersPublisher } from "@src/events/publishers/remove-buyers.publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import { CreateBuyerPublisher } from "@src/events/publishers/create-buyer.publisher";

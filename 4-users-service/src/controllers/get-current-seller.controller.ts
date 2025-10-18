@@ -3,9 +3,7 @@ import {
   NotAuthorizedError,
   NotFoundError,
 } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { SellersTable } from "@src/drizzle/schemas";
-import { eq } from "drizzle-orm";
+import { db } from "@src/db";
 import type { Request, Response } from "express";
 
 const getCurrentSeller = async (req: Request, res: Response) => {

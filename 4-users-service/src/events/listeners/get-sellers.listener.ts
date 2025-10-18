@@ -5,8 +5,8 @@ import {
   RoutingKeys,
   type GetSellersEvent,
 } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { SellersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { SellersTable } from "@src/schemas";
 import { ReceiveSellersPublisher } from "@src/events/publishers/receive-sellers.publisher";
 import type { ConsumeMessage } from "amqplib";
 import { sql } from "drizzle-orm";

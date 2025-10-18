@@ -8,8 +8,8 @@ import * as crypto from "node:crypto";
 // ** Local Imports
 import { BadRequestError, handleAsync, uploads } from "@fvoid/shared-lib";
 import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import { hashPassword } from "@src/utils/hashing.util";
 import type { UserRegistrationInput } from "@src/validations/login-register.validation";
 import { SendEmailPublisher } from "@src/events/publishers/send-email-publisher";

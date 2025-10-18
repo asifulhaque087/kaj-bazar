@@ -8,8 +8,8 @@ import * as crypto from "node:crypto";
 // Local Imports
 
 import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import { SendEmailPublisher } from "@src/events/publishers/send-email-publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import type { ForgotPasswordInput } from "@src/validations/password.validation";

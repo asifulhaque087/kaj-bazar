@@ -1,4 +1,4 @@
-import { seller__axios } from "@/api/common/axios.service";
+import { seller__axios } from "@/axios.service";
 import { Seller } from "@/schemas";
 
 export const getSellerByName = async (username: string) => {

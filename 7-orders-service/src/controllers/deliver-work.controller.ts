@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { handleAsync, uploads } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
+import { db } from "@src/db";
 import type { DeliverWorkInput } from "@src/validations/order.validation";
-import { OrdersTable } from "@src/drizzle/schemas";
+import { OrdersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 
 const deliverWork = async (req: Request, res: Response) => {

@@ -8,8 +8,8 @@ import type { Request, Response } from "express";
 // ** Local Imports
 
 import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import { verifyPassword } from "@src/utils/hashing.util";
 import type { UserLoginInput } from "@src/validations/login-register.validation";
 

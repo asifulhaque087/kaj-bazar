@@ -1,4 +1,4 @@
-import { chat__axios } from "@/api/common/axios.service";
+import { chat__axios } from "@/axios.service";
 import { CreateConversationForm } from "@/features/chats/schemas/create-conversation.schema";
 import { CreateMessageForm } from "@/features/chats/schemas/create-message.schema";
 import { Conversation } from "@/schemas";

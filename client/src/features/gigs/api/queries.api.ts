@@ -1,4 +1,4 @@
-import { apiService, gig__axios } from "@/api/common/axios.service";
+import { apiService, gig__axios } from "@/axios.service";
 import { CreateGigPayload, Gig, UpdateGigPayload } from "@/schemas";
 
 // Define a type for the API response if it includes totalCount

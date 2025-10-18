@@ -5,8 +5,8 @@ import {
   type Buyer_Received_Review_Event,
   type BuyerReceivedReviewQueues,
 } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { OrdersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { OrdersTable } from "@src/schemas";
 import type { ConsumeMessage } from "amqplib";
 import { eq } from "drizzle-orm";
 

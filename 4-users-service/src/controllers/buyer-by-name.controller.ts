@@ -1,6 +1,6 @@
 import { handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { BuyersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { BuyersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
 

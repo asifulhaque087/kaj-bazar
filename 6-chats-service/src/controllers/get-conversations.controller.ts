@@ -1,6 +1,6 @@
 import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
-import { db } from "@src/drizzle/db";
-import { ConversationsTable, MessagesTable } from "@src/drizzle/schemas"; // Import MessagesTable
+import { db } from "@src/db";
+import { ConversationsTable, MessagesTable } from "@src/schemas"; // Import MessagesTable
 import { eq, desc, or } from "drizzle-orm"; // Import desc for ordering
 import type { Request, Response } from "express";
 

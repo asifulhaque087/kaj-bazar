@@ -6,8 +6,8 @@ import type { Request, Response } from "express";
 
 // ** Local Imports
 
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 import { SendEmailPublisher } from "@src/events/publishers/send-email-publisher";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import { hashPassword } from "@src/utils/hashing.util";

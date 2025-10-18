@@ -1,4 +1,4 @@
-import { gig__axios } from "@/api/common/axios.service";
+import { gig__axios } from "@/axios.service";
 import { CreateGigPayload, UpdateGigPayload } from "@/schemas";
 
 export const createGig = async (data: CreateGigPayload) => {

@@ -12,8 +12,8 @@ import jwt from "jsonwebtoken";
 // ** Local Imports
 
 import { config } from "@src/config";
-import { db } from "@src/drizzle/db";
-import { AuthTable } from "@src/drizzle/schema";
+import { db } from "@src/db";
+import { AuthTable } from "@src/schemas";
 
 const refreshToken = async (req: Request, res: Response) => {
   // get current user email and find user

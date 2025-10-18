@@ -1,7 +1,5 @@
 import MessageBox from "@/features/chats/components/message-box";
 import SendMessageForm from "@/features/chats/components/send-message-form";
-import TextMessage from "@/features/chats/components/text-message";
-import { Conversation } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
 import { useEffect, useRef } from "react";

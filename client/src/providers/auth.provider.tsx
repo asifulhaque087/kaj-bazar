@@ -1,5 +1,5 @@
 "use client";
-import { useAuthUser } from "@/api/auth";
+import { useAuthUser } from "@/features/auth/queries/use-auth-user.query";
 import { useCurrentBuyer } from "@/features/buyers/queries/use-current-buyer.query";
 import { useCurrentSeller } from "@/features/sellers/queries/use-current-seller.query";
 import { ReactNode, useRef } from "react";

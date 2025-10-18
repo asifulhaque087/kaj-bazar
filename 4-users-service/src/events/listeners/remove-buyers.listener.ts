@@ -10,8 +10,8 @@ import {
 } from "@fvoid/shared-lib";
 
 // ** DB
-import { db } from "@src/drizzle/db";
-import { BuyersTable } from "@src/drizzle/schemas";
+import { db } from "@src/db";
+import { BuyersTable } from "@src/schemas";
 
 export class RemoveBuyersListener extends Listener<RemoveBuyersEvent> {
   exchangeName: Exchanges.Remove_Buyers_Exchange =
