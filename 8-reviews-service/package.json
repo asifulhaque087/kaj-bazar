@@ -1,5 +1,5 @@
 {
-  "name": "8-reviews-service",
+  "name": "review-service",
   "module": "index.ts",
   "type": "module",
   "private": true,

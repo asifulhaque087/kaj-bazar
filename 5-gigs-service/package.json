@@ -1,5 +1,5 @@
 {
-  "name": "5-gigs-service",
+  "name": "gig-service",
   "module": "index.ts",
   "type": "module",
   "private": true,

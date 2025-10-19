@@ -109,7 +109,7 @@ services:
   gateway:
     container_name: gateway_container
     build:
-      context: 1-gateway-service
+      context: gateway-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -129,19 +129,19 @@ services:
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
     volumes:
-      - ./1-gateway-service:/home/app
+      - ./gateway-service:/home/app
       - /home/app/node_modules
     depends_on:
       - redis
-      - chats
-      - orders
+      - chat
+      - order
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
   email:
     container_name: email_container
     build:
-      context: 2-email-service
+      context: email-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -154,7 +154,7 @@ services:
       - SENDER_EMAIL=${SENDER_EMAIL}
       - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
     volumes:
-      - ./2-email-service:/home/app
+      - ./email-service:/home/app
       - /home/app/node_modules
     depends_on:
       rabbitmq:
@@ -165,7 +165,7 @@ services:
   auth:
     container_name: auth_container
     build:
-      context: 3-auth-service
+      context: auth-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -183,7 +183,7 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./3-auth-service:/home/app
+      - ./auth-service:/home/app
       - /home/app/node_modules
     depends_on:
       auth-db:
@@ -193,10 +193,10 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
-  users:
-    container_name: users_container
+  user:
+    container_name: user_container
     build:
-      context: 4-users-service
+      context: user-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -214,7 +214,7 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./4-users-service:/home/app
+      - ./user-service:/home/app
       - /home/app/node_modules
     depends_on:
       user-postgres:
@@ -224,10 +224,10 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
-  gigs:
-    container_name: gigs_container
+  gig:
+    container_name: gig_container
     build:
-      context: 5-gigs-service
+      context: gig-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -245,7 +245,7 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./5-gigs-service:/home/app
+      - ./gig-service:/home/app
       - /home/app/node_modules
     depends_on:
       gig-postgres:
@@ -255,10 +255,10 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
-  chats:
-    container_name: chats_container
+  chat:
+    container_name: chat_container
     build:
-      context: 6-chats-service
+      context: chat-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -276,7 +276,7 @@ services:
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
       - REDIS_HOST=${REDIS_HOST}
     volumes:
-      - ./6-chats-service:/home/app
+      - ./chat-service:/home/app
       - /home/app/node_modules
     depends_on:
       chat-postgres:
@@ -288,10 +288,10 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
-  orders:
-    container_name: orders_container
+  order:
+    container_name: order_container
     build:
-      context: 7-orders-service
+      context: order-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -310,7 +310,7 @@ services:
       - CLOUD_API_KEY=${CLOUD_API_KEY}
       - CLOUD_API_SECRET=${CLOUD_API_SECRET}
     volumes:
-      - ./7-orders-service:/home/app
+      - ./order-service:/home/app
       - /home/app/node_modules
     depends_on:
       order-db:
@@ -322,10 +322,10 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
-  reviews:
-    container_name: reviews_container
+  review:
+    container_name: review_container
     build:
-      context: 8-reviews-service
+      context: review-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
@@ -339,7 +339,7 @@ services:
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
     volumes:
-      - ./8-reviews-service:/home/app
+      - ./review-service:/home/app
       - /home/app/node_modules
     depends_on:
       review-db:
@@ -354,7 +354,7 @@ services:
   auth-studio:
     container_name: auth_studio_container
     build:
-      context: 3-auth-service
+      context: auth-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -363,7 +363,7 @@ services:
       - DATABASE_URL=${AUTH_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./3-auth-service:/home/app
+      - ./auth-service:/home/app
     depends_on:
       - auth-db
       - auth
@@ -371,9 +371,9 @@ services:
     user: "${UID}:${GID}"
 
   user-studio:
-    container_name: users_studio_container
+    container_name: user_studio_container
     build:
-      context: 4-users-service
+      context: user-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -382,17 +382,17 @@ services:
       - DATABASE_URL=${USER_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./4-users-service:/home/app
+      - ./user-service:/home/app
     depends_on:
       - user-postgres
-      - users
+      - user
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
   gig-studio:
-    container_name: gigs_studio_container
+    container_name: gig_studio_container
     build:
-      context: 5-gigs-service
+      context: gig-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -401,17 +401,17 @@ services:
       - DATABASE_URL=${GIG_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./5-gigs-service:/home/app
+      - ./gig-service:/home/app
     depends_on:
       - gig-postgres
-      - gigs
+      - gig
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
   chat-studio:
-    container_name: chats_studio_container
+    container_name: chat_studio_container
     build:
-      context: 6-chats-service
+      context: chat-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -420,17 +420,17 @@ services:
       - DATABASE_URL=${CHAT_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./6-chats-service:/home/app
+      - ./chat-service:/home/app
     depends_on:
       - chat-postgres
-      - chats
+      - chat
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
   order-studio:
-    container_name: orders_studio_container
+    container_name: order_studio_container
     build:
-      context: 7-orders-service
+      context: order-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -439,17 +439,17 @@ services:
       - DATABASE_URL=${ORDER_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./7-orders-service:/home/app
+      - ./order-service:/home/app
     depends_on:
       - order-db
-      - orders
+      - order
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
   review-studio:
-    container_name: reviews_studio_container
+    container_name: review_studio_container
     build:
-      context: 8-reviews-service
+      context: review-service
       dockerfile: Dockerfile.studio
     restart: always
     ports:
@@ -458,9 +458,9 @@ services:
       - DATABASE_URL=${REVIEW_DB_URL}
     profiles: ["exclude"]
     volumes:
-      - ./8-reviews-service:/home/app
+      - ./review-service:/home/app
     depends_on:
       - review-db
-      - reviews
+      - review
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"

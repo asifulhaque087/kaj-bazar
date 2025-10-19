@@ -1,4 +1,4 @@
-# 3-auth-service
+# auth-service
 
 To install dependencies:
 

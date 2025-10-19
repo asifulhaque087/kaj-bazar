@@ -1,5 +1,5 @@
 {
-  "name": "6-chats-service",
+  "name": "chat-service",
   "module": "index.ts",
   "type": "module",
   "private": true,

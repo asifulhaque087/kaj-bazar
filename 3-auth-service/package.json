@@ -1,5 +1,5 @@
 {
-  "name": "3-auth-service",
+  "name": "auth-service",
   "module": "index.ts",
   "type": "module",
   "private": true,

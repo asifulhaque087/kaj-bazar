@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "1-gateway-service/**"
+      - "gateway-service/**"
 
 jobs:
   build_and_push:
@@ -26,7 +26,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./1-gateway-service
-          file: ./1-gateway-service/Dockerfile
+          context: ./gateway-service
+          file: ./gateway-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-gateway:latest

@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "4-users-service/**"
+      - "user-service/**"
 
 jobs:
   build_and_push:
@@ -26,7 +26,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./4-users-service
-          file: ./4-users-service/Dockerfile
+          context: ./user-service
+          file: ./user-service/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-users:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-user:latest

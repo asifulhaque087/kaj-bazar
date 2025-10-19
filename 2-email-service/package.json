@@ -1,5 +1,5 @@
 {
-  "name": "2-email-service",
+  "name": "email-service",
   "module": "index.ts",
   "type": "module",
   "private": true,
