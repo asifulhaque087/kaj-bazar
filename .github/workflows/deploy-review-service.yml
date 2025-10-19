@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "8-review-service/**"
+      - "review-service/**"
 
 jobs:
   build_and_push:
@@ -26,7 +26,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./8-review-service
-          file: ./8-review-service/Dockerfile
+          context: ./review-service
+          file: ./review-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-review:latest

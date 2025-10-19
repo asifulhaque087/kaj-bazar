@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "6-chat-service/**"
+      - "chat-service/**"
 
 jobs:
   build_and_push:
@@ -26,8 +26,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./6-chat-service
-          file: ./6-chat-service/Dockerfile
+          context: ./chat-service
+          file: ./chat-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-chat:latest
-
