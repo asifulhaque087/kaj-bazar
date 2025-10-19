@@ -1,6 +1,5 @@
-import { config } from '@review/config';
-import { Pool } from 'pg';
-
+import { config } from "@review/config";
+import { Pool } from "node_modules/@types/pg";
 
 const pool: Pool = new Pool({
   host: `${config.DATABASE_HOST}`,
@@ -15,8 +14,8 @@ const pool: Pool = new Pool({
   // })
 });
 
-pool.on('error', (error: Error) => {
-  console.log('error', 'pg client error', error);
+pool.on("error", (error: Error) => {
+  console.log("error", "pg client error", error);
   process.exit(-1);
 });
 
@@ -45,11 +44,13 @@ const createTableText = `
 const databaseConnection = async (): Promise<void> => {
   try {
     await pool.connect();
-    console.log('Review service successfully connected to postgresql database.');
+    console.log(
+      "Review service successfully connected to postgresql database."
+    );
     await pool.query(createTableText);
   } catch (error) {
-    console.error('ReviewService - Unable to connecto to database');
-    console.log('error', 'ReviewService () method error:', error);
+    console.error("ReviewService - Unable to connecto to database");
+    console.log("error", "ReviewService () method error:", error);
   }
 };
 

@@ -1,26 +1,26 @@
-import { pool } from '@review/database';
-import { publishFanoutMessage } from '@review/queues/review.producer';
-import { reviewChannel } from '@review/server';
-import { IReviewDocument, IReviewMessageDetails } from '@fvoid/shared-lib';
-import { map } from 'lodash';
-import { QueryResult } from 'pg';
+import { pool } from "@review/database";
+import { publishFanoutMessage } from "@review/queues/review.producer";
+import { reviewChannel } from "@review/server";
+import { IReviewDocument, IReviewMessageDetails } from "@fvoid/shared-lib";
+import { map } from "lodash";
+import { QueryResult } from "node_modules/@types/pg";
 
 interface IReviewerObjectKeys {
   [key: string]: string | number | Date | undefined;
 }
 
 const objKeys: IReviewerObjectKeys = {
-  review: 'review',
-  rating: 'rating',
-  country: 'country',
-  gigid: 'gigId',
-  reviewerid: 'reviewerId',
-  createdat: 'createdAt',
-  orderid: 'orderId',
-  sellerid: 'sellerId',
-  reviewerimage: 'reviewerImage',
-  reviewerusername: 'reviewerUsername',
-  reviewtype: 'reviewType'
+  review: "review",
+  rating: "rating",
+  country: "country",
+  gigid: "gigId",
+  reviewerid: "reviewerId",
+  createdat: "createdAt",
+  orderid: "orderId",
+  sellerid: "sellerId",
+  reviewerimage: "reviewerImage",
+  reviewerusername: "reviewerUsername",
+  reviewtype: "reviewType",
 };
 
 const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
@@ -34,7 +34,7 @@ const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
     orderId,
     reviewType,
     reviewerUsername,
-    country
+    country,
   } = data;
   const createdAtDate = new Date();
   const { rows } = await pool.query(
@@ -42,7 +42,19 @@ const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *
     `,
-    [gigId, reviewerId, reviewerImage, sellerId, review, rating, orderId, reviewType, reviewerUsername, country, createdAtDate]
+    [
+      gigId,
+      reviewerId,
+      reviewerImage,
+      sellerId,
+      review,
+      rating,
+      orderId,
+      reviewType,
+      reviewerUsername,
+      country,
+      createdAtDate,
+    ]
   );
   const messageDetails: IReviewMessageDetails = {
     gigId: data.gigId,
@@ -52,13 +64,13 @@ const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
     rating: data.rating,
     orderId: data.orderId,
     createdAt: `${createdAtDate}`,
-    type: `${reviewType}`
+    type: `${reviewType}`,
   };
   await publishFanoutMessage(
     reviewChannel,
-    'jobber-review',
+    "jobber-review",
     JSON.stringify(messageDetails),
-    'Review details sent to order and users services'
+    "Review details sent to order and users services"
   );
   const result: IReviewDocument = Object.fromEntries(
     Object.entries(rows[0]).map(([key, value]) => [objKeys[key] || key, value])
@@ -67,7 +79,10 @@ const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
 };
 
 const getReviewsByGigId = async (gigId: string): Promise<IReviewDocument[]> => {
-  const reviews: QueryResult = await pool.query('SELECT * FROM reviews WHERE reviews.gigId = $1', [gigId]);
+  const reviews: QueryResult = await pool.query(
+    "SELECT * FROM reviews WHERE reviews.gigId = $1",
+    [gigId]
+  );
   const mappedResult: IReviewDocument[] = map(reviews.rows, (key) => {
     return Object.fromEntries(
       Object.entries(key).map(([key, value]) => [objKeys[key] || key, value])
@@ -76,11 +91,13 @@ const getReviewsByGigId = async (gigId: string): Promise<IReviewDocument[]> => {
   return mappedResult;
 };
 
-const getReviewsBySellerId = async (sellerId: string): Promise<IReviewDocument[]> => {
-  const reviews: QueryResult = await pool.query('SELECT * FROM reviews WHERE reviews.sellerId = $1 AND reviews.reviewType = $2', [
-    sellerId,
-    'seller-review'
-  ]);
+const getReviewsBySellerId = async (
+  sellerId: string
+): Promise<IReviewDocument[]> => {
+  const reviews: QueryResult = await pool.query(
+    "SELECT * FROM reviews WHERE reviews.sellerId = $1 AND reviews.reviewType = $2",
+    [sellerId, "seller-review"]
+  );
   const mappedResult: IReviewDocument[] = map(reviews.rows, (key) => {
     return Object.fromEntries(
       Object.entries(key).map(([key, value]) => [objKeys[key] || key, value])
