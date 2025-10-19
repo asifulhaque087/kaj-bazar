@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { Pool } from "pg";
+import { Pool } from "node_modules/@types/pg";
 
 export const catchError = async <T, E = Error>(
   promise: Promise<T>
@@ -21,8 +21,8 @@ if (!connectionString) {
 
 // Use a separate pool for migration and ensure it is closed afterward
 const pool = new Pool({
-    connectionString: connectionString,
-//   connectionString: config.DATABASE_URL,
+  connectionString: connectionString,
+  //   connectionString: config.DATABASE_URL,
 });
 
 const db = drizzle(pool);
