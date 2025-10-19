@@ -15,55 +15,54 @@ services:
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=auth
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=auths
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   user-postgres:
     container_name: user_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=users
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   gig-postgres:
     container_name: gig_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=gig
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=gigs
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   chat-postgres:
     container_name: chat_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=chat
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=chats
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   order-db:
     container_name: order_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=order
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=orders
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   review-db:
     container_name: review_postgres_container
     image: postgres:13-alpine
     restart: always
     environment:
-      - POSTGRES_USER=review
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=reviews
-    # No user mapping needed for standard infra services
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PWD}
+      - POSTGRES_DB=${PG_DB_NAME}
 
   rabbitmq:
     container_name: rabbitmq_container
@@ -117,7 +116,7 @@ services:
       - SECRET_KEY_TWO=${SECRET_KEY_TWO}
       - CLIENT_URL=${CLIENT_URL}
       - AUTH_BASE_URL=${AUTH_BASE_URL}
-      - USERS_BASE_URL=${USERS_BASE_URL}
+      - USER_BASE_URL=${USER_BASE_URL}
       - GIG_BASE_URL=${GIG_BASE_URL}
       - CHAT_BASE_URL=${CHAT_BASE_URL}
       - ORDER_BASE_URL=${ORDER_BASE_URL}
@@ -186,7 +185,7 @@ services:
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${USERS_DB_URL}
+      - DATABASE_URL=${USER_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - REDIS_HOST=${REDIS_HOST}
@@ -212,7 +211,7 @@ services:
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${GIGS_DB_URL}
+      - DATABASE_URL=${GIG_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - REDIS_HOST=${REDIS_HOST}
@@ -238,7 +237,7 @@ services:
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${CHATS_DB_URL}
+      - DATABASE_URL=${CHAT_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - CLOUD_NAME=${CLOUD_NAME}
@@ -267,7 +266,7 @@ services:
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}
       - CLIENT_URL=${CLIENT_URL}
-      - DATABASE_URL=${ORDERS_DB_URL}
+      - DATABASE_URL=${ORDER_DB_URL}
       - API_GATEWAY_URL=${API_GATEWAY_URL}
       - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
       - STRIPE_API_KEY=${STRIPE_API_KEY}
@@ -292,7 +291,7 @@ services:
       - 4007:4007
     environment:
       - ENABLE_APM=${ENABLE_APM}
-      - DATABASE_URL=${REVIEWS_DB_URL}
+      - DATABASE_URL=${REVIEW_DB_URL}
       - GATEWAY_JWT_TOKEN=${GATEWAY_JWT_TOKEN}
       - JWT_TOKEN=${JWT_TOKEN}
       - NODE_ENV=${NODE_ENV}

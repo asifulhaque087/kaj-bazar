@@ -12,7 +12,7 @@ import { Router } from "express";
 const sellerRouter = Router();
 
 sellerRouter.use(
-  apiMiddleware(`${config.USERS_BASE_URL}/api/v1/sellers`, "users")
+  apiMiddleware(`${config.USER_BASE_URL}/api/v1/sellers`, "users")
 );
 
 sellerRouter.post("/create", createSeller);

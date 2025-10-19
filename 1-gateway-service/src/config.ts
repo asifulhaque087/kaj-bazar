@@ -6,7 +6,7 @@ export const config = {
   SECRET_KEY_TWO: process.env.SECRET_KEY_TWO || "",
   CLIENT_URL: process.env.CLIENT_URL || "",
   AUTH_BASE_URL: process.env.AUTH_BASE_URL || "",
-  USERS_BASE_URL: process.env.USERS_BASE_URL || "",
+  USER_BASE_URL: process.env.USER_BASE_URL || "",
   GIG_BASE_URL: process.env.GIG_BASE_URL || "",
   CHAT_BASE_URL: process.env.CHAT_BASE_URL || "",
   ORDER_BASE_URL: process.env.ORDER_BASE_URL || "",

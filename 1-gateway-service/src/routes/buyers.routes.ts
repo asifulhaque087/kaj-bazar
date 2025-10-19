@@ -9,7 +9,7 @@ import { Router } from "express";
 const buyerRouter = Router();
 
 buyerRouter.use(
-  apiMiddleware(`${config.USERS_BASE_URL}/api/v1/buyers`, "users")
+  apiMiddleware(`${config.USER_BASE_URL}/api/v1/buyers`, "users")
 );
 
 buyerRouter.get("/current-buyer", verifyJwtToken, currentBuyer);
