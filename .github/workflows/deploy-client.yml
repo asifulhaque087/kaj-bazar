@@ -44,6 +44,6 @@ jobs:
             cd docker-host/
 
             # Start or update containers
-            docker compose pull asiful087/kaj-bazar-client
-            docker compose up asiful087/kaj-bazar-client -d
+            docker compose pull client
+            docker compose up client -d
             docker image prune -f
