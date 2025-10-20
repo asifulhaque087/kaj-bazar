@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { Pool } from "node_modules/@types/pg";
+import { Pool } from "pg";
 
 export const catchError = async <T, E = Error>(
   promise: Promise<T>

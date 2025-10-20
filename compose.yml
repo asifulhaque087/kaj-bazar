@@ -79,7 +79,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    # No user mapping needed for standard infra services
 
   # ==================================== Application Services ==============================
 
@@ -88,15 +87,10 @@ services:
     build:
       context: client
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-client
     restart: always
     ports:
       - 3000:3000
-    environment:
-      - VITE_NODE_ENV=${VITE_NODE_ENV}
-      - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}
-      - VITE_CLIENT_ENDPOINT=${VITE_CLIENT_ENDPOINT}
-      - VITE_STRIPE_KEY=${VITE_STRIPE_KEY}
-      - VITE_ELASTIC_APM_SERVER=${VITE_ELASTIC_APM_SERVER}
     depends_on:
       - gateway
 
@@ -105,6 +99,7 @@ services:
     build:
       context: gateway-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-gateway
     restart: always
     ports:
       - 4000:4000
@@ -122,6 +117,7 @@ services:
       - ORDER_BASE_URL=${ORDER_BASE_URL}
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
+
     depends_on:
       - redis
       - chat
@@ -132,6 +128,7 @@ services:
     build:
       context: email-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-email
     restart: always
     ports:
       - 4001:4001
@@ -151,6 +148,7 @@ services:
     build:
       context: auth-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-auth
     restart: always
     ports:
       - 4002:4002
@@ -177,6 +175,7 @@ services:
     build:
       context: user-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-user
     restart: always
     ports:
       - 4003:4003
@@ -203,6 +202,7 @@ services:
     build:
       context: gig-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-gig
     restart: always
     ports:
       - 4004:4004
@@ -229,6 +229,7 @@ services:
     build:
       context: chat-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-chat
     restart: always
     ports:
       - 4005:4005
@@ -257,6 +258,7 @@ services:
     build:
       context: order-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-order
     restart: always
     ports:
       - 4006:4006
@@ -286,6 +288,7 @@ services:
     build:
       context: review-service
       dockerfile: Dockerfile
+    image: asiful087/kaj-bazar-review
     restart: always
     ports:
       - 4007:4007
