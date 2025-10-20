@@ -53,6 +53,7 @@ class AuthService {
   }
 
   private set_security_middlewares() {
+    this.app.set("trust proxy", 1);
     this.app.use(
       cors({
         origin: "*",
