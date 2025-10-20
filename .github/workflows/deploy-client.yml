@@ -24,16 +24,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Generate .env.production for Vite
-        run: |
-          cat <<EOF > ./client/.env.production
-          VITE_NODE_ENV=${{ secrets.KAJ_BAZAR_VITE_NODE_ENV }}
-          VITE_BASE_ENDPOINT=${{ secrets.KAJ_BAZAR_VITE_BASE_ENDPOINT }}
-          VITE_CLIENT_ENDPOINT=${{ secrets.KAJ_BAZAR_VITE_CLIENT_ENDPOINT }}
-          VITE_STRIPE_KEY=${{ secrets.KAJ_BAZAR_VITE_STRIPE_KEY }}
-          VITE_ELASTIC_APM_SERVER=${{ secrets.KAJ_BAZAR_VITE_ELASTIC_APM_SERVER }}
-          EOF
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -41,3 +31,19 @@ jobs:
           file: ./client/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-client:latest
+
+      - name: Pull and restart docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+
+            cd docker-host/
+
+            # Start or update containers
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-client:latest
+            docker compose up ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-client:latest -d
+            docker image prune -f
