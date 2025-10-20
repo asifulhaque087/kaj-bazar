@@ -8,7 +8,7 @@ import SearchBox from "@/components/widgets/header/search-box";
 
 const Header = () => {
   return (
-    <Container className="bg-[#616BA4]] bg-red-500">
+    <Container className="bg-[#616BA4]] bg-green-500">
       <header className="flex flex-col md:flex-row md:gap-x-[34px] gap-y-[24px] items-center justify-center py-[24px]">
         <Logo />
         <SearchBox className="w-full" />
