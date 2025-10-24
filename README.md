@@ -3,7 +3,7 @@
 This is a scalable freelance marketplace build with microservices architecture, real-time
 communication and database per service polyglot persistence pattern.
 
-This application is in development. Its going to include many features. Till now my fouces on building Minimum Viable Product **(MVP)**. Below All the
+This application is in development. It has already included all the features listed in [Done Stories](#done-stories). But soon Its going to have all features listed in [All Stories](#all-stories) 🚀.
 
 ## Table Of Content
 
