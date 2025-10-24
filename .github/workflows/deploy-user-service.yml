@@ -10,8 +10,9 @@ on:
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Transfer code
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Log in to Docker Hub
@@ -30,3 +31,19 @@ jobs:
           file: ./user-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-user:latest
+
+      - name: Pull and restart docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+
+            cd docker-host/
+
+            # Start or update containers
+            docker compose pull user
+            docker compose up user -d
+            docker image prune -f
