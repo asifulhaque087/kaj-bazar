@@ -5,7 +5,6 @@ import LoginModal from "@/features/auth/components/login-modal";
 import RegisterModal from "@/features/auth/components/register-modal";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
-import { Bell, MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
@@ -16,14 +15,6 @@ interface Props {
 const navs = [
   { title: "Login", path: "" },
   { title: "Register", path: "" },
-  // { title: "gigs", path: "/gigs" },
-];
-
-const protectedNavs = [
-  { title: "Notifications", icon: Bell, path: "" },
-  { title: "Messages", icon: MessageSquare, path: "" },
-  //   { title: "Register", path: "" },
-  // { title: "gigs", path: "/gigs" },
 ];
 
 const Navs = (props: Props) => {
@@ -68,42 +59,14 @@ const Navs = (props: Props) => {
             </Fragment>
           ))}
 
-        {/* {authUser &&
-          protectedNavs.map((nav, i) => (
-            <Fragment key={i}>
-              <div
-                key={i}
-                className="font-roboto text-[14px] text-[#F7F7FA] whitespace-nowrap capitalize cursor-pointer"
-                onClick={() =>
-                  nav.path ? router.push(nav.path) : setActiveItem(i)
-                }
-              >
-                <div className="relative">
-                  <nav.icon
-                    strokeWidth={1}
-                    className="w-[20px] h-[20px] text-[#FEFEFF]"
-                  />
-                  <span className="absolute top-0 right-0 w-[8px] h-[8px] rounded-full bg-red-500" />
-                </div>
-              </div>
+        {authUser && <UnreadMessageDropdown />}
 
-              {i === 1 && !buyer?.isSeller && <BecomeASeller />}
-              {i === 1 && <ProfileDropdown />}
-            </Fragment>
-          ))} */}
-
-        {/* <div className="relative cursor-pointer">
-          <MessageSquare
-            strokeWidth={1}
-            className="w-[20px] h-[20px] text-[#FEFEFF]"
-          />
-          <span className="absolute top-0 right-0 w-[8px] h-[8px] rounded-full bg-red-500" />
-        </div> */}
-
-        <UnreadMessageDropdown />
-
-        {!buyer?.isSeller && <BecomeASeller />}
-        {<ProfileDropdown />}
+        {authUser && (
+          <>
+            {!buyer?.isSeller && <BecomeASeller />}
+            <ProfileDropdown />
+          </>
+        )}
       </div>
 
       <LoginModal
