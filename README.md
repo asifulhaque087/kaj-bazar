@@ -1,53 +1,82 @@
-# Description
+# Kaj Bazar
 
 This is a scalable freelance marketplace build with microservices architecture, real-time
 communication and database per service polyglot persistence pattern.
 
-# Tech
-
-Backend: `Microservice` `Websocket` `Nodejs` `Expressjs` `Redis` `Postgresql` `Typescript` `RabbitMQ`
-
-Fronted: `Nextjs` `Tanstack Query` `TailwindCSS` `Zustand`
-
-devops: `CI/CD`, `VPS`, `Docker`, `SSH`
-
-# Features
-
 This application is in development. Its going to include many features. Till now my fouces on building Minimum Viable Product **(MVP)**. Below All the
 
-## All Stories
+## Table Of Content
+
+- [Technologies](#tech)
+- [Done Stories](#done-stories)
+- [All Stories](#all-stories)
+- [Technical Architecture](#tech-arc)
+
+<a id="tech"></a>
+
+## Technologies
+
+Backend: `Microservice` `Websocket` `Nodejs` `Expressjs` `Redis` `Drizzle` `Postgresql` `Mysql` `Typescript` `RabbitMQ`
+
+Frontend: `Nextjs` `Tanstack Query` `TailwindCSS` `Zustand`
+
+Devops: `CI/CD` `VPS` `Docker` `SSH` `Vim`
+
+<a id="done-stories"></a>
 
 ## Done Stories
 
-- Users have the ability to verify their account and change their password for enhanced security.
+- buyer should be able to create an account
+- buyer should be able to become a seller
+- buyer should be able to see a gig details page
+- buyer should be able to contact the gig seller
+- seller should be able to create gig
+- seller should be able to reply the buyer
+- seller should be able to send offer to the buyer
+- buyer and seller should be able to track the activity
+- seller should be able to send the delivery in zip format
+- buyer should be able to send the requirement after accepting offer
+- buyer should be able to see their orders
+- buyer should be able to see seller profile
+- buyer should be able to see all the gigs with pagination
+- buyer should be able to filter gigs
+- buyer and seller should be able to get notification when receive message
+- buyer should be able to download their order invoice
 
-# Technical Architectures
+<a id="all-stories"></a>
 
----
+## All Stories
 
-# Process Documentation
+- buyer should be able to verify account
+- buyer should be able to change their password
+- buyer should be able to create account using social media
+- seller should be able to update gig
+- seller should be able to delete gig
+- seller should be able to undo the gig within 1 day
+- seller should be able to deactivate gig
+- seller should be able to re-activate gig
+- seller should be able to update their profile
+- buyer should be able to accept or reject the offer
+- seller should be able to request a delivery time extension.
+- buyer should be able to reject or accept the delivery time extension
+- buyer should be able to filter order table
 
-## Steps
+<a id="tech-arc"></a>
 
-1. [Perform Initial Setup](#step-1-details) 👈 Link to details block
-2. [Configure Environment](#step-2-details) 👈 Link to details block
-3. [Run Verification Script](#step-3-details) 👈 Link to details block
+## Technical Architectures
 
-***
-
-## Step Details
-
-<a id="step-1-details"></a> 👈 Anchor for Step 1
-### Perform Initial Setup
-This step involves downloading necessary dependencies and checking system compatibility. Ensure you have Node.js version 18+ installed before proceeding.
-[Go back to top](#process-documentation) 🔙 Link back to the start
-
-<a id="step-2-details"></a> 👈 Anchor for Step 2
-### Configure Environment
-Update the configuration file (`config.json`) with your specific API keys and database credentials.
-[Go back to top](#process-documentation) 🔙 Link back to the start
-
-<a id="step-3-details"></a> 👈 Anchor for Step 3
-### Run Verification Script
-Execute the command `npm run verify` to confirm all previous steps were successful. The output should be "Verification Complete."
-[Go back to top](#process-documentation) 🔙 Link back to the start
+- Backend with **Nodejs** & **Expressjs**
+- Email send with **Nodemailer**
+- Frontend with **Nextjs**, **TailwindCSS**
+- Communication between services using **RabbitMQ**
+- Fetching data with **Tanstack Query**
+- Use **Postgresql**, **Mysql** for different services
+- Realtime notifications & chat using **websocket** & **Redis pub-sub** architecture
+- Impletement **Database Per Service** pattern
+- Caching with **Redis**
+- Write test using **Jest**
+- Github **CI/CD** with **VPS** using **SSH**
+- Containerize the services using **Docker**
+- Use **Typescript** for better error catching & documentation
+- Create a **Shared Library** to reduce code
+- Custom **Error Class** and error format
