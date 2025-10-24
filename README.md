@@ -1,31 +1,53 @@
-This repo contains all codes for the ECommerce freelance marketplace application.
+# Description
 
-### Client
-* The `client` folder contains the frontend code.
-* The frontend application is built using `React`, `Typescript` and `Tailwindcss`.
+This is a scalable freelance marketplace build with microservices architecture, real-time
+communication and database per service polyglot persistence pattern.
 
+# Tech
 
-## Running Locally
-* To start the services locally, you need to first start the required services inside the docker compose file.
-* `redis`
-  * `docker compose up -d redis`
-* `mongodb`
-  * `docker compose up -d mongodb`
-* `mysql`
-  * `docker compose up -d mysql`
-* `postgres`
-  * `docker compose up -d postgres`
-* `rabbitmq`
-  * `docker compose up -d redis`
+Backend: `Microservice` `Websocket` `Nodejs` `Expressjs` `Redis` `Postgresql` `Typescript` `RabbitMQ`
 
+Fronted: `Nextjs` `Tanstack Query` `TailwindCSS` `Zustand`
 
-Please start the microservices in this order.
-* `review service`
-* `order service`
-* `chat service`
-* `gig service`
-* `users service`
-* `auth service`
-* `notification service`
-* Before you start the `gateway service`, make sure all other services are running without errors.
+devops: `CI/CD`, `VPS`, `Docker`, `SSH`
 
+# Features
+
+This application is in development. Its going to include many features. Till now my fouces on building Minimum Viable Product **(MVP)**. Below All the
+
+## All Stories
+
+## Done Stories
+
+- Users have the ability to verify their account and change their password for enhanced security.
+
+# Technical Architectures
+
+---
+
+# Process Documentation
+
+## Steps
+
+1. [Perform Initial Setup](#step-1-details) 👈 Link to details block
+2. [Configure Environment](#step-2-details) 👈 Link to details block
+3. [Run Verification Script](#step-3-details) 👈 Link to details block
+
+***
+
+## Step Details
+
+<a id="step-1-details"></a> 👈 Anchor for Step 1
+### Perform Initial Setup
+This step involves downloading necessary dependencies and checking system compatibility. Ensure you have Node.js version 18+ installed before proceeding.
+[Go back to top](#process-documentation) 🔙 Link back to the start
+
+<a id="step-2-details"></a> 👈 Anchor for Step 2
+### Configure Environment
+Update the configuration file (`config.json`) with your specific API keys and database credentials.
+[Go back to top](#process-documentation) 🔙 Link back to the start
+
+<a id="step-3-details"></a> 👈 Anchor for Step 3
+### Run Verification Script
+Execute the command `npm run verify` to confirm all previous steps were successful. The output should be "Verification Complete."
+[Go back to top](#process-documentation) 🔙 Link back to the start
