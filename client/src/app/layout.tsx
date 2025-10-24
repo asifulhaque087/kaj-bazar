@@ -8,6 +8,7 @@ import Footer from "@/components/widgets/footer";
 import Container from "@/components/container";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/widgets/header";
+import { config } from "@/config";
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -20,13 +21,13 @@ import Header from "@/components/widgets/header";
 // });
 
 const roboto = Roboto({
-  subsets:["latin"],
+  subsets: ["latin"],
   variable: "--font-robot",
   weight: ["300", "400", "500", "700"],
 });
 
 const rodium_libre = Rhodium_Libre({
-  subsets:["latin"],
+  subsets: ["latin"],
   variable: "--font-rodium-libre",
   weight: ["400"],
 });
@@ -41,6 +42,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("the base url is layout - ", config.API_GATEWAY_URL);
+  // console.log("hello", config.API_GATEWAY_URL);
+
   return (
     <html lang="en">
       <body
