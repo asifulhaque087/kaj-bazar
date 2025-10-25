@@ -33,6 +33,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/kaj-bazar-client:latest
           build-args: |
             NEXT_PUBLIC_BASE_ENDPOINT=${{ secrets.BASE_ENDPOINT }}
+            NEXT_PUBLIC_SOCKET_ENDPOINT=${{ secrets.SOCKET_ENDPOINT }}
 
       - name: Pull and restart docker image
         uses: appleboy/ssh-action@master

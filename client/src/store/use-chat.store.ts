@@ -47,7 +47,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   //   }),
 
   setUnreadMessages: (messages) => {
-    console.log("$$$$$$$$$$$$$$$ ", messages)
+    console.log("$$$$$$$$$$$$$$$ ", messages);
     set({
       unreadMessages: messages,
     });
@@ -79,7 +79,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
     //   secure: true, // Use true if your Gateway uses HTTPS/WSS, false for HTTP/WS
     // });
 
-    const socket = io("http://localhost:4000/", {
+    const socket = io(config.SOCKET_GATEWAY_URL, {
       transports: ["websocket", "polling"],
       secure: true,
       query: {
