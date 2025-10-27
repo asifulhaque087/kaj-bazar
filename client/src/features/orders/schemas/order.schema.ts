@@ -70,5 +70,3 @@ export const orderSchema = z.object({
 });
 
 export type Order = z.infer<typeof orderSchema>;
-
-

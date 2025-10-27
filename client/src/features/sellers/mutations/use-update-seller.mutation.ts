@@ -1,5 +1,8 @@
 import { updateSeller } from "@/features/sellers/api/mutations.api";
-import { UpdateSellerForm, UpdateSellerPayload } from "@/schemas/seller.schema";
+import {
+  UpdateSellerForm,
+  UpdateSellerPayload,
+} from "@/features/sellers/schemas/seller.schema";
 import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";

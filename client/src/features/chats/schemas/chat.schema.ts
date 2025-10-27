@@ -43,7 +43,6 @@ export const messageSchema = z.object({
 
 export type Message = z.infer<typeof messageSchema>;
 
-
 export const conversationSchema = z.object({
   id: z.uuid(),
   senderUsername: z.string().min(1, "sender name is required"),
@@ -54,4 +53,3 @@ export const conversationSchema = z.object({
 });
 
 export type Conversation = z.infer<typeof conversationSchema>;
-
