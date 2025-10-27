@@ -26,6 +26,8 @@ export const GigsTable = pgTable("gigs_table", {
   description: text("description").notNull(),
   basicTitle: text("basic_title").notNull(),
   basicDescription: text("basic_description").notNull(),
+  // revisionCount: text("revision_count"),
+  // isSourceFile: boolean("is_source_file"),
   category: text("category").notNull(),
   // subCategories: text("sub_categories").array().notNull(),
   subCategories: jsonb("sub_categories").$type<SubCategory[]>().notNull(),

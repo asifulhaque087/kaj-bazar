@@ -22,6 +22,7 @@ sellerRouter.put("/update", verifyJwtToken, updateSeller);
 
 sellerRouter.get("/username/:username", verifyJwtToken, getSellerByName);
 sellerRouter.get("/current-seller", verifyJwtToken, getCurrentSeller);
-sellerRouter.get("/:sellerId", verifyJwtToken, getSellerById);
+// sellerRouter.get("/:sellerId", verifyJwtToken, getSellerById);
+sellerRouter.get("/:sellerId", getSellerById);
 
 export default sellerRouter;
