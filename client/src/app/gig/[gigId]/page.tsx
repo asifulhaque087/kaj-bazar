@@ -56,15 +56,27 @@ const page = () => {
 
   return (
     <>
-      <Container>
+      <Container className="mt-[32px]">
         <GigBasicDetails gig={gig} />
       </Container>
 
       <Container className="pt-[28px]">
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-[16px]">
-          {[...Array(6)].map((item, index) => (
-            <MetaDetails key={index} />
-          ))}
+        <div className="flex items-center justify-between flex-wrap gap-[16px]">
+          <MetaDetails
+            label="Delivery Time"
+            value={"3 Days"}
+            className="grow"
+          />
+          <MetaDetails
+            label="number of revisions"
+            value={"unlimited"}
+            className="grow"
+          />
+          <MetaDetails
+            label="include source file"
+            value={"yes"}
+            className="grow"
+          />
         </div>
       </Container>
 
