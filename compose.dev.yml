@@ -93,11 +93,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - VITE_NODE_ENV=${VITE_NODE_ENV}
-      - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}
-      - VITE_CLIENT_ENDPOINT=${VITE_CLIENT_ENDPOINT}
-      - VITE_STRIPE_KEY=${VITE_STRIPE_KEY}
-      - VITE_ELASTIC_APM_SERVER=${VITE_ELASTIC_APM_SERVER}
+      - NEXT_PUBLIC_BASE_ENDPOINT=${BASE_ENDPOINT}
+      - NEXT_PUBLIC_SOCKET_ENDPOINT=${SOCKET_ENDPOINT}
     volumes:
       - ./client:/home/app
       - /home/app/node_modules
