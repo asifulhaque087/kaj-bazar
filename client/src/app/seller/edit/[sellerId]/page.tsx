@@ -38,7 +38,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { updateSellerForm, UpdateSellerForm } from "@/schemas";
 import Container from "@/components/container";
 import {
   Card,
@@ -48,9 +47,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useParams } from "next/navigation";
-import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
-import { useUpdateSeller } from "@/features/sellers/mutations/use-update-seller.mutation";
+import { useSellerById } from "@/features/seller/queries/use-seller-by-id.query";
+import { useUpdateSeller } from "@/features/seller/mutations/use-update-seller.mutation";
 import { updateSellerDefaultForm } from "@/features/auth/default-form-values/auth.form";
+import {
+  updateSellerForm,
+  UpdateSellerForm,
+} from "@/features/seller/schemas/seller.schema";
 
 function ProfileForm() {
   //   ** Params

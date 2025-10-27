@@ -33,8 +33,6 @@ import { format } from "date-fns";
 import { CalendarIcon, PlusCircle, MinusCircle } from "lucide-react";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/use-auth.store";
-import { createSellerForm, CreateSellerForm } from "@/schemas";
-import Container from "@/components/container";
 import {
   Card,
   CardContent,
@@ -44,8 +42,12 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import OnlyBuyerPage from "@/components/protected-pages/only-buyer-page";
-import { useCreateSeller } from "@/features/sellers/mutations/use-create-seller.mutation";
+import { useCreateSeller } from "@/features/seller/mutations/use-create-seller.mutation";
 import { createSellerDefaultForm } from "@/features/auth/default-form-values/auth.form";
+import {
+  createSellerForm,
+  CreateSellerForm,
+} from "@/features/seller/schemas/seller.schema";
 
 function ProfileForm() {
   const { buyer } = useAuthStore();

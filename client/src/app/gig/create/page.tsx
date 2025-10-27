@@ -25,15 +25,15 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 import { X, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { createGigForm, CreateGigForm } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { Card } from "@/components/ui/card";
 import { useBrowser } from "@/hooks/use-browser.hook";
 import Navigation from "@/components/Navigation";
 import Link from "next/link";
 import SellerPage from "@/components/protected-pages/seller-page";
-import { useCreateGig } from "@/features/gigs/mutations/use-create-gig.mutation";
-import { createGigDefaultForm } from "@/features/gigs/default-form-values/gig.form";
+import { useCreateGig } from "@/features/gig/mutations/use-create-gig.mutation";
+import { createGigDefaultForm } from "@/features/gig/default-form-values/gig.form";
+import { createGigForm, CreateGigForm } from "@/features/gig/schemas/gig.schema";
 
 export default function GigForm() {
   // ** --- States ---

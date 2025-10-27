@@ -3,7 +3,7 @@
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/how-it-works";
 import Container from "@/components/container";
-import GigsBox from "@/features/gigs/components/gigs-box";
+import GigsBox from "@/features/gig/components/gigs-box";
 
 export default function Home() {
   return (

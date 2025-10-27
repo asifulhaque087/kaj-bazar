@@ -85,8 +85,8 @@
 // ============== new design
 
 "use client";
-import DescriptionBox from "@/features/orders/components/description-box";
-import Welcome from "@/features/orders/components/welcome-start-order";
+import DescriptionBox from "@/features/order/components/description-box";
+import Welcome from "@/features/order/components/welcome-start-order";
 import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,8 +111,11 @@ import { CircleCheck, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useStartOrder } from "@/features/orders/mutations/use-start-order.mutation";
-import { startOrderForm, StartOrderForm } from "@/features/orders/schemas/start-order.schema";
+import { useStartOrder } from "@/features/order/mutations/use-start-order.mutation";
+import {
+  startOrderForm,
+  StartOrderForm,
+} from "@/features/order/schemas/start-order.schema";
 
 const Page = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -207,7 +210,7 @@ const Page = () => {
                   className="w-full h-12 text-lg font-semibold bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
                   disabled={isPending}
                 >
-                  {isPending? (
+                  {isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Submitting...

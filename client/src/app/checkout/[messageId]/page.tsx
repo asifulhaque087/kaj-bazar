@@ -98,10 +98,10 @@ import { useAuthStore } from "@/store/use-auth.store";
 import { Loader2, Lock } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetMessageById } from "@/features/chats/queries/use-message.query";
-import { useGetGigById } from "@/features/gigs/queries/use-gig.query";
-import { useCreateOrder } from "@/features/orders/mutations/use-create-order.mutation";
-import { CreateOrderPayload } from "@/features/orders/schemas/create-order.schema";
+import { useGetMessageById } from "@/features/chat/queries/use-message.query";
+import { useGetGigById } from "@/features/gig/queries/use-gig.query";
+import { useCreateOrder } from "@/features/order/mutations/use-create-order.mutation";
+import { CreateOrderPayload } from "@/features/order/schemas/create-order.schema";
 
 const Page = () => {
   const { messageId } = useParams<{ messageId: string }>();

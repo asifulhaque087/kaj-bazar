@@ -221,17 +221,17 @@
 
 "use client";
 
-import BuyerReviewSellerModal from "@/features/reviews/components/buyer-review-seller-modal";
-import DeliveryModal from "@/features/orders/components/deliver-modal";
-import SellerReviewBuyerModal from "@/features/reviews/components/seller-review-buyer-modal";
+import BuyerReviewSellerModal from "@/features/review/components/buyer-review-seller-modal";
+import DeliveryModal from "@/features/order/components/deliver-modal";
+import SellerReviewBuyerModal from "@/features/review/components/seller-review-buyer-modal";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/use-auth.store";
 import { CheckCircle2, Clock, FileText, Star } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useGetOrderById } from "@/features/orders/queries/use-order.query";
-import ActivityCard from "@/features/orders/components/activity-card";
-import DeliveredWorkComponent from "@/features/orders/components/delivered-work";
+import { useGetOrderById } from "@/features/order/queries/use-order.query";
+import ActivityCard from "@/features/order/components/activity-card";
+import DeliveredWorkComponent from "@/features/order/components/delivered-work";
 
 const Page = () => {
   const { orderId } = useParams<{ orderId: string }>();

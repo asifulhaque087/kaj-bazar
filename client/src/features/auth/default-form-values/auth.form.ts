@@ -1,4 +1,9 @@
-import { Buyer, CreateSellerForm, Seller, UpdateSellerForm } from "@/schemas";
+import {
+  Buyer,
+  CreateSellerForm,
+  Seller,
+  UpdateSellerForm,
+} from "@/features/shared";
 
 export const createSellerDefaultForm = (
   buyer?: Buyer | null

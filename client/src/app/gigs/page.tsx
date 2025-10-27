@@ -76,10 +76,10 @@
 import { Suspense } from "react";
 import Container from "@/components/container";
 import { Pagination } from "@/components/pagination";
-import GigCard from "@/features/gigs/components/gig-card";
-import GigFilters from "@/features/gigs/components/gig-filters";
-import useGigFilters from "@/features/gigs/hooks/use-gigs-flter.hook";
-import { useSearch } from "@/features/gigs/queries/use-gigs.query";
+import GigCard from "@/features/gig/components/gig-card";
+import GigFilters from "@/features/gig/components/gig-filters";
+import useGigFilters from "@/features/gig/hooks/use-gigs-flter.hook";
+import { useSearch } from "@/features/gig/queries/use-gigs.query";
 import { usePagination } from "@/hooks/use-pagination.hook";
 
 export default function Page() {

@@ -25,7 +25,6 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 import { X, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { updateGigForm, UpdateGigForm } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import Container from "@/components/container";
 import { Card } from "@/components/ui/card";
@@ -33,9 +32,13 @@ import { useBrowser } from "@/hooks/use-browser.hook";
 import Navigation from "@/components/Navigation";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useGetGigById } from "@/features/gigs/queries/use-gig.query";
-import { useUpdateGig } from "@/features/gigs/mutations/use-update-gig.mutation";
-import { updateGigDefaultForm } from "@/features/gigs/default-form-values/gig.form";
+import { useGetGigById } from "@/features/gig/queries/use-gig.query";
+import { useUpdateGig } from "@/features/gig/mutations/use-update-gig.mutation";
+import { updateGigDefaultForm } from "@/features/gig/default-form-values/gig.form";
+import {
+  updateGigForm,
+  UpdateGigForm,
+} from "@/features/gig/schemas/gig.schema";
 
 export default function GigForm() {
   // ** --- States ---

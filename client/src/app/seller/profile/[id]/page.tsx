@@ -1,19 +1,19 @@
 "use client";
-import Tabs from "@/features/sellers/components/tabs";
+import Tabs from "@/features/seller/components/tabs";
 import useTabs from "@/hooks/useTabs";
 import Container from "@/components/container";
-import ReviewCard from "@/features/reviews/components/review-card";
+import ReviewCard from "@/features/review/components/review-card";
 import { Button } from "@/components/ui/button";
 import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
 import { useAuthStore } from "@/store/use-auth.store";
-import StatisticCard from "@/features/sellers/components/statistic-card";
-import Overview from "@/features/sellers/components/overview";
-import ActiveGigs from "@/features/sellers/components/active-gigs";
-import RaitingAndReviews from "@/features/sellers/components/rating-and-review";
-import { useSellerById } from "@/features/sellers/queries/use-seller-by-id.query";
-import { useFindOrCreateConversation } from "@/features/chats/mutations/use-get-or-create-conversation.mutation";
+import StatisticCard from "@/features/seller/components/statistic-card";
+import Overview from "@/features/seller/components/overview";
+import ActiveGigs from "@/features/seller/components/active-gigs";
+import RaitingAndReviews from "@/features/seller/components/rating-and-review";
+import { useSellerById } from "@/features/seller/queries/use-seller-by-id.query";
+import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 
 const Page = () => {
   //   ** Params

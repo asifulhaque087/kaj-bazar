@@ -1,13 +1,13 @@
 "use client";
-import OrderTable from "@/features/buyers/components/order-table";
-import Tabs from "@/features/sellers/components/tabs";
+import OrderTable from "@/features/buyer/components/order-table";
+import Tabs from "@/features/seller/components/tabs";
 import Container from "@/components/container";
-import ReviewCard from "@/features/reviews/components/review-card";
+import ReviewCard from "@/features/review/components/review-card";
 import { Card } from "@/components/ui/card";
 import { buyerProfileTabs } from "@/constants";
 import useTabs from "@/hooks/useTabs";
 import { useParams } from "next/navigation";
-import { useBuyerById } from "@/features/buyers/queries/use-buyer-by-id.query";
+import { useBuyerById } from "@/features/buyer/queries/use-buyer-by-id.query";
 
 const page = () => {
   //   ** Params
