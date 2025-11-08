@@ -1,11 +1,18 @@
+import Heading from "@/components/heading";
 import { steps } from "@/constants";
 
 const HowItWorks = () => {
   return (
     <>
-      <h1 className="font-[Roboto] text-[32px] font-medium tracking-[1.6] text-[#222325] capitalize text-center">
-        How It Works
-      </h1>
+      <div className="grid place-items-center">
+        <Heading
+          title="How It Works"
+          subTitle="Start Your Journey"
+          isLine
+          align="center"
+          maxWidth="w-[250px]"
+        />
+      </div>
 
       <div className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-[16px] mt-[60px]">
         {steps.map((item, i) => (
