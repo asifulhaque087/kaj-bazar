@@ -1,11 +1,17 @@
 import CustomDropdown from "@/components/widgets/header/dropdown";
 import DropdownMenu from "@/components/widgets/header/dropdown-menu";
+import { useLogout } from "@/features/auth/mutations/use-logout.mutation";
 import { useAuthStore } from "@/store/use-auth.store";
 import { LayoutDashboard, LogOut, PackagePlus, UserCog } from "lucide-react";
 import Link from "next/link";
 
 const ProfileDropdown = () => {
+  // ** --- store ---
   const { authUser, activeRole, buyer } = useAuthStore();
+
+  // ** --- mutations ---
+
+  const { mutate: logout } = useLogout();
 
   const trigger = (
     <div className="w-[40px] h-[40px] rounded-full bg-[#FEFEFF] cursor-pointer overflow-hidden">
@@ -65,7 +71,7 @@ const ProfileDropdown = () => {
 
       {/* footer */}
       <div className="p-[16px] gap-y-[8px] border-t border-[#E7E7E8]">
-        <DropdownMenu Icon={LogOut} title="Log Out" />
+        <DropdownMenu Icon={LogOut} title="Log Out" onClick={() => logout()} />
       </div>
     </div>
   );

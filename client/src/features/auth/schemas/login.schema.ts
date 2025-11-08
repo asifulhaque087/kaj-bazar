@@ -1,3 +1,4 @@
+import { Auth } from "@/features/auth/schemas/auth.schema";
 import { z } from "zod";
 
 // ** --- Login Form Field---
@@ -10,3 +11,9 @@ export type LoginForm = z.infer<typeof loginForm>;
 
 // ** --- Login Payload ---
 export type LoginPayload = z.infer<typeof loginForm>;
+
+export interface LoginApi {
+  message: string;
+  user: Auth;
+  token: string;
+}

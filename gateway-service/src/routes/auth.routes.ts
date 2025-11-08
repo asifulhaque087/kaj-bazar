@@ -28,7 +28,8 @@ authRouter.use(apiMiddleware(`${config.AUTH_BASE_URL}/api/v1/auth`, "auth"));
 
 authRouter.post("/signup", register);
 authRouter.post("/signin", login);
-authRouter.post("/signout", verifyJwtToken, logout);
+// authRouter.post("/signout", verifyJwtToken, logout);
+authRouter.post("/signout", logout);
 authRouter.put("/verify-email", verifyJwtToken, verifyEmail);
 authRouter.put("/verify-otp/:otp", verifyJwtToken, verifyOtp);
 authRouter.post("/resend-email", resendEmail);

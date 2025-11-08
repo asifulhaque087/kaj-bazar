@@ -17,24 +17,36 @@ type States = {
 type Actions = {
   setInitialRenderFalse: () => void;
   setAuthUser: (user: Auth) => void;
-  setBuyer: (buyer: Buyer) => void;
-  setSeller: (seller: Seller) => void;
+  setBuyer: (buyer: Buyer | null) => void;
+  setSeller: (seller: Seller | null) => void;
   setOtherBuyer: (buyer: Buyer) => void;
   setOtherSeller: (seller: Seller) => void;
   setActiveRole: (activeRole: "buyer" | "seller" | null) => void;
+  resetAuthStore: () => void;
+};
+
+const initialStates: States = {
+  initialRender: true,
+  authUser: null,
+  buyer: null,
+  otherBuyer: null,
+  otherSeller: null,
+  activeRole: null,
+  seller: null,
 };
 
 export const useAuthStore = create<States & Actions>()(
   devtools(
     persist(
       (set) => ({
-        initialRender: true,
-        authUser: null,
-        buyer: null,
-        otherBuyer: null,
-        otherSeller: null,
-        activeRole: null, // Initialize activeRole state
-        seller: null,
+        // initialRender: true,
+        // authUser: null,
+        // buyer: null,
+        // otherBuyer: null,
+        // otherSeller: null,
+        // activeRole: null, // Initialize activeRole state
+        // seller: null,
+        ...initialStates,
         setAuthUser: (user) => set({ authUser: user }),
         setBuyer: (buyer) => set({ buyer: buyer }),
         setSeller: (seller) => set({ seller: seller }),
@@ -42,6 +54,7 @@ export const useAuthStore = create<States & Actions>()(
         setOtherSeller: (seller) => set({ otherSeller: seller }),
         setActiveRole: (activeRole) => set({ activeRole: activeRole }),
         setInitialRenderFalse: () => set({ initialRender: false }),
+        resetAuthStore: () => set(initialStates),
       }),
       {
         name: "auth-storage", // A unique name for your storage

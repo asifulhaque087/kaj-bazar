@@ -1,6 +1,5 @@
-import { LoginApi } from "@/api/auth/auth.types";
 import { auth__axios } from "@/axios.service";
-import { LoginForm } from "@/features/auth/schemas/login.schema";
+import { LoginApi, LoginForm } from "@/features/auth/schemas/login.schema";
 import { RegisterPayload } from "@/features/auth/schemas/register.schema";
 
 // ** --- Mutations ---
@@ -11,5 +10,10 @@ export const login = async (data: LoginForm) => {
 
 export const register = async (data: RegisterPayload) => {
   const response = await auth__axios.post(`/register`, data);
+  return response.data;
+};
+
+export const logout = async () => {
+  const response = await auth__axios.post(`/signout`);
   return response.data;
 };

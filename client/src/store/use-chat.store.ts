@@ -36,16 +36,15 @@ type Actions = {
   setMessageReceiverUser: (user: ChatUser) => void;
   setMessages: (messages: Message[]) => void;
   connectSocket: () => void;
-  disconnectSocket: () => void;
+  disConnectSocket: () => void;
   subscribeToMessages: () => void;
   subscribeToNotifications: () => void;
   unsubscribeFromMessages: () => void;
   setNotificationEmpty: () => void;
+  resetChatStore: () => void;
 };
 
-// login, register, auth check er pore socket connect  korte hobe.
-
-export const useChatStore = create<States & Actions>((set, get) => ({
+const initialStates: States = {
   conversations: [],
   selectedConversation: null,
   messages: [],
@@ -54,10 +53,12 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   messageReceiverUser: null,
   socket: null,
   notifications: [],
-  // setUnreadMessages: (messages) =>
-  //   set({
-  //     unreadMessages: messages,
-  //   }),
+};
+
+// login, register, auth check er pore socket connect  korte hobe.
+
+export const useChatStore = create<States & Actions>((set, get) => ({
+  ...initialStates,
 
   setNotificationEmpty: () => {
     set({
@@ -66,7 +67,6 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   },
 
   setUnreadMessages: (messages) => {
-    console.log("$$$$$$$$$$$$$$$ ", messages);
     set({
       unreadMessages: messages,
     });
@@ -126,7 +126,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
     //   set({ onlineUsers: userIds });
     // });
   },
-  disconnectSocket: () => {
+  disConnectSocket: () => {
     if (get().socket?.connected) {
       get().unsubscribeFromMessages(); // Unsubscribe before disconnecting
       get().socket?.disconnect();
@@ -184,4 +184,6 @@ export const useChatStore = create<States & Actions>((set, get) => ({
     const socket = get().socket;
     socket?.off("newMessage");
   },
+
+  resetChatStore: () => set(initialStates),
 }));
