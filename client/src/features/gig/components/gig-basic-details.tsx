@@ -1,5 +1,7 @@
+import { Gig } from "@/features/gig/schemas/gig.schema";
 import { rating } from "@/utils/rating.util";
 import { Star } from "lucide-react";
+import Link from "next/link";
 
 interface Props {
   gig: Gig;
@@ -25,9 +27,12 @@ const GigBasicDetails = (props: Props) => {
           <div className="flex gap-x-[14px] items-end">
             <p className="font-[Roboto] text-[16px] font-normal text-[#3E3F47]">
               by{" "}
-              <span className="text-[#9FBB89] underline capitalize">
+              <Link
+                href={`/seller/profile/${gig.sellerId}`}
+                className="text-[#9FBB89] underline capitalize"
+              >
                 {gig.username}
-              </span>
+              </Link>
             </p>
 
             <div className="px-[12px] py-[4px] rounded-[4px] flex gap-x-[10px] bg-[#FEFEFF]">

@@ -13,11 +13,10 @@ import GigReviews from "@/features/gig/components/gig-reviews";
 import Tabs from "@/features/seller/components/tabs";
 import { useGetGigById } from "@/features/gig/queries/use-gig.query";
 
-const page = () => {
+const GigDetails = () => {
   const params = useParams<{ gigId: string }>();
 
   // ** -- States ---
-
   const {
     data: gig,
     isLoading,
@@ -30,7 +29,7 @@ const page = () => {
     tabs: gigDetailsTabs,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return null;
   if (error) return <div>Error: {error.message}</div>;
   if (!gig) return <div>Error: No gigs found</div>;
 
@@ -82,4 +81,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default GigDetails;
