@@ -9,15 +9,15 @@ export default function Home() {
   return (
     <>
       {/* --- Hero --- */}
-      <Container className="mt-[72px]">
+      <Container className="py-[52px] bg-[#F7F7FA]">
         <Hero />
       </Container>
 
-      <Container className="mt-[72px]">
+      <Container className="pt-[52px] pb-[116px] bg-[#F7F7FA]">
         <GigsBox />
       </Container>
 
-      <Container className="mt-[100px]">
+      <Container className="pt-[52px]  pb-[116px] bg-[#DFE1ED]">
         <HowItWorks />
       </Container>
     </>

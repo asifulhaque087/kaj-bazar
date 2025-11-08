@@ -111,13 +111,7 @@
 
 // export default Footer;
 
-import {
-  Facebook,
-  Github,
-  Instagram,
-  InstagramIcon,
-  Twitter,
-} from "lucide-react";
+import { Facebook, Github, Instagram, Twitter } from "lucide-react";
 import { Separator } from "@radix-ui/react-select";
 import React from "react";
 

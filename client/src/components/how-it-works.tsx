@@ -10,14 +10,14 @@ const HowItWorks = () => {
           subTitle="Start Your Journey"
           isLine
           align="center"
-          maxWidth="w-[250px]"
+          maxWidth="w-[280px]"
         />
       </div>
 
       <div className="grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-[16px] mt-[60px]">
         {steps.map((item, i) => (
           <div
-            className="col-span-4 md:col-span-4 xl:col-span-3 min-h-[251px] bg-white/50 p-[22px] rounded-[8px]"
+            className="col-span-4 md:col-span-4 xl:col-span-3 min-h-[251px] bg-[#EEEEEE] p-[22px] rounded-[8px]"
             key={i}
           >
             <div className="bg-[#27C9BE] h-[45px] w-[45px] rounded-[8px] grid place-items-center font-[Roboto] font-medium text-[24px] text-white">

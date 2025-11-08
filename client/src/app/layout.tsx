@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import { Roboto, Rhodium_Libre } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
-import ReactQueryProvider from "@/providers/react-query-provider";
-import AuthProvider from "@/providers/auth.provider";
 import Footer from "@/components/widgets/footer";
 import Container from "@/components/container";
-import Navigation from "@/components/Navigation";
 import Header from "@/components/widgets/header";
-import { config } from "@/config";
+import Providers from "@/providers";
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -42,30 +38,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("the base url is layout - ", config.API_GATEWAY_URL);
-  // console.log("hello", config.API_GATEWAY_URL);
-
   return (
     <html lang="en">
       <body
         className={`${roboto.variable} ${rodium_libre.variable} font-roboto bg-[#F4F3F2] antialiased`}
       >
-        <Toaster />
-        <ReactQueryProvider>
-          <AuthProvider>
-            {/* <Container>{children}</Container> */}
+        <Providers>
+          <Header />
 
-            {/* <Container className="mt-[24px]"> */}
-            {/* <Navigation /> */}
-            <Header />
+          {children}
 
-            {/* </Container> */}
-            {children}
-            <Container className="mt-[100px] bg-white">
-              <Footer />
-            </Container>
-          </AuthProvider>
-        </ReactQueryProvider>
+          <Container className="bg-white">
+            <Footer />
+          </Container>
+        </Providers>
       </body>
     </html>
   );
