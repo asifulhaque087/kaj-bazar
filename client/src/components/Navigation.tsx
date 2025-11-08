@@ -24,7 +24,7 @@ const Navigation = () => {
   const [activeItem, setActiveItem] = useState(-1);
   const router = useRouter();
 
-  const { authUser, buyer, seller, role } = useAuthStore();
+  const { authUser, buyer, seller, activeRole } = useAuthStore();
 
   const menus = [{ title: "Sign in" }, { title: "Sign up" }];
 
@@ -91,7 +91,11 @@ const Navigation = () => {
 
           {authUser && (
             <Fragment>
-              <AuthButton role={role} buyer={buyer} seller={seller} />
+              <AuthButton
+                activeRole={activeRole}
+                buyer={buyer}
+                seller={seller}
+              />
 
               <div>
                 <DropdownMenu>
@@ -150,19 +154,19 @@ const Navigation = () => {
 export default Navigation;
 
 interface AuthButtonProps {
-  role: "buyer" | "seller" | null;
+  activeRole: "buyer" | "seller" | null;
   buyer: Buyer | null;
   seller: Seller | null;
 }
 
 const AuthButton = (props: AuthButtonProps) => {
-  const { role, buyer, seller } = props;
+  const { activeRole, buyer, seller } = props;
 
   const router = useRouter();
 
   let buttonToRender;
 
-  if (role === "buyer" && buyer?.isSeller) {
+  if (activeRole === "buyer" && buyer?.isSeller) {
     buttonToRender = (
       <button
         className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] flex items-center gap-x-[4px] cursor-pointer"
@@ -174,7 +178,7 @@ const AuthButton = (props: AuthButtonProps) => {
         </span>
       </button>
     );
-  } else if (role === "seller") {
+  } else if (activeRole === "seller") {
     buttonToRender = (
       <button
         className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] flex items-center gap-x-[4px] cursor-pointer"
@@ -187,7 +191,7 @@ const AuthButton = (props: AuthButtonProps) => {
         </span>
       </button>
     );
-  } else if (role === "buyer" && !buyer?.isSeller) {
+  } else if (activeRole === "buyer" && !buyer?.isSeller) {
     buttonToRender = (
       <button
         className="bg-[#6392D8] text-[14px] text-white font-[500] font-[Roboto] px-[20px] py-[10px] rounded-[20px] flex items-center gap-x-[4px] cursor-pointer"

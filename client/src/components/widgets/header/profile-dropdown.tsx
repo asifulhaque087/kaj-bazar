@@ -5,7 +5,7 @@ import { LayoutDashboard, LogOut, PackagePlus, UserCog } from "lucide-react";
 import Link from "next/link";
 
 const ProfileDropdown = () => {
-  const { authUser, role, buyer } = useAuthStore();
+  const { authUser, activeRole, buyer } = useAuthStore();
 
   const trigger = (
     <div className="w-[40px] h-[40px] rounded-full bg-[#FEFEFF] cursor-pointer overflow-hidden">
@@ -21,7 +21,7 @@ const ProfileDropdown = () => {
         </h6>
         <Link
           href={
-            role === "buyer"
+            activeRole === "buyer"
               ? `/buyer/profile/${authUser?.id}`
               : `/seller/profile/${authUser?.id}`
           }
@@ -32,13 +32,14 @@ const ProfileDropdown = () => {
       </div>
       {/* body */}
       <div className="flex flex-col gap-y-[16px] p-[16px]">
-        {((role === "buyer" && buyer?.isSeller) || role === "seller") && (
+        {((activeRole === "buyer" && buyer?.isSeller) ||
+          activeRole === "seller") && (
           <DropdownMenu
             Icon={UserCog}
-            title={`switch to ${role === "buyer" ? "selling" : "buying"}`}
+            title={`switch to ${activeRole === "buyer" ? "selling" : "buying"}`}
             isBtn
             link={
-              role === "buyer"
+              activeRole === "buyer"
                 ? `/seller/profile/${authUser?.id}`
                 : `/buyer/profile/${authUser?.id}`
             }
@@ -48,12 +49,12 @@ const ProfileDropdown = () => {
           Icon={LayoutDashboard}
           title="Dashboard"
           link={
-            role === "buyer"
+            activeRole === "buyer"
               ? `/buyer/profile/${authUser?.id}`
               : `/seller/profile/${authUser?.id}`
           }
         />
-        {role === "seller" && (
+        {activeRole === "seller" && (
           <DropdownMenu
             Icon={PackagePlus}
             title="Add a new gig"

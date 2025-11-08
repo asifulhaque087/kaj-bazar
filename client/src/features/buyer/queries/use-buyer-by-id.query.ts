@@ -11,14 +11,14 @@ export const useBuyerById = (props: UseBuyerByIdProps) => {
   const { id } = props;
 
   // ** --- Store ---
-  const { setBuyer, setRole } = useAuthStore();
+  const { setBuyer, setActiveRole } = useAuthStore();
 
   return useQueryWithSideEffects({
     queryKey: ["buyer", id],
     queryFn: () => getBuyerById(id),
     onSuccess: (data) => {
       setBuyer(data);
-      setRole("buyer");
+      setActiveRole("buyer");
     },
   });
 };

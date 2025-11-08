@@ -11,7 +11,7 @@ export const useGetConversationsById = (
   props: UseGetConversationsByIdProps
 ) => {
   const { conversationId } = props;
-  const { authUser, role } = useAuthStore();
+  const { authUser, activeRole } = useAuthStore();
 
   const {
     setMessages,
@@ -42,7 +42,8 @@ export const useGetConversationsById = (
 
       if (senderUsername === authUser?.username) {
         console.log("hellow how @#@#$@#$#@#$@@#$");
-        if (role !== "buyer") console.log("show modal to switch to buyer");
+        if (activeRole !== "buyer")
+          console.log("show modal to switch to buyer");
 
         setMessageSenderUser({
           name: senderUsername,
@@ -54,7 +55,8 @@ export const useGetConversationsById = (
           profilePhoto: receiverProfilePhoto,
         });
       } else {
-        if (role !== "seller") console.log("show modal to switch to seller");
+        if (activeRole !== "seller")
+          console.log("show modal to switch to seller");
         setMessageReceiverUser({
           name: senderUsername,
           profilePhoto: senderProfilePhoto,

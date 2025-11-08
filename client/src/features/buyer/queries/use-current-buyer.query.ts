@@ -5,25 +5,18 @@ import { useAuthStore } from "@/store/use-auth.store";
 
 export const useCurrentBuyer = () => {
   // ** --- Store ---
-  const {
-    setBuyer,
-    setRole,
-    role,
-    authUser,
-    initialRender,
-    setInitialRenderFalse,
-  } = useAuthStore();
+  const { setBuyer, setActiveRole } = useAuthStore();
 
   return useQueryWithSideEffects({
-    queryKey: ["current_buyer"],
+    queryKey: ["current-buyer"],
     queryFn: () => currentBuyer(),
-    enabled: !!authUser?.id && role !== "seller" && initialRender,
+    // enabled: !!authUser?.id && activeRole !== "seller" && initialRender,
+    // enabled: !!authUser?.id && activeRole !== "seller" && initialRender,
     staleTime: Infinity, // ✅ don’t refetch unnecessarily
     gcTime: Infinity,
     onSuccess: (data) => {
       setBuyer(data);
-      setRole("buyer");
-      setInitialRenderFalse();
+      setActiveRole("buyer");
     },
   });
 };

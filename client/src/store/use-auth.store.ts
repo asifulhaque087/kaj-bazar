@@ -1,60 +1,14 @@
-// import { create } from "zustand";
-// import { persist, createJSONStorage, devtools } from "zustand/middleware";
-// import { Auth, Buyer, Seller } from "@/schemas";
-
-// type States = {
-//   authUser: Auth | null;
-//   buyer: Buyer | null;
-//   role: "buyer" | "seller" | null;
-//   otherBuyer: Buyer | null;
-//   otherSeller: Seller | null;
-//   seller: Seller | null;
-// };
-
-// type Actions = {
-//   setAuthUser: (user: Auth) => void;
-//   setBuyer: (buyer: Buyer) => void;
-//   setSeller: (seller: Seller) => void;
-//   setOtherBuyer: (buyer: Buyer) => void;
-//   setOtherSeller: (seller: Seller) => void;
-//   setRole: (role: "buyer" | "seller" | null) => void;
-// };
-
-// export const useAuthStore = create<States & Actions>()(
-//   devtools(
-//     // persist(
-//     (set, get) => ({
-//       authUser: null,
-//       buyer: null,
-//       otherBuyer: null,
-//       otherSeller: null,
-//       role: null, // Initialize role state
-//       seller: null,
-//       setAuthUser: (user: Auth) => set({ authUser: user }),
-//       setBuyer: (buyer: Buyer) => set({ buyer: buyer }),
-//       setSeller: (seller: Seller) => set({ seller: seller }),
-//       setOtherBuyer: (buyer: Buyer) => set({ otherBuyer: buyer }),
-//       setOtherSeller: (seller: Seller) => set({ otherSeller: seller }),
-//       setRole: (role: "buyer" | "seller" | null) => set({ role: role }),
-//     })
-//   )
-//   //   {
-//   //     name: "auth-storage", // A unique name for your storage
-//   //     storage: createJSONStorage(() => localStorage),
-//   //     partialize: (state) => ({ role: state.role }), // Specify which part of the state to persist
-//   //   }
-//   // )
-// );
-
+import { Auth } from "@/features/auth/schemas/auth.schema";
+import { Buyer } from "@/features/buyer/schemas/buyer.schema";
+import { Seller } from "@/features/seller/schemas/seller.schema";
 import { create } from "zustand";
 import { persist, createJSONStorage, devtools } from "zustand/middleware";
-import { Auth, Buyer, Seller } from "@/schemas";
 
 type States = {
   initialRender: boolean;
   authUser: Auth | null;
   buyer: Buyer | null;
-  role: "buyer" | "seller" | null;
+  activeRole: "buyer" | "seller" | null;
   otherBuyer: Buyer | null;
   otherSeller: Seller | null;
   seller: Seller | null;
@@ -67,7 +21,7 @@ type Actions = {
   setSeller: (seller: Seller) => void;
   setOtherBuyer: (buyer: Buyer) => void;
   setOtherSeller: (seller: Seller) => void;
-  setRole: (role: "buyer" | "seller" | null) => void;
+  setActiveRole: (activeRole: "buyer" | "seller" | null) => void;
 };
 
 export const useAuthStore = create<States & Actions>()(
@@ -79,21 +33,21 @@ export const useAuthStore = create<States & Actions>()(
         buyer: null,
         otherBuyer: null,
         otherSeller: null,
-        role: null, // Initialize role state
+        activeRole: null, // Initialize activeRole state
         seller: null,
         setAuthUser: (user) => set({ authUser: user }),
         setBuyer: (buyer) => set({ buyer: buyer }),
         setSeller: (seller) => set({ seller: seller }),
         setOtherBuyer: (buyer) => set({ otherBuyer: buyer }),
         setOtherSeller: (seller) => set({ otherSeller: seller }),
-        setRole: (role) => set({ role: role }),
+        setActiveRole: (activeRole) => set({ activeRole: activeRole }),
         setInitialRenderFalse: () => set({ initialRender: false }),
       }),
       {
         name: "auth-storage", // A unique name for your storage
         // storage: createJSONStorage(() => localStorage),
         storage: createJSONStorage(() => sessionStorage),
-        partialize: (state) => ({ role: state.role }), // Specify which part of the state to persist
+        partialize: (state) => ({ activeRole: state.activeRole }), // Specify which part of the state to persist
       }
     )
   )

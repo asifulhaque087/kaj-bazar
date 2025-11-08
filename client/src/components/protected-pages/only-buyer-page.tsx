@@ -16,16 +16,16 @@ const OnlyBuyerPage = (props: Props) => {
 
   // ** Store
 
-  const { role, buyer } = useAuthStore();
+  const { activeRole, buyer } = useAuthStore();
 
   useEffect(() => {
-    if (role !== "buyer" || buyer?.isSeller) {
+    if (activeRole !== "buyer" || buyer?.isSeller) {
       router.push("/");
     }
-  }, [role, buyer, router]);
+  }, [activeRole, buyer, router]);
   console.log("buyer is ", buyer);
 
-  if (!role || role !== "buyer" || !buyer || buyer.isSeller) return;
+  if (!activeRole || activeRole !== "buyer" || !buyer || buyer.isSeller) return;
 
   return <div>{children}</div>;
 };
@@ -51,18 +51,18 @@ export default OnlyBuyerPage;
 //   const router = useRouter();
 
 //   // ** Store
-//   const { role, buyer } = useAuthStore();
+//   const { activeRole, buyer } = useAuthStore();
 
 //   // ** State
 //   const [isAuthorized, setIsAuthorized] = useState(false);
 
 //   useEffect(() => {
-//     if (role !== "buyer" || buyer?.isSeller) {
+//     if (activeRole !== "buyer" || buyer?.isSeller) {
 //       router.push("/");
 //     } else {
 //       setIsAuthorized(true);
 //     }
-//   }, [role, buyer, router]);
+//   }, [activeRole, buyer, router]);
 
 //   if (!isAuthorized) {
 //     return null; // Or show a loading spinner
@@ -83,11 +83,11 @@ export default OnlyBuyerPage;
 
 // const OnlyBuyerPage = ({ children }: Props) => {
 //   const router = useRouter();
-//   const { role, buyer } = useAuthStore();
+//   const { activeRole, buyer } = useAuthStore();
 
-//   console.log("role is ", role);
+//   console.log("activeRole is ", activeRole);
 
-//   if (!role || role !== "buyer") return;
+//   if (!activeRole || activeRole !== "buyer") return;
 
 //   return <>{children}</>;
 // };

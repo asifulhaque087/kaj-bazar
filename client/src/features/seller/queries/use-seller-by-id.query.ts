@@ -11,7 +11,7 @@ export const useSellerById = (props: UseSellerByIdProps) => {
   const { sellerId } = props;
 
   // ** --- Store ---
-  const { setSeller, setRole } = useAuthStore();
+  const { setSeller, setActiveRole } = useAuthStore();
 
   return useQueryWithSideEffects({
     queryKey: ["seller", sellerId],
@@ -19,7 +19,7 @@ export const useSellerById = (props: UseSellerByIdProps) => {
     enabled: !!sellerId,
     onSuccess: (data) => {
       setSeller(data);
-      setRole("seller");
+      setActiveRole("seller");
     },
   });
 };

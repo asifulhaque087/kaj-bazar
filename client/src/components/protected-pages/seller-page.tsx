@@ -10,16 +10,16 @@ interface Props {
 const SellerPage = (props: Props) => {
   const { children } = props;
   const router = useRouter();
-  const { role } = useAuthStore();
-  console.log("role is ", role);
+  const { activeRole } = useAuthStore();
+  console.log("activeRole is ", activeRole);
 
   useEffect(() => {
-    if (role !== "seller") {
+    if (activeRole !== "seller") {
       router.push("/");
     }
-  }, [role, router]);
+  }, [activeRole, router]);
 
-  if (!role || role !== "seller") return;
+  if (!activeRole || activeRole !== "seller") return;
 
   return <div>{children}</div>;
 };

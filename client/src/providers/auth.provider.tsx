@@ -11,9 +11,13 @@ const AuthProvider = ({
 }>) => {
   const renderCount = useRef(1);
 
+  // useAuthUser();
+  // useCurrentSeller();
+  // useCurrentBuyer();
+
   useAuthUser();
-  useCurrentSeller();
   useCurrentBuyer();
+  useCurrentSeller();
 
   // console.log("auth provider render count is ", renderCount.current);
   renderCount.current += 1;

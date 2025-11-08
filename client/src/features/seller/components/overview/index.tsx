@@ -146,7 +146,7 @@ const Overview = (props: Props) => {
               <ExperienceCard
                 key={ex.id}
                 company={ex.company}
-                role={ex.title}
+                activeRole={ex.title}
                 description={ex?.description!}
               />
             ))}
