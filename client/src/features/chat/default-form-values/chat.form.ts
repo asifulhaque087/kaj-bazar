@@ -1,5 +1,5 @@
+import { Conversation } from "@/features/chat/schemas/chat.schema";
 import { CreateMessageForm } from "@/features/chat/schemas/create-message.schema";
-import { Conversation } from "@/features/shared";
 import { ChatUser } from "@/store/use-chat.store";
 
 // export const createMessageDefaultForm = (
@@ -80,7 +80,7 @@ export const createMessageDefaultForm = (
 
   // console.log("seller id is ", isSeller ? authUser?.id : otherBuyer?.id);
 
-  let baseDefaults: Partial<CreateMessageForm> = {
+  const baseDefaults: Partial<CreateMessageForm> = {
     conversationId: selectedConversation?.id ?? "",
     senderUsername: messageSenderUser?.name ?? "",
     receiverUsername: messageReceiverUser?.name ?? "",

@@ -11,6 +11,8 @@ import { eq } from "drizzle-orm";
 const startOrder = async (req: Request, res: Response) => {
   const { id, requirement } = req.body as StartOrderInput;
 
+  const io = req.io!;
+
   const [order] = await handleAsync(
     db
       .update(OrdersTable)
@@ -23,6 +25,10 @@ const startOrder = async (req: Request, res: Response) => {
       .where(eq(OrdersTable.id, id))
       .returning()
   );
+
+  io.emit("order notification", "start order", order);
+
+  // console.log("****** order started");
 
   return res.json(order);
 };

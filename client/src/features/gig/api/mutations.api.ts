@@ -1,5 +1,8 @@
 import { gig__axios } from "@/axios.service";
-import { CreateGigPayload, UpdateGigPayload } from "@/features/shared";
+import {
+  CreateGigPayload,
+  UpdateGigPayload,
+} from "@/features/gig/schemas/gig.schema";
 
 export const createGig = async (data: CreateGigPayload) => {
   const response = await gig__axios.post(`/create`, data);

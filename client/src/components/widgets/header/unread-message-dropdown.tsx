@@ -2,7 +2,6 @@ import CustomDropdown from "@/components/widgets/header/dropdown";
 import { useChatStore } from "@/store/use-chat.store";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 const UnreadMessageDropdown = () => {
   const { unreadMessages, setUnreadMessages } = useChatStore();

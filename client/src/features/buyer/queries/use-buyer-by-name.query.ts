@@ -1,5 +1,5 @@
+import { Auth } from "@/features/auth/schemas/auth.schema";
 import { getBuyerByName } from "@/features/buyer/api/queries.api";
-import { Auth } from "@/features/shared";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
 import { useAuthStore } from "@/store/use-auth.store";
 

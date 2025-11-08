@@ -1,4 +1,5 @@
 import BecomeASeller from "@/components/widgets/header/button";
+import NotificationDropdown from "@/components/widgets/header/notification-dropdown";
 import ProfileDropdown from "@/components/widgets/header/profile-dropdown";
 import UnreadMessageDropdown from "@/components/widgets/header/unread-message-dropdown";
 import LoginModal from "@/features/auth/components/login-modal";
@@ -60,6 +61,7 @@ const Navs = (props: Props) => {
           ))}
 
         {authUser && <UnreadMessageDropdown />}
+        {authUser && <NotificationDropdown />}
 
         {authUser && (
           <>

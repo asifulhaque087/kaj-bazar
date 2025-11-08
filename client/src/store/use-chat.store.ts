@@ -1,12 +1,21 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
-import { Conversation, Message } from "@/schemas";
 import { useAuthStore } from "@/store/use-auth.store";
 import { config } from "@/config";
+import { Conversation, Message } from "@/features/chat/schemas/chat.schema";
+import { Order } from "@/features/order/schemas/order.schema";
 
 export interface ChatUser {
   name: string;
   profilePhoto: string;
+}
+
+type NotificationType = "start order" | "extend order";
+
+export interface Notification {
+  // title: string;
+  order: Order;
+  type: NotificationType;
 }
 
 type States = {
@@ -17,6 +26,7 @@ type States = {
   messageSenderUser: ChatUser | null;
   messageReceiverUser: ChatUser | null;
   unreadMessages: Message[];
+  notifications: Notification[];
 };
 
 type Actions = {
@@ -28,7 +38,9 @@ type Actions = {
   connectSocket: () => void;
   disconnectSocket: () => void;
   subscribeToMessages: () => void;
+  subscribeToNotifications: () => void;
   unsubscribeFromMessages: () => void;
+  setNotificationEmpty: () => void;
 };
 
 // login, register, auth check er pore socket connect  korte hobe.
@@ -41,10 +53,17 @@ export const useChatStore = create<States & Actions>((set, get) => ({
   messageSenderUser: null,
   messageReceiverUser: null,
   socket: null,
+  notifications: [],
   // setUnreadMessages: (messages) =>
   //   set({
   //     unreadMessages: messages,
   //   }),
+
+  setNotificationEmpty: () => {
+    set({
+      notifications: [],
+    });
+  },
 
   setUnreadMessages: (messages) => {
     console.log("$$$$$$$$$$$$$$$ ", messages);
@@ -95,6 +114,7 @@ export const useChatStore = create<States & Actions>((set, get) => ({
       console.log("Client connected to Gateway socket server.");
       socket.emit("registerUserSocket", authUser.username);
       get().subscribeToMessages();
+      get().subscribeToNotifications();
     });
 
     socket.on("disconnect", () => {
@@ -139,6 +159,25 @@ export const useChatStore = create<States & Actions>((set, get) => ({
       );
       set({ messages: updateMessages });
     });
+  },
+
+  subscribeToNotifications: () => {
+    const socket = get().socket;
+
+    socket?.on(
+      "order notification",
+      (notificationType: NotificationType, order: Order) => {
+        // prepare notification data
+        const newNotification: Notification = {
+          type: notificationType,
+          order: order,
+        };
+
+        set({
+          notifications: [...get().notifications, newNotification],
+        });
+      }
+    );
   },
 
   unsubscribeFromMessages: () => {

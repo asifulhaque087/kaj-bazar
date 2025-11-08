@@ -1,5 +1,5 @@
+import { Auth } from "@/features/auth/schemas/auth.schema";
 import { getConversationsByUsername } from "@/features/chat/api/queries.api";
-import { Auth } from "@/features/shared";
 import { useQuery } from "@tanstack/react-query";
 
 export interface UseGetConversationsByUsernameProps {

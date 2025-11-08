@@ -1,5 +1,5 @@
-import {  gig__axios } from "@/axios.service";
-import { Gig } from "@/features/shared";
+import { gig__axios } from "@/axios.service";
+import { Gig } from "@/features/gig/schemas/gig.schema";
 
 // Define a type for the API response if it includes totalCount
 interface SearchGigsResponse {

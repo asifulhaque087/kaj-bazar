@@ -1,4 +1,4 @@
-import { messageSchema } from "@/features/shared";
+import { messageSchema } from "@/features/chat/schemas/chat.schema";
 import z from "zod";
 
 // Schema for creating a new message (e.g., in a POST request body)

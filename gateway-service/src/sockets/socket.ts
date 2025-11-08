@@ -105,6 +105,8 @@ import { io, Socket as SocketClient } from "socket.io-client";
 // let chatSocketClient: SocketClient;
 let orderSocketClient: SocketClient;
 
+type NotificationType = "start order" | "extend order";
+
 export class SocketIOAppHandler {
   private io: Server;
   private gatewayCache: GatewayCache;
@@ -115,7 +117,7 @@ export class SocketIOAppHandler {
     this.gatewayCache = new GatewayCache();
     this.userSocketIdMap = new Map<string, string>();
     this.chatSocketServiceIOConnections();
-    // this.orderSocketServiceIOConnections();
+    this.orderSocketServiceIOConnections();
   }
 
   public listen(): void {
@@ -229,6 +231,67 @@ export class SocketIOAppHandler {
     // chatSocketClient.on("message updated", (data: IMessageDocument) => {
     //   this.io.emit("message updated", data);
     // });
+  }
+
+  private orderSocketServiceIOConnections(): void {
+    const orderSocketClient = io(`${config.ORDER_BASE_URL}`, {
+      transports: ["websocket", "polling"],
+      secure: true,
+    });
+
+    orderSocketClient.on("connect", () => {
+      console.log("OrderService socket connected");
+    });
+
+    orderSocketClient.on(
+      "disconnect",
+      (reason: SocketClient.DisconnectReason) => {
+        console.log("error", "OrderSocket disconnect reason:", reason);
+        orderSocketClient.connect();
+      }
+    );
+
+    orderSocketClient.on("connect_error", () => {
+      console.log("error", "Order service socket connection error:");
+      orderSocketClient.connect();
+    });
+
+    // custom events
+
+    //   orderSocketClient.on(
+    //     "order notification",
+    //     (order: IOrderDocument, notification: IOrderNotifcation) => {
+    //       this.io.emit("order notification", order, notification);
+    //     }
+    //   );
+    // }
+
+    orderSocketClient.on(
+      "order notification",
+      (notificationType: NotificationType, order) => {
+        // console.log("******* notification type is ", notificationType, order);
+
+        // send to receiver
+        const receiverGatewaySocketId = this.userSocketIdMap.get(
+          order.seller.username
+        );
+
+        if (receiverGatewaySocketId) {
+          this.io
+            .to(receiverGatewaySocketId)
+            .emit("order notification", notificationType, order);
+        }
+
+        // Send to sender
+        // const senderGatewaySocketId = this.userSocketIdMap.get(
+        //   message.senderUsername
+        // );
+
+        // if (senderGatewaySocketId) {
+        //   this.io.to(senderGatewaySocketId).emit("newMessage", message);
+        // }
+      }
+    );
   }
 
   // private orderSocketServiceIOConnections(): void {

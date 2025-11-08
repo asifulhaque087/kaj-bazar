@@ -1,6 +1,6 @@
 import { login } from "@/features/auth/api/mutations.api";
 import { LoginForm } from "@/features/auth/schemas/login.schema";
-import { useCurrentBuyer } from "@/features/shared";
+import { useCurrentBuyer } from "@/features/buyer/queries/use-current-buyer.query";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useChatStore } from "@/store/use-chat.store";
 import { ApiValidationError } from "@/types";

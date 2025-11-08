@@ -1,4 +1,4 @@
-import { conversationSchema } from "@/features/shared";
+import { conversationSchema } from "@/features/chat/schemas/chat.schema";
 import z from "zod";
 
 export const createConversationForm = conversationSchema.omit({
