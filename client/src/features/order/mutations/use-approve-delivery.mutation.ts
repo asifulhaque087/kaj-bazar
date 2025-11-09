@@ -1,17 +1,15 @@
 import { approveDelivery } from "@/features/order/api/mutations.api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useApproveDelivery = () => {
-  // ** hooks
-  // const router = useRouter();
+  // ** --- hooks ---
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => approveDelivery(id),
 
     onSuccess: (order) => {
-      // router.push(`/order/${order.id}/activity`);
+      queryClient.invalidateQueries({ queryKey: ["order", order.id] });
     },
-
-    // onError: (error: AxiosError) => {},
   });
 };

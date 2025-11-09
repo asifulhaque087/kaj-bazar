@@ -37,8 +37,7 @@ interface ModalProps {
 const DeliveryModal = (props: ModalProps) => {
   const { showModal, setShowModal, orderId } = props;
 
-  // ** --- Queries ---
-
+  // ** --- mutations ---
   const { mutate: deliverWork } = useDeliverWork();
 
   const form = useForm<DeliveredWorkForm>({
@@ -92,6 +91,7 @@ const DeliveryModal = (props: ModalProps) => {
           <FormField
             control={form.control}
             name="file"
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>
                 <FormLabel>Zip File</FormLabel>

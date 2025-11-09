@@ -3,7 +3,7 @@ import {
   BuyerReviewSellerPayload,
   Review,
   SellerReviewBuyerPayload,
-} from "@/schemas";
+} from "@/features/review/schemas/review.schema";
 
 export const buyerReviewSeller = async (body: BuyerReviewSellerPayload) => {
   const response = await review__axios.post<Review>(

@@ -39,8 +39,7 @@ interface ModalProps {
 const BuyerReviewSellerModal = (props: ModalProps) => {
   const { showModal, setShowModal, order } = props;
 
-  // ** --- Queries ---
-
+  // ** --- mutations ---
   const { mutate: buyerReviewSeller } = useBuyerReviewSeller();
 
   const form = useForm<BuyerReviewSellerForm>({

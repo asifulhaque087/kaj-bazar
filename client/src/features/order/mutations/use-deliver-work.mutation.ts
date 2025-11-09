@@ -1,19 +1,15 @@
 import { deliverWork } from "@/features/order/api/mutations.api";
 import { DeliveredWorkPayload } from "@/features/order/schemas/deliver-work.schema";
-import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeliverWork = () => {
-  // ** hooks
-  // const router = useRouter();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: DeliveredWorkPayload) => deliverWork(data),
 
     onSuccess: (order) => {
-      // router.push(`/order/${order.id}/activity`);
+      queryClient.invalidateQueries({ queryKey: ["order", order.id] });
     },
-
-    onError: (error: AxiosError) => {},
   });
 };

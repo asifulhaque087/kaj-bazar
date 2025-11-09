@@ -22,7 +22,7 @@ const DeliveredWorkComponent = ({ order, isBuyer }: DeliveredWorkProps) => {
         icon={<Package className="text-green-500" />}
         title="Order Delivered"
         // timestamp={lastDelivery.deliveredAt}
-        timestamp={order?.orderDeliveredAt!}
+        timestamp={order?.orderDeliveredAt ?? ""}
         description={
           isBuyer
             ? `${order.seller.username} has delivered the work.`
@@ -43,7 +43,7 @@ const DeliveredWorkComponent = ({ order, isBuyer }: DeliveredWorkProps) => {
           )}
           {lastDelivery.message && (
             <p className="text-sm italic text-gray-600 dark:text-gray-300">
-              "{lastDelivery.message}"
+              &quot;{lastDelivery.message}&quot;
             </p>
           )}
         </div>
@@ -57,8 +57,8 @@ const DeliveredWorkComponent = ({ order, isBuyer }: DeliveredWorkProps) => {
                     Ready to Approve?
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    If you're happy with the delivery, you can approve it to
-                    complete the order.
+                    If you&apos;re happy with the delivery, you can approve it
+                    to complete the order.
                   </p>
                 </div>
                 <Button

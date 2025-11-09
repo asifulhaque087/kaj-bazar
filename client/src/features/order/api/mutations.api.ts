@@ -1,8 +1,8 @@
 import { order__axios } from "@/axios.service";
-import { CreateOrderPayload } from "@/features/orders/schemas/create-order.schema";
-import { DeliveredWorkPayload } from "@/features/orders/schemas/deliver-work.schema";
-import { StartOrderPayload } from "@/features/orders/schemas/start-order.schema";
-import { Order } from "@/schemas";
+import { CreateOrderPayload } from "@/features/order/schemas/create-order.schema";
+import { DeliveredWorkPayload } from "@/features/order/schemas/deliver-work.schema";
+import { Order } from "@/features/order/schemas/order.schema";
+import { StartOrderPayload } from "@/features/order/schemas/start-order.schema";
 
 export const createOrder = async (data: CreateOrderPayload) => {
   const response = await order__axios.post<Order>(`/create`, data);

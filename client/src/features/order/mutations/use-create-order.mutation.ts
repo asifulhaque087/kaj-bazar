@@ -1,8 +1,6 @@
 import { createOrder } from "@/features/order/api/mutations.api";
 import { CreateOrderPayload } from "@/features/order/schemas/create-order.schema";
-import { ApiValidationError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
 export const useCreateOrder = () => {
@@ -21,11 +19,11 @@ export const useCreateOrder = () => {
       router.push(`/order/${order.id}/start-order`);
     },
 
-    onError: (error: AxiosError) => {
-      const { errors } = error.response?.data as ApiValidationError;
-      // errors.forEach((err) =>
-      //   setError(err.field as "root", { message: err.message })
-      // );
-    },
+    // onError: (error: AxiosError) => {
+    // const { errors } = error.response?.data as ApiValidationError;
+    // errors.forEach((err) =>
+    //   setError(err.field as "root", { message: err.message })
+    // );
+    // },
   });
 };
