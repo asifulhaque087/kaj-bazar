@@ -10,7 +10,13 @@ export interface ChatUser {
   profilePhoto: string;
 }
 
-type NotificationType = "start order" | "extend order";
+type NotificationType =
+  | "start order"
+  | "deliver order"
+  | "approve order"
+  | "buyer received review"
+  | "seller received review"
+  | "extend order";
 
 export interface Notification {
   // title: string;

@@ -7,14 +7,19 @@ import {
 } from "@fvoid/shared-lib";
 import { db } from "@src/db";
 import { OrdersTable } from "@src/schemas";
-import type { ConsumeMessage } from "amqplib";
+import type { Channel, ConsumeMessage } from "amqplib";
 import { eq } from "drizzle-orm";
+import type { Server } from "socket.io";
 
 export class SellerReceivedReviewListener extends FanoutListener<Seller_Received_Review_Event> {
   exchangeName: Exchanges.Seller_Received_Review =
     Exchanges.Seller_Received_Review;
 
   queueName: SellerReceivedReviewQueues = "seller-received-review-queue-order";
+
+  constructor(public io: Server, channel: Channel) {
+    super(channel);
+  }
 
   async onMessage(
     data: Seller_Received_Review_Event["data"],
@@ -30,14 +35,17 @@ export class SellerReceivedReviewListener extends FanoutListener<Seller_Received
       // receivedAt: reivewGivenAt,
     };
 
-    await handleAsync(
+    const [order] = await handleAsync(
       db
         .update(OrdersTable)
         .set({
           sellerReceivedReview: reviewObject,
         })
         .where(eq(OrdersTable.id, orderId))
+        .returning()
     );
+
+    this.io.emit("order notification", "seller received review", order);
 
     this.channel.ack(message);
   }

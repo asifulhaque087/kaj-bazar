@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 const deliverWork = async (req: Request, res: Response) => {
   const { id, file, message } = req.body as DeliverWorkInput;
 
-  // const io = req.io!;
+  const io = req.io!;
 
   // Retrieve the existing order to get the current deliveredWorks array
   const [existingOrder] = await handleAsync(
@@ -47,7 +47,7 @@ const deliverWork = async (req: Request, res: Response) => {
       .returning()
   );
 
-  // io.emit("order notification", "deliver order", order);
+  io.emit("order notification", "deliver order", order);
 
   return res.json(order);
 };

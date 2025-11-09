@@ -8,6 +8,8 @@ import type { ApproveDeliveryInput } from "@src/validations/order.validation";
 const approveDelivery = async (req: Request, res: Response) => {
   const { id } = req.body as ApproveDeliveryInput;
 
+  const io = req.io!;
+
   const [order] = await handleAsync(
     db
       .update(OrdersTable)
@@ -18,6 +20,8 @@ const approveDelivery = async (req: Request, res: Response) => {
       .where(eq(OrdersTable.id, id!))
       .returning()
   );
+
+  io.emit("order notification", "approve order", order);
 
   return res.json(order);
 };

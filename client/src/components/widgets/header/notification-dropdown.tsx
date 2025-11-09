@@ -4,7 +4,6 @@ import CustomDropdown from "@/components/widgets/header/dropdown";
 import { useChatStore } from "@/store/use-chat.store";
 import { BellRing } from "lucide-react";
 import Link from "next/link";
-import { Fragment } from "react";
 
 const NotificationDropdown = () => {
   const { notifications, setNotificationEmpty } = useChatStore();
@@ -36,16 +35,42 @@ const NotificationDropdown = () => {
       )}
 
       {notifications.map((not, i) => (
-        <Fragment key={i}>
+        <Link href={`/order/${not.order.id}/activity`} key={i}>
           {not.type === "start order" && (
-            <Link href={`/order/${not.order.id}/activity`}>
-              <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
-                <span className="font-bold">{not.order.buyer.username}</span>{" "}
-                placed an order for your gig
-              </p>
-            </Link>
+            <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
+              <span className="font-bold">{not.order.buyer.username}</span>{" "}
+              placed an order for your gig
+            </p>
           )}
-        </Fragment>
+
+          {not.type === "deliver order" && (
+            <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
+              <span className="font-bold">{not.order.seller.username}</span>{" "}
+              delivered your order
+            </p>
+          )}
+
+          {not.type === "approve order" && (
+            <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
+              <span className="font-bold">{not.order.buyer.username}</span>{" "}
+              approved your delivery 🎉
+            </p>
+          )}
+
+          {not.type === "buyer received review" && (
+            <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
+              <span className="font-bold">{not.order.seller.username}</span>{" "}
+              reviewed you
+            </p>
+          )}
+
+          {not.type === "seller received review" && (
+            <p className="font-roboto font-normal text-[14px] text-[#0E0F19]">
+              <span className="font-bold">{not.order.buyer.username}</span>{" "}
+              reviewed you
+            </p>
+          )}
+        </Link>
       ))}
     </div>
   );

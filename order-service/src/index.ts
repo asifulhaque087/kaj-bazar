@@ -44,9 +44,9 @@ class Service {
     this.load_configurations();
     this.set_standard_middlewares();
     this.set_security_middlewares();
-    this.start_server();
+    const io = await this.start_server();
     this.set_route_middlewares();
-    await this.start_rabbitmq();
+    await this.start_rabbitmq(io);
     this.set_error_middlewares();
     // this.start_server();
   }
@@ -85,15 +85,15 @@ class Service {
     this.app.use(BASE_PATH, mutationRouter);
   }
 
-  private async start_rabbitmq() {
+  private async start_rabbitmq(io: Server) {
     await mqWrapper.connect(config.RABBITMQ_ENDPOINT);
     process.once("SIGINT", async () => {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
 
-    new SellerReceivedReviewListener(mqWrapper.channel).listen();
-    new BuyerReceivedReviewListener(mqWrapper.channel).listen();
+    new SellerReceivedReviewListener(io, mqWrapper.channel).listen();
+    new BuyerReceivedReviewListener(io, mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
@@ -149,6 +149,8 @@ class Service {
       req.io = io; // Attach the initialized io instance
       next();
     });
+
+    return io;
   }
 }
 

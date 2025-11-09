@@ -105,7 +105,13 @@ import { io, Socket as SocketClient } from "socket.io-client";
 // let chatSocketClient: SocketClient;
 let orderSocketClient: SocketClient;
 
-type NotificationType = "start order" | "extend order";
+type NotificationType =
+  | "start order"
+  | "deliver order"
+  | "approve order"
+  | "buyer received review"
+  | "seller received review"
+  | "extend order";
 
 export class SocketIOAppHandler {
   private io: Server;
@@ -273,7 +279,14 @@ export class SocketIOAppHandler {
 
         // send to receiver
         const receiverGatewaySocketId = this.userSocketIdMap.get(
-          order.seller.username
+          // notificationType === "buyer received review" ||
+          //   notificationType === "deliver order"
+          //   ? order.buyer.username
+          //   : order.seller.username
+
+          ["buyer received review", "deliver order"].includes(notificationType)
+            ? order.buyer.username
+            : order.seller.username
         );
 
         if (receiverGatewaySocketId) {
