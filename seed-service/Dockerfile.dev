@@ -1,0 +1,19 @@
+# Dockerfile.bun
+# FROM oven/bun:latest
+FROM oven/bun:1.2.21 
+
+WORKDIR /home/app
+
+COPY package.json .
+COPY bun.lock .
+
+
+# Only install prod dependencies if you're building a production image
+# For development, 'bun install' handles dev dependencies too
+RUN bun install
+
+COPY . .
+
+EXPOSE 4008
+
+CMD [ "bun", "run", "dev" ]

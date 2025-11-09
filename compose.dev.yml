@@ -159,6 +159,28 @@ services:
     # 🌟 ADDED UID/GID MAPPING 🌟
     user: "${UID}:${GID}"
 
+  seed:
+    container_name: seed_container
+    build:
+      context: seed-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4008:4008
+    environment:
+      - ENABLE_APM=${ENABLE_APM}
+      - NODE_ENV=${NODE_ENV}
+      - CLIENT_URL=${CLIENT_URL}
+      - RABBITMQ_ENDPOINT=${RABBITMQ_ENDPOINT}
+    volumes:
+      - ./seed-service:/home/app
+      - /home/app/node_modules
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "${UID}:${GID}"
+
   auth:
     container_name: auth_container
     build:
