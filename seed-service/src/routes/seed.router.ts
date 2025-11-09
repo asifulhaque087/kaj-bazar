@@ -1,9 +1,9 @@
-import startSeed from "@src/controllers/start-seed.controller";
+import seedDB from "@src/controllers/seed-db.controller";
 import { Router } from "express";
 
 const seedRouter = Router();
 
 // ** Register
-seedRouter.post("/signup", startSeed);
+seedRouter.post("/db", seedDB);
 
 export default seedRouter;

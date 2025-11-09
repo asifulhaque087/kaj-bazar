@@ -2,13 +2,20 @@
 import express, { type Application } from "express";
 import "express-async-errors";
 import cors from "cors";
-import { errorHandler, NotFoundError } from "@fvoid/shared-lib";
+import {
+  errorHandler,
+  NotFoundError,
+  verifyGatewayToken,
+} from "@fvoid/shared-lib";
 
 // ** Local Imports
 import { config } from "@src/config";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import seedRouter from "@src/routes/seed.router";
+import { AuthSeedReturnedListener } from "@src/events/listeners/auth-seed-returned.listener";
+import { GigSeedReturnedListener } from "@src/events/listeners/gig-seed-returned.listener";
+import { UserSeedReturnedListener } from "@src/events/listeners/user-seed-returned.listener";
 // import { SendEmailListener } from "@src/events/listeners/send-email-listener";
 
 // ** Define Service
@@ -43,10 +50,12 @@ class Service {
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       })
     );
+
+    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "seed"));
   }
 
   private set_route_middlewares() {
-    const BASE_PATH = "/api/v1/seed";
+    const BASE_PATH = "/api/v1/seeds";
     this.app.use(BASE_PATH, seedRouter);
     // this.app.use(healthRouter);
   }
@@ -58,7 +67,9 @@ class Service {
       await mqWrapper.connection.close();
     });
 
-    // new SendEmailListener(mqWrapper.channel).listen();
+    new AuthSeedReturnedListener(mqWrapper.channel).listen();
+    new UserSeedReturnedListener(mqWrapper.channel).listen();
+    new GigSeedReturnedListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

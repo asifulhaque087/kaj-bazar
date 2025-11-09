@@ -23,6 +23,7 @@ import { SocketIOAppHandler } from "@src/sockets/socket";
 import { redisConnection } from "@src/redis/redis.connection";
 import orderRouter from "@src/routes/orders.routes";
 import reviewRouter from "@src/routes/reviews.routes";
+import seedRouter from "@src/routes/seed.router";
 // ** Define Service
 
 class Service {
@@ -87,6 +88,7 @@ class Service {
     this.app.use(`${BASE_PATH}/chats`, chatRouter);
     this.app.use(`${BASE_PATH}/orders`, orderRouter);
     this.app.use(`${BASE_PATH}/reviews`, reviewRouter);
+    this.app.use(`${BASE_PATH}/seeds`, seedRouter);
   }
 
   private set_error_middlewares() {

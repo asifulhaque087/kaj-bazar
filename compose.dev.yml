@@ -124,6 +124,7 @@ services:
       - CHAT_BASE_URL=${CHAT_BASE_URL}
       - ORDER_BASE_URL=${ORDER_BASE_URL}
       - REVIEW_BASE_URL=${REVIEW_BASE_URL}
+      - SEED_BASE_URL=${SEED_BASE_URL}
       - REDIS_HOST=${REDIS_HOST}
     volumes:
       - ./gateway-service:/home/app

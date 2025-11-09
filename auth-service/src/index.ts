@@ -19,6 +19,7 @@ import identityRouter from "@src/routes/identity.route";
 import healthRouter from "@src/routes/health.routes";
 import seedRouter from "@src/routes/seed.route";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
+import { AuthSeedRequestedListener } from "@src/events/listeners/auth-seed-requested.listener";
 
 // ** Define Auth Service
 
@@ -82,6 +83,8 @@ class AuthService {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new AuthSeedRequestedListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

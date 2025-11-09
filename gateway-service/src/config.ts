@@ -11,5 +11,6 @@ export const config = {
   CHAT_BASE_URL: process.env.CHAT_BASE_URL || "",
   ORDER_BASE_URL: process.env.ORDER_BASE_URL || "",
   REVIEW_BASE_URL: process.env.REVIEW_BASE_URL || "",
+  SEED_BASE_URL: process.env.SEED_BASE_URL || "",
   REDIS_HOST: process.env.REDIS_HOST || "",
 };
