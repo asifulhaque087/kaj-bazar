@@ -22,6 +22,7 @@ import { GetSellerListener } from "@src/events/listeners/get-sellers.listener";
 import { SellerReceivedReviewListener } from "@src/events/listeners/seller-received-review.listener";
 import { BuyerReceivedReviewListener } from "@src/events/listeners/buyer-received-review.listener";
 import { UserSeedRequestedListener } from "@src/events/listeners/user-seed-requested.listener";
+import { ReviewSeededListener } from "@src/events/listeners/review-seeded.listener";
 
 // ** Define Service
 
@@ -88,6 +89,7 @@ class Service {
     new SellerReceivedReviewListener(mqWrapper.channel).listen();
     new BuyerReceivedReviewListener(mqWrapper.channel).listen();
     new UserSeedRequestedListener(mqWrapper.channel).listen();
+    new ReviewSeededListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

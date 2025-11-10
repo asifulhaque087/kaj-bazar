@@ -23,25 +23,37 @@ import {
 } from "@src/schemas";
 import { random, sampleSize } from "lodash";
 
+// ** --- types ---
+
+interface Auth {
+  id: string;
+  username: string;
+  email: string;
+  profilePublicId: string;
+  profilePicture: string;
+  country?: string;
+}
+
+interface Buyer extends Auth {
+  isSeller: boolean;
+}
+
 export class UserSeedRequestedListener extends Listener<UserSeedRequested> {
   exchangeName: Exchanges.UserSeedRequested = Exchanges.UserSeedRequested;
   queueName: Queues.UserSeedRequested = Queues.UserSeedRequested;
   routingKey: RoutingKeys.UserSeedRequested = RoutingKeys.UserSeedRequested;
 
   async onMessage(data: UserSeedRequested["data"], message: ConsumeMessage) {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ", data);
-
     const { authUsers } = data;
 
-    const [buyers, sellers] = await seedUser(authUsers, this.channel);
+    const buyers = await seedUser(authUsers);
 
-    if (!buyers || !sellers) throw new ConnectionError("something went wrong");
+    if (!buyers) throw new ConnectionError("something went wrong");
 
     // ** --- publish an event ---
-    // new UserSeedReturnedPublisher(this.channel).publish({
-    //   buyers,
-    //   sellers,
-    // });
+    new UserSeedReturnedPublisher(this.channel).publish({
+      buyers,
+    });
 
     this.channel.ack(message);
   }
@@ -49,27 +61,7 @@ export class UserSeedRequestedListener extends Listener<UserSeedRequested> {
 
 // ** --- seed function ---
 
-interface Auth {
-  id: string;
-  username: string;
-  password: string;
-  email: string;
-  profilePublicId: string;
-  profilePicture: string;
-
-  // Optional Fields
-  country: string | null;
-  emailVerificationToken: string | null;
-  emailVerified: boolean;
-  browserName: string | null;
-  deviceType: string | null;
-  otp: string | null;
-  otpExpiration: Date | null; // Mapped from timestamp
-  passwordResetToken: string | null;
-  passwordResetExpires: Date | null; // Mapped from timestamp
-}
-
-const seedUser = async (authUsers: Auth[], channel: Channel) => {
+const seedUser = async (authUsers: Auth[]): Promise<Buyer[]> => {
   // ** --- empty tables ---
 
   const tablesToDelete = [
@@ -171,7 +163,10 @@ const seedUser = async (authUsers: Auth[], channel: Channel) => {
 
   // const hello =   [insertedBuyers, insertedSellers];
 
-  return [insertedBuyers, insertedSellers];
+  return insertedBuyers.map((b) => ({
+    ...b,
+    country: b.country as string | undefined,
+  }));
 
   // return insertedUsers;
 };
@@ -180,9 +175,8 @@ const createFakeBuyer = (
   authUser: Auth,
   i: number,
   sellerStartIndex: number
-) => {
+): Buyer => {
   return {
-    // ...authUser,
     id: authUser.id,
     username: authUser.username,
     email: authUser.email,
@@ -190,20 +184,8 @@ const createFakeBuyer = (
     profilePicture: authUser.profilePicture,
     country: authUser.country,
     isSeller: i < sellerStartIndex,
-    createdAt: new Date(),
   };
 };
-
-interface Buyer {
-  id: string;
-  username: string;
-  email: string;
-  profilePublicId: string;
-  profilePicture: string;
-  isSeller: boolean;
-  createdAt: Date;
-  country: string | null;
-}
 
 const createFakeSeller = (buyer: Buyer) => {
   return {

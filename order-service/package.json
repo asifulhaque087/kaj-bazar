@@ -28,7 +28,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@fvoid/shared-lib": "^1.0.33",
+    "@faker-js/faker": "^10.1.0",
+    "@fvoid/shared-lib": "^1.0.42",
     "@socket.io/redis-adapter": "^8.3.0",
     "amqplib": "^0.10.8",
     "cloudinary": "^2.7.0",

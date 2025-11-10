@@ -17,6 +17,8 @@ import healthRouter from "@src/routes/health.routes";
 import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
 import { ReceiveSellerListener } from "@src/events/listeners/receive-sellers.listener";
+import { GigSeedRequestedListener } from "@src/events/listeners/gig-seed-requested.listener";
+import { ReviewSeededListener } from "@src/events/listeners/review-seeded.listener";
 
 // ** Define Service
 
@@ -79,6 +81,8 @@ class Service {
     });
 
     new ReceiveSellerListener(mqWrapper.channel).listen();
+    new GigSeedRequestedListener(mqWrapper.channel).listen();
+    new ReviewSeededListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

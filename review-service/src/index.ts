@@ -16,6 +16,7 @@ import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
 import queryRouter from "@src/routes/query.routes";
 import mutationRouter from "@src/routes/mutation.routes";
+import { ReviewSeedRequestedListener } from "@src/events/listeners/review-seed-requested.listener";
 
 // ** Define Service
 
@@ -76,6 +77,8 @@ class Service {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new ReviewSeedRequestedListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

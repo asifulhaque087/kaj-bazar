@@ -20,6 +20,8 @@ import mutationRouter from "@src/routes/mutation.routes";
 import { Server } from "socket.io";
 import { SellerReceivedReviewListener } from "@src/events/listeners/seller-received-review.listener";
 import { BuyerReceivedReviewListener } from "@src/events/listeners/buyer-received-review.listener";
+import { OrderSeedRequestedListener } from "@src/events/listeners/order-seed-requested.listener";
+import { ReviewSeededListener } from "@src/events/listeners/review-seeded.listener";
 // import { createClient } from "redis";
 // import { createAdapter } from "@socket.io/redis-adapter";
 
@@ -94,6 +96,8 @@ class Service {
 
     new SellerReceivedReviewListener(io, mqWrapper.channel).listen();
     new BuyerReceivedReviewListener(io, mqWrapper.channel).listen();
+    new OrderSeedRequestedListener(mqWrapper.channel).listen();
+    new ReviewSeededListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

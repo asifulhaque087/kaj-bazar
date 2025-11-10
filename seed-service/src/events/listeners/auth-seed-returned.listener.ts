@@ -14,13 +14,8 @@ export class AuthSeedReturnedListener extends Listener<AuthSeedReturned> {
   routingKey: RoutingKeys.AuthSeedReturned = RoutingKeys.AuthSeedReturned;
 
   async onMessage(data: AuthSeedReturned["data"], message: ConsumeMessage) {
-    console.log(
-      "I am from @@@@@@AuthSeedReturnedListener@@@@@@@@ of seed service"
-    );
-
     const { authUsers } = data;
 
-    // ** --- publish an event ---
     new UserSeedRequestedPublisher(this.channel).publish({
       authUsers,
     });

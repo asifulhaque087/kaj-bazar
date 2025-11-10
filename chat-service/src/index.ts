@@ -15,15 +15,10 @@ import http from "http";
 import { config } from "@src/config";
 import { mqWrapper } from "@src/rabbitmq-wrapper";
 import healthRouter from "@src/routes/health.routes";
-import queryRouter from "@src/routes/query.routes";
-import mutationRouter from "@src/routes/mutation.routes";
 import conversationRouter from "@src/routes/conversation.routes";
 import messageRouter from "@src/routes/message.routes";
-import { initializeGatewayClient } from "@src/sockets/gatewayClient";
 import { Server } from "socket.io";
-import { createClient } from "redis";
-import { createAdapter } from "@socket.io/redis-adapter";
-import { SocketIOAppHandler } from "@src/sockets/socket";
+import { ChatSeedRequestedListener } from "@src/events/listeners/chat-seed-requested.listener";
 
 // Extend Req with IO
 declare global {
@@ -48,9 +43,8 @@ class Service {
     this.set_security_middlewares();
     this.start_server();
     this.set_route_middlewares();
-    // await this.start_rabbitmq();
+    await this.start_rabbitmq();
     this.set_error_middlewares();
-    // this.start_server();
   }
 
   private load_configurations() {
@@ -96,6 +90,8 @@ class Service {
       await mqWrapper.channel.close();
       await mqWrapper.connection.close();
     });
+
+    new ChatSeedRequestedListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {

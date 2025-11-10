@@ -3,7 +3,7 @@ import { mqWrapper } from "@src/rabbitmq-wrapper";
 import type { Request, Response } from "express";
 
 const seedDB = async (req: Request, res: Response) => {
-  console.log("I am from seed DB controller of seed service");
+  // console.log("I am from seed DB controller of seed service");
 
   new AuthSeedRequestedPublisher(mqWrapper.channel).publish({ count: 100 });
 

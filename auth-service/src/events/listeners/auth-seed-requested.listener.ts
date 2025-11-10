@@ -10,7 +10,7 @@ import {
   type AuthSeedRequested,
 } from "@fvoid/shared-lib";
 import { hashPassword } from "@src/utils/hashing.util";
-import type { Channel, ConsumeMessage } from "amqplib";
+import type { ConsumeMessage } from "amqplib";
 import { db } from "@src/db";
 import { AuthTable } from "@src/schemas";
 import { AuthSeedReturnedPublisher } from "@src/events/publishers/auth-seed-returned.publisher";
@@ -21,21 +21,22 @@ export class AuthSeedRequestedListener extends Listener<AuthSeedRequested> {
   routingKey: RoutingKeys.AuthSeedRequested = RoutingKeys.AuthSeedRequested;
 
   async onMessage(data: AuthSeedRequested["data"], message: ConsumeMessage) {
-    console.log(
-      "I am from @@@@@@AuthSeedRequestedListener@@@@@@@@ of auth service"
-    );
+    const { count = 100 } = data;
 
-    const { count } = data;
+    const authUsers = await seedAuth(count);
 
-    const authUsers = await seedAuth(count, this.channel);
-
-    console.log(
-      "Publish to  @@@@@@AuthSeedReturnedPublisher@@@@@@@@ from auth service"
-    );
+    const seededAuths = authUsers.map((user) => ({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      profilePublicId: user.profilePublicId,
+      profilePicture: user.profilePicture,
+      country: user.country as string | undefined,
+    }));
 
     // ** --- publish an event ---
     new AuthSeedReturnedPublisher(this.channel).publish({
-      authUsers,
+      authUsers: seededAuths,
     });
 
     this.channel.ack(message);
@@ -44,11 +45,11 @@ export class AuthSeedRequestedListener extends Listener<AuthSeedRequested> {
 
 // ** --- seed function ---
 
-const seedAuth = async (count: number, channel: Channel) => {
+const seedAuth = async (count: number) => {
   const total = count;
 
-  const [rError] = await catchError(db.delete(AuthTable));
-  if (rError) throw new ConnectionError("Error Empty Auths !!");
+  const [errAuth] = await catchError(db.delete(AuthTable));
+  if (errAuth) throw new ConnectionError("Error Empty Auths !!");
 
   const authsToCreate = [];
 

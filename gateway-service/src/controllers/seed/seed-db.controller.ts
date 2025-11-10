@@ -1,13 +1,7 @@
 import type { Request, Response } from "express";
 import { type AxiosResponse, AxiosError } from "axios";
-import { config } from "@src/config";
 
 const seedDB = async (req: Request, res: Response) => {
-  console.log(
-    "@@@@@@@@@@@@@@@@ from seedDB ",
-    `${config.SEED_BASE_URL}/api/v1/seeds`
-  );
-
   try {
     const apiService = req.publicAxios!;
 

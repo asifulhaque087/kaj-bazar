@@ -16,6 +16,9 @@ import seedRouter from "@src/routes/seed.router";
 import { AuthSeedReturnedListener } from "@src/events/listeners/auth-seed-returned.listener";
 import { GigSeedReturnedListener } from "@src/events/listeners/gig-seed-returned.listener";
 import { UserSeedReturnedListener } from "@src/events/listeners/user-seed-returned.listener";
+import { ChatSeedReturnedListener } from "@src/events/listeners/chat-seed-returned.listener";
+import { OrderSeedReturnedListener } from "@src/events/listeners/order-seed-returned.listener";
+import { ReviewSeedReturnedListener } from "@src/events/listeners/review-seed-returned.listener";
 // import { SendEmailListener } from "@src/events/listeners/send-email-listener";
 
 // ** Define Service
@@ -70,6 +73,9 @@ class Service {
     new AuthSeedReturnedListener(mqWrapper.channel).listen();
     new UserSeedReturnedListener(mqWrapper.channel).listen();
     new GigSeedReturnedListener(mqWrapper.channel).listen();
+    new ChatSeedReturnedListener(mqWrapper.channel).listen();
+    new OrderSeedReturnedListener(mqWrapper.channel).listen();
+    // new ReviewSeedReturnedListener(mqWrapper.channel).listen();
   }
 
   private set_error_middlewares() {
