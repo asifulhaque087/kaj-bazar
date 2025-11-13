@@ -34,6 +34,7 @@ export class ReviewSeededListener extends FanoutListener<ReviewSeeded> {
       const Table = SellersTable;
       const id = sellerId;
 
+      // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! ", review);
       await updateEntityRatings(Table, id, newRating);
     }
 

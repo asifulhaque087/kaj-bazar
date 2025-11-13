@@ -4,8 +4,6 @@ import {
   handleAsync,
   type ReviewSeeded,
   type ReviewSeededQueues,
-  type Seller_Received_Review_Event,
-  type SellerReceivedReviewQueues,
 } from "@fvoid/shared-lib";
 import { db } from "@src/db";
 import { OrdersTable } from "@src/schemas";
@@ -34,6 +32,8 @@ export class ReviewSeededListener extends FanoutListener<ReviewSeeded> {
         // receivedAt: new Date(reivewGivenAt).toISOString(),
         // receivedAt: reivewGivenAt,
       };
+
+      // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! ", review);
 
       const [order] = await handleAsync(
         db

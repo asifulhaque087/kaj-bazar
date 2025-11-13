@@ -114,7 +114,7 @@ const seedReview = async (orders: Order[]) => {
   const reviewsToCreate: Review[] = [];
 
   for (let i = 0; i < orders.length; i++) {
-    console.log("The number is: " + i);
+    // console.log("The number is: " + i);
     const order = orders[i];
 
     if (!order) continue;

@@ -21,7 +21,7 @@ export class AuthSeedRequestedListener extends Listener<AuthSeedRequested> {
   routingKey: RoutingKeys.AuthSeedRequested = RoutingKeys.AuthSeedRequested;
 
   async onMessage(data: AuthSeedRequested["data"], message: ConsumeMessage) {
-    const { count = 100 } = data;
+    const { count = 10 } = data;
 
     const authUsers = await seedAuth(count);
 
@@ -62,6 +62,8 @@ const seedAuth = async (count: number) => {
     .insert(AuthTable)
     .values(authsToCreate)
     .returning();
+
+  console.log("total inserted auth is ", insertedUsers.length);
 
   return insertedUsers;
 };

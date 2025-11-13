@@ -111,6 +111,8 @@ const seedOrder = async (
     (msg) => msg.hasOffer && msg.offerAccepted
   );
 
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@  ", offerMessages);
+
   const ordersToCreate: any[] = [];
 
   for (let i = 0; i < offerMessages.length; i++) {
