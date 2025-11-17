@@ -2,7 +2,6 @@ import { faker } from "@faker-js/faker";
 import {
   catchError,
   ConnectionError,
-  createUniqueRandomSelector,
   Exchanges,
   Listener,
   Queues,

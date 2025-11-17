@@ -10,6 +10,7 @@ import {
 } from "@fvoid/shared-lib";
 import { db } from "@src/db";
 import { OrderSeedReturnedPublisher } from "@src/events/publishers/order-seed-returned.publisher";
+import { OrderUpdateRequestedPublisher } from "@src/events/publishers/order-update-requested.publisher";
 import { OrdersTable } from "@src/schemas";
 import type { ConsumeMessage } from "amqplib";
 
@@ -75,6 +76,14 @@ export class OrderSeedRequestedListener extends Listener<OrderSeedRequested> {
     }));
 
     // ** --- publish an event ---
+    new OrderUpdateRequestedPublisher(this.channel).publish({
+      orders: orders.map((order) => ({
+        id: order.id,
+        sellerId: order.seller.id,
+        status: order.orderStatus,
+      })),
+    });
+
     new OrderSeedReturnedPublisher(this.channel).publish({
       orders: newOrders,
     });
@@ -111,7 +120,9 @@ const seedOrder = async (
     (msg) => msg.hasOffer && msg.offerAccepted
   );
 
-  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@  ", offerMessages);
+  // console.log("%%%%%%%%%%%%%%%%%%%%%%%%  ", offerMessages.length);
+
+  // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@  ", offerMessages);
 
   const ordersToCreate: any[] = [];
 
@@ -188,6 +199,13 @@ const createFakeOrder = (
 
   const orderStatus = faker.helpers.arrayElement(
     ["incomplete", "progress", "complete"].filter((s) => s !== "incomplete")
+    // [...Array(7).fill("complete"), ...Array(1).fill("progress")]
+    // [...Array(7).fill("complete")]
+    // ["complete"]
+    // Array(7)
+    //   .fill("complete")
+    //   .map(() => "complete")
+    // [...Array(7).fill("progress")]
   );
   const accepted = faker.helpers.arrayElement([false, true]);
   const deliveryInDays = parseInt(gig.expectedDelivery.split(" ")[0]!);
@@ -211,6 +229,7 @@ const createFakeOrder = (
 
     deliveryInDays: deliveryInDays, //todo - atake delivery due date er soman korte hobe
     orderStatus: orderStatus,
+    // orderStatus: "complete",
 
     placeOrderAt: faker.date.past({ years: 1 }),
     // requirement

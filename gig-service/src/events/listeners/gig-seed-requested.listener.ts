@@ -13,6 +13,7 @@ import type { ConsumeMessage } from "amqplib";
 import { db } from "@src/db";
 import { GigSeedReturnedPublisher } from "@src/events/publishers/gig-seed-returned.publisher";
 import { GigsTable } from "@src/schemas";
+import { GigCountUpdateRequestedPublisher } from "@src/events/publishers/gig-count-update-requested.publisher";
 
 interface Buyer {
   id: string;
@@ -49,6 +50,15 @@ export class GigSeedRequestedListener extends Listener<GigSeedRequested> {
     }));
 
     // ** --- publish an event ---
+
+    new GigCountUpdateRequestedPublisher(this.channel).publish({
+      gigs: gigs.map((gig) => ({
+        id: gig.id,
+        sellerId: gig.sellerId,
+        title: gig.title,
+      })),
+    });
+
     new GigSeedReturnedPublisher(this.channel).publish({
       gigs: newGigs,
       buyers,

@@ -18,7 +18,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@fvoid/shared-lib": "^1.0.42",
+    "@fvoid/shared-lib": "^1.0.44",
     "amqplib": "^0.10.8",
     "cors": "^2.8.5",
     "express": "^4.21.2",
