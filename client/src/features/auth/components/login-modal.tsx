@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { BaseModal } from "@/components/base-modal";
 import { loginForm, LoginForm } from "@/features/auth/schemas/login.schema";
 import { useLogin } from "@/features/auth/mutations/use-login.mutation";
+import { Button } from "@/components/ui/button";
 
 // ** Validations
 
@@ -29,6 +30,16 @@ interface ModalProps {
 
 // let renderCount = 1;
 
+const buyerCredentials = {
+  email: "seed6@gmail.com",
+  password: "qwerty",
+};
+
+const sellerCredentials = {
+  email: "seed1@gmail.com",
+  password: "qwerty",
+};
+
 const LoginModal = (props: ModalProps) => {
   const { showModal, setShowModal } = props;
   const renderCount = useRef(1);
@@ -37,8 +48,10 @@ const LoginModal = (props: ModalProps) => {
     resolver: zodResolver(loginForm),
     defaultValues: {
       // username: "",
-      email: "",
-      password: "",
+      // email: "seed1@gmail.com",
+      // password: "qwerty",
+
+      ...buyerCredentials,
     },
     mode: "onSubmit", // Validate on submit
   });
@@ -59,6 +72,21 @@ const LoginModal = (props: ModalProps) => {
       showModal={showModal}
       className="max-w-md p-8"
     >
+      <div className="flex gap-2 flex-wrap">
+        <Button
+          className="capitalize bg-[#03050F] cursor-pointer"
+          onClick={() => form.reset(buyerCredentials)}
+        >
+          Buyer Credential
+        </Button>
+        <Button
+          className="capitalize bg-[#03050F] cursor-pointer"
+          onClick={() => form.reset(sellerCredentials)}
+        >
+          Seller Credential
+        </Button>
+      </div>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => login(data))}
@@ -141,7 +169,7 @@ const LoginModal = (props: ModalProps) => {
 
           <button
             type="submit"
-            className={`rounded-[8px] bg-[#CDC0A8] px-[20px] py-[6px] font-roboto text-sm text-[#3E3F47] whitespace-nowrap capitalize`}
+            className={`rounded-[8px] bg-[#CDC0A8] px-[20px] py-[6px] font-roboto text-sm text-[#3E3F47] whitespace-nowrap capitalize cursor-pointer`}
           >
             Login
           </button>
