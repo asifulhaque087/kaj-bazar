@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { useGetConversationsByUsername } from "@/features/chat/queries/use-user-covnersations.query";
 import { useGetConversationsById } from "@/features/chat/queries/use-conversation.query";
 import { useEffect } from "react";
+import { useBuyerOrders } from "@/features/order/queries/use-buyer-orders.query";
 
 // --- The main page (adds Suspense boundary)
 export default function Page() {
@@ -32,6 +33,8 @@ function InboxPageContent() {
     useGetConversationsByUsername({ authUser });
 
   useGetConversationsById({ conversationId });
+
+  useBuyerOrders(authUser?.id);
 
   useEffect(() => {
     return () => setSelectedConversation(null);

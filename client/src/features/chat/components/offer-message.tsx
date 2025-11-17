@@ -1,4 +1,6 @@
 import { MessageOffer } from "@/features/chat/schemas/chat.schema";
+import { useBuyerOrders } from "@/features/order/queries/use-buyer-orders.query";
+import { useAuthStore } from "@/store/use-auth.store";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -12,6 +14,12 @@ const OfferMessage = (props: Props) => {
   const { reverse, offer, messageId } = props;
 
   const router = useRouter();
+
+  const { authUser } = useAuthStore();
+
+  const { data } = useBuyerOrders(authUser?.id);
+
+  const orderId = data?.find((order) => order.messageId === messageId)?.id;
 
   return (
     <div
@@ -33,18 +41,38 @@ const OfferMessage = (props: Props) => {
         {offer?.description}
       </div>
 
-      <div className="mt-[12px] flex gap-x-[16px] justify-end">
-        <button
-          className="border-none outline-none rounded-[4px] bg-[#9FBB89] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer"
-          onClick={() => router.push(`/checkout/${messageId}`)}
-        >
-          Accept
-        </button>
+      {!offer.accepted && (
+        <div className="mt-[12px] flex gap-x-[16px] justify-end">
+          <button
+            className="border-none outline-none rounded-[4px] bg-[#9FBB89] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer"
+            onClick={() => router.push(`/checkout/${messageId}`)}
+          >
+            Accept
+          </button>
 
-        <button className="border-none outline-none rounded-[4px] bg-[#FF6666] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer">
-          Reject
-        </button>
-      </div>
+          <button className="border-none outline-none rounded-[4px] bg-[#FF6666] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] cursor-pointer">
+            Reject
+          </button>
+        </div>
+      )}
+
+      {offer.accepted && (
+        <div className="mt-[12px] flex gap-x-[16px] justify-end">
+          <button
+            className="border-none outline-none rounded-[4px] bg-gray-300 px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px]"
+            // onClick={() => router.push(`/checkout/${messageId}`)}
+          >
+            Accepted
+          </button>
+
+          <button
+            className="border-none outline-none rounded-[4px] bg-[#9FBB89] px-[16px] py-[8px] font-roboto text-[#3E3F47] font-normal text-[12px] underline cursor-pointer capitalize"
+            onClick={() => router.push(`/order/${orderId}/activity`)}
+          >
+            view order
+          </button>
+        </div>
+      )}
     </div>
   );
 };
