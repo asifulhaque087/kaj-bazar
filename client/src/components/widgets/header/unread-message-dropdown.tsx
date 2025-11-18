@@ -29,6 +29,19 @@ const UnreadMessageDropdown = () => {
 
   const content = (
     <div className="w-full flex flex-col gap-y-[16px] p-[16px]">
+      {/* <Button
+          className="capitalize bg-[#03050F] cursor-pointer"
+        >
+          view all conversations
+        </Button> */}
+
+      <Link
+        href={"/inbox"}
+        className="font-roboto font-normal text-[14px] text-[#0E0F19] underline"
+      >
+        Go To Inbox
+      </Link>
+
       {unreadMessages.length === 0 && (
         <span className="font-roboto font-normal text-[14px] text-[#0E0F19]">
           No unread message found
