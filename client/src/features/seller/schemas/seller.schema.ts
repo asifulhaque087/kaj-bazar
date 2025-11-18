@@ -111,6 +111,10 @@ export const sellerSchema = z.object({
     })
     .optional(),
 
+  totalGigs: z.number().int().optional(),
+  completedJobs: z.number().int().optional(),
+  ongoingJobs: z.number().int().optional(),
+
   createdAt: z.string().optional(),
   responseTime: z.string().optional(),
 });

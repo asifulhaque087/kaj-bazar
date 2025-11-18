@@ -7,36 +7,39 @@ import { Button } from "@/components/ui/button";
 import { alltabs } from "@/constants";
 import { useParams } from "next/navigation";
 import React from "react";
-import { useAuthStore } from "@/store/use-auth.store";
+// import { useAuthStore } from "@/store/use-auth.store";
 import StatisticCard from "@/features/seller/components/statistic-card";
 import Overview from "@/features/seller/components/overview";
 import ActiveGigs from "@/features/seller/components/active-gigs";
 import RaitingAndReviews from "@/features/seller/components/rating-and-review";
 import { useSellerById } from "@/features/seller/queries/use-seller-by-id.query";
-import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
+// import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 
 const Page = () => {
   //   ** Params
   const params = useParams<{ id: string }>();
 
   // ** Store
-  const { authUser } = useAuthStore();
+  // const { authUser } = useAuthStore();
 
   // ** Mutations
 
-  const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
+  // const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
 
   // ** Queries
   const {
     data: seller,
     isLoading,
-    error,
+    // error,
   } = useSellerById({
     sellerId: params.id,
   });
-  console.log("seller is ", seller);
 
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({ tabs: alltabs });
+
+  if (isLoading) return null;
+
+  console.log("seller is ", seller);
 
   return (
     <>
@@ -81,8 +84,8 @@ const Page = () => {
           {/* box 2 */}
           <div className="min-h-[344px] col-span-4 md:col-span-3 rounded-[10px] overflow-hidden">
             <ReviewCard
-              ratingSum={seller?.ratingSum!}
-              ratingsCount={seller?.ratingsCount!}
+              ratingSum={seller?.ratingSum}
+              ratingsCount={seller?.ratingsCount}
               ratingCategories={seller?.ratingCategories}
             />
           </div>
@@ -93,16 +96,19 @@ const Page = () => {
             <StatisticCard
               className="col-span-2"
               title="total gigs"
-              count={6}
+              count={seller?.totalGigs}
+              // count={6}
             />
             <StatisticCard
               className="col-span-2"
               title="completed orders"
-              count={10}
+              count={seller?.totalGigs}
+              // count={10}
             />
             <StatisticCard
               className="col-span-4"
               title="ongoing orders"
+              // count={seller.ongoingJobs}
               count={3}
             />
           </div>

@@ -27,8 +27,8 @@ type RatingCategories = {
 // The full type for the schema, including the optional modifier
 interface ReviewCardProps {
   ratingCategories?: RatingCategories;
-  ratingsCount: number;
-  ratingSum: number;
+  ratingsCount?: number;
+  ratingSum?: number;
   // averageRating: number;
   // totalReviews: number;
 }
@@ -51,9 +51,9 @@ const ReviewCard = (props: ReviewCardProps) => {
 
   // Helper function to calculate the width percentage for the bars.
 
-  const calculateWidth = (count: number) => {
+  const calculateWidth = (count?: number) => {
     // Check if totalReviews is not zero to prevent division by zero errors.
-    return ratingsCount > 0 ? (count / ratingsCount) * 100 : 0;
+    return ratingsCount! > 0 ? (count! / ratingsCount!) * 100 : 0;
   };
 
   // Main card layout
@@ -81,23 +81,23 @@ const ReviewCard = (props: ReviewCardProps) => {
       <div className="w-full">
         <StarRatingBar
           stars={5}
-          width={calculateWidth(ratingCategories?.five.count!)}
+          width={calculateWidth(ratingCategories?.five.count)}
         />
         <StarRatingBar
           stars={4}
-          width={calculateWidth(ratingCategories?.four.count!)}
+          width={calculateWidth(ratingCategories?.four.count)}
         />
         <StarRatingBar
           stars={3}
-          width={calculateWidth(ratingCategories?.three.count!)}
+          width={calculateWidth(ratingCategories?.three.count)}
         />
         <StarRatingBar
           stars={2}
-          width={calculateWidth(ratingCategories?.two.count!)}
+          width={calculateWidth(ratingCategories?.two.count)}
         />
         <StarRatingBar
           stars={1}
-          width={calculateWidth(ratingCategories?.one.count!)}
+          width={calculateWidth(ratingCategories?.one.count)}
         />
       </div>
     </div>

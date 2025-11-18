@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 interface Props {
   className?: string;
   title: string;
-  count: number;
+  count?: number;
 }
 
 const StatisticCard = (props: Props) => {
