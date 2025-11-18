@@ -1,6 +1,6 @@
 # Kaj Bazar
 
-This is a scalable freelance marketplace build with microservices architecture, real-time
+This is a scalable freelance marketplace build with microservices (10 domains) architecture, real-time
 communication and database per service polyglot persistence pattern.
 
 This application is in development. It has already included all the features listed in [Done Stories](#done-stories). But soon Its going to have all features listed in [All Stories](#all-stories) 🚀.
