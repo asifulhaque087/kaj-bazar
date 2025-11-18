@@ -341,7 +341,7 @@ const seedChat = async (allUsers: User[], gigs: Gig[]) => {
         true
       )
     );
-    const numFollowUp = faker.number.int({ min: 20, max: 30 });
+    const numFollowUp = faker.number.int({ min: 10, max: 20 });
     for (let i = 0; i < numFollowUp; i++) {
       messagesToInsert.push(
         createMessage(
