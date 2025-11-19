@@ -121,9 +121,9 @@ const Footer = () => {
       <div className=" flex items-start justify-between gap-[50px] w-full">
         <div className="grid gap-[35px] ">
           <div>
-            <h1 className="text-[18px]  ">
-              <span className="text-[#287992]">Kaj</span>
-              <span className="text-[#E8C092]">Bazar</span>
+            <h1 className="font-roboto font-bold text-[20px] text-[#616BA4]">
+              <span className="">Kaj</span>
+              <span className="">Bazar</span>
             </h1>
           </div>
           <p className="text-[14px] text-[#393939] w-[228px]">
