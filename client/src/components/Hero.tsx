@@ -1,7 +1,7 @@
 "use client";
 
 import Categories from "@/components/Categories";
-import { categories, gigsLimit } from "@/constants";
+import { gigsLimit } from "@/constants";
 import { ArrowRight, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -91,7 +91,7 @@ const Hero = () => {
 
       {/* --- 2nd box --- */}
       <div
-        className="col-span-6 xl:col-span-3  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] flex items-center justify-center"
+        className="col-span-6 xl:col-span-3  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] items-center justify-center hidden md:flex"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1681487178876-a1156952ec60?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",
@@ -115,7 +115,7 @@ const Hero = () => {
 
       {/* --- 3rd box --- */}
       <div
-        className="col-span-6 xl:col-span-3  row-span-1 overflow-hidden rounded-[13px] flex items-center justify-center"
+        className="col-span-6 xl:col-span-3  row-span-1 overflow-hidden rounded-[13px] items-center justify-center hidden md:flex"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1661904185181-ea4531c2116c?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",
@@ -139,7 +139,7 @@ const Hero = () => {
 
       {/* --- 4th box --- */}
       <div
-        className="col-span-12 xl:col-span-6  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] flex items-center justify-center"
+        className="col-span-12 xl:col-span-6  row-span-1 min-h-[150px] md:min-h-[200px] xl:min-h-auto overflow-hidden rounded-[13px] hidden md:flex items-center justify-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://plus.unsplash.com/premium_photo-1661903986017-673f1bd6b47e?q=80&w=1520&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
           backgroundRepeat: "no-repeat",

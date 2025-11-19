@@ -104,7 +104,7 @@ const seedGig = async (sellers: Buyer[]) => {
 
   const gigs = [];
 
-  for (let i = 0; i < sellers.length * 10; i++) {
+  for (let i = 0; i < sellers.length * 20; i++) {
     //   const sellerDoc = sellers[i];
     const sellerDoc = randomSeller();
     const title = `I will ${faker.word.words(5)}`;

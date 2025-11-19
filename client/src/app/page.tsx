@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <>
       {/* --- Hero --- */}
-      <Container className="py-[52px] bg-[#F7F7FA]">
+      <Container className="pt-[52px] bg-[#F7F7FA]">
         <Hero />
       </Container>
 
-      <Container className="pt-[52px] pb-[116px] bg-[#F7F7FA]">
+      <Container className="py-[52px] pb-[80px] ppb-[116px] bg-[#F7F7FA]">
         <GigsBox />
       </Container>
 

@@ -43,7 +43,7 @@ function InboxPageContent() {
   if (allConversationsLoading) return <div>Loading conversation list...</div>;
 
   return (
-    <Container className="mt-[40px]">
+    <Container className="py-[80px]">
       <div className="grid grid-cols-12 gap-[16px]">
         <ConversationList
           conversations={allConversations}

@@ -20,7 +20,7 @@ const HowItWorks = () => {
             className="col-span-4 md:col-span-4 xl:col-span-3 min-h-[251px] bg-[#EEEEEE] p-[22px] rounded-[8px]"
             key={i}
           >
-            <div className="bg-[#27C9BE] h-[45px] w-[45px] rounded-[8px] grid place-items-center font-[Roboto] font-medium text-[24px] text-white">
+            <div className="bg-[#616BA4] h-[45px] w-[45px] rounded-[8px] grid place-items-center font-[Roboto] font-medium text-[24px] text-white">
               {i + 1}
             </div>
 

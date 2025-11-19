@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -11,9 +12,13 @@ const BecomeASeller = (props: Props) => {
   return (
     <button
       onClick={() => {
-        onClick ? onClick() : router.push("/become-a-seller");
+        if (onClick) return onClick();
+        return router.push("/become-a-seller");
       }}
-      className={`rounded-[8px] bg-[#CDC0A8] px-[20px] py-[8px] font-roboto font-medium text-sm text-[#3E3F47] whitespace-nowrap capitalize  ${className} cursor-pointer`}
+      className={cn(
+        "rounded-[8px] bg-[#CDC0A8] px-[20px] py-[8px] font-roboto font-medium text-sm text-[#3E3F47] whitespace-nowrap capitalize  cursor-pointer hidden md:block ",
+        className
+      )}
     >
       Become a seller
     </button>

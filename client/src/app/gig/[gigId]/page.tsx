@@ -71,7 +71,7 @@ const GigDetails = () => {
         />
       </Container>
 
-      <Container className="pt-[28px]">
+      <Container className="pt-[28px] pb-[72px]">
         {currentTabIndex === 0 && (
           <GigDescription description={gig.description} />
         )}

@@ -38,10 +38,13 @@ const GigCard = (props: IGigCard) => {
           {/* right */}
 
           <div>
-            <h4 className="font-inter font-[600] text-[14px] text-[#222325]">
+            <Link
+              href={`/seller/profile/${gig.sellerId}`}
+              className="font-inter font-[600] text-[14px] text-[#222325]"
+            >
               {/* cc__creative */}
               {gig.username}
-            </h4>
+            </Link>
 
             <p className="font-inter font-[500] text-[12.48px] text-[#2E90EB] mt-[4px]">
               Top Rated Seller
@@ -66,13 +69,13 @@ const GigCard = (props: IGigCard) => {
 
         {/* Love Box */}
 
-        <div className="flex items-center gap-x-[10px] px-[25px] py-[7px]">
+        {/* <div className="flex items-center gap-x-[10px] px-[25px] py-[7px]">
           <Heart fill="#B5B6BA" size={22} color="#B5B6BA" />
 
           <span className="font-inter font-[400] text-[12.48px] text-[#B5B6BA]">
             32.4K
           </span>
-        </div>
+        </div> */}
 
         {/* Title */}
 
@@ -80,7 +83,7 @@ const GigCard = (props: IGigCard) => {
           I will design UI UX for mobile app with figma for ios
         </h1> */}
 
-        <h1 className="font-inter font-[400] text-[16px] leading-[1.375] text-[#222325] px-[25px] h-[42px] overflow-hidden line-clamp-2">
+        <h1 className="font-inter font-[400] text-[16px] leading-[1.375] text-[#222325] px-[25px] h-[42px] overflow-hidden line-clamp-2 mt-[7px]">
           {/* I will design UI UX for mobile app with figma for ios I will design UI
           UX for mobile app with figma for ios I will design UI UX for mobile
           app with figma for ios I will design UI UX for mobile app with figma

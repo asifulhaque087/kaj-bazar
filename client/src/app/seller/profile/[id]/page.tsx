@@ -125,7 +125,7 @@ const Page = () => {
         </section>
       </Container>
 
-      <Container className="mt-[72px]">
+      <Container className="py-[72px]">
         {/* {tabs[currentTabIndex].component()} */}
         {currentTabIndex === 0 && <Overview seller={seller!} />}
         {currentTabIndex === 1 && <ActiveGigs />}
