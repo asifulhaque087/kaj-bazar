@@ -139,6 +139,9 @@ const seedGig = async (sellers: Buyer[]) => {
         { title: faker.commerce.product() },
         { title: faker.commerce.product() },
       ],
+
+      active: faker.datatype.boolean({ probability: 0.7 }),
+      // active: faker.helpers.p
       price: parseInt(faker.commerce.price({ min: 20, max: 30, dec: 0 })),
       coverImage: faker.image.urlPicsumPhotos(),
       expectedDelivery: faker.helpers.arrayElement(expectedDelivery),

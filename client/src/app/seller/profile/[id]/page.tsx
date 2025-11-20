@@ -10,9 +10,9 @@ import React from "react";
 // import { useAuthStore } from "@/store/use-auth.store";
 import StatisticCard from "@/features/seller/components/statistic-card";
 import Overview from "@/features/seller/components/overview";
-import ActiveGigs from "@/features/seller/components/active-gigs";
 import RaitingAndReviews from "@/features/seller/components/rating-and-review";
 import { useSellerById } from "@/features/seller/queries/use-seller-by-id.query";
+import SellerGigs from "@/features/seller/components/seller-gigs";
 // import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 
 const Page = () => {
@@ -128,7 +128,7 @@ const Page = () => {
       <Container className="py-[72px]">
         {/* {tabs[currentTabIndex].component()} */}
         {currentTabIndex === 0 && <Overview seller={seller!} />}
-        {currentTabIndex === 1 && <ActiveGigs />}
+        {currentTabIndex === 1 && <SellerGigs sellerId = {params.id} />}
         {currentTabIndex === 2 && <RaitingAndReviews />}
       </Container>
     </>

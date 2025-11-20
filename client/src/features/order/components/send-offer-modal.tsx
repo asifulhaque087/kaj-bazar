@@ -432,7 +432,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { expectedDeliveryOptions } from "@/constants";
 import { CreateMessageForm } from "@/features/chat/schemas/create-message.schema";
-import { useGetGigBySellerId } from "@/features/gig/queries/use-seller-gigs.query";
+import { useSellerGigs } from "@/features/gig/queries/use-seller-gigs.query";
 
 // ** Component Props
 interface ModalProps {
@@ -456,9 +456,9 @@ const SendOfferModal = (props: ModalProps) => {
     props;
 
   const { authUser } = useAuthStore();
-  const { data: gigs, isLoading: isLoadingGigs } = useGetGigBySellerId(
-    authUser?.id
-  );
+  const { data: gigs, isLoading: isLoadingGigs } = useSellerGigs({
+    sellerId: authUser?.id,
+  });
 
   if (isLoadingGigs) return null;
 

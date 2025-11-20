@@ -24,7 +24,10 @@ export const getGigById = async (id: string): Promise<Gig> => {
   return response.data;
 };
 
-export const getGigBySellerId = async (sellerId: string): Promise<Gig[]> => {
-  const response = await gig__axios.get<Gig[]>(`/seller/${sellerId}`);
+export const getSellerGigs = async (
+  sellerId: string,
+  q?: string
+): Promise<Gig[]> => {
+  const response = await gig__axios.get<Gig[]>(`/seller/${sellerId}?${q}`);
   return response.data;
 };

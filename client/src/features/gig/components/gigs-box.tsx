@@ -1,21 +1,25 @@
 import CategoryTab from "@/components/CategoryTab";
-import { categories } from "@/constants";
+import GigCard from "@/features/gig/components/gig-card";
 import GigSlider from "@/features/gig/components/gig-slider";
-import { useSearch } from "@/features/gig/queries/use-gigs.query";
-import useTabs from "@/hooks/useTabs";
+import { Gig } from "@/features/gig/schemas/gig.schema";
 
-interface Props {}
+interface Props {
+  tabs: string[];
+  handleTabIndex: (i: number) => void;
+  currentTabIndex: number;
+  gigs: Gig[];
+  isSlider?: boolean;
+}
 
 const GigsBox = (props: Props) => {
-  const { currentTabIndex, handleTabIndex, tabs } = useTabs({
-    tabs: categories,
-  });
-
-  const { isLoading, data, error } = useSearch({
-    q: `category=${encodeURIComponent(tabs[currentTabIndex])}`,
-    page: 1,
-    limit: 10,
-  });
+  // **  --- props ---
+  const {
+    tabs,
+    currentTabIndex,
+    handleTabIndex,
+    gigs,
+    isSlider = false,
+  } = props;
 
   return (
     <div className="rounded-[8px] bg-[#FCFCFD] overflow-hidden border  border-[#E4E5E7]">
@@ -26,12 +30,26 @@ const GigsBox = (props: Props) => {
           currentTabIndex={currentTabIndex}
         />
       </header>
-      <section className="p-[24px]">
-        <GigSlider
-          gigs={data?.data || []}
-          currentCategory={tabs[currentTabIndex]}
-        />
-      </section>
+
+      {!gigs.length && (
+        <div className="min-h-[358px] grid place-items-center">
+          No Gigs found
+        </div>
+      )}
+
+      {!!gigs.length && isSlider && (
+        <section className="p-[24px]">
+          <GigSlider gigs={gigs} currentCategory={tabs[currentTabIndex]} />
+        </section>
+      )}
+
+      {!!gigs.length && !isSlider && (
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 p-6">
+          {gigs.map((gig) => (
+            <GigCard gig={gig} key={gig.id} fluid />
+          ))}
+        </section>
+      )}
     </div>
   );
 };
