@@ -1,7 +1,7 @@
-import ActiveGigs from "@/features/seller/components/active-gigs";
 import Overview from "@/features/seller/components/overview";
 import RaitingAndReviews from "@/features/seller/components/rating-and-review";
 import { LayoutDashboard, PackagePlus, UserCog } from "lucide-react";
+import SellerGigs from "@/features/seller/components/seller-gigs";
 
 export const categories: string[] = [
   "Graphics & Design",
@@ -117,8 +117,8 @@ export const alltabs = [
     component: Overview,
   },
   {
-    title: "active gigs",
-    component: ActiveGigs,
+    title: "gigs",
+    component: SellerGigs,
   },
 
   {
