@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import { type AxiosResponse, AxiosError } from "axios";
 
-const buyerOrders = async (req: Request, res: Response) => {
-  const { buyerId } = req.params;
+const sellerOrders = async (req: Request, res: Response) => {
+  const { sellerId } = req.params;
   const queryString = objectToQueryString(req.query);
   try {
     const apiService = req.protectedAxios!;
     const response: AxiosResponse = await apiService.axios.get(
-      `/buyer/${buyerId}?${queryString}`
+      `/seller/${sellerId}?${queryString}`
     );
 
     return res.json(response.data);
@@ -33,4 +33,4 @@ const objectToQueryString = (obj: { [key: string]: any }): string => {
   return query;
 };
 
-export default buyerOrders;
+export default sellerOrders;

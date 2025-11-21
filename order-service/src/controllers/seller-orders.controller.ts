@@ -13,16 +13,14 @@ import { and, eq, sql } from "drizzle-orm";
 
 type OrderStatus = "incomplete" | "progress" | "complete";
 
-const buyerOrders = async (req: Request, res: Response) => {
-  const { buyerId } = req.params;
+const sellerOrders = async (req: Request, res: Response) => {
+  const { sellerId } = req.params;
 
-  if (!buyerId) throw new BadRequestError("Order id not found");
+  if (!sellerId) throw new BadRequestError("Order id not found");
 
   let { status } = req.query;
 
-  console.log("!!!!!!!!!!!!!!!!!!!!! ", status);
-
-  const filters = [sql`${OrdersTable.buyer} ->> 'id' = ${buyerId}`];
+  const filters = [sql`${OrdersTable.seller} ->> 'id' = ${sellerId}`];
 
   if (status) filters.push(eq(OrdersTable.orderStatus, status as OrderStatus));
 
@@ -34,9 +32,9 @@ const buyerOrders = async (req: Request, res: Response) => {
     })
   );
 
-  if (orderError) throw new ConnectionError("Error fetching buyer orders!");
+  if (orderError) throw new ConnectionError("Error fetching seller orders!");
 
   return res.json(orders);
 };
 
-export default buyerOrders;
+export default sellerOrders;
