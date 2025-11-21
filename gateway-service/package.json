@@ -20,7 +20,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@fvoid/shared-lib": "^1.0.23",
+    "@fvoid/shared-lib": "^1.0.45",
     "@socket.io/redis-adapter": "^8.3.0",
     "axios": "^1.10.0",
     "cookie-session": "^2.1.0",
