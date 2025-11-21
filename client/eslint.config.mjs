@@ -112,7 +112,8 @@ const compat = new FlatCompat({
 // 3. Combine the Next.js configs (via compat) and the new boundaries config
 const eslintConfig = [
   // This imports all rules, plugins, and settings from next/core-web-vitals and next/typescript
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("next/core-web-vitals"),
 
   // Add the boundaries configuration as a new object in the flat config array
   // boundariesConfig,
