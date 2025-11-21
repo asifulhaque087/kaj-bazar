@@ -3,6 +3,7 @@ import DropdownMenu from "@/components/widgets/header/dropdown-menu";
 import { useLogout } from "@/features/auth/mutations/use-logout.mutation";
 import { useAuthStore } from "@/store/use-auth.store";
 import { LayoutDashboard, LogOut, PackagePlus, UserCog } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const ProfileDropdown = () => {
@@ -14,8 +15,13 @@ const ProfileDropdown = () => {
   const { mutate: logout } = useLogout();
 
   const trigger = (
-    <div className="w-[40px] h-[40px] rounded-full bg-[#FEFEFF] cursor-pointer overflow-hidden">
-      <img src={authUser?.profilePicture} alt="profile" />
+    <div className="relative w-[40px] h-[40px] rounded-full bg-[#FEFEFF] cursor-pointer overflow-hidden">
+      <Image
+        className="absolute w-full h-full object-center object-cover"
+        src={authUser?.profilePicture ?? "https://robohash.org/99?size=200x200"}
+        alt="profile"
+        fill
+      />
     </div>
   );
   const content = (
