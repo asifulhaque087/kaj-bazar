@@ -1,20 +1,10 @@
+import getGigReviews from "@src/controllers/gig-reviews.controller";
+import getSellerReviews from "@src/controllers/seller-reviews.controller";
 import { Router, type Request, type Response } from "express";
 
 const queryRouter: Router = Router();
 
-queryRouter.get(
-  "/gig/:gigId",
-
-  (req: Request, res: Response) => {
-    return res.json({ m: "I am from Get reviews by gig id " });
-  }
-);
-queryRouter.get(
-  "/seller/:sellerId",
-
-  (req: Request, res: Response) => {
-    return res.json({ m: "I am from Get reviews by seller id " });
-  }
-);
+queryRouter.get("/gig/:gigId", getGigReviews);
+queryRouter.get("/seller/:sellerId", getSellerReviews);
 
 export default queryRouter;
