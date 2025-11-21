@@ -2,11 +2,11 @@ import { getBuyerById } from "@/features/buyer/api/queries.api";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
 import { useAuthStore } from "@/store/use-auth.store";
 
-export interface UseBuyerByIdProps {
+export interface Props {
   id: string;
 }
 
-export const useBuyerById = (props: UseBuyerByIdProps) => {
+export const useBuyerQuery = (props: Props) => {
   // ** --- Props ---
   const { id } = props;
 

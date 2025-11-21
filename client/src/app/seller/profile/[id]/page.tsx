@@ -13,7 +13,87 @@ import Overview from "@/features/seller/components/overview";
 import RaitingAndReviews from "@/features/seller/components/rating-and-review";
 import { useSellerById } from "@/features/seller/queries/use-seller-by-id.query";
 import SellerGigs from "@/features/seller/components/seller-gigs";
+import { DataTable } from "@/components/data-table";
+import { Order } from "@/features/order/schemas/order.schema";
+import { createColumnHelper } from "@tanstack/react-table";
+import Image from "next/image";
+import { format, parseISO } from "date-fns";
+import {
+  OrderStatus,
+  useSellerOrdersQuery,
+} from "@/features/order/queries/use-seller-orders.query";
 // import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
+
+const columnHelper = createColumnHelper<Order>();
+const columns = [
+  columnHelper.accessor(
+    // (order) => `${order.gig.coverImage} ${order.gig.title}`,
+    (order) => ({ gigImage: order.gig.coverImage, gigTitle: order.gig.title }),
+    {
+      id: "gig",
+      header: () => <p>Gig</p>,
+      // header: () => <p></p>,
+      cell: (info) => {
+        const { gigImage, gigTitle } = info.getValue();
+
+        return (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Image
+              width={200}
+              height={200}
+              src={gigImage}
+              alt={`Cover image for ${gigTitle}`}
+              style={{
+                width: "50px",
+                height: "50px",
+                objectFit: "cover",
+                borderRadius: "4px",
+              }}
+            />
+
+            {/* Title */}
+            <span style={{ fontWeight: "600", color: "#333" }}>{gigTitle}</span>
+          </div>
+        );
+      },
+    }
+  ),
+
+  columnHelper.accessor("orderStartedAt", {
+    header: () => <p>Order Date</p>,
+    cell: (info) => {
+      const dateValue = info.getValue();
+
+      // return dateValue ? format(parseISO(dateValue), "MMMM d, yyy") : "-";
+      return dateValue ? format(parseISO(dateValue), "d MMMM yyy") : "-";
+    },
+  }),
+
+  columnHelper.accessor("deliveryDueDate", {
+    header: () => <p>Due Date</p>,
+    cell: (info) => {
+      const dateValue = info.getValue();
+      // MMMM Do yyy, h:mm:ss a
+
+      return dateValue ? format(parseISO(dateValue), "d MMMM yyy") : "-";
+      // return dateValue ? format(parseISO(dateValue), "MMMM d y") : "-";
+
+      return dateValue
+        ? formatDistanceToNowStrict(parseISO(dateValue), { addSuffix: true })
+        : "-";
+    },
+  }),
+
+  columnHelper.accessor("price", {
+    header: () => <p>Total</p>,
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("orderStatus", {
+    header: () => <p>Status</p>,
+    cell: (info) => info.getValue(),
+  }),
+];
 
 const Page = () => {
   //   ** Params
@@ -36,6 +116,17 @@ const Page = () => {
   });
 
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({ tabs: alltabs });
+
+  const orderStatus = [
+    "status=progress",
+    "status=complete",
+    "status=incomplete",
+  ];
+
+  const { data: orders } = useSellerOrdersQuery({
+    sellerId: params.id,
+    // q: orderStatus[currentTabIndex] as OrderStatus,
+  });
 
   if (isLoading) return null;
 
@@ -128,8 +219,11 @@ const Page = () => {
       <Container className="py-[72px]">
         {/* {tabs[currentTabIndex].component()} */}
         {currentTabIndex === 0 && <Overview seller={seller!} />}
-        {currentTabIndex === 1 && <SellerGigs sellerId = {params.id} />}
-        {currentTabIndex === 2 && <RaitingAndReviews />}
+        {currentTabIndex === 1 && <SellerGigs sellerId={params.id} />}
+        {currentTabIndex === 2 && (
+          <DataTable<Order, any> columns={columns} data={orders ?? []} />
+        )}
+        {currentTabIndex === 3 && <RaitingAndReviews />}
       </Container>
     </>
   );

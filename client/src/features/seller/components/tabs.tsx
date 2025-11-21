@@ -17,7 +17,7 @@ const Tabs = <T extends Tab>(props: Props<T>) => {
   const { tabs, currentTabIndex, handleTabIndex } = props;
 
   return (
-    <div className="flex items-center space-x-4 border-b bg-white p-[5px] rounded-[10px] border-gray-200 max-w-[400px] overflow-x-auto gray-scroll">
+    <div className="flex items-center space-x-4 border-b bg-white p-[5px] rounded-[10px] border-gray-200 max-w-[450px] overflow-x-auto gray-scroll">
       {tabs.map((tab, index) => (
         <div key={tab.title} className="flex items-center">
           <button

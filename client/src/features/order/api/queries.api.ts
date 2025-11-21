@@ -6,7 +6,12 @@ export const getOrderById = async (id: string) => {
   return response.data;
 };
 
-export const GetBuyerOrders = async (buyerId: string) => {
-  const response = await order__axios.get<Order[]>(`/buyer/${buyerId}`);
+export const GetBuyerOrders = async (buyerId: string, q?: string) => {
+  const response = await order__axios.get<Order[]>(`/buyer/${buyerId}?${q}`);
+  return response.data;
+};
+
+export const GetSellerOrders = async (sellerId: string, q?: string) => {
+  const response = await order__axios.get<Order[]>(`/seller/${sellerId}?${q}`);
   return response.data;
 };

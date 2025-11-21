@@ -1,5 +1,4 @@
 "use client";
-import OrderTable from "@/features/buyer/components/order-table";
 import Tabs from "@/features/seller/components/tabs";
 import Container from "@/components/container";
 import ReviewCard from "@/features/review/components/review-card";
@@ -7,25 +6,115 @@ import { Card } from "@/components/ui/card";
 import { buyerProfileTabs } from "@/constants";
 import useTabs from "@/hooks/useTabs";
 import { useParams } from "next/navigation";
-import { useBuyerById } from "@/features/buyer/queries/use-buyer-by-id.query";
+import { useBuyerQuery } from "@/features/buyer/queries/use-buyer.query";
+import { DataTable } from "@/components/data-table";
+import { Order } from "@/features/order/schemas/order.schema";
+import { createColumnHelper } from "@tanstack/react-table";
+import {
+  OrderStatus,
+  useBuyerOrdersQuery,
+} from "@/features/order/queries/use-buyer-orders.query";
+import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
+import Image from "next/image";
 
-const page = () => {
+const columnHelper = createColumnHelper<Order>();
+const columns = [
+  columnHelper.accessor(
+    // (order) => `${order.gig.coverImage} ${order.gig.title}`,
+    (order) => ({ gigImage: order.gig.coverImage, gigTitle: order.gig.title }),
+    {
+      id: "gig",
+      header: () => <p>Gig</p>,
+      // header: () => <p></p>,
+      cell: (info) => {
+        const { gigImage, gigTitle } = info.getValue();
+
+        return (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Image
+              width={200}
+              height={200}
+              src={gigImage}
+              alt={`Cover image for ${gigTitle}`}
+              style={{
+                width: "50px",
+                height: "50px",
+                objectFit: "cover",
+                borderRadius: "4px",
+              }}
+            />
+
+            {/* Title */}
+            <span style={{ fontWeight: "600", color: "#333" }}>{gigTitle}</span>
+          </div>
+        );
+      },
+    }
+  ),
+
+  columnHelper.accessor("orderStartedAt", {
+    header: () => <p>Order Date</p>,
+    cell: (info) => {
+      const dateValue = info.getValue();
+
+      // return dateValue ? format(parseISO(dateValue), "MMMM d, yyy") : "-";
+      return dateValue ? format(parseISO(dateValue), "d MMMM yyy") : "-";
+    },
+  }),
+
+  columnHelper.accessor("deliveryDueDate", {
+    header: () => <p>Due Date</p>,
+    cell: (info) => {
+      const dateValue = info.getValue();
+      // MMMM Do yyy, h:mm:ss a
+
+      return dateValue ? format(parseISO(dateValue), "d MMMM yyy") : "-";
+      // return dateValue ? format(parseISO(dateValue), "MMMM d y") : "-";
+
+      return dateValue
+        ? formatDistanceToNowStrict(parseISO(dateValue), { addSuffix: true })
+        : "-";
+    },
+  }),
+
+  columnHelper.accessor("price", {
+    header: () => <p>Total</p>,
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("orderStatus", {
+    header: () => <p>Status</p>,
+    cell: (info) => info.getValue(),
+  }),
+];
+
+const BuyerProfile = () => {
   //   ** Params
   const params = useParams<{ id: string }>();
 
   // ** Queries
-  const {
-    data: buyer,
-    isLoading,
-    error,
-  } = useBuyerById({
+  const { data: buyer, isLoading } = useBuyerQuery({
     id: params.id,
   });
-  console.log("buyer is ", buyer);
 
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({
     tabs: buyerProfileTabs,
   });
+
+  const orderStatus = [
+    "status=progress",
+    "status=complete",
+    "status=incomplete",
+  ];
+
+  const { data: orders } = useBuyerOrdersQuery({
+    buyerId: params.id,
+    // q:"status=complete",
+    // q:"status=progress",
+    q: orderStatus[currentTabIndex] as OrderStatus,
+  });
+
+  if (isLoading) return null;
 
   return (
     <>
@@ -97,10 +186,13 @@ const page = () => {
       </Container>
 
       <Container className="py-[72px]">
-        <OrderTable />
+        {/* <OrderTable /> */}
+        {/* <OrderTable columns={} tableData={} /> */}
+        {/* <DataTable<Order, any> columns={columns} data={[]} /> */}
+        <DataTable<Order, any> columns={columns} data={orders ?? []} />
       </Container>
     </>
   );
 };
 
-export default page;
+export default BuyerProfile;

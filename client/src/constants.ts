@@ -122,6 +122,11 @@ export const alltabs = [
   },
 
   {
+    title: "orders",
+    component: SellerGigs,
+  },
+
+  {
     title: "ratings & reviews",
     component: RaitingAndReviews,
   },
