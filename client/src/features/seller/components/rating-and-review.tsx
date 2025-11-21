@@ -1,4 +1,4 @@
-import GigReviews from "@/features/gig/components/gig-reviews";
+import GigReviews from "@/components/review-list";
 import React from "react";
 
 const RaitingAndReviews = () => {

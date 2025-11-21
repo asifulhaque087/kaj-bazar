@@ -22,6 +22,8 @@ import {
   OrderStatus,
   useSellerOrdersQuery,
 } from "@/features/order/queries/use-seller-orders.query";
+import { useSellerReviews } from "@/features/review/queries/use-seller-reviews.query";
+import ReviewList from "@/components/review-list";
 // import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 
 const columnHelper = createColumnHelper<Order>();
@@ -108,6 +110,10 @@ const Page = () => {
     isLoading,
     // error,
   } = useSellerById({
+    sellerId: params.id,
+  });
+
+  const { data: reviews } = useSellerReviews({
     sellerId: params.id,
   });
 
@@ -219,7 +225,9 @@ const Page = () => {
         {currentTabIndex === 2 && (
           <DataTable<Order, any> columns={columns} data={orders ?? []} />
         )}
-        {currentTabIndex === 3 && <RaitingAndReviews />}
+        {/* {currentTabIndex === 3 && <RaitingAndReviews />} */}
+
+        {currentTabIndex === 3 && !!reviews && <ReviewList reviews={reviews} />}
       </Container>
     </>
   );

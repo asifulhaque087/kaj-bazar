@@ -9,20 +9,26 @@ import GigAndSeller from "@/features/gig/components/gig-and-seller";
 import useTabs from "@/hooks/useTabs";
 import { gigDetailsTabs } from "@/constants";
 import GigDescription from "@/features/gig/components/gig-description";
-import GigReviews from "@/features/gig/components/gig-reviews";
 import Tabs from "@/features/seller/components/tabs";
 import { useGetGigById } from "@/features/gig/queries/use-gig.query";
+import ReviewList from "@/components/review-list";
+import { useGigReviews } from "@/features/review/queries/use-gig-reviews.query";
 
 const GigDetails = () => {
   const params = useParams<{ gigId: string }>();
 
-  // ** -- States ---
+  // ** --- queries ---
+
   const {
     data: gig,
     isLoading,
     error,
   } = useGetGigById({
     id: params.gigId,
+  });
+
+  const { data: reviews, isLoading: isReviewLoading } = useGigReviews({
+    gigId: params.gigId,
   });
 
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({
@@ -75,7 +81,7 @@ const GigDetails = () => {
         {currentTabIndex === 0 && (
           <GigDescription description={gig.description} />
         )}
-        {currentTabIndex === 1 && <GigReviews />}
+        {currentTabIndex === 1 && !!reviews && <ReviewList reviews={reviews} />}
       </Container>
     </>
   );
