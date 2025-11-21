@@ -11,8 +11,6 @@ export const BuyersSchema = z.object({
   isSeller: z.boolean().optional(),
   createdAt: z.date().optional(),
 
-  ratingsCount: z.number().int().optional(),
-  ratingSum: z.number().int().optional(),
   ratingCategories: z
     .object({
       five: z.object({ star: z.number().int(), count: z.number().int() }),
@@ -22,6 +20,13 @@ export const BuyersSchema = z.object({
       one: z.object({ star: z.number().int(), count: z.number().int() }),
     })
     .optional(),
+  ratingsCount: z.number().int().optional(),
+  ratingSum: z.number().int().optional(),
+
+  // totalGigs: z.number().int().optional(),
+  completedJobs: z.number().int().optional(),
+  ongoingJobs: z.number().int().optional(),
+  totalEarnings: z.number().int().optional(),
 });
 
 export type Buyer = z.infer<typeof BuyersSchema>;

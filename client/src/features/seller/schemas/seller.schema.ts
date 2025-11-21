@@ -99,8 +99,6 @@ export const sellerSchema = z.object({
   education: z.array(EducationSchema).optional(),
   socialLinks: z.array(SocialLinkSchema).optional(),
   certificates: z.array(CertificateSchema).optional(),
-  ratingsCount: z.number().int().optional(),
-  ratingSum: z.number().int().optional(),
   ratingCategories: z
     .object({
       five: z.object({ star: z.number().int(), count: z.number().int() }),
@@ -110,10 +108,13 @@ export const sellerSchema = z.object({
       one: z.object({ star: z.number().int(), count: z.number().int() }),
     })
     .optional(),
+  ratingsCount: z.number().int().optional(),
+  ratingSum: z.number().int().optional(),
 
   totalGigs: z.number().int().optional(),
   completedJobs: z.number().int().optional(),
   ongoingJobs: z.number().int().optional(),
+  totalEarnings: z.number().int().optional(),
 
   createdAt: z.string().optional(),
   responseTime: z.string().optional(),

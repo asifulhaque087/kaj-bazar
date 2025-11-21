@@ -8,7 +8,7 @@ import {
 } from "@fvoid/shared-lib";
 import type { ConsumeMessage } from "amqplib";
 import { db } from "@src/db";
-import { SellersTable } from "@src/schemas";
+import { BuyersTable, SellersTable } from "@src/schemas";
 import { eq } from "drizzle-orm";
 
 // ** --- types ---
@@ -16,6 +16,8 @@ import { eq } from "drizzle-orm";
 interface Details {
   totalOngoingOrders: number;
   totalCompletedOrders: number;
+  totalCancelledOrders: number;
+  totalEarnings: number;
 }
 
 export class OrderUpdateRequestedListener extends Listener<OrderUpdateRequested> {
@@ -28,28 +30,15 @@ export class OrderUpdateRequestedListener extends Listener<OrderUpdateRequested>
     const { orders } = data;
 
     const sellerOngoingOrdersMap = new Map<string, Details>();
-
-    const theSeller = orders[0]?.sellerId;
-
-    const pOrderL = orders.filter(
-      (order) => order.sellerId === theSeller && order.status === "progress"
-    ).length;
-
-    const cOrderL = orders.filter(
-      (order) => order.sellerId === theSeller && order.status === "complete"
-    ).length;
+    const buyerOngoingOrdersMap = new Map<string, Details>();
 
     orders.forEach((order) => {
       const sellerOrderDetails = sellerOngoingOrdersMap.get(order.sellerId) || {
         totalCompletedOrders: 0,
         totalOngoingOrders: 0,
+        totalCancelledOrders: 0,
+        totalEarnings: 0,
       };
-
-      // console.log(
-      //   "############## hola ",
-      //   sellerOngoingOrdersMap,
-      //   sellerOrderDetails
-      // );
 
       if (order.status === "progress") {
         sellerOrderDetails.totalOngoingOrders += 1;
@@ -58,13 +47,38 @@ export class OrderUpdateRequestedListener extends Listener<OrderUpdateRequested>
         sellerOrderDetails.totalCompletedOrders += 1;
       }
 
+      if (order.status === "incomplete") {
+        sellerOrderDetails.totalCancelledOrders += 1;
+      }
+
+      sellerOrderDetails.totalEarnings += order.price;
+
       sellerOngoingOrdersMap.set(order.sellerId, sellerOrderDetails);
+
+      // for buyer
+
+      const buyerOrderDetails = buyerOngoingOrdersMap.get(order.buyerId) || {
+        totalCompletedOrders: 0,
+        totalOngoingOrders: 0,
+        totalCancelledOrders: 0,
+        totalEarnings: 0,
+      };
+
+      if (order.status === "progress") {
+        buyerOrderDetails.totalOngoingOrders += 1;
+      }
+      if (order.status === "complete") {
+        buyerOrderDetails.totalCompletedOrders += 1;
+      }
+
+      if (order.status === "incomplete") {
+        buyerOrderDetails.totalCancelledOrders += 1;
+      }
+
+      buyerOrderDetails.totalEarnings += order.price;
+
+      buyerOngoingOrdersMap.set(order.buyerId, buyerOrderDetails);
     });
-
-    console.log("############################ ", theSeller, pOrderL, cOrderL);
-    console.log("!!!!!!!!!!!!!!!!!!!!  map ", sellerOngoingOrdersMap);
-
-    // console.log("################# orders map ", sellerOngoingOrdersMap);
 
     // finally update the seller table
     for (const [sellerId, orderData] of sellerOngoingOrdersMap.entries()) {
@@ -74,8 +88,24 @@ export class OrderUpdateRequestedListener extends Listener<OrderUpdateRequested>
           .set({
             ongoingJobs: orderData.totalOngoingOrders,
             completedJobs: orderData.totalCompletedOrders,
+            cancelledJobs: orderData.totalCancelledOrders,
+            totalEarnings: orderData.totalEarnings,
           })
           .where(eq(SellersTable.id, sellerId))
+      );
+    }
+
+    for (const [buyerId, orderData] of buyerOngoingOrdersMap.entries()) {
+      await catchError(
+        db
+          .update(BuyersTable)
+          .set({
+            ongoingJobs: orderData.totalOngoingOrders,
+            completedJobs: orderData.totalCompletedOrders,
+            cancelledJobs: orderData.totalCancelledOrders,
+            totalEarnings: orderData.totalEarnings,
+          })
+          .where(eq(BuyersTable.id, buyerId))
       );
     }
 

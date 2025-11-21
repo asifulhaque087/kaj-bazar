@@ -26,13 +26,13 @@ export class ReviewSeededListener extends FanoutListener<ReviewSeeded> {
 
       const { ratings: newRating, sellerId, buyerId, buyerIsSender } = review;
 
-      if (buyerIsSender) continue;
+      // if (buyerIsSender) continue;
 
-      // const Table = buyerIsSender ? BuyersTable : SellersTable;
-      // const id = buyerIsSender ? buyerId : sellerId;
+      const Table = buyerIsSender ? SellersTable : BuyersTable;
+      const id = buyerIsSender ? sellerId : buyerId;
 
-      const Table = SellersTable;
-      const id = sellerId;
+      // const Table = SellersTable;
+      // const id = sellerId;
 
       // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! ", review);
       await updateEntityRatings(Table, id, newRating);
@@ -43,7 +43,7 @@ export class ReviewSeededListener extends FanoutListener<ReviewSeeded> {
 }
 
 const updateEntityRatings = async (
-  Table: typeof SellersTable,
+  Table: typeof SellersTable | typeof BuyersTable,
   id: string,
   newRating: number
 ) => {

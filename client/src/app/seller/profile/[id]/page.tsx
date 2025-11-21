@@ -77,10 +77,6 @@ const columns = [
 
       return dateValue ? format(parseISO(dateValue), "d MMMM yyy") : "-";
       // return dateValue ? format(parseISO(dateValue), "MMMM d y") : "-";
-
-      return dateValue
-        ? formatDistanceToNowStrict(parseISO(dateValue), { addSuffix: true })
-        : "-";
     },
   }),
 

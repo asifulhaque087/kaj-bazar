@@ -81,6 +81,8 @@ export class OrderSeedRequestedListener extends Listener<OrderSeedRequested> {
         id: order.id,
         sellerId: order.seller.id,
         status: order.orderStatus,
+        price: order.price,
+        buyerId: order.buyer.id,
       })),
     });
 
