@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "robohash.org",
+        pathname: "**",
+      },
     ],
   },
   eslint: {
