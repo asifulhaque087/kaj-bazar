@@ -14,7 +14,7 @@ const GigSellerCard = (props: Props) => {
   const { sellerId, className } = props;
 
   // ** --- Store ---
-  const { authUser } = useAuthStore();
+  const { authUser, setActiveModalItem } = useAuthStore();
 
   // ** --- Queries ---
   const { data: seller } = useSellerQuery({
@@ -70,14 +70,20 @@ const GigSellerCard = (props: Props) => {
 
         <button
           className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
-          onClick={() =>
+          onClick={() => {
+            if (!authUser) {
+              return setActiveModalItem(0);
+            }
+
+            // if (authUser) {
             findOrCreateConversation({
               receiverUsername: seller?.username!,
               receiverProfilePhoto: seller?.profilePicture!,
               senderUsername: authUser?.username!,
               senderProfilePhoto: authUser?.profilePicture!,
-            })
-          }
+            });
+            // }
+          }}
         >
           {isPending ? "contacting..." : "contact"}
         </button>

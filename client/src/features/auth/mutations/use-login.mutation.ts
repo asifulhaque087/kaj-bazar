@@ -12,7 +12,7 @@ import { toast } from "sonner";
 export interface UseLoginProps {
   setError: UseFormSetError<LoginForm>;
   reset: UseFormReset<LoginForm>;
-  setShowModal: Dispatch<SetStateAction<number>>;
+  setShowModal: (i: number) => void;
 }
 
 export const useLogin = (props: UseLoginProps) => {

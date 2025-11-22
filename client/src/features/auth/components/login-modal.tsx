@@ -25,7 +25,8 @@ import { Button } from "@/components/ui/button";
 // ** Component Props
 interface ModalProps {
   showModal?: boolean;
-  setShowModal: Dispatch<SetStateAction<number>>;
+  // setShowModal: Dispatch<SetStateAction<number>>;
+  setShowModal: (i: number) => void;
 }
 
 // let renderCount = 1;

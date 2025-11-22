@@ -12,6 +12,7 @@ type States = {
   otherBuyer: Buyer | null;
   otherSeller: Seller | null;
   seller: Seller | null;
+  activeModalItem: number;
 };
 
 type Actions = {
@@ -23,6 +24,7 @@ type Actions = {
   setOtherSeller: (seller: Seller) => void;
   setActiveRole: (activeRole: "buyer" | "seller" | null) => void;
   resetAuthStore: () => void;
+  setActiveModalItem: (i: number) => void;
 };
 
 const initialStates: States = {
@@ -33,6 +35,7 @@ const initialStates: States = {
   otherSeller: null,
   activeRole: null,
   seller: null,
+  activeModalItem: -1,
 };
 
 export const useAuthStore = create<States & Actions>()(
@@ -55,6 +58,7 @@ export const useAuthStore = create<States & Actions>()(
         setActiveRole: (activeRole) => set({ activeRole: activeRole }),
         setInitialRenderFalse: () => set({ initialRender: false }),
         resetAuthStore: () => set(initialStates),
+        setActiveModalItem: (i) => set({ activeModalItem: i }),
       }),
       {
         name: "auth-storage", // A unique name for your storage

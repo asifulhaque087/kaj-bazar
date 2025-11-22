@@ -1,7 +1,7 @@
 "use client";
 
 // ** Third Party Imports
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -21,12 +21,15 @@ import { BaseModal } from "@/components/base-modal";
 
 // ** Validations
 import { XCircle } from "lucide-react";
-import { RegisterForm, registerForm } from "@/features/auth/schemas/register.schema";
+import {
+  RegisterForm,
+  registerForm,
+} from "@/features/auth/schemas/register.schema";
 
 // ** Component Props
 interface ModalProps {
   showModal?: boolean;
-  setShowModal: Dispatch<SetStateAction<number>>;
+  setShowModal: (i: number) => void;
 }
 
 const RegisterModal = (props: ModalProps) => {
