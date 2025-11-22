@@ -1,5 +1,6 @@
 import { MessageOffer } from "@/features/chat/schemas/chat.schema";
 import { useBuyerOrdersQuery } from "@/features/order/queries/use-buyer-orders.query";
+import { useSellerOrdersQuery } from "@/features/order/queries/use-seller-orders.query";
 import { useAuthStore } from "@/store/use-auth.store";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -17,9 +18,20 @@ const OfferMessage = (props: Props) => {
 
   const { authUser } = useAuthStore();
 
-  const { data } = useBuyerOrdersQuery({ buyerId: authUser?.id });
+  const { data: buyerOrders = [] } = useBuyerOrdersQuery({
+    buyerId: authUser?.id,
+  });
+  const { data: sellerOrders = [] } = useSellerOrdersQuery({
+    sellerId: authUser?.id,
+  });
 
-  const orderId = data?.find((order) => order.messageId === messageId)?.id;
+  // const orderId = [...(buyerOrders ?? []), ...(sellerOrders ?? [])]?.find(
+  //   (order) => order.messageId === messageId
+  // )?.id;
+
+  const orderId = [...buyerOrders, ...sellerOrders]?.find(
+    (order) => order.messageId === messageId
+  )?.id;
 
   return (
     <div

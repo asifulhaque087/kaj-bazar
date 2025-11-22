@@ -11,6 +11,7 @@ import { useGetConversationsByUsername } from "@/features/chat/queries/use-user-
 import { useGetConversationsById } from "@/features/chat/queries/use-conversation.query";
 import { useEffect } from "react";
 import { useBuyerOrdersQuery } from "@/features/order/queries/use-buyer-orders.query";
+import { useSellerOrdersQuery } from "@/features/order/queries/use-seller-orders.query";
 
 // --- The main page (adds Suspense boundary)
 export default function Page() {
@@ -35,6 +36,7 @@ function InboxPageContent() {
   useGetConversationsById({ conversationId });
 
   useBuyerOrdersQuery({ buyerId: authUser?.id });
+  useSellerOrdersQuery({ sellerId: authUser?.id });
 
   useEffect(() => {
     return () => setSelectedConversation(null);

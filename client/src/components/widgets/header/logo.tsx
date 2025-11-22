@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -9,12 +10,21 @@ const Logo = (props: Props) => {
   const router = useRouter();
 
   return (
-    <h1
-      className={`font-rodium-libre tracking-[2.4] text-[24px] text-[#F7F7FA] cursor-pointer flex items-center ${className}`}
-      onClick={() => router.push("/")}
-    >
-      KajBazar
-    </h1>
+    <>
+      {/* <h1
+        className={`font-rodium-libre tracking-[2.4] text-[24px] text-[#F7F7FA] cursor-pointer flex items-center ${className}`}
+        onClick={() => router.push("/")}
+      >
+        KajBazar
+      </h1> */}
+
+      <Link
+        href={"/"}
+        className={`font-rodium-libre tracking-[2.4] text-[24px] text-[#F7F7FA] cursor-pointer flex items-center ${className}`}
+      >
+        KajBazar
+      </Link>
+    </>
   );
 };
 

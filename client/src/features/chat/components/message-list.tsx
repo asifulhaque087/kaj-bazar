@@ -18,7 +18,8 @@ const MessageList = (props: Props) => {
   // const  setMessages  = useChatStore((state)=>state.setMessages);
 
   const { authUser } = useAuthStore();
-  const { messages, messageReceiverUser, setMessages } = useChatStore();
+  const { messages, messageReceiverUser, setMessages, selectedConversation } =
+    useChatStore();
 
   // const { setMessages, messages, messageReceiverUser } = useChatStore(
   //   (state) => ({
@@ -40,11 +41,18 @@ const MessageList = (props: Props) => {
     }
   }, [messages]);
 
+  // useEffect(() => {
+  //   return () => setMessages([]);
+  // }, [setMessages]);
+
   useEffect(() => {
     return () => setMessages([]);
-  }, [setMessages]);
+  }, []);
 
-  const isMessages = !!messages.length;
+  // const isConversationSelected = !!messages.length;
+  const isConversationSelected = !!selectedConversation && messages.length;
+
+  console.log("message ############## ", messages);
 
   return (
     <div
@@ -52,18 +60,18 @@ const MessageList = (props: Props) => {
 
       className={cn(
         "bg-[#FEFEFF] rounded-[8px] border border-[#E7E7E8] h-[75vh] xl:h-[80vh] overflow-hidden flex flex-col",
-        messages.length === 0 && "items-center justify-center h-full",
+        !isConversationSelected && "items-center justify-center h-full",
 
         className
       )}
     >
-      {isMessages && (
+      {isConversationSelected && (
         <h3 className="capitalize font-roboto font-medium text-[20px] border-b border-[#E7E7E8]  px-[24px] py-[16px]">
           {messageReceiverUser?.name}
         </h3>
       )}
 
-      {!isMessages && (
+      {!isConversationSelected && (
         <div className="bg-[#F7F7FA] rounded-[8px] w-full max-w-[345px] flex items-center justify-center flex-col gap-y-[20px] px-[24px] py-[48px]">
           <div className="bg-[#616BA4] rounded-[4px] px-[22px] py-[18px]">
             <MessageSquareMore className="text-[#F7F7FA] w-[32px] h-[32px]" />
@@ -79,7 +87,7 @@ const MessageList = (props: Props) => {
         </div>
       )}
 
-      {isMessages && (
+      {isConversationSelected && (
         <div
           className="flex flex-col gap-y-[20px] grow overflow-y-auto"
           ref={messagesEndRef}
@@ -100,7 +108,7 @@ const MessageList = (props: Props) => {
         </div>
       )}
 
-      {!!messages.length && (
+      {isConversationSelected && (
         <div className="h-[80px] shrink-0  grid place-items-center border-t border-[#E7E7E8]">
           <SendMessageForm />
         </div>

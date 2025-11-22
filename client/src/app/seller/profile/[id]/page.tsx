@@ -24,6 +24,10 @@ import {
 } from "@/features/order/queries/use-seller-orders.query";
 import { useSellerReviews } from "@/features/review/queries/use-seller-reviews.query";
 import ReviewList from "@/components/review-list";
+import { useAuthStore } from "@/store/use-auth.store";
+import Link from "next/link";
+import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
+import { useBrowser } from "@/hooks/use-browser.hook";
 // import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 
 const columnHelper = createColumnHelper<Order>();
@@ -98,11 +102,14 @@ const Page = () => {
   const params = useParams<{ id: string }>();
 
   // ** Store
-  // const { authUser } = useAuthStore();
+  const { authUser, setActiveModalItem } = useAuthStore();
 
   // ** Mutations
 
   // const { mutate: findOrCreateConversation } = useFindOrCreateConversation();
+
+  const { isPending, mutate: findOrCreateConversation } =
+    useFindOrCreateConversation();
 
   // ** Queries
   const {
@@ -130,7 +137,9 @@ const Page = () => {
     // q: orderStatus[currentTabIndex] as OrderStatus,
   });
 
-  if (isLoading) return null;
+  const isBrowser = useBrowser();
+
+  if (isLoading || !isBrowser) return null;
 
   console.log("seller is ", seller);
 
@@ -160,17 +169,51 @@ const Page = () => {
                   {seller?.oneliner}
                 </p>
               </div>
-              <Button
-                className="bg-[#6392D8] text-white"
-                // onClick={() =>
-                //   findOrCreateConversation({
-                //     receiverUsername: gig.username!,
-                //     senderUsername: authUser?.username!,
-                //   })
-                // }
-              >
-                Contact
-              </Button>
+
+              {/* if user is logged in and the owner of the profile */}
+              {authUser && authUser.id === seller?.id && (
+                <Button
+                  className="bg-[#6392D8] text-white cursor-pointer"
+                  asChild
+                >
+                  <Link
+                    href={`/seller/edit/${seller.id}`}
+                    className="bg-[#6392D8] text-white"
+                  >
+                    Edit Profile
+                  </Link>
+                </Button>
+              )}
+
+              {/* if user is logged in and the not the owner of the profile */}
+              {authUser && authUser.id !== seller?.id && (
+                <Button
+                  className="bg-[#6392D8] text-white cursor-pointer"
+                  onClick={() => {
+                    if (!authUser) return setActiveModalItem(0);
+
+                    findOrCreateConversation({
+                      receiverUsername: seller?.username!,
+                      receiverProfilePhoto: seller?.profilePicture!,
+                      senderUsername: authUser?.username!,
+                      senderProfilePhoto: authUser?.profilePicture!,
+                    });
+                  }}
+                >
+                  {isPending ? "contacting..." : "contact"}
+                </Button>
+              )}
+
+              {/* if any guest is browsing */}
+              {!authUser && (
+                <Button
+                  className="bg-[#6392D8] text-white cursor-pointer"
+                  onClick={() => setActiveModalItem(0)}
+                >
+                  {/* Contact */}
+                  contact
+                </Button>
+              )}
             </div>
           </div>
 

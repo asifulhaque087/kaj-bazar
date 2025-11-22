@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useFindOrCreateConversation } from "@/features/chat/mutations/use-get-or-create-conversation.mutation";
 import { useSellerQuery } from "@/features/seller/queries/use-seller.query";
 import { useAuthStore } from "@/store/use-auth.store";
@@ -68,25 +69,45 @@ const GigSellerCard = (props: Props) => {
           ))}
         </div>
 
-        <button
-          className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
-          onClick={() => {
-            if (!authUser) {
-              return setActiveModalItem(0);
-            }
+        {/* if user is logged in and the owner of the profile */}
 
-            // if (authUser) {
-            findOrCreateConversation({
-              receiverUsername: seller?.username!,
-              receiverProfilePhoto: seller?.profilePicture!,
-              senderUsername: authUser?.username!,
-              senderProfilePhoto: authUser?.profilePicture!,
-            });
-            // }
-          }}
-        >
-          {isPending ? "contacting..." : "contact"}
-        </button>
+        {authUser && authUser.id === sellerId && (
+          <Button
+            className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
+            disabled={true}
+          >
+            {isPending ? "contacting..." : "contact"}
+          </Button>
+        )}
+
+        {/* if user is logged in and the not the owner of the profile */}
+
+        {authUser && authUser.id !== sellerId && (
+          <Button
+            className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
+            onClick={() => {
+              findOrCreateConversation({
+                receiverUsername: seller?.username!,
+                receiverProfilePhoto: seller?.profilePicture!,
+                senderUsername: authUser?.username!,
+                senderProfilePhoto: authUser?.profilePicture!,
+              });
+            }}
+          >
+            {isPending ? "contacting..." : "contact"}
+          </Button>
+        )}
+
+        {/* if any guest is browsing */}
+
+        {!authUser && (
+          <Button
+            className="bg-[#616BA4] outline-none border-none px-[16px] py-[8px] rounded-[4px] text-[#F7F7FA] text-[16px] font-[Roboto] font-medium  w-full cursor-pointer"
+            onClick={() => setActiveModalItem(0)}
+          >
+            contact
+          </Button>
+        )}
       </div>
     </div>
   );
