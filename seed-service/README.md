@@ -54,3 +54,5 @@
 
     "build": "tsc && tsx tools/copyAssets.ts",
     "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false"
+
+
