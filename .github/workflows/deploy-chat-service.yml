@@ -7,12 +7,12 @@ on:
     paths:
       - "chat-service/**"
 
-workflow_dispatch:
-  inputs:
-    reason:
-      description: "Reason for manual chat deployment"
-      required: false
-      default: "Manual re-deployment for missed changes"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual chat deployment"
+        required: false
+        default: "Manual re-deployment for missed changes"
 
 concurrency:
   group: kaj-bazar-deployment
