@@ -7,7 +7,7 @@ on:
     paths:
       - "client/**"
 
-workflow_dispatch:
+  workflow_dispatch:
   # inputs:
   #   reason:
   #     description: "Reason for manual client deployment"
