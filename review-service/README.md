@@ -33,5 +33,3 @@
   * `docker build -t <your-dockerhub-username>/jobber-review .`
   * `docker tag <your-dockerhub-username>/jobber-review <your-dockerhub-username>/jobber-review:stable`
   * `docker push <your-dockerhub-username>/jobber-review:stable`
-
-
