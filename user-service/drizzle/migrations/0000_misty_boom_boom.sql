@@ -6,6 +6,13 @@ CREATE TABLE "buyers_table" (
 	"profile_picture" text NOT NULL,
 	"country" text,
 	"is_seller" boolean DEFAULT false NOT NULL,
+	"rating_categories" jsonb DEFAULT '{"five":{"value":0,"count":0},"four":{"value":0,"count":0},"three":{"value":0,"count":0},"two":{"value":0,"count":0},"one":{"value":0,"count":0}}'::jsonb NOT NULL,
+	"ratings_count" integer DEFAULT 0,
+	"rating_sum" integer DEFAULT 0,
+	"ongoing_jobs" integer DEFAULT 0,
+	"completed_jobs" integer DEFAULT 0,
+	"cancelled_jobs" integer DEFAULT 0,
+	"total_earnings" integer DEFAULT 0,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "buyers_table_username_unique" UNIQUE("username"),
 	CONSTRAINT "buyers_table_email_unique" UNIQUE("email")
@@ -40,13 +47,6 @@ CREATE TABLE "experiences_table" (
 	"currently_working_here" boolean DEFAULT false
 );
 --> statement-breakpoint
-CREATE TABLE "languages_table" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"seller_id" uuid NOT NULL,
-	"language" varchar(255) NOT NULL,
-	"level" varchar(255) NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "sellers_table" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"full_name" text NOT NULL,
@@ -70,6 +70,13 @@ CREATE TABLE "sellers_table" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "sellers_table_username_unique" UNIQUE("username"),
 	CONSTRAINT "sellers_table_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE "languages_table" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"seller_id" uuid NOT NULL,
+	"language" varchar(255) NOT NULL,
+	"level" varchar(255) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "skills_table" (
