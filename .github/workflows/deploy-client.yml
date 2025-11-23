@@ -48,7 +48,8 @@ jobs:
     # 🚨 CRITICAL: Shared lock
     concurrency:
       group: kaj-bazar-deployment-lock
-      cancel-in-progress: true
+      # cancel-in-progress: true
+      cancel-in-progress: false
 
     steps:
       - name: Pull and restart docker image

@@ -47,7 +47,8 @@ jobs:
     # 🚨 CRITICAL: This lock ensures only one deployment runs at a time
     concurrency:
       group: kaj-bazar-deployment-lock
-      cancel-in-progress: true
+      # cancel-in-progress: true
+      cancel-in-progress: false
 
     steps:
       - name: Pull and restart docker image
