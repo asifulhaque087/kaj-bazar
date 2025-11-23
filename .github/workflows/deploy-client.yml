@@ -8,11 +8,11 @@ on:
       - "client/**"
 
 workflow_dispatch:
-  inputs:
-    reason:
-      description: "Reason for manual client deployment"
-      required: false
-      default: "Manual re-deployment for missed changes"
+  # inputs:
+  #   reason:
+  #     description: "Reason for manual client deployment"
+  #     required: false
+  #     default: "Manual re-deployment for missed changes"
 
 concurrency:
   group: kaj-bazar-deployment
