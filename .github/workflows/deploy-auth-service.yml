@@ -7,6 +7,13 @@ on:
     paths:
       - "auth-service/**"
 
+workflow_dispatch:
+  inputs:
+    reason:
+      description: "Reason for manual auth deployment"
+      required: false
+      default: "Manual re-deployment for missed changes"
+
 concurrency:
   group: kaj-bazar-deployment
   cancel-in-progress: true
