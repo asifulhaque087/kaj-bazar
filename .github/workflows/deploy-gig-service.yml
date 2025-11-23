@@ -7,6 +7,13 @@ on:
     paths:
       - "gig-service/**"
 
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual gigs deployment"
+        required: false
+        default: "Manual re-deployment for missed changes"
+
 concurrency:
   group: kaj-bazar-deployment
   cancel-in-progress: true
