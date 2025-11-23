@@ -1,1 +1,0 @@
-ALTER TABLE "gigs_table" ALTER COLUMN "sub_categories" SET NOT NULL;
