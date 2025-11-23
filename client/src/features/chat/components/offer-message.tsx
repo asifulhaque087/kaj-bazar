@@ -29,6 +29,9 @@ const OfferMessage = (props: Props) => {
   //   (order) => order.messageId === messageId
   // )?.id;
 
+  // console.log(" buyers Orders ", buyerOrders);
+  // console.log(" seller Orders ", sellerOrders);
+
   const orderId = [...buyerOrders, ...sellerOrders]?.find(
     (order) => order.messageId === messageId
   )?.id;

@@ -2,6 +2,7 @@ import OfferMessage from "@/features/chat/components/offer-message";
 import TextMessage from "@/features/chat/components/text-message";
 import { Message } from "@/features/chat/schemas/chat.schema";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
+import Image from "next/image";
 
 interface Props {
   reverse?: boolean;
@@ -19,9 +20,10 @@ const MessageBox = (props: Props) => {
       } items-end gap-x-[12px] py-[20px] px-[24px]`}
     >
       {/* profile*/}
-      <div className="w-[48px] h-[48px] rounded-full overflow-hidden">
-        <img
-          className="w-full h-full object-cover object-center"
+      <div className="relative w-[48px] h-[48px] rounded-full overflow-hidden">
+        <Image
+          className="absolute w-full h-full object-cover object-center"
+          fill
           // src={reverse ? msg.senderPicture : msg.receiverPicture}
           // src={msg.receiverPicture}
           src={msg.senderPicture}
@@ -29,7 +31,7 @@ const MessageBox = (props: Props) => {
         />
       </div>
       {/* message body */}
-      <div className="flex flex-col gap-y-1 w-full max-w-[300px]">
+      <div className="flex flex-col gap-y-1 w-max max-w-[300px]">
         {msg.body && <TextMessage body={msg.body} reverse={reverse} />}
         {msg.hasOffer && msg.offer && (
           <OfferMessage

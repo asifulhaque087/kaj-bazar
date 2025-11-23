@@ -18,6 +18,8 @@ export const useBuyerOrdersQuery = (props: Props) => {
   // ** --- store ---
   const { activeRole } = useAuthStore();
 
+  console.log(" from inside buyer order query ", activeRole);
+
   // ** --- Props ---
   return useQueryWithSideEffects({
     queryKey: ["buyer-orders", buyerId, q],

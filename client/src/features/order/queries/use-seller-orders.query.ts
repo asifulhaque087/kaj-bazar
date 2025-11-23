@@ -1,5 +1,6 @@
 import { GetSellerOrders } from "@/features/order/api/queries.api";
 import { useQueryWithSideEffects } from "@/hooks/useQueryWithSideEffects";
+import { useAuthStore } from "@/store/use-auth.store";
 
 export type OrderStatus =
   | "status=incomplete"
@@ -14,11 +15,16 @@ interface Props {
 export const useSellerOrdersQuery = (props: Props) => {
   const { sellerId, q } = props;
 
+  // ** --- store ---
+  const { activeRole } = useAuthStore();
+
   // ** --- Props ---
   return useQueryWithSideEffects({
     queryKey: ["seller-orders", sellerId, q],
     queryFn: () => GetSellerOrders(sellerId!, q),
-    enabled: !!sellerId,
+    // enabled: !!sellerId,
+
+    enabled: !!sellerId && activeRole === "seller",
     staleTime: 5 * 60 * 1000, // e.g., 5 minutes.
     gcTime: 10 * 60 * 1000, // e.g., 10 minutes.
     // onSuccess: (data) => {},
