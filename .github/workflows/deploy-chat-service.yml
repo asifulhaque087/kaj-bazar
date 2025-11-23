@@ -7,6 +7,10 @@ on:
     paths:
       - "chat-service/**"
 
+concurrency:
+  group: kaj-bazar-deployment
+  cancel-in-progress: true
+
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -47,4 +51,3 @@ jobs:
             docker compose pull chat
             docker compose up chat -d
             docker image prune -f
-

@@ -7,6 +7,10 @@ on:
     paths:
       - "client/**"
 
+concurrency:
+  group: kaj-bazar-deployment
+  cancel-in-progress: true
+
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
