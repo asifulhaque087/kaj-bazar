@@ -37,4 +37,3 @@
   * `docker build -t <your-dockerhub-username>/jobber-gig .`
   * `docker tag <your-dockerhub-username>/jobber-gig <your-dockerhub-username>/jobber-gig:stable`
   * `docker push <your-dockerhub-username>/jobber-gig:stable`
-
