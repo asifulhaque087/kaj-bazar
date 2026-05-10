@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Register (RegisterReq) returns (RegisterResponse) {}
+}
+
+message RegisterReq {
+  string email = 1;
+}
+
+message RegisterResponse {
+  string email = 1;
+}
