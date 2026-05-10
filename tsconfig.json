@@ -21,13 +21,20 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+
+    "baseUrl": "./",
     "paths": {
-      "@app/common": [
-        "./libs/common/src"
-      ],
-      "@app/common/*": [
-        "./libs/common/src/*"
-      ]
-    },
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"]
+    }
+
+    // "paths": {
+    //   "@app/common": [
+    //     "./libs/common/src"
+    //   ],
+    //   "@app/common/*": [
+    //     "./libs/common/src/*"
+    //   ]
+    // },
   }
 }

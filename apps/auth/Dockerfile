@@ -7,17 +7,17 @@ COPY pnpm-lock.yaml ./
 COPY pnpm-workspace.yaml ./
 COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
-COPY apps/gateway/package.json apps/gateway/package.json
+COPY apps/auth/package.json apps/auth/package.json
 
 RUN npm install -g pnpm
 # RUN pnpm config set confirmModulesPurge false
 RUN pnpm install
 # RUN pnpm install --config.confirmModulesPurge=false
 
-COPY apps/gateway apps/gateway
+COPY apps/auth apps/auth
 COPY libs libs
 
-RUN pnpm run build gateway
+RUN pnpm run build auth
 
 FROM node:alpine AS production
 
@@ -29,13 +29,13 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY pnpm-workspace.yaml ./
-COPY apps/gateway/package.json apps/gateway/package.json
+COPY apps/auth/package.json apps/auth/package.json
 
 RUN npm install -g pnpm
 
-# RUN pnpm install --prod
-RUN pnpm install --prod --filter gateway...
+RUN pnpm install --prod
+# RUN pnpm install --prod --filter auth...
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/gateway/main"]
+CMD ["node", "dist/apps/auth/main"]

@@ -11,9 +11,23 @@ services:
       - ./apps/gateway/.env
     ports:
       - '3001:3001'
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules/
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
+
+    develop:
+      watch:
+        - action: sync
+          path : .
+          target: /usr/src/app
+          ignore: 
+            - node_modules/
+            - .git/
+            - dist/
+        - action: rebuild
+          path : package.json
+
+
 
   auth:
     build:
@@ -23,8 +37,19 @@ services:
     command: pnpm run start:dev auth
     env_file:
       - ./apps/auth/.env
-    ports:
-      - '3002:3002'
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules/
+
+    # ports:
+    #   - '3002:3002'
+
+    develop:
+      watch:
+        - action: sync
+          path : .
+          target: /usr/src/app
+          ignore: 
+            - node_modules/
+            - .git/
+            - dist/
+        - action: rebuild
+          path : package.json
+
