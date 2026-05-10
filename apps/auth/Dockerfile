@@ -10,9 +10,7 @@ COPY nest-cli.json nest-cli.json
 COPY apps/auth/package.json apps/auth/package.json
 
 RUN npm install -g pnpm
-# RUN pnpm config set confirmModulesPurge false
 RUN pnpm install
-# RUN pnpm install --config.confirmModulesPurge=false
 
 COPY apps/auth apps/auth
 COPY libs libs
@@ -33,8 +31,8 @@ COPY apps/auth/package.json apps/auth/package.json
 
 RUN npm install -g pnpm
 
-RUN pnpm install --prod
-# RUN pnpm install --prod --filter auth...
+# RUN pnpm install --prod
+RUN pnpm install --prod --filter auth...
 
 COPY --from=development /usr/src/app/dist ./dist
 

@@ -10,9 +10,7 @@ COPY nest-cli.json nest-cli.json
 COPY apps/gateway/package.json apps/gateway/package.json
 
 RUN npm install -g pnpm
-# RUN pnpm config set confirmModulesPurge false
 RUN pnpm install
-# RUN pnpm install --config.confirmModulesPurge=false
 
 COPY apps/gateway apps/gateway
 COPY libs libs
