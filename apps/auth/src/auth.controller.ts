@@ -12,7 +12,6 @@ import { Payload } from '@nestjs/microservices';
 export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
   async register(@Payload() data: RegisterReq) {
     return { email: data.email };
     // return this.authService.getHello();
