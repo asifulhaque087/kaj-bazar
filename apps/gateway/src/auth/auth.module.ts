@@ -2,11 +2,8 @@ import { AUTH_PACKAGE_NAME } from '@app/common/generated/auth';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  createModuleAuthInterceptor,
-  GlobalMetadataInterceptor,
-} from 'apps/gateway/src/grpc.interceptor';
 import { AuthController } from './auth.controller';
+import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
 
 @Module({
   imports: [
