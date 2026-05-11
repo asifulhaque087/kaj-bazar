@@ -10,27 +10,54 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
-export interface RegisterReq {
+export interface RefreshAccessTokenBody {
+  token: string;
+}
+
+export interface RefreshAccessTokenResponse {
+  newAccessToken: string;
+  newAccessTokenExp: string;
+  newRefreshToken: string;
+  newRefreshTokenExp: string;
+}
+
+export interface RegisterBody {
+  username: string;
   email: string;
+  password: string;
+  country: string;
+  profilePicture: string;
 }
 
 export interface RegisterResponse {
+  username: string;
   email: string;
+  country: string;
+  profilePicture: string;
+  id: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
-  register(request: RegisterReq): Observable<RegisterResponse>;
+  register(request: RegisterBody): Observable<RegisterResponse>;
+
+  refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
 }
 
 export interface AuthServiceController {
-  register(request: RegisterReq): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+  register(request: RegisterBody): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+
+  refreshAccessToken(
+    request: RefreshAccessTokenBody,
+  ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register"];
+    const grpcMethods: string[] = ["register", "refreshAccessToken"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

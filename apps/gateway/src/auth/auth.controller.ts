@@ -1,24 +1,35 @@
-import {
-  AUTH_SERVICE_NAME,
-  AuthServiceClient,
-} from '@app/common/generated/auth';
-import { Controller, Get, Inject, OnModuleInit } from '@nestjs/common';
-import type { ClientGrpc } from '@nestjs/microservices';
+import { RegisterUserDto } from '@app/common';
+import { Body, Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
+import type { Request, Response } from 'express';
 
 @Controller('auth')
-export class AuthController implements OnModuleInit {
-  private authService!: AuthServiceClient;
-
-  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientGrpc) {}
-
-  onModuleInit() {
-    this.authService =
-      this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
-  }
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
   @Get()
-  async getHello() {
-    // console.log('#####################3');
-    return this.authService.register({ email: 'asiful@gmail.com' });
+  async register(@Body() body: RegisterUserDto) {
+    return this.authService.register(body);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    // req.user contains the tokens returned from GoogleStrategy.validate
+
+    this.authService.setCookies(res, 'sadlkfasd', '2983sd');
+    return res.redirect(`${process.env.FRONTEND_HOST}/user/profile`);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('who-am-i')
+  getProfile(@Req() req: Request) {
+    return req.user;
   }
 }

@@ -2,6 +2,7 @@ packages:
   - 'apps/*'
 allowBuilds:
   '@nestjs/core': true
+  esbuild: true
   grpc-tools: true
   protobufjs: true
   unrs-resolver: true

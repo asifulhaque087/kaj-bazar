@@ -1,6 +1,13 @@
 name: kaj-bazar-nest
 
 services:
+  auth-db:
+    container_name: auth_db_container
+    image: postgres:13-alpine
+    restart: always
+    env_file:
+      - ./apps/auth/.env
+
   gateway:
     build:
       context: .
@@ -14,14 +21,14 @@ services:
     develop:
       watch:
         - action: sync
-          path : .
+          path: .
           target: /usr/src/app
-          ignore: 
+          ignore:
             - node_modules/
             - .git/
             - dist/
         - action: rebuild
-          path : package.json
+          path: package.json
 
   auth:
     build:
@@ -38,12 +45,11 @@ services:
     develop:
       watch:
         - action: sync
-          path : .
+          path: .
           target: /usr/src/app
-          ignore: 
+          ignore:
             - node_modules/
             - .git/
             - dist/
         - action: rebuild
-          path : package.json
-
+          path: package.json

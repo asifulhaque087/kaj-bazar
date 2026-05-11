@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AUTH_PACKAGE_NAME } from '@app/common/generated/auth';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AuthModule);
@@ -19,6 +20,13 @@ async function bootstrap() {
     },
   );
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strips away properties that do not have any decorators in the DTO
+      forbidNonWhitelisted: true, // Throws an error if non-whitelisted properties are present
+      transform: true, // Automatically transforms payloads to be objects typed according to DTO classes
+    }),
+  );
   await app.listen();
 }
 bootstrap();

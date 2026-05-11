@@ -3,13 +3,35 @@ syntax = "proto3";
 package auth;
 
 service AuthService {
-  rpc Register (RegisterReq) returns (RegisterResponse) {}
+  rpc Register (RegisterBody) returns (RegisterResponse) {}
+  rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
 }
 
-message RegisterReq {
-  string email = 1;
+message RefreshAccessTokenBody {
+  string token = 1;
+}
+
+message RefreshAccessTokenResponse {
+  string newAccessToken = 1;
+  string newAccessTokenExp = 2;
+  string newRefreshToken = 3;
+  string newRefreshTokenExp = 4;
+}
+
+message RegisterBody {
+  string  username = 1;
+  string email = 2;
+  string password = 3; 
+  string country = 4;
+  string profilePicture = 5;
 }
 
 message RegisterResponse {
-  string email = 1;
+  string  username = 1;
+  string email = 2;
+  string country = 3;
+  string profilePicture = 4;
+  string id = 5;
+  string accessToken = 6;
+  string refreshToken = 7;
 }
