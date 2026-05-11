@@ -35,7 +35,20 @@ services:
       context: .
       dockerfile: ./apps/auth/Dockerfile
       target: development
-    command: pnpm run start:dev auth
+    # command: pnpm run start:dev auth
+    command: >
+      sh -c "
+        sleep 5 && 
+        pnpm --filter @kaj-bazar/auth run db:push && 
+        pnpm run start:dev auth
+      "
+
+    ports:
+      - 4983:4983
+    depends_on:
+      auth-db:
+        condition: service_started
+
     env_file:
       - ./apps/auth/.env
 
