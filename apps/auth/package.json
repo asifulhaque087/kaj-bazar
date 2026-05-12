@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio --host 0.0.0.0 --port 4983"
+    "db:studio": "drizzle-kit studio --host 0.0.0.0 --port 4983",
+    "build:migrate": "tsc drizzle/migrate.ts --outDir ../../dist-migration --rootDir ../../ --module commonjs --target es2021 --skipLibCheck"
   },
   "keywords": [],
   "author": "",

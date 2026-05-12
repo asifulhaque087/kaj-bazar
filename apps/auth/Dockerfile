@@ -15,7 +15,9 @@ RUN pnpm install
 COPY apps/auth apps/auth
 COPY libs libs
 
-RUN pnpm run build auth
+# RUN pnpm run build auth
+RUN pnpm run build auth && pnpm --filter auth run build:migrate
+
 
 FROM node:alpine AS production
 
