@@ -1,5 +1,13 @@
 import { RegisterUserDto } from '@app/common';
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'apps/gateway/src/auth/auth.service';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
@@ -11,7 +19,7 @@ export class AuthController {
 
   @Post()
   async register(@Body() body: RegisterUserDto) {
-    console.log("@@@@@@@@@@ gateway auth controller @@@@@@@@@")
+    console.log('@@@@@@@@@@ auth controller of gateway service @@@@@@@@@');
     return this.authService.register(body);
   }
 

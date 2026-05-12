@@ -30,10 +30,12 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterUserDto) {
-    throwGrpcError(grpc.status.INTERNAL, 'An unexpected error occurred');
+    throwGrpcError(
+      grpc.status.ALREADY_EXISTS,
+      'User with this email already exists',
+    );
 
     // throw new RpcException({
-    //   grpc: true,
     //   code: grpc.status.ALREADY_EXISTS,
     //   message: 'User with this email already exists',
     // });

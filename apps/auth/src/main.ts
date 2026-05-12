@@ -1,8 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import {
+  MicroserviceOptions,
+  RpcException,
+  Transport,
+} from '@nestjs/microservices';
 import { AUTH_PACKAGE_NAME } from '@app/common/generated/auth';
 import { ValidationPipe } from '@nestjs/common';
+import { status } from '@grpc/grpc-js';
+import * as grpc from '@grpc/grpc-js';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AuthModule);
@@ -22,9 +28,27 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Strips away properties that do not have any decorators in the DTO
-      forbidNonWhitelisted: true, // Throws an error if non-whitelisted properties are present
-      transform: true, // Automatically transforms payloads to be objects typed according to DTO classes
+      whitelist: true,
+      exceptionFactory: (errors) => {
+        // Map the class-validator errors into a structured object
+        const errorMessages = errors.map((error) => {
+          return {
+            field: error.property,
+            message: Object.values(error.constraints || {})[0],
+          };
+        });
+
+        const metadata = new grpc.Metadata();
+        metadata.add('is-grpc-exception', 'true');
+
+        return new RpcException({
+          code: status.INVALID_ARGUMENT, // Code: 3
+          // message: 'Validation failed !!!!!!!!!!!!!1',
+          // details: JSON.stringify(errorMessages),
+          message: JSON.stringify(errorMessages),
+          metadata: metadata,
+        });
+      },
     }),
   );
   await app.listen();

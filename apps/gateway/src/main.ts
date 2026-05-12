@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { GatewayModule } from './gateway.module';
 import cookieParser from 'cookie-parser'; // Change this line
 import { RpcToHttpFilter } from 'apps/gateway/src/filters/rpc-to-http.filter';
-import { GlobalHttpExceptionFilter } from 'apps/gateway/src/filters/global-http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayModule);
