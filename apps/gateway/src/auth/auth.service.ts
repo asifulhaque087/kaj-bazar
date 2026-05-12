@@ -26,6 +26,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async register(data: RegisterUserDto) {
+    console.log("@@@@@@@@@@ gateway auth service @@@@@@@@@")
     return this.authGrpcService.register(data);
     // return {};
   }

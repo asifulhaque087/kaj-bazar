@@ -11,6 +11,7 @@ export const AuthTable = pgTable('auths_table', {
   profilePicture: text('profilePicture').notNull(),
 
   // ** Optional
+  refreshToken: text('refreshToken'),
   country: text('country'),
   emailVerificationToken: text('emailVerificationToken'),
   emailVerified: boolean('emailVerified').notNull().default(false),

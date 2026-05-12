@@ -1,0 +1,17 @@
+# {{$guid}} for a random ID 
+# {{$timestamp}} for the current time.
+
+@baseUrl = http://localhost:3001
+@authToken = your_token_here
+
+
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+  "username": "mridul_dev",
+  "email": "mridul@example.com",
+  "password": "SecurePassword123!",
+  "country": "Bangladesh",
+  "profilePicture": "https://example.com/profiles/mridul_dev.jpg"
+}

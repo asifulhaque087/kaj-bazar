@@ -16,7 +16,16 @@ export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 
   async register(@Payload() data: RegisterUserDto) {
-    // return this.authService.register(data);
+    return this.authService.register(data);
+
+    console.log('@@@@@@@@@@ auth auth controller @@@@@@@@@');
+
+    return {
+      ...data,
+      accessToken: 'dummy-access-token', // Added
+      refreshToken: 'dummy-refresh-token', // Added
+      id: 'some-unique-id', // Added
+    };
 
     return {
       id: 'some-unique-id', // Added

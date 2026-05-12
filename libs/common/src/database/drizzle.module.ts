@@ -18,7 +18,7 @@ export const DRIZZLE = Symbol('drizzle-connection');
       useFactory: (options: DrizzleOptions) => {
         const pool = new Pool({
           connectionString: options.connectionString,
-          ssl: true,
+          // ssl: true,
         });
         // return drizzle(pool, { schema });
         return drizzle(pool, { schema: options.schema });
