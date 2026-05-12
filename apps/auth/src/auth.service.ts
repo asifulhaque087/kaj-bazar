@@ -1,4 +1,4 @@
-import { DRIZZLE, RegisterUserDto, tryit } from '@app/common';
+import { DRIZZLE, RegisterUserDto, throwGrpcError, tryit } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
@@ -9,18 +9,6 @@ import * as grpc from '@grpc/grpc-js'; // or 'grpc' depending on your setup
 import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
 import { AuthTable } from 'apps/auth/src/schemas';
 
-export const throwGrpcError = (code: grpc.status, message: string) => {
-  const metadata = new grpc.Metadata();
-  // Add your custom identifier here
-  metadata.add('is-grpc-exception', 'true');
-
-  throw new RpcException({
-    code: code,
-    message: message, // This becomes 'details' on the receiving end
-    metadata: metadata,
-  });
-};
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,16 +18,6 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterUserDto) {
-    throwGrpcError(
-      grpc.status.ALREADY_EXISTS,
-      'User with this email already exists',
-    );
-
-    // throw new RpcException({
-    //   code: grpc.status.ALREADY_EXISTS,
-    //   message: 'User with this email already exists',
-    // });
-
     const [isUser, err] = await tryit(
       this.db
         .select()
@@ -49,23 +27,8 @@ export class AuthService {
         .then((res) => res[0]),
     );
 
-    if (err) {
-      console.error('Database failure:', err);
-
-      throw new RpcException({
-        code: grpc.status.INTERNAL,
-        message: 'An unexpected error occurred',
-      });
-    }
-
-    if (isUser) {
-      throw new RpcException({
-        code: grpc.status.ALREADY_EXISTS,
-        message: 'User with this email already exists',
-      });
-    }
-
-    // Prepare auth data
+    if (err) throwGrpcError('INTERNAL', err.message);
+    if (isUser) throwGrpcError('ALREADY_EXISTS', 'User alraedy exists');
 
     // Create auth user in database
     const result = await tryit(
