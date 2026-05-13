@@ -18,6 +18,7 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterUserDto) {
+    throwGrpcError('ALREADY_EXISTS', 'User alraedy exists');
     const [isUser, err] = await tryit(
       this.db
         .select()

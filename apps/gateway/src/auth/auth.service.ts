@@ -27,11 +27,12 @@ export class AuthService implements OnModuleInit {
 
   async register(data: RegisterUserDto) {
     console.log('@@@@@@@@@@ auth service of gateway service @@@@@@@@@');
-    // const hello = {
+    return this.authGrpcService.register(data);
+
+   // const hello = {
     //   username: '2',
     //   email: 'mridul@example.com',
     // };
-    return this.authGrpcService.register(data);
     // return this.authGrpcService.register(hello);
   }
 
