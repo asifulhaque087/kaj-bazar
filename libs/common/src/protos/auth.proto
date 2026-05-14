@@ -6,7 +6,32 @@ service AuthService {
   rpc Register (RegisterBody) returns (RegisterResponse) {}
   rpc Login(LoginBody) returns (LoginResponse) {}
   rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
+  rpc ValidateSocialUser(ValidateSocialUserBody) returns (ValidateSocialUserResponse) {}
 }
+
+
+message ValidateSocialUserBody {
+  string  username = 1;
+  string email = 2;
+  optional string country = 4;
+  optional string profilePicture = 5;
+  string provider = 6;
+}
+
+
+message ValidateSocialUserResponse {
+  string  username = 1;
+  string email = 2;
+  optional string country = 3;
+  optional string profilePicture = 4;
+  string id = 5;
+  string accessToken = 6;
+  string refreshToken = 7;
+}
+
+
+
+
 
 message RefreshAccessTokenBody {
   string token = 1;
@@ -24,14 +49,14 @@ message RegisterBody {
   string email = 2;
   string password = 3; 
   optional string country = 4;
-  string profilePicture = 5;
+  optional string profilePicture = 5;
 }
 
 message RegisterResponse {
   string  username = 1;
   string email = 2;
   optional string country = 3;
-  string profilePicture = 4;
+  optional string profilePicture = 4;
   string id = 5;
   string accessToken = 6;
   string refreshToken = 7;
@@ -47,7 +72,7 @@ message LoginResponse {
   string  username = 1;
   string email = 2;
   optional string country = 3;
-  string profilePicture = 4;
+  optional string profilePicture = 4;
   string id = 5;
   string accessToken = 6;
   string refreshToken = 7;

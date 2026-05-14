@@ -8,16 +8,22 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { GetUser } from 'apps/gateway/src/decorators/get-user.decorator';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
+import type { AuthTokens } from 'apps/gateway/src/strategies/google.strategy';
 import type { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private configService: ConfigService,
+    private readonly authService: AuthService,
+  ) {}
 
-  @Post('/register')
+  @Post('register')
   async register(
     @Res({ passthrough: true }) res: Response,
     @Body() body: RegisterUserDto,
@@ -42,7 +48,7 @@ export class AuthController {
     return user;
   }
 
-  @Post('/login')
+  @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
     @Body() body: LoginUserDto,
@@ -73,11 +79,14 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+  async googleAuthRedirect(
+    @GetUser() tokens: AuthTokens, // Type-safe tokens!
+    @Res() res: Response,
+  ) {
     // 1. Get data from service
     const cookieSettings = this.authService.getCookieSettings(
-      'token_val',
-      'refresh_val',
+      tokens.accessToken,
+      tokens.refreshToken,
     );
 
     // 2. Handle HTTP-specific response actions
@@ -92,7 +101,9 @@ export class AuthController {
       cookieSettings.refresh.options,
     );
 
-    return res.redirect(`${process.env.FRONTEND_HOST}/user/profile`);
+    return res.redirect(
+      `${this.configService.getOrThrow<string>('CLIENT_URL')}/user/profile`,
+    );
   }
 
   @UseGuards(AccessTokenGuard)

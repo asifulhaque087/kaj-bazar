@@ -2,6 +2,7 @@ import {
   LoginUserDto,
   RefreshAccessTokenDto,
   RegisterUserDto,
+  ValidateSocialUserDto,
 } from '@app/common';
 import {
   AUTH_SERVICE_NAME,
@@ -37,16 +38,8 @@ export class AuthService implements OnModuleInit {
     return firstValueFrom(this.authGrpcService.login(data));
   }
 
-  async upsertUser() {
-    // here we will call grpc methods
-
-    return {
-      message: 'we will call grpc function here',
-      name: 'user1',
-      email: 'user1@gmail.com',
-    };
-
-    // return {};
+  async validateSocialUser(data: ValidateSocialUserDto) {
+    return firstValueFrom(this.authGrpcService.validateSocialUser(data));
   }
 
   refreshAccessToken(data: RefreshAccessTokenDto) {

@@ -3,13 +3,14 @@ import { AuthService } from './auth.service';
 import {
   AuthServiceController,
   AuthServiceControllerMethods,
-  LoginResponse,
   RefreshAccessTokenBody,
-  RefreshAccessTokenResponse,
 } from '@app/common/generated/auth';
 import { Payload } from '@nestjs/microservices';
-import { LoginUserDto, RegisterUserDto } from '@app/common';
-import { Observable } from 'rxjs';
+import {
+  LoginUserDto,
+  RegisterUserDto,
+  ValidateSocialUserDto,
+} from '@app/common';
 
 @Controller()
 @AuthServiceControllerMethods()
@@ -22,6 +23,17 @@ export class AuthController implements AuthServiceController {
 
   async login(@Payload() data: LoginUserDto) {
     return this.authService.login(data);
+  }
+
+  async validateSocialUser(@Payload() data: ValidateSocialUserDto) {
+    // return this.authService.validateSocialUser(data);
+    const user = this.authService.validateSocialUser(data);
+
+    console.log(
+      '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ auth => auth controller',
+      data,
+    );
+    return user;
   }
 
   async refreshAccessToken(request: RefreshAccessTokenBody) {

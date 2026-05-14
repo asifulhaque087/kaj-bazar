@@ -4,6 +4,7 @@
 @baseUrl = http://localhost:3001/auth
 @authToken = your_token_here
 
+### Register
 
 POST {{baseUrl}}/register
 Content-Type: application/json
@@ -16,7 +17,7 @@ Content-Type: application/json
   "profilePicture": "https://example.com/profiles/mridul_dev.jpg"
 }
 
-###
+### Login
 
 POST {{baseUrl}}/login
 Content-Type: application/json

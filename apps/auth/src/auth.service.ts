@@ -4,6 +4,7 @@ import {
   RegisterUserDto,
   throwGrpcError,
   tryit,
+  ValidateSocialUserDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
@@ -82,12 +83,15 @@ export class AuthService {
 
     const { accessToken, refreshToken } = newTokens;
 
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ auth => auth service', data);
+
     // return response
     return {
       ...newUser,
       accessToken,
       refreshToken,
       country: 'bangladesh',
+      profilePicture: newUser.profilePicture ?? undefined,
     };
   }
 
@@ -104,9 +108,11 @@ export class AuthService {
 
     if (userErr) throwGrpcError('INTERNAL', userErr.message);
     if (!user) throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+    if (!user.password) {
+      return throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+    }
 
     // compare password
-
     const [validPassword, validPasswordErr] = await tryit(
       verifyPassword(data.password, user.password),
     );
@@ -133,6 +139,41 @@ export class AuthService {
       accessToken,
       refreshToken,
       country: 'bangladesh',
+      profilePicture: user.profilePicture ?? undefined,
+    };
+  }
+
+  async validateSocialUser(data: ValidateSocialUserDto) {
+    const [user, userErr] = await tryit(
+      this.db
+        .insert(AuthTable)
+        .values(data)
+        .onConflictDoNothing()
+        .returning()
+        .then((res) => res[0]),
+    );
+
+    if (userErr || !user) {
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
+    }
+
+    const [newTokens, newTokensErr] = await tryit(
+      this.generateTokens(user.id, user.email),
+    );
+
+    if (newTokensErr) {
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
+    }
+
+    const { accessToken, refreshToken } = newTokens;
+
+    // return response
+    return {
+      ...user,
+      accessToken,
+      refreshToken,
+      country: 'bangladesh',
+      profilePicture: user.profilePicture ?? undefined,
     };
   }
 

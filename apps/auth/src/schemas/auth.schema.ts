@@ -5,16 +5,17 @@ export const AuthTable = pgTable('auths_table', {
 
   //   ** raw
   username: text('username').notNull(),
-  password: text('password').notNull(),
-  email: text('email').notNull(),
-  profilePublicId: text('profilePublicId').notNull(),
-  profilePicture: text('profilePicture').notNull(),
+  email: text('email').notNull().unique(),
 
   // ** Optional
+  profilePicture: text('profilePicture'),
+  profilePublicId: text('profilePublicId'),
+  password: text('password'),
   refreshToken: text('refreshToken'),
   country: text('country'),
   emailVerificationToken: text('emailVerificationToken'),
   emailVerified: boolean('emailVerified').notNull().default(false),
+  provider: text('provider').notNull().default('local'),
   browserName: text('browserName'),
   deviceType: text('deviceType'),
   otp: text('otp'),

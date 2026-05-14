@@ -14,6 +14,8 @@ import * as Joi from 'joi';
         REFRESH_TOKEN_EXPIRATION: Joi.string().required(),
         GOOGLE_CLIENT_ID: Joi.string().required(),
         GOOGLE_CLIENT_SECRET: Joi.string().required(),
+
+        CLIENT_URL: Joi.string().required(),
       }),
     }),
     AuthModule,

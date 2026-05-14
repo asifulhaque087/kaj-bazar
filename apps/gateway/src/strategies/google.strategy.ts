@@ -1,8 +1,14 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { Injectable } from '@nestjs/common';
+import { Profile, Strategy } from 'passport-google-oauth20';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { ValidateSocialUserDto } from '@app/common';
+
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -19,21 +25,43 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(
-    accessToken: string,
-    refreshToken: string,
-    profile: any,
-    done: VerifyCallback,
-  ): Promise<any> {
-    // This logic mimics your current callback
-    const { name, emails } = profile;
-    const userPayload = {
-      email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+    // done: VerifyCallback,
+  ): Promise<AuthTokens> {
+    const { id, displayName, emails, photos, provider } = profile;
+
+    // 1. Handle potential undefined values safely
+    const email = emails && emails.length > 0 ? emails[0].value : null;
+    const photo = photos && photos.length > 0 ? photos[0].value : '';
+
+    // 2. Validate that we actually got an email (since your DTO requires it)
+    if (!email) {
+      throw new UnauthorizedException(
+        'No email associated with this Google account',
+      );
+    }
+
+    // 3. Construct the DTO object
+    const socialUserDto: ValidateSocialUserDto = {
+      username: displayName || id,
+      provider: provider,
+      email: email,
+      profilePicture: photo,
     };
 
-    // Call your service to find or create user and generate internal JWTs
-    const tokens = await this.authService.upsertUser();
-    done(null, tokens);
+    // 4. Pass the DTO to your service
+    const { accessToken, refreshToken } =
+      await this.authService.validateSocialUser(socialUserDto);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+
+    // return tokens;
+
+    // done(null, tokens);
   }
 }

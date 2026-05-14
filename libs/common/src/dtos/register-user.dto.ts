@@ -16,5 +16,6 @@ export class RegisterUserDto implements RegisterBody {
   country!: string;
 
   @IsString()
-  profilePicture!: string;
+  @IsOptional()
+  profilePicture?: string
 }

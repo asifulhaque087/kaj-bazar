@@ -10,6 +10,24 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
+export interface ValidateSocialUserBody {
+  username: string;
+  email: string;
+  country?: string | undefined;
+  profilePicture?: string | undefined;
+  provider: string;
+}
+
+export interface ValidateSocialUserResponse {
+  username: string;
+  email: string;
+  country?: string | undefined;
+  profilePicture?: string | undefined;
+  id: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface RefreshAccessTokenBody {
   token: string;
 }
@@ -26,14 +44,14 @@ export interface RegisterBody {
   email: string;
   password: string;
   country?: string | undefined;
-  profilePicture: string;
+  profilePicture?: string | undefined;
 }
 
 export interface RegisterResponse {
   username: string;
   email: string;
   country?: string | undefined;
-  profilePicture: string;
+  profilePicture?: string | undefined;
   id: string;
   accessToken: string;
   refreshToken: string;
@@ -48,7 +66,7 @@ export interface LoginResponse {
   username: string;
   email: string;
   country?: string | undefined;
-  profilePicture: string;
+  profilePicture?: string | undefined;
   id: string;
   accessToken: string;
   refreshToken: string;
@@ -62,6 +80,8 @@ export interface AuthServiceClient {
   login(request: LoginBody): Observable<LoginResponse>;
 
   refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
+
+  validateSocialUser(request: ValidateSocialUserBody): Observable<ValidateSocialUserResponse>;
 }
 
 export interface AuthServiceController {
@@ -72,11 +92,15 @@ export interface AuthServiceController {
   refreshAccessToken(
     request: RefreshAccessTokenBody,
   ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
+
+  validateSocialUser(
+    request: ValidateSocialUserBody,
+  ): Promise<ValidateSocialUserResponse> | Observable<ValidateSocialUserResponse> | ValidateSocialUserResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "login", "refreshAccessToken"];
+    const grpcMethods: string[] = ["register", "login", "refreshAccessToken", "validateSocialUser"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
