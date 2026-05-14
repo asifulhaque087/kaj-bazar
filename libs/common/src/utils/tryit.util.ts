@@ -20,16 +20,31 @@
 //   }
 // };
 
+// ============
 
-export type TryItResult<T, E> = [T, null] | [null, E];
+// export type TryItResult<T, E> = [T, null] | [null, E];
+
+// export const tryit = async <T, E = Error>(
+//   promise: Promise<T>,
+// ): Promise<TryItResult<T, E>> => {
+//   try {
+//     const data = await promise;
+//     return [data, null];
+//   } catch (error) {
+//     return [null, error as E];
+//   }
+// };
 
 export const tryit = async <T, E = Error>(
   promise: Promise<T>,
-): Promise<TryItResult<T, E>> => {
+): Promise<[T, E | null]> => {
   try {
     const data = await promise;
     return [data, null];
   } catch (error) {
-    return [null, error as E];
+    // We cast null to T to satisfy the signature.
+    // This is "safe" ONLY because you promise to check the error first.
+    // return [null as any, error as E];
+    return [undefined as T, error as E];
   }
 };

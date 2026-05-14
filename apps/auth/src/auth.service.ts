@@ -3,11 +3,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { RpcException } from '@nestjs/microservices';
-// import grpc from '@grpc/grpc-js';
-import * as grpc from '@grpc/grpc-js'; // or 'grpc' depending on your setup
 import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
 import { AuthTable } from 'apps/auth/src/schemas';
+import crypto from 'crypto';
+import { hashPassword } from 'apps/auth/src/utils/hashing.util';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +17,8 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterUserDto) {
-    throwGrpcError('ALREADY_EXISTS', 'User alraedy exists');
-    const [isUser, err] = await tryit(
+    // find the user by email
+    const [user, userErr] = await tryit(
       this.db
         .select()
         .from(AuthTable)
@@ -28,34 +27,59 @@ export class AuthService {
         .then((res) => res[0]),
     );
 
-    if (err) throwGrpcError('INTERNAL', err.message);
-    if (isUser) throwGrpcError('ALREADY_EXISTS', 'User alraedy exists');
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
 
-    // Create auth user in database
-    const result = await tryit(
+    if (user) throwGrpcError('ALREADY_EXISTS', 'User already exists');
+
+    // generate email verification token
+    const randomCharacters = crypto.randomBytes(20).toString('hex');
+
+    // hash the password
+    const [hashedPassword, hashedPasswordErr] = await tryit(
+      hashPassword(data.password),
+    );
+
+    if (hashedPasswordErr)
+      throwGrpcError('INTERNAL', hashedPasswordErr.message);
+
+    // create auth user in database
+    const [newUser, newUserErr] = await tryit(
       this.db
         .insert(AuthTable)
-        .values({ ...data, profilePublicId: 'a random id' })
+        .values({
+          ...data,
+          profilePublicId: 'a random id',
+          password: hashedPassword,
+          emailVerificationToken: randomCharacters,
+        })
         .returning()
         .then((res) => res[0]),
     );
 
-    if (result[1]) {
-      console.error('Database failure:', err);
-
-      throw new RpcException({
-        code: grpc.status.INTERNAL,
-        message: 'An unexpected error occurred',
-      });
+    if (newUserErr) {
+      console.error('Database failure:', newUserErr.message);
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
     }
 
-    const { accessToken, refreshToken } = await this.generateTokens(
-      result[0].id,
-      result[0].email,
+    // Send email verification message to queue
+    const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${newUser.emailVerificationToken}`;
+
+    // Todo : we will publish an event here
+
+    // generate tokens
+    const [newTokens, newTokensErr] = await tryit(
+      this.generateTokens(newUser.id, newUser.email),
     );
 
+    if (newTokensErr) {
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
+    }
+
+    const { accessToken, refreshToken } = newTokens;
+
+    // return response
     return {
-      ...result[0],
+      ...newUser,
       accessToken,
       refreshToken,
       country: 'bangladesh',

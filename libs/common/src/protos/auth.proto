@@ -22,14 +22,14 @@ message RegisterBody {
   string  username = 1;
   string email = 2;
   string password = 3; 
-  string country = 4;
+  optional string country = 4;
   string profilePicture = 5;
 }
 
 message RegisterResponse {
   string  username = 1;
   string email = 2;
-  string country = 3;
+  optional string country = 3;
   string profilePicture = 4;
   string id = 5;
   string accessToken = 6;

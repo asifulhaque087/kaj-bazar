@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { RegisterBody } from '@app/common/generated/auth';
 
 export class RegisterUserDto implements RegisterBody {
@@ -12,6 +12,7 @@ export class RegisterUserDto implements RegisterBody {
   password!: string;
 
   @IsString()
+  @IsOptional()
   country!: string;
 
   @IsString()

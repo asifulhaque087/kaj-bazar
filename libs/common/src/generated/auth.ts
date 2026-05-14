@@ -25,14 +25,14 @@ export interface RegisterBody {
   username: string;
   email: string;
   password: string;
-  country: string;
+  country?: string | undefined;
   profilePicture: string;
 }
 
 export interface RegisterResponse {
   username: string;
   email: string;
-  country: string;
+  country?: string | undefined;
   profilePicture: string;
   id: string;
   accessToken: string;

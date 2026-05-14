@@ -16,44 +16,7 @@ export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 
   async register(@Payload() data: RegisterUserDto) {
-    const hello = {
-      username: 2,
-      email: 'mridul@example.com',
-      password: 'SecurePassword123!',
-      country: 'Bangladesh',
-      profilePicture: 'https://example.com/profiles/mridul_dev.jpg',
-    };
-
-    console.log('@@@@@@@@@@ auth controller of auth service @@@@@@@@@');
-
     return this.authService.register(data);
-    // return this.authService.register(hello);
-
-    return {
-      ...data,
-      accessToken: 'dummy-access-token', // Added
-      refreshToken: 'dummy-refresh-token', // Added
-      id: 'some-unique-id', // Added
-    };
-
-    return {
-      id: 'some-unique-id', // Added
-      username: 'asiful_dev',
-      email: 'mridul@example.com',
-      password: 'SecurePassword123!',
-      country: 'Bangladesh',
-      profilePicture: 'https://example.com/images/avatar-01.png',
-      accessToken: 'dummy-access-token', // Added
-      refreshToken: 'dummy-refresh-token', // Added
-    };
-
-    // return {
-    //   username: 'asiful_dev',
-    //   email: 'mridul@example.com',
-    //   password: 'SecurePassword123!',
-    //   country: 'Bangladesh',
-    //   profilePicture: 'https://example.com/images/avatar-01.png',
-    // };
   }
 
   async refreshAccessToken(request: RefreshAccessTokenBody) {

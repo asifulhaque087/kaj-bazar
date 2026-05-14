@@ -50,8 +50,22 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
 
       const { newAccessToken, newRefreshToken } = refreshResponse;
 
-      // Update cookies and request header
-      this.authService.setCookies(response, newAccessToken, newRefreshToken);
+      const cookieSettings = this.authService.getCookieSettings(
+        newAccessToken,
+        newRefreshToken,
+      );
+
+      response.cookie(
+        cookieSettings.access.name,
+        cookieSettings.access.value,
+        cookieSettings.access.options,
+      );
+      response.cookie(
+        cookieSettings.refresh.name,
+        cookieSettings.refresh.value,
+        cookieSettings.refresh.options,
+      );
+
       request.headers['authorization'] = `Bearer ${newAccessToken}`;
     } else {
       request.headers['authorization'] = `Bearer ${accessToken}`;

@@ -7,8 +7,8 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { Response } from 'express';
 import ms, { StringValue } from 'ms';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -26,17 +26,8 @@ export class AuthService implements OnModuleInit {
   }
 
   async register(data: RegisterUserDto) {
-    console.log('@@@@@@@@@@ auth service of gateway service @@@@@@@@@');
-    return this.authGrpcService.register(data);
-
-   // const hello = {
-    //   username: '2',
-    //   email: 'mridul@example.com',
-    // };
-    // return this.authGrpcService.register(hello);
+    return firstValueFrom(this.authGrpcService.register(data));
   }
-
-  // helper
 
   async upsertUser() {
     // here we will call grpc methods
@@ -54,7 +45,7 @@ export class AuthService implements OnModuleInit {
     return this.authGrpcService.refreshAccessToken(data);
   }
 
-  setCookies(res: Response, accessToken: string, refreshToken: string) {
+  getCookieSettings(accessToken: string, refreshToken: string) {
     const accessTokenExp = this.configService.getOrThrow<string>(
       'ACCESS_TOKEN_EXPIRATION',
     );
@@ -63,17 +54,26 @@ export class AuthService implements OnModuleInit {
       'REFRESH_TOKEN_EXPIRATION',
     );
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: ms(accessTokenExp as StringValue),
-    });
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: ms(refreshTokenExp as StringValue),
-    });
+    return {
+      access: {
+        name: 'accessToken',
+        value: accessToken,
+        options: {
+          httpOnly: true,
+          secure: true,
+          maxAge: ms(accessTokenExp as StringValue),
+        },
+      },
+      refresh: {
+        name: 'refreshToken',
+        value: refreshToken,
+        options: {
+          httpOnly: true,
+          secure: true,
+          maxAge: ms(refreshTokenExp as StringValue),
+        },
+      },
+    };
 
     // res.cookie('is_auth', true, {
     //   httpOnly: false,
