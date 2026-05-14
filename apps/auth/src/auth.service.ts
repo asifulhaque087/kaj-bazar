@@ -1,4 +1,10 @@
-import { DRIZZLE, RegisterUserDto, throwGrpcError, tryit } from '@app/common';
+import {
+  DRIZZLE,
+  LoginUserDto,
+  RegisterUserDto,
+  throwGrpcError,
+  tryit,
+} from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
@@ -6,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
 import { AuthTable } from 'apps/auth/src/schemas';
 import crypto from 'crypto';
-import { hashPassword } from 'apps/auth/src/utils/hashing.util';
+import { hashPassword, verifyPassword } from 'apps/auth/src/utils/hashing.util';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +34,6 @@ export class AuthService {
     );
 
     if (userErr) throwGrpcError('INTERNAL', userErr.message);
-
     if (user) throwGrpcError('ALREADY_EXISTS', 'User already exists');
 
     // generate email verification token
@@ -80,6 +85,51 @@ export class AuthService {
     // return response
     return {
       ...newUser,
+      accessToken,
+      refreshToken,
+      country: 'bangladesh',
+    };
+  }
+
+  async login(data: LoginUserDto) {
+    // find user
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.email, data.email))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+    if (!user) throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    // compare password
+
+    const [validPassword, validPasswordErr] = await tryit(
+      verifyPassword(data.password, user.password),
+    );
+
+    if (validPasswordErr) throwGrpcError('INTERNAL', validPasswordErr.message);
+    if (!validPassword)
+      throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    // generate tokens
+
+    const [newTokens, newTokensErr] = await tryit(
+      this.generateTokens(user.id, user.email),
+    );
+
+    if (newTokensErr) {
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
+    }
+
+    const { accessToken, refreshToken } = newTokens;
+
+    // return response
+    return {
+      ...user,
       accessToken,
       refreshToken,
       country: 'bangladesh',

@@ -4,6 +4,7 @@ package auth;
 
 service AuthService {
   rpc Register (RegisterBody) returns (RegisterResponse) {}
+  rpc Login(LoginBody) returns (LoginResponse) {}
   rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
 }
 
@@ -27,6 +28,22 @@ message RegisterBody {
 }
 
 message RegisterResponse {
+  string  username = 1;
+  string email = 2;
+  optional string country = 3;
+  string profilePicture = 4;
+  string id = 5;
+  string accessToken = 6;
+  string refreshToken = 7;
+}
+
+
+message LoginBody {
+  string email = 1;
+  string password = 2; 
+}
+
+message LoginResponse {
   string  username = 1;
   string email = 2;
   optional string country = 3;

@@ -1,4 +1,8 @@
-import { RefreshAccessTokenDto, RegisterUserDto } from '@app/common';
+import {
+  LoginUserDto,
+  RefreshAccessTokenDto,
+  RegisterUserDto,
+} from '@app/common';
 import {
   AUTH_SERVICE_NAME,
   AuthServiceClient,
@@ -27,6 +31,10 @@ export class AuthService implements OnModuleInit {
 
   async register(data: RegisterUserDto) {
     return firstValueFrom(this.authGrpcService.register(data));
+  }
+
+  async login(data: LoginUserDto) {
+    return firstValueFrom(this.authGrpcService.login(data));
   }
 
   async upsertUser() {

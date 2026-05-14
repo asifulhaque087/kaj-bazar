@@ -1,4 +1,4 @@
-import { RegisterUserDto } from '@app/common';
+import { LoginUserDto, RegisterUserDto } from '@app/common';
 import {
   Body,
   Controller,
@@ -17,17 +17,37 @@ import type { Request, Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
+  @Post('/register')
   async register(
     @Res({ passthrough: true }) res: Response,
     @Body() body: RegisterUserDto,
   ) {
-    console.log('@@@@@@@@@@ auth controller of gateway service @@@@@@@@@');
-
-    // return this.authService.register(body);
     const user = await this.authService.register(body);
-    // const user = this.authService.register(body);
-    // return user;
+
+    const cookieSettings = this.authService.getCookieSettings(
+      user.accessToken,
+      user.refreshToken,
+    );
+
+    res.cookie(
+      cookieSettings.access.name,
+      cookieSettings.access.value,
+      cookieSettings.access.options,
+    );
+    res.cookie(
+      cookieSettings.refresh.name,
+      cookieSettings.refresh.value,
+      cookieSettings.refresh.options,
+    );
+    return user;
+  }
+
+  @Post('/login')
+  async login(
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: LoginUserDto,
+  ) {
+    const user = await this.authService.login(body);
 
     const cookieSettings = this.authService.getCookieSettings(
       user.accessToken,
