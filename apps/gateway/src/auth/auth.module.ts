@@ -5,7 +5,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
 import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
 import { AuthService } from './auth.service';
-import { JwtService } from '@nestjs/jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
 import { GoogleStrategy } from 'apps/gateway/src/strategies/google.strategy';
@@ -20,9 +19,6 @@ import { JwtStrategy } from 'apps/gateway/src/strategies/jwt.strategy';
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.getOrThrow<string>('ACCESS_TOKEN_SECRET'),
-        // signOptions: {
-        //   expiresIn: configService.getOrThrow('ACCESS_TOKEN_EXPIRATION'),
-        // },
       }),
       inject: [ConfigService],
     }),

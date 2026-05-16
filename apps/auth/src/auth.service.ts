@@ -7,7 +7,7 @@ import {
   ValidateSocialUserDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { and, eq, gt } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
@@ -95,6 +95,66 @@ export class AuthService {
     };
   }
 
+  async resendEmail(data: any) {
+    // find user
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.email, data.email))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+    if (!user) throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    if (user.emailVerified) {
+      return throwGrpcError('INVALID_ARGUMENT', 'You are already verified');
+    }
+
+    // Generate verfication link
+    const randomCharacters = crypto.randomBytes(20).toString('hex');
+    const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${randomCharacters}`;
+
+    const [_, newUserErr] = await tryit(
+      this.db
+        .update(AuthTable)
+        .set({ emailVerificationToken: randomCharacters })
+        .where(eq(AuthTable.id, user.id)),
+    );
+
+    if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
+    // todo : here we have to publish to event to send email
+  }
+
+  async verifyEmail(data: any) {
+    // Find user by token
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.emailVerificationToken, data.token))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+    if (!user) throwGrpcError('NOT_FOUND', 'User not found');
+
+    // Verify User Email
+    const [_, verifyUserErr] = await tryit(
+      this.db
+        .update(AuthTable)
+        .set({ emailVerified: true, emailVerificationToken: null })
+        .where(eq(AuthTable.id, user.id)),
+    );
+
+    if (verifyUserErr) throwGrpcError('INTERNAL', verifyUserErr.message);
+
+    return { message: 'Account verified successfully' };
+  }
+
   async login(data: LoginUserDto) {
     // find user
     const [user, userErr] = await tryit(
@@ -175,6 +235,139 @@ export class AuthService {
       country: 'bangladesh',
       profilePicture: user.profilePicture ?? undefined,
     };
+  }
+
+  async forgotPassword(data: any) {
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.email, data.email))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+    if (!user) throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    // generate new token and update user
+    const randomCharacters = crypto.randomBytes(20).toString('hex');
+    const date: Date = new Date();
+    date.setHours(date.getHours() + 1);
+
+    const [_, newUserErr] = await tryit(
+      this.db
+        .update(AuthTable)
+        .set({
+          passwordResetToken: randomCharacters,
+          passwordResetExpires: date,
+        })
+        .where(eq(AuthTable.id, user.id)),
+    );
+
+    if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
+
+    const passwordResetLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/reset_password?token=${randomCharacters}`;
+
+    // todo : send email
+
+    return { message: 'Reset password link sent' };
+  }
+
+  async resetPassword(data: any) {
+    const [user, userErr] = await tryit(
+      this.db.query.AuthTable.findFirst({
+        where: and(
+          eq(AuthTable.passwordResetToken, data.token),
+          gt(AuthTable.passwordResetExpires, new Date()),
+        ),
+      }),
+    );
+
+    if (userErr) return throwGrpcError('INTERNAL', userErr.message);
+    if (!user) return throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    // hash the password
+    const [hashedPassword, hashedPasswordErr] = await tryit(
+      hashPassword(data.password),
+    );
+
+    if (hashedPasswordErr)
+      return throwGrpcError('INTERNAL', hashedPasswordErr.message);
+
+    // update password
+    const [_, newUserErr] = await tryit(
+      this.db
+        .update(AuthTable)
+        .set({
+          password: hashedPassword,
+          passwordResetToken: null,
+          passwordResetExpires: null,
+        })
+        .where(eq(AuthTable.id, user.id)),
+    );
+
+    if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
+
+    // send email
+    // todo : send email
+
+    return { message: 'Password reset successfully' };
+  }
+
+  async changePassword(data: any) {
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.email, data.email))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+    if (!user) throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    // hash password and update user
+    // hash the password
+    const [hashedPassword, hashedPasswordErr] = await tryit(
+      hashPassword(data.password),
+    );
+
+    if (hashedPasswordErr)
+      return throwGrpcError('INTERNAL', hashedPasswordErr.message);
+
+    // update password
+    const [_, newUserErr] = await tryit(
+      this.db
+        .update(AuthTable)
+        .set({
+          password: hashedPassword,
+          passwordResetToken: null,
+          passwordResetExpires: null,
+        })
+        .where(eq(AuthTable.id, user.id)),
+    );
+
+    if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
+
+    // send email
+    // todo : send email
+
+    return { message: 'Password changed successfully' };
+  }
+
+  async whoAmI(data: any) {
+    const [user, userErr] = await tryit(
+      this.db.query.AuthTable.findFirst({
+        where: eq(AuthTable.email, data.email),
+      }),
+    );
+
+    if (userErr) return throwGrpcError('INTERNAL', userErr.message);
+    if (!user) return throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
+
+    return user;
   }
 
   async generateTokens(id: string, email: string) {
