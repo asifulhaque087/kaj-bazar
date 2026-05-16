@@ -30,6 +30,22 @@
         "watchAssets": true
       }
     },
+    "email": {
+      "type": "application",
+      "root": "apps/email",
+      "entryFile": "main",
+      "sourceRoot": "apps/email/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/email/tsconfig.app.json",
+        "webpack": false,
+        "assets": [
+          {
+            "include": "templates/**/*",
+            "watchAssets": true
+          }
+        ]
+      }
+    },
     "gateway": {
       "type": "application",
       "root": "apps/gateway",

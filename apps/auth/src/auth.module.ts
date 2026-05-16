@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import * as localSchema from './schemas';
 import * as Joi from 'joi';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -44,6 +45,17 @@ import * as Joi from 'joi';
         schema: localSchema,
       }),
     }),
+
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+          queue: 'auth-queue',
+        },
+      },
+    ]),
   ],
   controllers: [AuthController],
   providers: [

@@ -14,6 +14,7 @@ import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
 import { AuthTable } from 'apps/auth/src/schemas';
 import crypto from 'crypto';
 import { hashPassword, verifyPassword } from 'apps/auth/src/utils/hashing.util';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
     private configService: ConfigService,
     private jwtService: JwtService,
     @Inject(DRIZZLE) private db: DrizzleDB,
+    @Inject('AUTH_SERVICE') private rabbitClient: ClientProxy,
   ) {}
 
   async register(data: RegisterUserDto) {
@@ -71,6 +73,14 @@ export class AuthService {
     const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${newUser.emailVerificationToken}`;
 
     // Todo : we will publish an event here
+
+    this.rabbitClient.emit('send-email', {
+      subject: 'Verify Your Email',
+      receiver: newUser.email!,
+      verifyLink: verificationLink,
+      templateName: 'verifyEmail',
+      username: newUser.username,
+    });
 
     // generate tokens
     const [newTokens, newTokensErr] = await tryit(
