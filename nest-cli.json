@@ -37,13 +37,14 @@
       "sourceRoot": "apps/email/src",
       "compilerOptions": {
         "tsConfigPath": "apps/email/tsconfig.app.json",
-        "webpack": false,
         "assets": [
           {
             "include": "templates/**/*",
-            "watchAssets": true
+            "outDir": "dist/apps/email"
           }
-        ]
+        ],
+        "watchAssets": true,
+        "webpackConfigPath": "webpack.config.js"
       }
     },
     "gateway": {

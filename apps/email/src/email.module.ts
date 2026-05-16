@@ -35,8 +35,9 @@ console.log('!!!!!!!!!!!!!!!!!!!!!!!!!! ', __dirname);
         },
         template: {
           // Points to your local template directory
-          // dir: join(__dirname, 'templates'),
-          dir: 'apps/email/src/templates',
+          dir: join(__dirname, 'templates'),
+          // dir: 'apps/email/src/templates',
+          // dir: join(__dirname, '..', 'templates'),
           adapter: new EjsAdapter({
             inlineCssEnabled: true, // Replaces 'juice: true' for inlining CSS styles
           }),

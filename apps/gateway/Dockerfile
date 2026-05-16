@@ -5,12 +5,15 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY pnpm-workspace.yaml ./
-COPY tsconfig.json tsconfig.json
-COPY nest-cli.json nest-cli.json
+# COPY tsconfig.json tsconfig.json
+# COPY nest-cli.json nest-cli.json
 COPY apps/gateway/package.json apps/gateway/package.json
 
 RUN npm install -g pnpm
 RUN pnpm install
+
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 COPY apps/gateway apps/gateway
 COPY libs libs
