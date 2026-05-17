@@ -64,6 +64,15 @@
         "watchAssets": true
       }
     },
+    "gig": {
+      "type": "application",
+      "root": "apps/gig",
+      "entryFile": "main",
+      "sourceRoot": "apps/gig/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gig/tsconfig.app.json"
+      }
+    },
     "user": {
       "type": "application",
       "root": "apps/user",
