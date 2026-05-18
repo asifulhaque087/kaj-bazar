@@ -1,9 +1,16 @@
-import { LoginUserDto, RegisterUserDto } from '@app/common';
+import {
+  ForgotPasswordDto,
+  LoginUserDto,
+  RegisterUserDto,
+  ResendVerificationLinkDto,
+  VerifyEmailDto,
+} from '@app/common';
 import {
   Body,
   Controller,
   Get,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -47,9 +54,6 @@ export class AuthController {
     );
     return user;
   }
-
-
-
 
   @Post('login')
   async login(
@@ -113,5 +117,20 @@ export class AuthController {
   @Get('who-am-i')
   getProfile(@Req() req: Request) {
     return req.user;
+  }
+
+  @Post('resend-verification-link')
+  async resendVerificationLink(@Body() body: ResendVerificationLinkDto) {
+    return this.authService.resendVerificationLink(body);
+  }
+
+  @Put('verify-email')
+  async verifyEmail(@Body() body: VerifyEmailDto) {
+    return this.authService.verifyEmail(body);
+  }
+
+  @Put('forgot-password')
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    return this.authService.forgotPassword(body);
   }
 }

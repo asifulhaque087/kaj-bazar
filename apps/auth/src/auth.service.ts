@@ -1,10 +1,13 @@
 import {
   DRIZZLE,
+  ForgotPasswordDto,
   LoginUserDto,
   RegisterUserDto,
+  ResendVerificationLinkDto,
   throwGrpcError,
   tryit,
   ValidateSocialUserDto,
+  VerifyEmailDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, gt } from 'drizzle-orm';
@@ -72,8 +75,6 @@ export class AuthService {
     // Send email verification message to queue
     const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${newUser.emailVerificationToken}`;
 
-    // Todo : we will publish an event here
-
     this.rabbitClient.emit('send-email', {
       subject: 'Verify Your Email',
       receiver: newUser.email!,
@@ -105,13 +106,15 @@ export class AuthService {
     };
   }
 
-  async resendEmail(data: any) {
+  async resendVerificationLink(data: ResendVerificationLinkDto) {
+    const { email } = data;
+
     // find user
     const [user, userErr] = await tryit(
       this.db
         .select()
         .from(AuthTable)
-        .where(eq(AuthTable.email, data.email))
+        .where(eq(AuthTable.email, email))
         .limit(1)
         .then((res) => res[0]),
     );
@@ -127,18 +130,29 @@ export class AuthService {
     const randomCharacters = crypto.randomBytes(20).toString('hex');
     const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${randomCharacters}`;
 
-    const [_, newUserErr] = await tryit(
+    const [newUser, newUserErr] = await tryit(
       this.db
         .update(AuthTable)
         .set({ emailVerificationToken: randomCharacters })
-        .where(eq(AuthTable.id, user.id)),
+        .where(eq(AuthTable.id, user.id))
+        .returning()
+        .then((res) => res[0]),
     );
 
     if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
-    // todo : here we have to publish to event to send email
+
+    this.rabbitClient.emit('send-email', {
+      subject: 'Verify Your Email',
+      receiver: newUser.email!,
+      verifyLink: verificationLink,
+      templateName: 'verifyEmail',
+      username: newUser.username,
+    });
+
+    return { message: 'A verification link send to your email' };
   }
 
-  async verifyEmail(data: any) {
+  async verifyEmail(data: VerifyEmailDto) {
     // Find user by token
     const [user, userErr] = await tryit(
       this.db
@@ -247,12 +261,14 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(data: any) {
+  async forgotPassword(data: ForgotPasswordDto) {
+    const { email } = data;
+
     const [user, userErr] = await tryit(
       this.db
         .select()
         .from(AuthTable)
-        .where(eq(AuthTable.email, data.email))
+        .where(eq(AuthTable.email, email))
         .limit(1)
         .then((res) => res[0]),
     );
@@ -280,6 +296,14 @@ export class AuthService {
     const passwordResetLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/reset_password?token=${randomCharacters}`;
 
     // todo : send email
+
+    this.rabbitClient.emit('send-email', {
+      subject: 'Reset your KajBazar password',
+      receiver: email,
+      resetLink: passwordResetLink,
+      templateName: 'forgotPassword',
+      username: user.username,
+    });
 
     return { message: 'Reset password link sent' };
   }

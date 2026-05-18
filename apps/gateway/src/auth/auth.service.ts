@@ -1,8 +1,11 @@
 import {
+  ForgotPasswordDto,
   LoginUserDto,
   RefreshAccessTokenDto,
   RegisterUserDto,
+  ResendVerificationLinkDto,
   ValidateSocialUserDto,
+  VerifyEmailDto,
 } from '@app/common';
 import {
   AUTH_SERVICE_NAME,
@@ -34,12 +37,24 @@ export class AuthService implements OnModuleInit {
     return firstValueFrom(this.authGrpcService.register(data));
   }
 
+  async resendVerificationLink(data: ResendVerificationLinkDto) {
+    return firstValueFrom(this.authGrpcService.resendVerificationLink(data));
+  }
+
+  async verifyEmail(data: VerifyEmailDto) {
+    return firstValueFrom(this.authGrpcService.verifyEmail(data));
+  }
+
   async login(data: LoginUserDto) {
     return firstValueFrom(this.authGrpcService.login(data));
   }
 
   async validateSocialUser(data: ValidateSocialUserDto) {
     return firstValueFrom(this.authGrpcService.validateSocialUser(data));
+  }
+
+  async forgotPassword(data: ForgotPasswordDto) {
+    return firstValueFrom(this.authGrpcService.forgotPassword(data));
   }
 
   refreshAccessToken(data: RefreshAccessTokenDto) {

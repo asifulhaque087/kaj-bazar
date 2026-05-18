@@ -10,6 +10,22 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
+export interface ForgotPasswordBody {
+  email: string;
+}
+
+export interface ResendVerificationLinkBody {
+  email: string;
+}
+
+export interface VerifyEmailBody {
+  token: string;
+}
+
+export interface CommonResponse {
+  message: string;
+}
+
 export interface ValidateSocialUserBody {
   username: string;
   email: string;
@@ -77,30 +93,52 @@ export const AUTH_PACKAGE_NAME = "auth";
 export interface AuthServiceClient {
   register(request: RegisterBody): Observable<RegisterResponse>;
 
+  resendVerificationLink(request: ResendVerificationLinkBody): Observable<CommonResponse>;
+
+  verifyEmail(request: VerifyEmailBody): Observable<CommonResponse>;
+
   login(request: LoginBody): Observable<LoginResponse>;
 
-  refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
-
   validateSocialUser(request: ValidateSocialUserBody): Observable<ValidateSocialUserResponse>;
+
+  forgotPassword(request: ForgotPasswordBody): Observable<CommonResponse>;
+
+  refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
 }
 
 export interface AuthServiceController {
   register(request: RegisterBody): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-  login(request: LoginBody): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  resendVerificationLink(
+    request: ResendVerificationLinkBody,
+  ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  refreshAccessToken(
-    request: RefreshAccessTokenBody,
-  ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
+  verifyEmail(request: VerifyEmailBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+
+  login(request: LoginBody): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   validateSocialUser(
     request: ValidateSocialUserBody,
   ): Promise<ValidateSocialUserResponse> | Observable<ValidateSocialUserResponse> | ValidateSocialUserResponse;
+
+  forgotPassword(request: ForgotPasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+
+  refreshAccessToken(
+    request: RefreshAccessTokenBody,
+  ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "login", "refreshAccessToken", "validateSocialUser"];
+    const grpcMethods: string[] = [
+      "register",
+      "resendVerificationLink",
+      "verifyEmail",
+      "login",
+      "validateSocialUser",
+      "forgotPassword",
+      "refreshAccessToken",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

@@ -7,9 +7,12 @@ import {
 } from '@app/common/generated/auth';
 import { Payload } from '@nestjs/microservices';
 import {
+  ForgotPasswordDto,
   LoginUserDto,
   RegisterUserDto,
+  ResendVerificationLinkDto,
   ValidateSocialUserDto,
+  VerifyEmailDto,
 } from '@app/common';
 
 @Controller()
@@ -19,6 +22,14 @@ export class AuthController implements AuthServiceController {
 
   async register(@Payload() data: RegisterUserDto) {
     return this.authService.register(data);
+  }
+
+  async resendVerificationLink(@Payload() data: ResendVerificationLinkDto) {
+    return this.authService.resendVerificationLink(data);
+  }
+
+  async verifyEmail(@Payload() data: VerifyEmailDto) {
+    return this.authService.verifyEmail(data);
   }
 
   async login(@Payload() data: LoginUserDto) {
@@ -34,6 +45,10 @@ export class AuthController implements AuthServiceController {
       data,
     );
     return user;
+  }
+
+  async forgotPassword(@Payload() data: ForgotPasswordDto) {
+    return this.authService.forgotPassword(data);
   }
 
   async refreshAccessToken(request: RefreshAccessTokenBody) {

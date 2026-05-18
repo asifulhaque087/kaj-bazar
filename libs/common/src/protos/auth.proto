@@ -4,9 +4,28 @@ package auth;
 
 service AuthService {
   rpc Register (RegisterBody) returns (RegisterResponse) {}
+  rpc ResendVerificationLink(ResendVerificationLinkBody) returns (CommonResponse) {}
+  rpc VerifyEmail(VerifyEmailBody) returns (CommonResponse) {}
   rpc Login(LoginBody) returns (LoginResponse) {}
-  rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
   rpc ValidateSocialUser(ValidateSocialUserBody) returns (ValidateSocialUserResponse) {}
+  rpc ForgotPassword(ForgotPasswordBody) returns (CommonResponse) {}
+  rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
+}
+
+message ForgotPasswordBody {
+  string email = 1;
+}
+
+message ResendVerificationLinkBody {
+  string email = 1;
+}
+
+message VerifyEmailBody {
+  string token = 1;
+}
+
+message CommonResponse {
+  string  message = 1;
 }
 
 

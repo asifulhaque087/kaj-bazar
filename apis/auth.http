@@ -17,6 +17,26 @@ Content-Type: application/json
   "profilePicture": "https://example.com/profiles/mridul_dev.jpg"
 }
 
+
+### Resend Verification Link
+
+POST {{baseUrl}}/resend-verification-link
+Content-Type: application/json
+
+{
+  "email": "mridul@example.com"
+}
+
+
+### Verify Email
+
+PUT {{baseUrl}}/verify-email
+Content-Type: application/json
+
+{
+  "token": "2bac3665348e2abca1945c5bded91bb9288efdbc"
+}
+
 ### Login
 
 POST {{baseUrl}}/login
@@ -27,5 +47,11 @@ Content-Type: application/json
   "password": "SecurePassword123!"
 }
 
+### Forgot Password
 
-###
+PUT {{baseUrl}}/forgot-password
+Content-Type: application/json
+
+{
+  "email": "mridul@example.com"
+}
