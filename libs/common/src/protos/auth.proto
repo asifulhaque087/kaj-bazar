@@ -9,7 +9,31 @@ service AuthService {
   rpc Login(LoginBody) returns (LoginResponse) {}
   rpc ValidateSocialUser(ValidateSocialUserBody) returns (ValidateSocialUserResponse) {}
   rpc ForgotPassword(ForgotPasswordBody) returns (CommonResponse) {}
+  rpc ResetPassword(ResetPasswordBody) returns (CommonResponse) {}
+  rpc ChangePassword(ChangePasswordBody) returns (CommonResponse) {}
+  rpc WhoAmI(Empty) returns (User) {}
   rpc RefreshAccessToken(RefreshAccessTokenBody) returns (RefreshAccessTokenResponse) {}
+}
+
+message Empty {}
+
+message User {
+  string  id = 1;
+  string  username = 2;
+  string email = 3;
+  optional string country = 4;
+  optional string profilePicture = 5;
+  bool emailVerified = 6;
+}
+
+message ChangePasswordBody {
+  string email = 1;
+  string password = 2;
+}
+
+message ResetPasswordBody {
+  string token = 1;
+  string password = 2;
 }
 
 message ForgotPasswordBody {

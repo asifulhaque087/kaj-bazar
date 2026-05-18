@@ -1,8 +1,10 @@
 import {
+  ChangePasswordDto,
   ForgotPasswordDto,
   LoginUserDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
+  ResetPasswordDto,
   VerifyEmailDto,
 } from '@app/common';
 import {
@@ -11,6 +13,7 @@ import {
   Get,
   Post,
   Put,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -115,8 +118,8 @@ export class AuthController {
 
   @UseGuards(AccessTokenGuard)
   @Get('who-am-i')
-  getProfile(@Req() req: Request) {
-    return req.user;
+  whoAmI() {
+    return this.authService.whoAmI();
   }
 
   @Post('resend-verification-link')
@@ -132,5 +135,15 @@ export class AuthController {
   @Put('forgot-password')
   async forgotPassword(@Body() body: ForgotPasswordDto) {
     return this.authService.forgotPassword(body);
+  }
+
+  @Put('reset-password')
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return this.authService.resetPassword(body);
+  }
+
+  @Put('change-password')
+  async changePassword(@Body() body: ChangePasswordDto) {
+    return this.authService.changePassword(body);
   }
 }

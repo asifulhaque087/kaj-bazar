@@ -1,9 +1,11 @@
 import {
+  ChangePasswordDto,
   DRIZZLE,
   ForgotPasswordDto,
   LoginUserDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
+  ResetPasswordDto,
   throwGrpcError,
   tryit,
   ValidateSocialUserDto,
@@ -295,8 +297,6 @@ export class AuthService {
 
     const passwordResetLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/reset_password?token=${randomCharacters}`;
 
-    // todo : send email
-
     this.rabbitClient.emit('send-email', {
       subject: 'Reset your KajBazar password',
       receiver: email,
@@ -308,7 +308,7 @@ export class AuthService {
     return { message: 'Reset password link sent' };
   }
 
-  async resetPassword(data: any) {
+  async resetPassword(data: ResetPasswordDto) {
     const [user, userErr] = await tryit(
       this.db.query.AuthTable.findFirst({
         where: and(
@@ -346,10 +346,17 @@ export class AuthService {
     // send email
     // todo : send email
 
+    this.rabbitClient.emit('send-email', {
+      subject: 'Password Reset Successful',
+      receiver: user.email,
+      templateName: 'resetPasswordSuccess',
+      username: user.username,
+    });
+
     return { message: 'Password reset successfully' };
   }
 
-  async changePassword(data: any) {
+  async changePassword(data: ChangePasswordDto) {
     const [user, userErr] = await tryit(
       this.db
         .select()
@@ -388,20 +395,33 @@ export class AuthService {
     // send email
     // todo : send email
 
+    this.rabbitClient.emit('send-email', {
+      subject: 'Password changed Successful',
+      receiver: user.email,
+      templateName: 'resetPasswordSuccess',
+      username: user.username,
+    });
+
     return { message: 'Password changed successfully' };
   }
 
-  async whoAmI(data: any) {
+  async whoAmI() {
+    const email = 'mridul@example.com';
+
     const [user, userErr] = await tryit(
       this.db.query.AuthTable.findFirst({
-        where: eq(AuthTable.email, data.email),
+        where: eq(AuthTable.email, email),
       }),
     );
 
     if (userErr) return throwGrpcError('INTERNAL', userErr.message);
     if (!user) return throwGrpcError('INVALID_ARGUMENT', 'Invalid Credentials');
 
-    return user;
+    return {
+      ...user,
+      country: user.country ?? undefined,
+      profilePicture: user.profilePicture ?? undefined,
+    };
   }
 
   async generateTokens(id: string, email: string) {

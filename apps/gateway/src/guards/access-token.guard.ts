@@ -21,6 +21,8 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
     const response: Response = context.switchToHttp().getResponse();
     let accessToken = request.cookies['accessToken'];
 
+    console.log('(((((((((((((((((((((((((((( ', accessToken);
+
     if (!accessToken || this.authService.isTokenExpired(accessToken)) {
       const refreshToken = request.cookies['refreshToken'];
       if (!refreshToken) throw new UnauthorizedException();

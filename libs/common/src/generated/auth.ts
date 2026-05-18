@@ -10,6 +10,28 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
+export interface Empty {
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  country?: string | undefined;
+  profilePicture?: string | undefined;
+  emailVerified: boolean;
+}
+
+export interface ChangePasswordBody {
+  email: string;
+  password: string;
+}
+
+export interface ResetPasswordBody {
+  token: string;
+  password: string;
+}
+
 export interface ForgotPasswordBody {
   email: string;
 }
@@ -103,6 +125,12 @@ export interface AuthServiceClient {
 
   forgotPassword(request: ForgotPasswordBody): Observable<CommonResponse>;
 
+  resetPassword(request: ResetPasswordBody): Observable<CommonResponse>;
+
+  changePassword(request: ChangePasswordBody): Observable<CommonResponse>;
+
+  whoAmI(request: Empty): Observable<User>;
+
   refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
 }
 
@@ -123,6 +151,12 @@ export interface AuthServiceController {
 
   forgotPassword(request: ForgotPasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
+  resetPassword(request: ResetPasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+
+  changePassword(request: ChangePasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+
+  whoAmI(request: Empty): Promise<User> | Observable<User> | User;
+
   refreshAccessToken(
     request: RefreshAccessTokenBody,
   ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
@@ -137,6 +171,9 @@ export function AuthServiceControllerMethods() {
       "login",
       "validateSocialUser",
       "forgotPassword",
+      "resetPassword",
+      "changePassword",
+      "whoAmI",
       "refreshAccessToken",
     ];
     for (const method of grpcMethods) {

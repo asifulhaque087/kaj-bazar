@@ -1,9 +1,11 @@
 import {
+  ChangePasswordDto,
   ForgotPasswordDto,
   LoginUserDto,
   RefreshAccessTokenDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
+  ResetPasswordDto,
   ValidateSocialUserDto,
   VerifyEmailDto,
 } from '@app/common';
@@ -57,8 +59,20 @@ export class AuthService implements OnModuleInit {
     return firstValueFrom(this.authGrpcService.forgotPassword(data));
   }
 
+  async resetPassword(data: ResetPasswordDto) {
+    return firstValueFrom(this.authGrpcService.resetPassword(data));
+  }
+
+  async changePassword(data: ChangePasswordDto) {
+    return firstValueFrom(this.authGrpcService.changePassword(data));
+  }
+
   refreshAccessToken(data: RefreshAccessTokenDto) {
     return this.authGrpcService.refreshAccessToken(data);
+  }
+
+  whoAmI() {
+    return this.authGrpcService.whoAmI({});
   }
 
   getCookieSettings(accessToken: string, refreshToken: string) {
@@ -76,7 +90,8 @@ export class AuthService implements OnModuleInit {
         value: accessToken,
         options: {
           httpOnly: true,
-          secure: true,
+          // secure: true,
+          secure: false,
           maxAge: ms(accessTokenExp as StringValue),
         },
       },
@@ -85,7 +100,8 @@ export class AuthService implements OnModuleInit {
         value: refreshToken,
         options: {
           httpOnly: true,
-          secure: true,
+          // secure: true,
+          secure: false,
           maxAge: ms(refreshTokenExp as StringValue),
         },
       },

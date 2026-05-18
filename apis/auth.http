@@ -34,7 +34,7 @@ PUT {{baseUrl}}/verify-email
 Content-Type: application/json
 
 {
-  "token": "2bac3665348e2abca1945c5bded91bb9288efdbc"
+  "token": "e922dfa39dcbaf507ec1660419e6e11d877d0445"
 }
 
 ### Login
@@ -45,6 +45,7 @@ Content-Type: application/json
 {
   "email": "mridul@example.com",
   "password": "SecurePassword123!"
+  # "password": "SecurePassword123!!"
 }
 
 ### Forgot Password
@@ -55,3 +56,30 @@ Content-Type: application/json
 {
   "email": "mridul@example.com"
 }
+
+
+### Reset Password
+
+PUT {{baseUrl}}/reset-password
+Content-Type: application/json
+
+{
+  "token": "bcf7abd7d38557496af0f0840b717123b61fad10",
+  "password": "SecurePassword123!!"
+}
+
+
+### Change Password
+
+PUT {{baseUrl}}/change-password
+Content-Type: application/json
+
+{
+  "email": "mridul@example.com",
+  "password": "SecurePassword123!"
+}
+
+
+### Current User
+GET {{baseUrl}}/who-am-i
+Content-Type: application/json
