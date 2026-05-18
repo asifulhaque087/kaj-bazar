@@ -5,8 +5,8 @@ import { GigService } from './gig.service';
 export class GigController {
   constructor(private readonly gigService: GigService) {}
 
-  @Get()
-  getHello(): string {
-    return this.gigService.getHello();
-  }
+  // @Get()
+  // getHello(): string {
+  //   return this.gigService.getHello();
+  // }
 }
