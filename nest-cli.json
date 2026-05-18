@@ -15,9 +15,18 @@
       "sourceRoot": "apps/auth/src",
       "compilerOptions": {
         "tsConfigPath": "apps/auth/tsconfig.app.json",
-        "assets": [
-          "**/*.proto"
-        ],
+        "assets": ["**/*.proto"],
+        "watchAssets": true
+      }
+    },
+    "chat": {
+      "type": "application",
+      "root": "apps/chat",
+      "entryFile": "main",
+      "sourceRoot": "apps/chat/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/chat/tsconfig.app.json",
+        "assets": ["**/*.proto"],
         "watchAssets": true
       }
     },
@@ -28,9 +37,7 @@
       "sourceRoot": "libs/common/src",
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json",
-        "assets": [
-          "**/*.proto"
-        ],
+        "assets": ["**/*.proto"],
         "watchAssets": true
       }
     },
@@ -58,9 +65,7 @@
       "sourceRoot": "apps/gateway/src",
       "compilerOptions": {
         "tsConfigPath": "apps/gateway/tsconfig.app.json",
-        "assets": [
-          "**/*.proto"
-        ],
+        "assets": ["**/*.proto"],
         "watchAssets": true
       }
     },
@@ -70,7 +75,9 @@
       "entryFile": "main",
       "sourceRoot": "apps/gig/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/gig/tsconfig.app.json"
+        "tsConfigPath": "apps/gig/tsconfig.app.json",
+        "assets": ["**/*.proto"],
+        "watchAssets": true
       }
     },
     "user": {
@@ -79,7 +86,9 @@
       "entryFile": "main",
       "sourceRoot": "apps/user/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/user/tsconfig.app.json"
+        "tsConfigPath": "apps/user/tsconfig.app.json",
+        "assets": ["**/*.proto"],
+        "watchAssets": true
       }
     }
   },

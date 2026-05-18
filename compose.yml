@@ -31,6 +31,20 @@ services:
     env_file:
       - ./apps/user/.env
 
+  gig-db:
+    container_name: gig_db_container
+    image: postgres:13-alpine
+    restart: always
+    env_file:
+      - ./apps/gig/.env
+
+  # chat-db:
+  #   container_name: chat_db_container
+  #   image: postgres:13-alpine
+  #   restart: always
+  #   env_file:
+  #     - ./apps/chat/.env
+
   gateway:
     build:
       context: .
@@ -61,8 +75,6 @@ services:
     command: pnpm run start:dev email
     env_file:
       - ./apps/email/.env
-    # ports:
-    #   - '3001:3001'
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -90,7 +102,6 @@ services:
         pnpm --filter @kaj-bazar/auth run db:push && 
         pnpm run start:dev auth
       "
-
     ports:
       - 4983:4983
     depends_on:
@@ -98,13 +109,8 @@ services:
         condition: service_healthy
       auth-db:
         condition: service_started
-
     env_file:
       - ./apps/auth/.env
-
-    # ports:
-    #   - '3002:3002'
-
     develop:
       watch:
         - action: sync
@@ -129,21 +135,15 @@ services:
         pnpm --filter @kaj-bazar/user run db:push && 
         pnpm run start:dev user
       "
-
     ports:
-      - 4983:4983
+      - 4984:4984
     depends_on:
       rabbitmq:
         condition: service_healthy
       user-db:
         condition: service_started
-
     env_file:
       - ./apps/user/.env
-
-    # ports:
-    #   - '3002:3002'
-
     develop:
       watch:
         - action: sync
@@ -155,3 +155,68 @@ services:
             - dist/
         - action: rebuild
           path: package.json
+
+  gig:
+    build:
+      context: .
+      dockerfile: ./apps/gig/Dockerfile
+      target: development
+    # command: pnpm run start:dev user
+    command: >
+      sh -c "
+        sleep 5 && 
+        pnpm --filter @kaj-bazar/gig run db:push && 
+        pnpm run start:dev gig
+      "
+    ports:
+      - 4985:4985
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      gig-db:
+        condition: service_started
+    env_file:
+      - ./apps/gig/.env
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+            - .git/
+            - dist/
+        - action: rebuild
+          path: package.json
+
+  # chat:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/chat/Dockerfile
+  #     target: development
+  #   command: >
+  #     sh -c "
+  #       sleep 5 &&
+  #       pnpm --filter @kaj-bazar/chat run db:push &&
+  #       pnpm run start:dev chat
+  #     "
+  #   ports:
+  #     - 4986:4986
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     chat-db:
+  #       condition: service_started
+  #   env_file:
+  #     - ./apps/chat/.env
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: .
+  #         target: /usr/src/app
+  #         ignore:
+  #           - node_modules/
+  #           - .git/
+  #           - dist/
+  #       - action: rebuild
+  #         path: package.json
