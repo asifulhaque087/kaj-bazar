@@ -3,7 +3,10 @@ import { RpcException } from '@nestjs/microservices';
 
 type GrpcStatusName = keyof typeof grpc.status;
 
-export const throwGrpcError = (statusName: GrpcStatusName, message: string) => {
+export const throwGrpcError = (
+  statusName: GrpcStatusName,
+  message: string,
+): never => {
   const metadata = new grpc.Metadata();
   metadata.add('is-grpc-exception', 'true');
 

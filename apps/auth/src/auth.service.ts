@@ -1,4 +1,5 @@
 import {
+  AuthGrpcRequest,
   ChangePasswordDto,
   DRIZZLE,
   ForgotPasswordDto,
@@ -405,8 +406,8 @@ export class AuthService {
     return { message: 'Password changed successfully' };
   }
 
-  async whoAmI() {
-    const email = 'mridul@example.com';
+  async whoAmI(data: AuthGrpcRequest) {
+    const { email } = data.user;
 
     const [user, userErr] = await tryit(
       this.db.query.AuthTable.findFirst({

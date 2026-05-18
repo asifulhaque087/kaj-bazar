@@ -17,6 +17,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { ClientGrpc } from '@nestjs/microservices';
+import { createAuthMetadata } from 'apps/gateway/src/utils/create-auth-metadata.util';
 import ms, { StringValue } from 'ms';
 import { firstValueFrom } from 'rxjs';
 
@@ -63,16 +64,18 @@ export class AuthService implements OnModuleInit {
     return firstValueFrom(this.authGrpcService.resetPassword(data));
   }
 
-  async changePassword(data: ChangePasswordDto) {
-    return firstValueFrom(this.authGrpcService.changePassword(data));
+  async changePassword(data: ChangePasswordDto, authHeader: string) {
+    const metadata = createAuthMetadata(authHeader);
+    return firstValueFrom(this.authGrpcService.changePassword(data, metadata));
   }
 
   refreshAccessToken(data: RefreshAccessTokenDto) {
     return this.authGrpcService.refreshAccessToken(data);
   }
 
-  whoAmI() {
-    return this.authGrpcService.whoAmI({});
+  whoAmI(authHeader: string) {
+    const metadata = createAuthMetadata(authHeader);
+    return this.authGrpcService.whoAmI({}, metadata);
   }
 
   getCookieSettings(accessToken: string, refreshToken: string) {

@@ -5,6 +5,7 @@
 // source: auth.proto
 
 /* eslint-disable */
+import type { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -113,52 +114,70 @@ export interface LoginResponse {
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
-  register(request: RegisterBody): Observable<RegisterResponse>;
+  register(request: RegisterBody, metadata?: Metadata): Observable<RegisterResponse>;
 
-  resendVerificationLink(request: ResendVerificationLinkBody): Observable<CommonResponse>;
+  resendVerificationLink(request: ResendVerificationLinkBody, metadata?: Metadata): Observable<CommonResponse>;
 
-  verifyEmail(request: VerifyEmailBody): Observable<CommonResponse>;
+  verifyEmail(request: VerifyEmailBody, metadata?: Metadata): Observable<CommonResponse>;
 
-  login(request: LoginBody): Observable<LoginResponse>;
+  login(request: LoginBody, metadata?: Metadata): Observable<LoginResponse>;
 
-  validateSocialUser(request: ValidateSocialUserBody): Observable<ValidateSocialUserResponse>;
+  validateSocialUser(request: ValidateSocialUserBody, metadata?: Metadata): Observable<ValidateSocialUserResponse>;
 
-  forgotPassword(request: ForgotPasswordBody): Observable<CommonResponse>;
+  forgotPassword(request: ForgotPasswordBody, metadata?: Metadata): Observable<CommonResponse>;
 
-  resetPassword(request: ResetPasswordBody): Observable<CommonResponse>;
+  resetPassword(request: ResetPasswordBody, metadata?: Metadata): Observable<CommonResponse>;
 
-  changePassword(request: ChangePasswordBody): Observable<CommonResponse>;
+  changePassword(request: ChangePasswordBody, metadata?: Metadata): Observable<CommonResponse>;
 
-  whoAmI(request: Empty): Observable<User>;
+  whoAmI(request: Empty, metadata?: Metadata): Observable<User>;
 
-  refreshAccessToken(request: RefreshAccessTokenBody): Observable<RefreshAccessTokenResponse>;
+  refreshAccessToken(request: RefreshAccessTokenBody, metadata?: Metadata): Observable<RefreshAccessTokenResponse>;
 }
 
 export interface AuthServiceController {
-  register(request: RegisterBody): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+  register(
+    request: RegisterBody,
+    metadata?: Metadata,
+  ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
   resendVerificationLink(
     request: ResendVerificationLinkBody,
+    metadata?: Metadata,
   ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  verifyEmail(request: VerifyEmailBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+  verifyEmail(
+    request: VerifyEmailBody,
+    metadata?: Metadata,
+  ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  login(request: LoginBody): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  login(request: LoginBody, metadata?: Metadata): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   validateSocialUser(
     request: ValidateSocialUserBody,
+    metadata?: Metadata,
   ): Promise<ValidateSocialUserResponse> | Observable<ValidateSocialUserResponse> | ValidateSocialUserResponse;
 
-  forgotPassword(request: ForgotPasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+  forgotPassword(
+    request: ForgotPasswordBody,
+    metadata?: Metadata,
+  ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  resetPassword(request: ResetPasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+  resetPassword(
+    request: ResetPasswordBody,
+    metadata?: Metadata,
+  ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  changePassword(request: ChangePasswordBody): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
+  changePassword(
+    request: ChangePasswordBody,
+    metadata?: Metadata,
+  ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  whoAmI(request: Empty): Promise<User> | Observable<User> | User;
+  whoAmI(request: Empty, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
   refreshAccessToken(
     request: RefreshAccessTokenBody,
+    metadata?: Metadata,
   ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
 }
 

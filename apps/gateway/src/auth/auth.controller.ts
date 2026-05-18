@@ -13,14 +13,13 @@ import {
   Get,
   Post,
   Put,
-  Query,
-  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator';
 import { GetUser } from 'apps/gateway/src/decorators/get-user.decorator';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
 import type { AuthTokens } from 'apps/gateway/src/strategies/google.strategy';
@@ -118,8 +117,8 @@ export class AuthController {
 
   @UseGuards(AccessTokenGuard)
   @Get('who-am-i')
-  whoAmI() {
-    return this.authService.whoAmI();
+  whoAmI(@BearerToken() token: string) {
+    return this.authService.whoAmI(token);
   }
 
   @Post('resend-verification-link')
@@ -142,8 +141,12 @@ export class AuthController {
     return this.authService.resetPassword(body);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Put('change-password')
-  async changePassword(@Body() body: ChangePasswordDto) {
-    return this.authService.changePassword(body);
+  async changePassword(
+    @Body() body: ChangePasswordDto,
+    @BearerToken() token: string,
+  ) {
+    return this.authService.changePassword(body, token);
   }
 }

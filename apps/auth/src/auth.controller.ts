@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   AuthServiceController,
@@ -7,8 +7,10 @@ import {
 } from '@app/common/generated/auth';
 import { Payload } from '@nestjs/microservices';
 import {
+  type AuthGrpcRequest,
   ChangePasswordDto,
   ForgotPasswordDto,
+  GrpcGuard,
   LoginUserDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
@@ -57,12 +59,14 @@ export class AuthController implements AuthServiceController {
     return this.authService.resetPassword(data);
   }
 
+  @UseGuards(GrpcGuard)
   async changePassword(@Payload() data: ChangePasswordDto) {
     return this.authService.changePassword(data);
   }
 
-  async whoAmI() {
-    return this.authService.whoAmI();
+  @UseGuards(GrpcGuard)
+  async whoAmI(@Payload() data: AuthGrpcRequest) {
+    return this.authService.whoAmI(data);
   }
 
   async refreshAccessToken(request: RefreshAccessTokenBody) {
