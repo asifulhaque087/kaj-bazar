@@ -1,4 +1,4 @@
-import { SellersTable } from "@src/schemas/sellers.schema";
+import { SellersTable } from "./sellers.schema";
 import { relations } from "drizzle-orm";
 import { integer, pgTable, serial, uuid, varchar } from "drizzle-orm/pg-core";
 

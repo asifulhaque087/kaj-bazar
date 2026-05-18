@@ -6,28 +6,28 @@ import {
   integer,
   jsonb,
   uuid,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { LanguagesTable } from "@src/schemas/languages.schema";
-import { SkillsTable } from "@src/schemas/skills.schema";
-import { ExperiencesTable } from "@src/schemas/experiences.schema";
-import { SocialLinksTable } from "@src/schemas/social-links.schema";
-import { CertificatesTable } from "@src/schemas/certificates.schema";
-import { EducationsTable } from "@src/schemas/educations.schema";
+} from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { LanguagesTable } from './languages.schema';
+import { SkillsTable } from './skills.schema';
+import { ExperiencesTable } from './experiences.schema';
+import { SocialLinksTable } from './social-links.schema';
+import { CertificatesTable } from './certificates.schema';
+import { EducationsTable } from './educations.schema';
 
 // ** --- Seller Table ---
-export const SellersTable = pgTable("sellers_table", {
-  id: uuid("id").primaryKey(),
-  fullName: text("full_name").notNull(),
-  username: varchar("username", { length: 255 }).notNull().unique(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  profilePicture: text("profile_picture"),
-  description: text("description"),
-  profilePublicId: varchar("profile_public_id", { length: 255 }),
-  oneliner: varchar("oneliner", { length: 255 }),
-  country: varchar("country", { length: 255 }),
+export const SellersTable = pgTable('sellers_table', {
+  id: uuid('id').primaryKey(),
+  fullName: text('full_name').notNull(),
+  username: varchar('username', { length: 255 }).notNull().unique(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  profilePicture: text('profile_picture'),
+  description: text('description'),
+  profilePublicId: varchar('profile_public_id', { length: 255 }),
+  oneliner: varchar('oneliner', { length: 255 }),
+  country: varchar('country', { length: 255 }),
 
-  ratingCategories: jsonb("rating_categories")
+  ratingCategories: jsonb('rating_categories')
     .$type<{
       five: { value: number; count: number };
       four: { value: number; count: number };
@@ -44,19 +44,19 @@ export const SellersTable = pgTable("sellers_table", {
     })
     .notNull(),
 
-  responseTime: integer("response_time").default(0),
-  recentDelivery: timestamp("recent_delivery", { mode: "date" }),
+  responseTime: integer('response_time').default(0),
+  recentDelivery: timestamp('recent_delivery', { mode: 'date' }),
 
-  ongoingJobs: integer("ongoing_jobs").default(0),
-  completedJobs: integer("completed_jobs").default(0),
-  cancelledJobs: integer("cancelled_jobs").default(0),
-  totalEarnings: integer("total_earnings").default(0),
-  totalGigs: integer("total_gigs").default(0),
+  ongoingJobs: integer('ongoing_jobs').default(0),
+  completedJobs: integer('completed_jobs').default(0),
+  cancelledJobs: integer('cancelled_jobs').default(0),
+  totalEarnings: integer('total_earnings').default(0),
+  totalGigs: integer('total_gigs').default(0),
 
-  ratingsCount: integer("ratings_count").default(0),
-  ratingSum: integer("rating_sum").default(0),
+  ratingsCount: integer('ratings_count').default(0),
+  ratingSum: integer('rating_sum').default(0),
 
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
 
 // ** --- Relations for Drizzle
