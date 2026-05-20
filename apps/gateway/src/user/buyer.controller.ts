@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { BuyerService } from './buyer.service';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
 import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator';
@@ -19,5 +25,19 @@ export class BuyerController {
   async currentBuyer(@BearerToken() token: string) {
     console.log('gateway controller 1');
     return this.buyerService.currentBuyer(token);
+  }
+
+  @Get('id/:id')
+  async findById(@Param('id') id: string) {
+    if (!id) throw new BadRequestException('id not defined');
+
+    return this.buyerService.findById({ id });
+  }
+
+  @Get('username/:name')
+  async findByName(@Param('name') username: string) {
+    if (!username) throw new BadRequestException('username not defined');
+
+    return this.buyerService.findByName({ username });
   }
 }

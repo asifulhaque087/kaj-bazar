@@ -1,4 +1,13 @@
-import { DRIZZLE, throwGrpcError, tryit } from '@app/common';
+import {
+  AuthGrpcRequest,
+  CreateSellerDto,
+  DRIZZLE,
+  SellerByIdDto,
+  SellerByNameDto,
+  throwGrpcError,
+  tryit,
+  UpdateSellerDto,
+} from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import type { DrizzleDB } from 'apps/user/drizzle/drizzle';
 import { faker } from '@faker-js/faker';
@@ -20,7 +29,7 @@ import { eq, inArray, or, sql } from 'drizzle-orm';
 export class SellerService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async findByName(data: any) {
+  async findByName(data: SellerByNameDto) {
     const [seller, sellerErr] = await tryit(
       this.db.query.SellersTable.findFirst({
         where: eq(SellersTable.username, data.username),
@@ -34,10 +43,10 @@ export class SellerService {
     return seller;
   }
 
-  async currentSeller(data: any) {
+  async currentSeller(data: AuthGrpcRequest) {
     const [seller, sellerErr] = await tryit(
       this.db.query.SellersTable.findFirst({
-        where: eq(SellersTable.email, data.email),
+        where: eq(SellersTable.email, data.user.email),
       }),
     );
 
@@ -48,7 +57,7 @@ export class SellerService {
     return seller;
   }
 
-  async findById(data: any) {
+  async findById(data: SellerByIdDto) {
     const [seller, sellerErr] = await tryit(
       this.db.query.SellersTable.findFirst({
         where: eq(SellersTable.id, data.id),
@@ -62,7 +71,7 @@ export class SellerService {
     return seller;
   }
 
-  async create(formData: any) {
+  async create(formData: CreateSellerDto) {
     const [_, err] = await tryit(
       this.db.transaction(async (tx) => {
         // 2. Insert into the main 'sellers' table first
@@ -174,6 +183,13 @@ export class SellerService {
           await tx.insert(CertificatesTable).values(certificatesToInsert);
         }
 
+        await tryit(
+          tx
+            .update(BuyersTable)
+            .set({ isSeller: true })
+            .where(eq(BuyersTable.id, sellerId)),
+        );
+
         // Return the ID of the newly created seller
         return { id: sellerId };
       }),
@@ -184,7 +200,7 @@ export class SellerService {
     return { message: 'Seller Created Successfully' };
   }
 
-  async update(formData: any) {
+  async update(formData: UpdateSellerDto) {
     const [result, err] = await tryit(
       this.db.transaction(async (tx) => {
         // ** ---process seller---

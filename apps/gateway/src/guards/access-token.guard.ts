@@ -1,18 +1,19 @@
-import { tryit } from '@app/common';
 import {
   ExecutionContext,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'apps/gateway/src/auth/auth.service';
 import { Response } from 'express';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AccessTokenGuard extends AuthGuard('jwt') {
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private configService: ConfigService,
+  ) {
     super();
     // console.log('🚀 AccessTokenGuard has been instantiated by NestJS!');
   }
@@ -21,34 +22,23 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
     const request = context.switchToHttp().getRequest();
     const response: Response = context.switchToHttp().getResponse();
     let accessToken = request.cookies['accessToken'];
+    const accessSecret = this.configService.getOrThrow('ACCESS_TOKEN_SECRET');
+    const refreshSecret = this.configService.getOrThrow('REFRESH_TOKEN_SECRET');
 
-    if (!accessToken || this.authService.isTokenExpired(accessToken)) {
+    if (
+      !accessToken ||
+      this.authService.isTokenExpired(accessToken, accessSecret)
+    ) {
       const refreshToken = request.cookies['refreshToken'];
       if (!refreshToken) throw new UnauthorizedException();
 
-      // const [refreshResponse, err] = await tryit(
-      //   firstValueFrom(
-      //     this.authService.refreshAccessToken({ token: refreshToken }),
-      //   ),
-      // );
+      if (this.authService.isTokenExpired(refreshToken, refreshSecret)) {
+        throw new UnauthorizedException();
+      }
 
       const refreshResponse = await this.authService.refreshAccessToken({
         token: refreshToken,
       });
-
-      // const [refreshResponse, err] = await tryit(
-      //   this.authService.refreshAccessToken({
-      //     token: refreshToken,
-      //   }),
-      // );
-
-      // if (err) {
-      //   throw new InternalServerErrorException(err.message);
-      // }
-
-      // if (err) {
-      //   throw new InternalServerErrorException('An unexpected error occurred');
-      // }
 
       const { newAccessToken, newRefreshToken } = refreshResponse;
 

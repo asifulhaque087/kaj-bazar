@@ -116,21 +116,13 @@ export class AuthService implements OnModuleInit {
     // });
   }
 
-  isTokenExpired(token: string): boolean {
+  isTokenExpired(token: string, secret: string): boolean {
     try {
-      const payload = this.jwtService.decode(token);
-
-      if (!payload || !payload.exp) {
-        return true; // If there's no expiration claim, treat it as expired/invalid
-      }
-
-      const expiresAt = payload.exp * 1000; // Convert to milliseconds
-      const now = Date.now();
-
-      // We add a 10-second buffer to handle "clock drift" or network latency
-      const buffer = 10 * 1000;
-
-      return now + buffer >= expiresAt;
+      this.jwtService.verify(token, {
+        secret,
+        clockTolerance: 10,
+      });
+      return false;
     } catch (error) {
       // If decoding fails (malformed token), treat it as expired
       return true;

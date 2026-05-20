@@ -1,0 +1,170 @@
+# {{$guid}} for a random ID 
+# {{$timestamp}} for the current time.
+
+@baseUrl = http://localhost:3001/seller
+
+
+### Current User
+GET {{baseUrl}}/current-seller
+Content-Type: application/json
+
+
+### Find by id
+GET {{baseUrl}}/id/7b7cfbe8-8538-452b-8031-71035c8a8506
+Content-Type: application/json
+
+
+### Find by namename
+GET {{baseUrl}}/username/mridul_dev
+Content-Type: application/json
+
+
+
+### Create Seller
+
+POST {{baseUrl}}/create
+Content-Type: application/json
+
+{
+  "id": "7b7cfbe8-8538-452b-8031-71035c8a8506",
+  "fullName": "Mridul Dev",
+  "username": "mridul_dev",
+  "email": "mridul@example.com",
+  "profilePicture": "https://example.com/profiles/mridul_dev.jpg",
+  "description": "Full-stack software engineer specializing in building high-performance microservices with NestJS and TypeScript.",
+  "oneliner": "Crafting robust backend architectures.",
+  "country": "Bangladesh",
+  "languages": [
+    {
+      "id": "",
+      "language": "Bengali",
+      "level": "Native"
+    },
+    {
+      "id": "",
+      "language": "English",
+      "level": "Fluent"
+    }
+  ],
+  "skills": [
+    {
+      "id": "b1111111-2222-3333-4444-555555555555",
+      "name": "TypeScript"
+    },
+    {
+      "id": "c2222222-3333-4444-5555-666666666666",
+      "name": "NestJS"
+    }
+  ],
+  "experience": [
+    {
+      "id": "d3333333-4444-5555-6666-777777777777",
+      "company": "DevStudio",
+      "title": "Software Engineer",
+      "startDate": "2024-05-15",
+      "endDate": null,
+      "description": "Designing scalable gRPC microservices and managing relational database transactions.",
+      "currentlyWorkingHere": true
+    }
+  ],
+  "education": [
+    {
+      "id": "e4444444-5555-6666-7777-888888888888",
+      "university": "University of Dhaka",
+      "title": "Bachelor of Science",
+      "major": "Computer Science & Engineering",
+      "year": "2024",
+      "country": "Bangladesh"
+    }
+  ],
+  "socialLinks": [
+    {
+      "id": "f5555555-6666-7777-8888-999999999999",
+      "platform": "GitHub",
+      "link": "https://github.com/mridul_dev"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "a1111111-2222-3333-4444-555555555555",
+      "name": "NestJS Microservices Masterclass",
+      "from": "Udemy",
+      "year": "2025"
+    }
+  ]
+}
+
+
+### Update Seller
+
+PUT {{baseUrl}}/update
+Content-Type: application/json
+
+{
+  "id": "7b7cfbe8-8538-452b-8031-71035c8a8506",
+  "fullName": "Asiful Haque Mridul",
+  "username": "mridul_dev",
+  "email": "mridul@example.com",
+  "profilePicture": "https://example.com/profiles/mridul_dev.jpg",
+  "description": "Full-stack software engineer specializing in building high-performance microservices with NestJS and TypeScript.",
+  "oneliner": "Crafting robust backend architectures.",
+  "country": "Bangladesh",
+  "languages": [
+    {
+      "id": "",
+      "language": "Bengali",
+      "level": "Native"
+    },
+    {
+      "id": "",
+      "language": "English",
+      "level": "Fluent"
+    }
+  ],
+  "skills": [
+    {
+      "id": "b1111111-2222-3333-4444-555555555555",
+      "name": "TypeScript"
+    },
+    {
+      "id": "c2222222-3333-4444-5555-666666666666",
+      "name": "NestJS"
+    }
+  ],
+  "experience": [
+    {
+      "id": "d3333333-4444-5555-6666-777777777777",
+      "company": "DevStudio",
+      "title": "Software Engineer",
+      "startDate": "2024-05-15",
+      "endDate": null,
+      "description": "Designing scalable gRPC microservices and managing relational database transactions.",
+      "currentlyWorkingHere": true
+    }
+  ],
+  "education": [
+    {
+      "id": "e4444444-5555-6666-7777-888888888888",
+      "university": "University of Dhaka",
+      "title": "Bachelor of Science",
+      "major": "Computer Science & Engineering",
+      "year": "2024",
+      "country": "Bangladesh"
+    }
+  ],
+  "socialLinks": [
+    {
+      "id": "f5555555-6666-7777-8888-999999999999",
+      "platform": "GitHub",
+      "link": "https://github.com/mridul_dev"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "a1111111-2222-3333-4444-555555555555",
+      "name": "NestJS Microservices Masterclass",
+      "from": "Udemy",
+      "year": "2025"
+    }
+  ]
+}

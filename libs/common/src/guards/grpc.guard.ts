@@ -28,6 +28,8 @@ export class GrpcGuard implements CanActivate {
     // gRPC keys in metadata are automatically lowercased
     const authHeader = metadata.get('authorization')?.[0] as string;
 
+    console.log('auth header is @@@@@@@@@@@@@@@@@ ', authHeader);
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throwGrpcError(
         'UNAUTHENTICATED',

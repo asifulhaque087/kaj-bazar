@@ -8,3 +8,13 @@
 GET {{baseUrl}}/current-buyer
 Content-Type: application/json
 
+
+### Buyer by id
+GET {{baseUrl}}/id/7b7cfbe8-8538-452b-8031-71035c8a8506
+Content-Type: application/json
+
+
+
+### Buyer by name
+GET {{baseUrl}}/username/mridul_dev
+Content-Type: application/json

@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { USER_PACKAGE_NAME } from '@app/common/generated/user';
 import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
 import { AuthModule } from 'apps/gateway/src/auth/auth.module';
+import { SellerController } from './seller.controller';
+import { SellerService } from './seller.service';
 
 @Module({
   imports: [
@@ -36,7 +38,7 @@ import { AuthModule } from 'apps/gateway/src/auth/auth.module';
       },
     ]),
   ],
-  controllers: [BuyerController],
-  providers: [BuyerService],
+  controllers: [BuyerController, SellerController],
+  providers: [BuyerService, SellerService],
 })
 export class UserModule {}

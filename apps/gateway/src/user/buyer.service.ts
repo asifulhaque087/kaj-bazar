@@ -1,6 +1,8 @@
 import {
   BUYER_SERVICE_NAME,
   BuyerServiceClient,
+  FindByIdRequest,
+  FindByNameRequest,
 } from '@app/common/generated/user';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -25,5 +27,13 @@ export class BuyerService {
   async currentBuyer(authHeader: string) {
     const metadata = createAuthMetadata(authHeader);
     return firstValueFrom(this.buyerGrpcService.currentBuyer({}, metadata));
+  }
+
+  async findById(data: FindByIdRequest) {
+    return firstValueFrom(this.buyerGrpcService.findById(data));
+  }
+
+  async findByName(data: FindByNameRequest) {
+    return firstValueFrom(this.buyerGrpcService.findByName(data));
   }
 }
