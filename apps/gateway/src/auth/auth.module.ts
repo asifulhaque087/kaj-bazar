@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
 import { GoogleStrategy } from 'apps/gateway/src/strategies/google.strategy';
 import { JwtStrategy } from 'apps/gateway/src/strategies/jwt.strategy';
+import { USER_PACKAGE_NAME } from '@app/common/generated/user';
 
 @Module({
   imports: [
@@ -33,12 +34,38 @@ import { JwtStrategy } from 'apps/gateway/src/strategies/jwt.strategy';
             protoPath: 'libs/common/src/protos/auth.proto',
             url: 'auth:50051',
             channelOptions: {
-              interceptors: [createModuleAuthInterceptor('auth', 'hello-auth')],
+              interceptors: [
+                createModuleAuthInterceptor(
+                  'auth',
+                  configService.getOrThrow('AUTH_GATEWAY_SECRET'),
+                ),
+              ],
             },
           },
         }),
         inject: [ConfigService],
       },
+
+      // {
+      //   name: 'USER_SERVICE',
+      //   useFactory: (configService: ConfigService) => ({
+      //     transport: Transport.GRPC,
+      //     options: {
+      //       package: USER_PACKAGE_NAME,
+      //       protoPath: 'libs/common/src/protos/user.proto',
+      //       url: 'user:50051',
+      //       channelOptions: {
+      //         interceptors: [
+      //           createModuleAuthInterceptor(
+      //             'user',
+      //             configService.getOrThrow('USER_GATEWAY_SECRET'),
+      //           ),
+      //         ],
+      //       },
+      //     },
+      //   }),
+      //   inject: [ConfigService],
+      // },
     ]),
   ],
   controllers: [AuthController],

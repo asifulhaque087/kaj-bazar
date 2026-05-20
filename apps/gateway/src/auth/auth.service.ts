@@ -69,8 +69,8 @@ export class AuthService implements OnModuleInit {
     return firstValueFrom(this.authGrpcService.changePassword(data, metadata));
   }
 
-  refreshAccessToken(data: RefreshAccessTokenDto) {
-    return this.authGrpcService.refreshAccessToken(data);
+  async refreshAccessToken(data: RefreshAccessTokenDto) {
+    return firstValueFrom(this.authGrpcService.refreshAccessToken(data));
   }
 
   whoAmI(authHeader: string) {

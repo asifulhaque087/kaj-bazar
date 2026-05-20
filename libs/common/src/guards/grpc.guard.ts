@@ -8,11 +8,11 @@ export interface GrpcUserPayload {
   email: string;
 }
 
-// export type AuthGrpcRequest<T> = T & {
+// export type AuthGrpcRequest<T = Record<string, never>> = T & {
 //   user: GrpcUserPayload;
 // };
 
-export type AuthGrpcRequest<T = Record<string, never>> = T & {
+export type AuthGrpcRequest<T = {}> = T & {
   user: GrpcUserPayload;
 };
 

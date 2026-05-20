@@ -1,0 +1,10 @@
+# {{$guid}} for a random ID 
+# {{$timestamp}} for the current time.
+
+@baseUrl = http://localhost:3001/buyer
+
+
+### Current Buyer
+GET {{baseUrl}}/current-buyer
+Content-Type: application/json
+

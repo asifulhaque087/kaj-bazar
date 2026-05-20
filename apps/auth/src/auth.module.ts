@@ -25,6 +25,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         REFRESH_TOKEN_SECRET: Joi.string().required(),
         REFRESH_TOKEN_EXPIRATION: Joi.string().required(),
 
+        GATEWAY_SECRET: Joi.string().required(),
+
         CLIENT_URL: Joi.string().required(),
       }),
     }),
@@ -48,11 +50,20 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
     ClientsModule.register([
       {
-        name: 'AUTH_SERVICE',
+        name: 'EMAIL_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
-          queue: 'auth-queue',
+          queue: 'email-queue',
+        },
+      },
+
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+          queue: 'user-queue',
         },
       },
     ]),
@@ -60,9 +71,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   controllers: [AuthController],
   providers: [
     AuthService,
+
     {
       provide: 'EXPECTED_SERVICE_NAME',
       useValue: 'auth',
+    },
+    {
+      provide: 'GATEWAY_SECRET',
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return configService.getOrThrow<string>('GATEWAY_SECRET');
+      },
     },
     {
       provide: APP_GUARD,

@@ -73,9 +73,7 @@ export interface RefreshAccessTokenBody {
 
 export interface RefreshAccessTokenResponse {
   newAccessToken: string;
-  newAccessTokenExp: string;
   newRefreshToken: string;
-  newRefreshTokenExp: string;
 }
 
 export interface RegisterBody {

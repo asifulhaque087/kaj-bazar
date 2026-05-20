@@ -1,0 +1,215 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+// ==========================================
+// SERVICES
+// ==========================================
+
+service BuyerService {
+  rpc FindById (FindByIdRequest) returns (BuyerResponse) {}
+  rpc FindByName (FindByNameRequest) returns (BuyerResponse) {}
+  rpc CurrentBuyer (EmptyRequest) returns (BuyerResponse) {}
+}
+
+service SellerService {
+  rpc FindByName (FindByNameRequest) returns (SellerResponse) {}
+  rpc CurrentSeller (EmptyRequest) returns (SellerResponse) {}
+  rpc FindById (FindByIdRequest) returns (SellerResponse) {}
+  rpc Create (CreateSellerRequest) returns (CreateSellerResponse) {}
+  rpc Update (UpdateSellerRequest) returns (SellerResponse) {}
+}
+
+// ==========================================
+// SHARED MESSAGES
+// ==========================================
+
+message EmptyRequest {}
+
+message FindByIdRequest {
+  string id = 1; // UUID mapped to string
+}
+
+message FindByNameRequest {
+  string username = 1;
+}
+
+message CurrentBuyerRequest {
+  string email = 1;
+}
+
+message CurrentSellerRequest {
+  string email = 1;
+}
+
+message RatingDetail {
+  int32 value = 1;
+  int32 count = 2;
+}
+
+message RatingCategories {
+  RatingDetail five = 1;
+  RatingDetail four = 2;
+  RatingDetail three = 3;
+  RatingDetail two = 4;
+  RatingDetail one = 5;
+}
+
+message IdPayload {
+  string id = 1;
+}
+
+// ==========================================
+// BUYER TYPES
+// ==========================================
+
+message BuyerResponse {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string profile_public_id = 4;
+  string profile_picture = 5;
+  optional string country = 6;
+  bool is_seller = 7;
+  RatingCategories rating_categories = 8;
+  int32 ratings_count = 9;
+  int32 rating_sum = 10;
+  int32 ongoing_jobs = 11;
+  int32 completed_jobs = 12;
+  int32 cancelled_jobs = 13;
+  int32 total_earnings = 14;
+  google.protobuf.Timestamp created_at = 15;
+}
+
+// ==========================================
+// SELLER SUB-OBJECT TYPES (RELATIONS)
+// ==========================================
+
+message Language {
+  string id = 1; // Holds empty string for new records during Upsert
+  string language = 2;
+  string level = 3;
+}
+
+message Skill {
+  string id = 1;
+  string name = 2;
+}
+
+message Experience {
+  string id = 1;
+  string company = 2;
+  string title = 3;
+  optional string start_date = 4;
+  optional string end_date = 5;
+  optional string description = 6;
+  bool currently_working_here = 7;
+}
+
+message Education {
+  string id = 1;
+  string university = 2;
+  string title = 3;
+  optional string major = 4;
+  optional string year = 5;
+  optional string country = 6;
+}
+
+message SocialLink {
+  string id = 1;
+  string platform = 2;
+  string link = 3;
+}
+
+message Certificate {
+  string id = 1;
+  string name = 2;
+  optional string from = 3;
+  optional string year = 4;
+}
+
+// ==========================================
+// SELLER REQUEST & RESPONSE MESSAGES
+// ==========================================
+
+message CreateSellerRequest {
+  string id = 1;
+  string full_name = 2;
+  string username = 3;
+  string email = 4;
+  optional string profile_picture = 5;
+  optional string description = 6;
+  optional string oneliner = 7;
+  optional string country = 8;
+  
+  repeated Language languages = 9;
+  repeated Skill skills = 10;
+  repeated Experience experience = 11;
+  repeated Education education = 12;
+  repeated SocialLink social_links = 13;
+  repeated Certificate certificates = 14;
+}
+
+message CreateSellerResponse {
+  string message = 1; // "Seller Created Successfully"
+}
+
+message UpdateSellerRequest {
+  string id = 1;
+  string full_name = 2;
+  optional string description = 3;
+  optional string oneliner = 4;
+  
+  // Array payloads for records to create or update
+  repeated Language languages = 5;
+  repeated Skill skills = 6;
+  repeated Experience experience = 7;
+  repeated Education education = 8;
+  repeated SocialLink social_links = 9;
+  repeated Certificate certificates = 10;
+  
+  // Tracking deletions required by your service's tx logic
+  repeated IdPayload removed_lang_ids = 11;
+  repeated IdPayload removed_skill_ids = 12;
+  repeated IdPayload removed_experience_ids = 13;
+  repeated IdPayload removed_education_ids = 14;
+  repeated IdPayload removed_social_link_ids = 15;
+  repeated IdPayload removed_certificate_ids = 16;
+}
+
+message SellerResponse {
+  string id = 1;
+  string full_name = 2;
+  string username = 3;
+  string email = 4;
+  optional string profile_picture = 5;
+  optional string description = 6;
+  optional string profile_public_id = 7;
+  optional string oneliner = 8;
+  optional string country = 9;
+  
+  RatingCategories rating_categories = 10;
+  int32 response_time = 11;
+  optional google.protobuf.Timestamp recent_delivery = 12;
+  
+  int32 ongoing_jobs = 13;
+  int32 completed_jobs = 14;
+  int32 cancelled_jobs = 15;
+  int32 total_earnings = 16;
+  int32 total_gigs = 17;
+  
+  int32 ratings_count = 18;
+  int32 rating_sum = 19;
+  
+  google.protobuf.Timestamp created_at = 20;
+
+  // Populated when transaction completes with relations
+  repeated Language languages = 21;
+  repeated Skill skills = 22;
+  repeated Experience experience = 23;
+  repeated Education education = 24;
+  repeated SocialLink social_links = 25;
+  repeated Certificate certificates = 26;
+}

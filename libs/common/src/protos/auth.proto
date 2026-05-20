@@ -82,9 +82,7 @@ message RefreshAccessTokenBody {
 
 message RefreshAccessTokenResponse {
   string newAccessToken = 1;
-  string newAccessTokenExp = 2;
   string newRefreshToken = 3;
-  string newRefreshTokenExp = 4;
 }
 
 message RegisterBody {

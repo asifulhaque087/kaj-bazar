@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -15,10 +16,18 @@ import * as Joi from 'joi';
         GOOGLE_CLIENT_ID: Joi.string().required(),
         GOOGLE_CLIENT_SECRET: Joi.string().required(),
 
+        AUTH_GATEWAY_SECRET: Joi.string().required(),
+        USER_GATEWAY_SECRET: Joi.string().required(),
+        GIG_GATEWAY_SECRET: Joi.string().required(),
+        CHAT_GATEWAY_SECRET: Joi.string().required(),
+        ORDER_GATEWAY_SECRET: Joi.string().required(),
+        REVIEW_GATEWAY_SECRET: Joi.string().required(),
+
         CLIENT_URL: Joi.string().required(),
       }),
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

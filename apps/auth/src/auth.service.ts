@@ -4,6 +4,8 @@ import {
   DRIZZLE,
   ForgotPasswordDto,
   LoginUserDto,
+  RefreshAccessTokenDto,
+  RegisterBuyerDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
   ResetPasswordDto,
@@ -28,7 +30,8 @@ export class AuthService {
     private configService: ConfigService,
     private jwtService: JwtService,
     @Inject(DRIZZLE) private db: DrizzleDB,
-    @Inject('AUTH_SERVICE') private rabbitClient: ClientProxy,
+    @Inject('EMAIL_SERVICE') private emailRabbitClient: ClientProxy,
+    @Inject('USER_SERVICE') private userRabbitClient: ClientProxy,
   ) {}
 
   async register(data: RegisterUserDto) {
@@ -75,10 +78,16 @@ export class AuthService {
       throwGrpcError('INTERNAL', 'An unexpected error occurred');
     }
 
+    // todo : publish an event to add this user as buyer in user service
+
+    const buyerData: RegisterBuyerDto = newUser;
+
+    this.userRabbitClient.emit('user-created', buyerData);
+
     // Send email verification message to queue
     const verificationLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/confirm_email?v_token=${newUser.emailVerificationToken}`;
 
-    this.rabbitClient.emit('send-email', {
+    this.emailRabbitClient.emit('send-email', {
       subject: 'Verify Your Email',
       receiver: newUser.email!,
       verifyLink: verificationLink,
@@ -97,7 +106,7 @@ export class AuthService {
 
     const { accessToken, refreshToken } = newTokens;
 
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ auth => auth service', data);
+    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ auth => auth service', data);
 
     // return response
     return {
@@ -144,7 +153,8 @@ export class AuthService {
 
     if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
 
-    this.rabbitClient.emit('send-email', {
+    // send email
+    this.emailRabbitClient.emit('send-email', {
       subject: 'Verify Your Email',
       receiver: newUser.email!,
       verifyLink: verificationLink,
@@ -296,9 +306,10 @@ export class AuthService {
 
     if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
 
+    // send email
     const passwordResetLink = `${this.configService.getOrThrow<string>('CLIENT_URL')}/reset_password?token=${randomCharacters}`;
 
-    this.rabbitClient.emit('send-email', {
+    this.emailRabbitClient.emit('send-email', {
       subject: 'Reset your KajBazar password',
       receiver: email,
       resetLink: passwordResetLink,
@@ -345,9 +356,7 @@ export class AuthService {
     if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
 
     // send email
-    // todo : send email
-
-    this.rabbitClient.emit('send-email', {
+    this.emailRabbitClient.emit('send-email', {
       subject: 'Password Reset Successful',
       receiver: user.email,
       templateName: 'resetPasswordSuccess',
@@ -394,9 +403,7 @@ export class AuthService {
     if (newUserErr) throwGrpcError('INTERNAL', newUserErr.message);
 
     // send email
-    // todo : send email
-
-    this.rabbitClient.emit('send-email', {
+    this.emailRabbitClient.emit('send-email', {
       subject: 'Password changed Successful',
       receiver: user.email,
       templateName: 'resetPasswordSuccess',
@@ -422,6 +429,40 @@ export class AuthService {
       ...user,
       country: user.country ?? undefined,
       profilePicture: user.profilePicture ?? undefined,
+    };
+  }
+
+  async refreshAccessToken(data: RefreshAccessTokenDto) {
+    // find the user with token
+    const [user, userErr] = await tryit(
+      this.db
+        .select()
+        .from(AuthTable)
+        .where(eq(AuthTable.refreshToken, data.token))
+        .limit(1)
+        .then((res) => res[0]),
+    );
+
+    if (userErr) throwGrpcError('INTERNAL', userErr.message);
+
+    // if not find return unauthorized error
+    if (!user) throwGrpcError('UNAUTHENTICATED', 'Unauthorized access');
+
+    // Generate new access and refresh tokens
+    const [newTokens, newTokensErr] = await tryit(
+      this.generateTokens(user.id, user.email),
+    );
+
+    if (newTokensErr) {
+      throwGrpcError('INTERNAL', 'An unexpected error occurred');
+    }
+
+    const { accessToken, refreshToken } = newTokens;
+
+    // return response
+    return {
+      newAccessToken: accessToken,
+      newRefreshToken: refreshToken,
     };
   }
 

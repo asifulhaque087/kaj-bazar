@@ -12,6 +12,7 @@ import * as jwt from 'jsonwebtoken';
 export class GatewayGuard implements CanActivate {
   constructor(
     @Inject('EXPECTED_SERVICE_NAME') private readonly expectedService: string,
+    @Inject('GATEWAY_SECRET') private readonly gatewaySecret: string,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -24,7 +25,7 @@ export class GatewayGuard implements CanActivate {
 
       const token = metadata.get('gatewaytoken')[0] as string;
 
-      const payload = jwt.verify(token, 'hello-auth') as {
+      const payload = jwt.verify(token, this.gatewaySecret) as {
         serviceName: string;
       };
 

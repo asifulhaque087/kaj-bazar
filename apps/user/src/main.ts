@@ -1,8 +1,32 @@
 import { NestFactory } from '@nestjs/core';
 import { UserModule } from './user.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { USER_PACKAGE_NAME } from '@app/common/generated/user';
+import { GrpcValidationPipe } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
-  await app.listen(process.env.port ?? 3000);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      package: USER_PACKAGE_NAME,
+      protoPath: 'libs/common/src/protos/user.proto',
+      url: '0.0.0.0:50051',
+    },
+  });
+
+  // 3. Configure the RabbitMQ Microservice
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+      queue: 'user-queue',
+    },
+  });
+
+  app.useGlobalPipes(GrpcValidationPipe);
+
+  await app.startAllMicroservices();
 }
 bootstrap();

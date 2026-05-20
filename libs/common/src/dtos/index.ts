@@ -8,3 +8,5 @@ export * from './verify-email.dto';
 export * from './forgot-password.dto';
 export * from './reset-password.dto';
 export * from './change-password.dto';
+export * from './buyer.dto';
+export * from './seller.dto';

@@ -12,6 +12,7 @@ import {
   ForgotPasswordDto,
   GrpcGuard,
   LoginUserDto,
+  RefreshAccessTokenDto,
   RegisterUserDto,
   ResendVerificationLinkDto,
   ResetPasswordDto,
@@ -69,12 +70,7 @@ export class AuthController implements AuthServiceController {
     return this.authService.whoAmI(data);
   }
 
-  async refreshAccessToken(request: RefreshAccessTokenBody) {
-    return {
-      newAccessToken: 'dummy-access-token',
-      newAccessTokenExp: '',
-      newRefreshToken: 'dummy-refresh-token',
-      newRefreshTokenExp: '',
-    };
+  async refreshAccessToken(data: RefreshAccessTokenDto) {
+    return this.authService.refreshAccessToken(data);
   }
 }
