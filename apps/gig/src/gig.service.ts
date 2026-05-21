@@ -1,4 +1,14 @@
-import { DRIZZLE, throwGrpcError, tryit } from '@app/common';
+import {
+  CreateGigDto,
+  DRIZZLE,
+  GigByIdDto,
+  SearchGigDto,
+  SeedGigsDto,
+  SellerGigsDto,
+  throwGrpcError,
+  tryit,
+  UpdateGigDto,
+} from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import type { DrizzleDB } from 'apps/gig/drizzle/drizzle';
 import { GigsTable } from 'apps/gig/src/schemas';
@@ -8,7 +18,7 @@ import { and, ilike, or, count, gte, lte, eq } from 'drizzle-orm';
 export class GigService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async search(data: any) {
+  async search(data: SearchGigDto) {
     let { minPrice, maxPrice, deliveryTime, category, searchKey, page, limit } =
       data;
 
@@ -80,7 +90,7 @@ export class GigService {
       limit: parsedLimit,
     };
   }
-  async findById(data: any) {
+  async findById(data: GigByIdDto) {
     const [gig, gigErr] = await tryit(
       this.db.query.GigsTable.findFirst({
         where: eq(GigsTable.id, data.id),
@@ -92,7 +102,7 @@ export class GigService {
 
     return gig;
   }
-  async sellerGigs(data: any) {
+  async sellerGigs(data: SellerGigsDto) {
     const filters = [eq(GigsTable.sellerId, data.sellerId)];
 
     if (data.activeGigs)
@@ -111,7 +121,7 @@ export class GigService {
 
     return gigs;
   }
-  async create(formData: any) {
+  async create(formData: CreateGigDto) {
     const [newGig, newGigErr] = await tryit(
       this.db.insert(GigsTable).values(formData).returning(),
     );
@@ -120,7 +130,7 @@ export class GigService {
 
     return newGig;
   }
-  async update(data: any) {
+  async update(data: UpdateGigDto) {
     const [newGig, newGigErr] = await tryit(
       this.db
         .update(GigsTable)
@@ -133,7 +143,7 @@ export class GigService {
 
     return newGig;
   }
-  async seedGigs(data: any) {
+  async seedGigs(data: SeedGigsDto) {
     const { count = '10' } = data;
 
     const total = parseInt(count);

@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+package gig;
+
+import "google/protobuf/timestamp.proto";
+
+service GigService {
+  rpc Search (SearchRequest) returns (SearchGigResponse);
+  rpc FindById (FindByIdRequest) returns (Gig);
+  rpc SellerGigs (SellerGigsRequest) returns (SellerGigsResponse);
+  rpc Create (CreateGigRequest) returns (GigResponseList);
+  rpc Update (UpdateGigRequest) returns (GigResponseList);
+  rpc SeedGigs (SeedGigsRequest) returns (SeedGigsResponse);
+}
+
+// Nested types inside the Gig entity
+message SubCategory {
+  string title = 1;
+}
+
+message Tag {
+  string title = 2;
+}
+
+message StarCount {
+  int32 star = 1;
+  int32 count = 2;
+}
+
+message RatingCategories {
+  StarCount five = 1;
+  StarCount four = 2;
+  StarCount three = 3;
+  StarCount two = 4;
+  StarCount one = 5;
+}
+
+// Main Gig Entity definition matching your Drizzle Schema
+message Gig {
+  string id = 1;
+  string sellerId = 2;
+  string username = 3;
+  string email = 4;
+  string profilePicture = 5;
+  string title = 6;
+  string description = 7;
+  string basicTitle = 8;
+  string basicDescription = 9;
+  string category = 10;
+  repeated SubCategory subCategories = 11;
+  string expectedDelivery = 12;
+  string coverImage = 13;
+  int32 price = 14;
+  repeated Tag tags = 15;
+  bool active = 16;
+  int32 ratingsCount = 17;
+  int32 ratingSum = 18;
+  RatingCategories ratingCategories = 19;
+  optional int32 sortId = 20; 
+  google.protobuf.Timestamp createdAt = 21;
+}
+
+// Method Request / Response Payload Structures
+
+message SearchRequest {
+  optional string minPrice = 1;
+  optional string maxPrice = 2;
+  optional string deliveryTime = 3;
+  optional string category = 4;
+  optional string searchKey = 5;
+  optional string page = 6;
+  optional string limit = 7;
+}
+
+message SearchGigResponse {
+  repeated Gig data = 1;
+  int32 totalCount = 2;
+  int32 currentPage = 3;
+  int32 limit = 4;
+}
+
+message FindByIdRequest {
+  string id = 1;
+}
+
+message SellerGigsRequest {
+  string sellerId = 1;
+  optional string activeGigs = 2; // Handled as string "true"/"false" in your service
+}
+
+message SellerGigsResponse {
+  repeated Gig gigs = 1;
+}
+
+// Form payloads for creating/updating gigs
+message CreateGigRequest {
+  string sellerId = 1;
+  string username = 2;
+  string email = 3;
+  string profilePicture = 4;
+  string title = 5;
+  string description = 6;
+  string basicTitle = 7;
+  string basicDescription = 8;
+  string category = 9;
+  repeated SubCategory subCategories = 10;
+  string expectedDelivery = 11;
+  string coverImage = 12;
+  int32 price = 13;
+  repeated Tag tags = 14;
+}
+
+message UpdateGigRequest {
+  string id = 1; // Required for locating the updating entity
+  optional string title = 2;
+  optional string description = 3;
+  optional string basicTitle = 4;
+  optional string basicDescription = 5;
+  optional string category = 6;
+  repeated SubCategory subCategories = 7;
+  optional string expectedDelivery = 8;
+  optional string coverImage = 9;
+  optional int32 price = 10;
+  repeated Tag tags = 11;
+  optional bool active = 12;
+}
+
+// Wrapper since your insert/update uses .returning() which yields an array
+message GigResponseList {
+  repeated Gig gigs = 1;
+}
+
+message SeedGigsRequest {
+  optional string count = 1; // Handled as string with default "10"
+}
+
+message SeedGigsResponse {
+  string message = 1;
+}

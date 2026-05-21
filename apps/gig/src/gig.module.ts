@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { GigController } from './gig.controller';
 import { GigService } from './gig.service';
-import { DrizzleModule } from '@app/common';
+import { DrizzleModule, GatewayGuard } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as localSchema from './schemas';
 import * as Joi from 'joi';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,6 +19,8 @@ import * as Joi from 'joi';
 
         ACCESS_TOKEN_SECRET: Joi.string().required(),
         ACCESS_TOKEN_EXPIRATION: Joi.string().required(),
+
+        GATEWAY_SECRET: Joi.string().required(),
       }),
     }),
     DrizzleModule.registerAsync({
@@ -29,6 +32,24 @@ import * as Joi from 'joi';
     }),
   ],
   controllers: [GigController],
-  providers: [GigService],
+  providers: [
+    GigService,
+
+    {
+      provide: 'EXPECTED_SERVICE_NAME',
+      useValue: 'gig',
+    },
+    {
+      provide: 'GATEWAY_SECRET',
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return configService.getOrThrow<string>('GATEWAY_SECRET');
+      },
+    },
+    {
+      provide: APP_GUARD,
+      useClass: GatewayGuard,
+    },
+  ],
 })
 export class GigModule {}
