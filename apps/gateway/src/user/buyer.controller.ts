@@ -13,13 +13,6 @@ import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator'
 export class BuyerController {
   constructor(private readonly buyerService: BuyerService) {}
 
-  // @UseGuards(AccessTokenGuard)
-  // @Get('current-buyer')
-  // async currentBuyer(@BearerToken() token: string) {
-  //   console.log('gateway controller 1');
-  //   return this.buyerService.currentBuyer(token);
-  // }
-
   @UseGuards(AccessTokenGuard)
   @Get('current-buyer')
   async currentBuyer(@BearerToken() token: string) {

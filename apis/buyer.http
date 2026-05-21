@@ -10,7 +10,7 @@ Content-Type: application/json
 
 
 ### Buyer by id
-GET {{baseUrl}}/id/7b7cfbe8-8538-452b-8031-71035c8a8506
+GET {{baseUrl}}/id/81b98a70-fb9e-488e-9b90-222dfa0ec5c3
 Content-Type: application/json
 
 

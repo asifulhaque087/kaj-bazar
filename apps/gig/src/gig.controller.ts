@@ -2,7 +2,6 @@ import { Controller } from '@nestjs/common';
 import { GigService } from './gig.service';
 import {
   Gig,
-  GigResponseList,
   GigServiceController,
   GigServiceControllerMethods,
   SearchGigResponse,
@@ -37,11 +36,11 @@ export class GigController implements GigServiceController {
   }
 
   async create(@Payload() data: CreateGigDto) {
-    return this.gigService.create(data) as unknown as GigResponseList;
+    return this.gigService.create(data) as unknown as Gig;
   }
 
   async update(@Payload() data: UpdateGigDto) {
-    return this.gigService.update(data) as unknown as GigResponseList;
+    return this.gigService.update(data) as unknown as Gig;
   }
 
   async seedGigs(@Payload() data: SeedGigsDto) {

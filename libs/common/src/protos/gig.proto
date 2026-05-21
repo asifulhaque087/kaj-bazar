@@ -8,8 +8,8 @@ service GigService {
   rpc Search (SearchRequest) returns (SearchGigResponse);
   rpc FindById (FindByIdRequest) returns (Gig);
   rpc SellerGigs (SellerGigsRequest) returns (SellerGigsResponse);
-  rpc Create (CreateGigRequest) returns (GigResponseList);
-  rpc Update (UpdateGigRequest) returns (GigResponseList);
+  rpc Create (CreateGigRequest) returns (Gig);
+  rpc Update (UpdateGigRequest) returns (Gig);
   rpc SeedGigs (SeedGigsRequest) returns (SeedGigsResponse);
 }
 
@@ -123,11 +123,6 @@ message UpdateGigRequest {
   optional int32 price = 10;
   repeated Tag tags = 11;
   optional bool active = 12;
-}
-
-// Wrapper since your insert/update uses .returning() which yields an array
-message GigResponseList {
-  repeated Gig gigs = 1;
 }
 
 message SeedGigsRequest {

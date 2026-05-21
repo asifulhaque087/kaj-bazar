@@ -32,6 +32,10 @@ export class RpcToHttpFilter implements ExceptionFilter {
         errors: errors,
       });
     }
+    console.log(
+      '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ gateway => validation filter ',
+      exception,
+    );
 
     // 2. Handle standard NestJS HttpExceptions (keep it consistent)
     if (exception instanceof HttpException) {

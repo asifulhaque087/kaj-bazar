@@ -124,11 +124,6 @@ export interface UpdateGigRequest {
   active?: boolean | undefined;
 }
 
-/** Wrapper since your insert/update uses .returning() which yields an array */
-export interface GigResponseList {
-  gigs: Gig[];
-}
-
 export interface SeedGigsRequest {
   /** Handled as string with default "10" */
   count?: string | undefined;
@@ -147,9 +142,9 @@ export interface GigServiceClient {
 
   sellerGigs(request: SellerGigsRequest, metadata?: Metadata): Observable<SellerGigsResponse>;
 
-  create(request: CreateGigRequest, metadata?: Metadata): Observable<GigResponseList>;
+  create(request: CreateGigRequest, metadata?: Metadata): Observable<Gig>;
 
-  update(request: UpdateGigRequest, metadata?: Metadata): Observable<GigResponseList>;
+  update(request: UpdateGigRequest, metadata?: Metadata): Observable<Gig>;
 
   seedGigs(request: SeedGigsRequest, metadata?: Metadata): Observable<SeedGigsResponse>;
 }
@@ -167,15 +162,9 @@ export interface GigServiceController {
     metadata?: Metadata,
   ): Promise<SellerGigsResponse> | Observable<SellerGigsResponse> | SellerGigsResponse;
 
-  create(
-    request: CreateGigRequest,
-    metadata?: Metadata,
-  ): Promise<GigResponseList> | Observable<GigResponseList> | GigResponseList;
+  create(request: CreateGigRequest, metadata?: Metadata): Promise<Gig> | Observable<Gig> | Gig;
 
-  update(
-    request: UpdateGigRequest,
-    metadata?: Metadata,
-  ): Promise<GigResponseList> | Observable<GigResponseList> | GigResponseList;
+  update(request: UpdateGigRequest, metadata?: Metadata): Promise<Gig> | Observable<Gig> | Gig;
 
   seedGigs(
     request: SeedGigsRequest,

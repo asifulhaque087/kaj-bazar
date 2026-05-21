@@ -119,11 +119,15 @@ export class GigService {
     if (gigsErr) return throwGrpcError('INTERNAL', gigsErr.message);
     if (!gigs.length) return throwGrpcError('NOT_FOUND', 'No Gigs Available');
 
-    return gigs;
+    return { gigs: gigs };
   }
   async create(formData: CreateGigDto) {
     const [newGig, newGigErr] = await tryit(
-      this.db.insert(GigsTable).values(formData).returning(),
+      this.db
+        .insert(GigsTable)
+        .values(formData)
+        .returning()
+        .then((res) => res[0]),
     );
 
     if (newGigErr) return throwGrpcError('INTERNAL', newGigErr.message);
@@ -136,7 +140,8 @@ export class GigService {
         .update(GigsTable)
         .set(data)
         .where(eq(GigsTable.id, data.id))
-        .returning(),
+        .returning()
+        .then((res) => res[0]),
     );
 
     if (newGigErr) return throwGrpcError('INTERNAL', newGigErr.message);

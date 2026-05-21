@@ -26,7 +26,7 @@ POST {{baseUrl}}/create
 Content-Type: application/json
 
 {
-  "id": "7b7cfbe8-8538-452b-8031-71035c8a8506",
+  "id": "81b98a70-fb9e-488e-9b90-222dfa0ec5c3",
   "fullName": "Mridul Dev",
   "username": "mridul_dev",
   "email": "mridul@example.com",

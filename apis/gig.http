@@ -1,0 +1,55 @@
+# {{$guid}} for a random ID 
+# {{$timestamp}} for the current time.
+
+@baseUrl = http://localhost:3001/gig
+
+
+### Search
+GET {{baseUrl}}/search?searchKey=NestJS&minPrice=50&maxPrice=300&category=Programming%20%26%20Tech&deliveryTime=3%20Days&page=1&limit=10
+
+# GET {{baseUrl}}/search
+
+Content-Type: application/json
+
+
+### Seller Gigs
+GET {{baseUrl}}/seller/81b98a70-fb9e-488e-9b90-222dfa0ec5c3
+Content-Type: application/json
+
+
+
+### Gig by id
+GET {{baseUrl}}/b4aaf09d-c4a4-4c66-bbcf-d96be0f7a020
+Content-Type: application/json
+
+
+
+### Create
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "sellerId": "81b98a70-fb9e-488e-9b90-222dfa0ec5c3",
+  "username": "johndoe_dev",
+  "email": "johndoe@example.com",
+  "profilePicture": "https://example.com/profiles/johndoe.jpg",
+  "title": "I will build a production-ready NestJS microservice API",
+  "description": "Looking for a robust, scalable backend? I will design and develop a high-performance NestJS microservice tailored to your business needs using clean architecture and modern tools.",
+  "basicTitle": "Single Microservice Setup",
+  "basicDescription": "Includes 1 microservice architecture, up to 5 endpoints, database integration, and basic unit testing.",
+  "category": "Programming & Tech",
+  "subCategories": [
+    { "title": "Web Programming" },
+    { "title": "Backend Development" }
+  ],
+  "expectedDelivery": "3 Days",
+  "coverImage": "https://example.com/gig-covers/nestjs-backend.jpg",
+  "price": 150,
+  "tags": [
+    { "title": "nestjs" },
+    { "title": "typescript" },
+    { "title": "grpc" },
+    { "title": "postgresql" }
+  ]
+}
