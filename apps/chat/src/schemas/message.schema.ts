@@ -1,4 +1,4 @@
-import { ConversationsTable } from "@src/schemas/conversation.schema";
+import { ConversationsTable } from "./conversation.schema";
 import { relations } from "drizzle-orm";
 import {
   pgTable,
@@ -11,7 +11,7 @@ import {
 // import { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
 // Define the type for your offer object for better TypeScript support
-interface Offer {
+export interface Offer {
   gigTitle: string;
   gigId: string;
   price: number;
@@ -24,7 +24,7 @@ interface Offer {
   cancelled?: boolean;
 }
 
-const defaultOfferValue: Offer = {
+export const defaultOfferValue: Offer = {
   gigTitle: "",
   gigId: "",
   price: 0,

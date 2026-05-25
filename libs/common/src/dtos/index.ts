@@ -11,3 +11,4 @@ export * from './change-password.dto';
 export * from './buyer.dto';
 export * from './seller.dto';
 export * from './gig.dto';
+export * from './chat.dto';

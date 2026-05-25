@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { GigModule } from './gig/gig.module';
+import { ChatModule } from './chat/chat.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -30,6 +31,7 @@ import * as Joi from 'joi';
     AuthModule,
     UserModule,
     GigModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],

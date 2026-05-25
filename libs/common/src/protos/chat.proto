@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package chat;
+
+service ChatService {
+  rpc FindOrCreateConversation (ConversationRequest) returns (ConversationResponse);
+  rpc CreateMessage (CreateMessageRequest) returns (MessageResponse);
+  rpc StreamMessages (StreamMessagesRequest) returns (stream MessageResponse);
+}
+
+message Offer {
+  string gigTitle = 1;
+  string gigId = 2;
+  double price = 3;
+  string description = 4;
+  int32 deliveryInDays = 5;
+  optional string oldDeliveryDate = 6;
+  optional string newDeliveryDate = 7;
+  optional bool accepted = 8;
+  optional bool cancelled = 9;
+}
+
+message MessageResponse {
+  string id = 1;
+  string conversationId = 2;
+  string senderUsername = 3;
+  string receiverUsername = 4;
+  string senderPicture = 5;
+  string receiverPicture = 6;
+  optional string body = 7;
+  optional string file = 8;
+  optional string fileType = 9;
+  optional string fileSize = 10;
+  optional string fileName = 11;
+  optional bool isRead = 12;
+  optional bool hasOffer = 13;
+  optional Offer offer = 14;
+  string createdAt = 15;
+}
+
+message ConversationRequest {
+  string senderUsername = 1;
+  string receiverUsername = 2;
+  string senderProfilePhoto = 3;
+  string receiverProfilePhoto = 4;
+}
+
+message ConversationResponse {
+  string id = 1;
+  string senderUsername = 2;
+  string senderProfilePhoto = 3;
+  string receiverUsername = 4;
+  string receiverProfilePhoto = 5;
+  repeated MessageResponse messages = 6;
+}
+
+message CreateMessageRequest {
+  string conversationId = 1;
+  string senderUsername = 2;
+  string receiverUsername = 3;
+  string senderPicture = 4;
+  string receiverPicture = 5;
+  optional string body = 6;
+  optional bool hasOffer = 7;
+  optional Offer offer = 8;
+}
+
+message StreamMessagesRequest {
+  string username = 1;
+}
