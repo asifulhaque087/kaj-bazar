@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { GigService } from './gig.service';
 import { GigController } from './gig.controller';
-import { AuthModule } from 'apps/gateway/src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GIG_PACKAGE_NAME } from '@app/common/generated/gig';
-import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
+import { getProtoPath } from '@app/common';
+import { createModuleAuthInterceptor } from '../grpc.interceptor';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
           transport: Transport.GRPC,
           options: {
             package: GIG_PACKAGE_NAME,
-            protoPath: 'libs/common/src/protos/gig.proto',
+            protoPath: getProtoPath('gig.proto'),
             url: 'gig:50051',
             channelOptions: {
               interceptors: [

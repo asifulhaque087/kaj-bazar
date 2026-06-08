@@ -1,7 +1,13 @@
 # compiled output
 /dist
+**/dist
+**/dist-migration
 **/node_modules
 /build
+
+# turbo
+.turbo
+**/.turbo
 
 # Logs
 logs

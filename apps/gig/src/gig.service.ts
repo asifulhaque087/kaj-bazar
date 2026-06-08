@@ -10,8 +10,8 @@ import {
   UpdateGigDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
-import type { DrizzleDB } from 'apps/gig/drizzle/drizzle';
-import { GigsTable } from 'apps/gig/src/schemas';
+import type { DrizzleDB } from '../drizzle/drizzle';
+import { GigsTable } from './schemas';
 import { and, ilike, or, count, gte, lte, eq } from 'drizzle-orm';
 
 @Injectable()

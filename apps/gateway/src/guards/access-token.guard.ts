@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Response } from 'express';
 
 @Injectable()

@@ -17,7 +17,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { createAuthMetadata } from 'apps/gateway/src/utils/create-auth-metadata.util';
+import { createAuthMetadata } from '../utils/create-auth-metadata.util';
 import ms, { StringValue } from 'ms';
 import { firstValueFrom } from 'rxjs';
 

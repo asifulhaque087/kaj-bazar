@@ -8,9 +8,9 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
-import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator';
-import { SellerService } from 'apps/gateway/src/user/seller.service';
+import { AccessTokenGuard } from '../guards/access-token.guard';
+import { BearerToken } from '../decorators/bearer-token.decorator';
+import { SellerService } from './seller.service';
 import { CreateSellerDto, UpdateSellerDto } from '@app/common';
 
 @Controller('seller')

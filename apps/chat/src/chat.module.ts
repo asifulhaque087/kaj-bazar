@@ -6,11 +6,13 @@ import * as localSchema from './schemas';
 import * as Joi from 'joi';
 import { APP_GUARD } from '@nestjs/core';
 import { DrizzleModule, GatewayGuard } from '@app/common';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   // imports: [],
 
   imports: [
+    RedisModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({

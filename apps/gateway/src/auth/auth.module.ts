@@ -3,13 +3,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
-import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
+import { createModuleAuthInterceptor } from '../grpc.interceptor';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
-import { GoogleStrategy } from 'apps/gateway/src/strategies/google.strategy';
-import { JwtStrategy } from 'apps/gateway/src/strategies/jwt.strategy';
-import { USER_PACKAGE_NAME } from '@app/common/generated/user';
+import { AccessTokenGuard } from '../guards/access-token.guard';
+import { GoogleStrategy } from '../strategies/google.strategy';
+import { JwtStrategy } from '../strategies/jwt.strategy';
+import { getProtoPath } from '@app/common';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { USER_PACKAGE_NAME } from '@app/common/generated/user';
           transport: Transport.GRPC,
           options: {
             package: AUTH_PACKAGE_NAME,
-            protoPath: 'libs/common/src/protos/auth.proto',
+            protoPath: getProtoPath('auth.proto'),
             url: 'auth:50051',
             channelOptions: {
               interceptors: [

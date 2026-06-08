@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { GatewayModule } from './gateway.module';
 import cookieParser from 'cookie-parser'; // Change this line
-import { RpcToHttpFilter } from 'apps/gateway/src/filters/rpc-to-http.filter';
+import { RpcToHttpFilter } from './filters/rpc-to-http.filter';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

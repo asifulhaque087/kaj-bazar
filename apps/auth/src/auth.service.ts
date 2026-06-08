@@ -18,10 +18,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, gt } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import type { DrizzleDB } from 'apps/auth/drizzle/drizzle';
-import { AuthTable } from 'apps/auth/src/schemas';
+import type { DrizzleDB } from '../drizzle/drizzle';
+import { AuthTable } from './schemas';
 import crypto from 'crypto';
-import { hashPassword, verifyPassword } from 'apps/auth/src/utils/hashing.util';
+import { hashPassword, verifyPassword } from './utils/hashing.util';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()

@@ -1,19 +1,39 @@
 {
   "name": "@kaj-bazar/chat",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
+  "license": "ISC",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main",
+    "lint": "eslint \"src/**/*.ts\" --fix",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio --host 0.0.0.0 --port 4986",
-    "build:migrate": "tsc drizzle/migrate.ts --outDir ../../dist-migration --rootDir ../../ --module commonjs --target es2021 --skipLibCheck"
+    "build:migrate": "tsc drizzle/migrate.ts --outDir dist-migration --rootDir . --module commonjs --target es2021 --skipLibCheck"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "ioredis": "^5.10.1"
+    "@app/common": "workspace:*",
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.1",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/microservices": "^11.1.19",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "drizzle-orm": "^0.45.2",
+    "ioredis": "^5.10.1",
+    "joi": "^18.2.1",
+    "pg": "^8.20.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "^5.7.3"
   }
 }

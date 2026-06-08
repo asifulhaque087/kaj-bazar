@@ -9,7 +9,7 @@ import {
   UpdateSellerDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
-import type { DrizzleDB } from 'apps/user/drizzle/drizzle';
+import type { DrizzleDB } from '../../drizzle/drizzle';
 import { faker } from '@faker-js/faker';
 import { sampleSize, random } from 'lodash';
 
@@ -22,7 +22,7 @@ import {
   SellersTable,
   SkillsTable,
   SocialLinksTable,
-} from 'apps/user/src/schemas';
+} from '../schemas';
 import { eq, inArray, or, sql } from 'drizzle-orm';
 
 @Injectable()

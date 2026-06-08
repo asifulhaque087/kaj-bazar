@@ -7,8 +7,8 @@ import {
   tryit,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
-import type { DrizzleDB } from 'apps/user/drizzle/drizzle';
-import { BuyersTable } from 'apps/user/src/schemas';
+import type { DrizzleDB } from '../../drizzle/drizzle';
+import { BuyersTable } from '../schemas';
 import { eq, SQL } from 'drizzle-orm';
 
 @Injectable()

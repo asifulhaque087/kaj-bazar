@@ -7,8 +7,8 @@ import {
   tryit,
 } from '@app/common';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import type { DrizzleDB } from 'apps/chat/drizzle/drizzle';
-import { ConversationsTable, MessagesTable } from 'apps/chat/src/schemas';
+import type { DrizzleDB } from '../drizzle/drizzle';
+import { ConversationsTable, MessagesTable } from './schemas';
 import { and, or, eq } from 'drizzle-orm';
 import Redis from 'ioredis';
 import { Observable } from 'rxjs';
@@ -182,8 +182,8 @@ export class ChatService implements OnModuleInit {
 // } from '@app/common';
 // import { MessageResponse } from '@app/common/generated/chat';
 // import { Inject, Injectable } from '@nestjs/common';
-// import type { DrizzleDB } from 'apps/chat/drizzle/drizzle';
-// import { ConversationsTable, MessagesTable } from 'apps/chat/src/schemas';
+// import type { DrizzleDB } from '../drizzle/drizzle';
+// import { ConversationsTable, MessagesTable } from './schemas';
 // import { and, or, eq } from 'drizzle-orm';
 // import { filter, Observable, Subject } from 'rxjs';
 

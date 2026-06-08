@@ -18,11 +18,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from 'apps/gateway/src/auth/auth.service';
-import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator';
-import { GetUser } from 'apps/gateway/src/decorators/get-user.decorator';
-import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
-import type { AuthTokens } from 'apps/gateway/src/strategies/google.strategy';
+import { AuthService } from './auth.service';
+import { BearerToken } from '../decorators/bearer-token.decorator';
+import { GetUser } from '../decorators/get-user.decorator';
+import { AccessTokenGuard } from '../guards/access-token.guard';
+import type { AuthTokens } from '../strategies/google.strategy';
 import type { Request, Response } from 'express';
 
 @Controller('auth')

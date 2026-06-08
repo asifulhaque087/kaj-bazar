@@ -4,3 +4,4 @@ export * from './dtos';
 export * from './database';
 export * from './pipes';
 export * from './modules';
+export * from './protos';

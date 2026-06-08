@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'apps/gateway/src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
+import { createModuleAuthInterceptor } from '../grpc.interceptor';
 import { CHAT_PACKAGE_NAME } from '@app/common/generated/chat';
+import { getProtoPath } from '@app/common';
 import { ChatGateway } from './chat.gateway';
 
 @Module({
@@ -19,7 +20,7 @@ import { ChatGateway } from './chat.gateway';
           transport: Transport.GRPC,
           options: {
             package: CHAT_PACKAGE_NAME,
-            protoPath: 'libs/common/src/protos/chat.proto',
+            protoPath: getProtoPath('chat.proto'),
             url: 'chat:50051',
             channelOptions: {
               interceptors: [

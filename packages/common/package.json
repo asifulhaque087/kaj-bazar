@@ -1,0 +1,49 @@
+{
+  "name": "@app/common",
+  "version": "1.0.0",
+  "description": "Shared library for kaj-bazar services",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./generated/*": {
+      "types": "./src/generated/*.ts",
+      "default": "./dist/generated/*.js"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json && tsc-alias -p tsconfig.lib.json && node -e \"require('fs').cpSync('src/protos','dist/protos',{recursive:true,filter:(s)=>!s.endsWith('.ts')})\"",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "proto:gen": "grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=../../node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./src/generated --ts_proto_opt=nestJs=true,addGrpcMetadata=true -I ./src/protos ./src/protos/*.proto"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.1",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/microservices": "^11.1.19",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "drizzle-orm": "^0.45.2",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.20.0",
+    "grpc-tools": "^1.13.1",
+    "ts-proto": "^2.11.8",
+    "tsc-alias": "^1.8.10"
+  }
+}

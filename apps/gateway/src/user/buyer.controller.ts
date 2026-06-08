@@ -6,8 +6,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BuyerService } from './buyer.service';
-import { AccessTokenGuard } from 'apps/gateway/src/guards/access-token.guard';
-import { BearerToken } from 'apps/gateway/src/decorators/bearer-token.decorator';
+import { AccessTokenGuard } from '../guards/access-token.guard';
+import { BearerToken } from '../decorators/bearer-token.decorator';
 
 @Controller('buyer')
 export class BuyerController {

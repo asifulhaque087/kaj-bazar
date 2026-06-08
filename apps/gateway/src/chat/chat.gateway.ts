@@ -35,7 +35,7 @@ export class ChatGateway
   // Track open gRPC streaming subscriptions to prevent memory leaks
   private activeStreams = new Map<string, Subscription>();
 
-  constructor(@Inject('CHAT_PACKAGE') private readonly client: ClientGrpc) {}
+  constructor(@Inject('CHAT_SERVICE') private readonly client: ClientGrpc) {}
 
   onModuleInit() {
     this.chatService = this.client.getService<ChatServiceClient>('ChatService');

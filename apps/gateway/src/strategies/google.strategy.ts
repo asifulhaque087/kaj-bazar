@@ -2,7 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from 'apps/gateway/src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { ValidateSocialUserDto } from '@app/common';
 
 export interface AuthTokens {

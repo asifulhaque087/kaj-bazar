@@ -8,7 +8,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { createAuthMetadata } from 'apps/gateway/src/utils/create-auth-metadata.util';
+import { createAuthMetadata } from '../utils/create-auth-metadata.util';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()

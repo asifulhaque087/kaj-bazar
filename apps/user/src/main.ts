@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { UserModule } from './user.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { USER_PACKAGE_NAME } from '@app/common/generated/user';
-import { GrpcValidationPipe } from '@app/common';
+import { GrpcValidationPipe, getProtoPath } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
@@ -11,7 +11,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: USER_PACKAGE_NAME,
-      protoPath: 'libs/common/src/protos/user.proto',
+      protoPath: getProtoPath('user.proto'),
       url: '0.0.0.0:50051',
     },
   });

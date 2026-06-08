@@ -4,8 +4,9 @@ import { BuyerController } from './buyer.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { USER_PACKAGE_NAME } from '@app/common/generated/user';
-import { createModuleAuthInterceptor } from 'apps/gateway/src/grpc.interceptor';
-import { AuthModule } from 'apps/gateway/src/auth/auth.module';
+import { getProtoPath } from '@app/common';
+import { createModuleAuthInterceptor } from '../grpc.interceptor';
+import { AuthModule } from '../auth/auth.module';
 import { SellerController } from './seller.controller';
 import { SellerService } from './seller.service';
 
@@ -22,7 +23,7 @@ import { SellerService } from './seller.service';
           transport: Transport.GRPC,
           options: {
             package: USER_PACKAGE_NAME,
-            protoPath: 'libs/common/src/protos/user.proto',
+            protoPath: getProtoPath('user.proto'),
             url: 'user:50051',
             channelOptions: {
               interceptors: [

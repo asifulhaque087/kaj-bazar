@@ -1,16 +1,45 @@
 {
   "name": "@kaj-bazar/user",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
+  "license": "ISC",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main",
+    "lint": "eslint \"src/**/*.ts\" --fix",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio --host 0.0.0.0 --port 4984",
-    "build:migrate": "tsc drizzle/migrate.ts --outDir ../../dist-migration --rootDir ../../ --module commonjs --target es2021 --skipLibCheck"
+    "build:migrate": "tsc drizzle/migrate.ts --outDir dist-migration --rootDir . --module commonjs --target es2021 --skipLibCheck"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@app/common": "workspace:*",
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.1",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/microservices": "^11.1.19",
+    "@nestjs/platform-express": "^11.0.1",
+    "amqp-connection-manager": "^5.0.0",
+    "amqplib": "^2.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "drizzle-orm": "^0.45.2",
+    "joi": "^18.2.1",
+    "lodash": "^4.18.1",
+    "pg": "^8.20.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.4.0",
+    "@nestjs/cli": "^11.0.0",
+    "@types/lodash": "^4.17.24",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "^5.7.3"
+  }
 }
