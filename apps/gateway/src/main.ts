@@ -3,6 +3,7 @@ import { GatewayModule } from './gateway.module';
 import cookieParser from 'cookie-parser'; // Change this line
 import { RpcToHttpFilter } from './filters/rpc-to-http.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayModule);
@@ -23,6 +24,17 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('Kaj Bazar API')
+    .setDescription('Kaj Bazar marketplace API documentation')
+    .setVersion('1.0')
+    .addCookieAuth('access_token')
+    .addCookieAuth('refresh_token')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(process.env.port ?? 3001);
 }
