@@ -22,7 +22,7 @@ import { createModuleAuthInterceptor } from '../grpc.interceptor';
           options: {
             package: GIG_PACKAGE_NAME,
             protoPath: getProtoPath('gig.proto'),
-            url: 'gig:50051',
+            url: configService.get('GIG_GRPC_URL') ?? 'gig:50051',
             channelOptions: {
               interceptors: [
                 createModuleAuthInterceptor(

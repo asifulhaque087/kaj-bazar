@@ -21,7 +21,7 @@ import { ChatGateway } from './chat.gateway';
           options: {
             package: CHAT_PACKAGE_NAME,
             protoPath: getProtoPath('chat.proto'),
-            url: 'chat:50051',
+            url: configService.get('CHAT_GRPC_URL') ?? 'chat:50051',
             channelOptions: {
               interceptors: [
                 createModuleAuthInterceptor(

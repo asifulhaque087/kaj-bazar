@@ -12,7 +12,7 @@ async function bootstrap() {
     options: {
       package: USER_PACKAGE_NAME,
       protoPath: getProtoPath('user.proto'),
-      url: '0.0.0.0:50051',
+      url: '0.0.0.0:' + (process.env.GRPC_PORT || '50051'),
     },
   });
 
@@ -20,7 +20,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+      urls: [process.env.RABBITMQ_URL || 'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
       queue: 'user-queue',
     },
   });

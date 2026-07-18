@@ -24,7 +24,7 @@ import { SellerService } from './seller.service';
           options: {
             package: USER_PACKAGE_NAME,
             protoPath: getProtoPath('user.proto'),
-            url: 'user:50051',
+            url: configService.get('USER_GRPC_URL') ?? 'user:50051',
             channelOptions: {
               interceptors: [
                 createModuleAuthInterceptor(

@@ -32,7 +32,7 @@ import { getProtoPath } from '@app/common';
           options: {
             package: AUTH_PACKAGE_NAME,
             protoPath: getProtoPath('auth.proto'),
-            url: 'auth:50051',
+            url: configService.get('AUTH_GRPC_URL') ?? 'auth:50051',
             channelOptions: {
               interceptors: [
                 createModuleAuthInterceptor(

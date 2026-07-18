@@ -11,7 +11,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+        urls: [process.env.RABBITMQ_URL || 'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
         queue: 'email-queue',
       },
     },
