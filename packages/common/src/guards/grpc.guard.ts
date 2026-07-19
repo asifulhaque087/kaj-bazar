@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Metadata } from '@grpc/grpc-js';
-import { throwGrpcError, tryit } from '@app/common/utils';
+import { throwGrpcError, tryit } from '../utils';
 
 export interface GrpcUserPayload {
   id: string;

@@ -18,7 +18,7 @@ import {
   Skill,
   SocialLink,
   UpdateSellerRequest,
-} from '@app/common/generated/user';
+} from '../generated/user';
 import { Type } from 'class-transformer';
 
 export class SellerByIdDto implements FindByIdRequest {

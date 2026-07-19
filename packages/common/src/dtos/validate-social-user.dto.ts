@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from 'class-validator';
-import { ValidateSocialUserBody } from '@app/common/generated/auth';
+import { ValidateSocialUserBody } from '../generated/auth';
 
 export class ValidateSocialUserDto implements ValidateSocialUserBody {
   @IsString()

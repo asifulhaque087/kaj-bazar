@@ -5,7 +5,7 @@ import {
   ConfigurableModuleClass,
   DrizzleOptions,
   MODULE_OPTIONS_TOKEN,
-} from '@app/common/database/drizzle.module-definition';
+} from './drizzle.module-definition';
 
 export const DRIZZLE = Symbol('drizzle-connection');
 

@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { ForgotPasswordBody } from '@app/common/generated/auth';
+import { ForgotPasswordBody } from '../generated/auth';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ForgotPasswordDto implements ForgotPasswordBody {

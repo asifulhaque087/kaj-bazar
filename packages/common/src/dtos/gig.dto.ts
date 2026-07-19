@@ -7,7 +7,7 @@ import {
   SeedGigsRequest,
   SubCategory,
   Tag,
-} from '@app/common/generated/gig';
+} from '../generated/gig';
 import {
   IsOptional,
   IsString,

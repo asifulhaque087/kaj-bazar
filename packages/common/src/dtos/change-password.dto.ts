@@ -1,4 +1,4 @@
-import { ChangePasswordBody } from '@app/common/generated/auth';
+import { ChangePasswordBody } from '../generated/auth';
 import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 

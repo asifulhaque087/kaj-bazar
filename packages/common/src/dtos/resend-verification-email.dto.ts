@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { ResendVerificationLinkBody } from '@app/common/generated/auth';
+import { ResendVerificationLinkBody } from '../generated/auth';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ResendVerificationLinkDto implements ResendVerificationLinkBody {

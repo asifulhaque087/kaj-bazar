@@ -15,8 +15,8 @@
       "default": "./dist/generated/*.js"
     },
     "./*": {
-      "types": "./src/*.ts",
-      "default": "./dist/*.js"
+      "types": "./src/*",
+      "default": "./dist/*"
     }
   },
   "scripts": {

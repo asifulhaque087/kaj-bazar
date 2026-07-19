@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from 'class-validator';
-import { RegisterBody } from '@app/common/generated/auth';
+import { RegisterBody } from '../generated/auth';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegisterUserDto implements RegisterBody {

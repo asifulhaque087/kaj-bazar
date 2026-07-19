@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from 'class-validator';
-import { FindByIdRequest, FindByNameRequest } from '@app/common/generated/user';
+import { FindByIdRequest, FindByNameRequest } from '../generated/user';
 
 export class BuyerByIdDto implements FindByIdRequest {
   @IsString()

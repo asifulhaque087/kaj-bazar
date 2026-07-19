@@ -13,7 +13,7 @@ import {
   ConversationRequest,
   StreamMessagesRequest,
   Offer as IOffer,
-} from '@app/common/generated/chat';
+} from '../generated/chat';
 
 export class OfferDto implements IOffer {
   @IsString()

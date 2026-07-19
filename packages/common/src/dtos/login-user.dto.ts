@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { LoginBody } from '@app/common/generated/auth';
+import { LoginBody } from '../generated/auth';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDto implements LoginBody {
