@@ -69,6 +69,11 @@ services:
       "
     env_file:
       - ./apps/gateway/.env
+    environment:
+      - AUTH_GRPC_URL=auth:50051
+      - USER_GRPC_URL=user:50052
+      - GIG_GRPC_URL=gig:50053
+      - CHAT_GRPC_URL=chat:50054
     ports:
       - '3001:3001'
     develop:
@@ -95,6 +100,8 @@ services:
       "
     env_file:
       - ./apps/email/.env
+    environment:
+      - RABBITMQ_URL=amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -132,6 +139,9 @@ services:
         condition: service_started
     env_file:
       - ./apps/auth/.env
+    environment:
+      - DATABASE_URL=postgresql://billu:random-password@auth-db:5432/auth
+      - RABBITMQ_URL=amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672
     develop:
       watch:
         - action: sync
@@ -166,6 +176,9 @@ services:
         condition: service_started
     env_file:
       - ./apps/user/.env
+    environment:
+      - DATABASE_URL=postgresql://billu:random-password@user-db:5432/user
+      - RABBITMQ_URL=amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672
     develop:
       watch:
         - action: sync
@@ -200,6 +213,8 @@ services:
         condition: service_started
     env_file:
       - ./apps/gig/.env
+    environment:
+      - DATABASE_URL=postgresql://billu:random-password@gig-db:5432/gig
     develop:
       watch:
         - action: sync
@@ -226,7 +241,10 @@ services:
       "
     ports:
       - 4986:4986
+    env_file:
+      - ./apps/chat/.env
     environment:
+      - DATABASE_URL=postgresql://billu:random-password@chat-db:5432/chat
       - REDIS_HOST=redis
     depends_on:
       rabbitmq:
@@ -235,8 +253,6 @@ services:
         condition: service_started
       redis:
         condition: service_healthy
-    env_file:
-      - ./apps/chat/.env
     develop:
       watch:
         - action: sync
