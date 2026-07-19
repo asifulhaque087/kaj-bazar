@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: asiful087/kaj-bazar-user
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 50052
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
+
+secrets:
+  DATABASE_URL: "postgresql://billu:password@user-db:5432/user"
+  ACCESS_TOKEN_SECRET: ""
+  ACCESS_TOKEN_EXPIRATION: "5m"
+  GATEWAY_SECRET: ""
+  RABBITMQ_URL: "amqp://user:pass@rabbitmq:5672"
+
+env:
+  GRPC_PORT: "50052"

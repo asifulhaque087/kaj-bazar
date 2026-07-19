@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  repository: asiful087/kaj-bazar-gig
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 50053
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
+
+secrets:
+  DATABASE_URL: "postgresql://billu:password@gig-db:5432/gig"
+  ACCESS_TOKEN_SECRET: ""
+  ACCESS_TOKEN_EXPIRATION: "5m"
+  GATEWAY_SECRET: ""
+
+env:
+  GRPC_PORT: "50053"

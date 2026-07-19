@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chat.fullname" . }}
+  labels:
+    app: {{ include "chat.name" . }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "chat.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "chat.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: chat
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.env.GRPC_PORT }}
+              protocol: TCP
+          env:
+            - name: GRPC_PORT
+              value: {{ .Values.env.GRPC_PORT | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ include "chat.fullname" . }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

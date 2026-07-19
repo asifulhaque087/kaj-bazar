@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: asiful087/kaj-bazar-email
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3002
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+secrets:
+  SENDER_EMAIL: ""
+  SENDER_EMAIL_PASSWORD: ""
+  RABBITMQ_URL: "amqp://user:pass@rabbitmq:5672"
+  CLIENT_URL: "http://localhost:3000"
+
+env: {}

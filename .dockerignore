@@ -17,6 +17,10 @@ docker-compose.yml
 .env
 *.env
 
+# Helm charts (not needed in Docker build context)
+charts
+.github
+
 # Debug/Logs
 npm-debug.log*
 yarn-debug.log*

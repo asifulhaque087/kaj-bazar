@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "auth.fullname" . }}
+  labels:
+    app: {{ include "auth.name" . }}
+    release: {{ .Release.Name }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.env.GRPC_PORT }}
+      protocol: TCP
+      name: grpc
+  selector:
+    app: {{ include "auth.name" . }}
+    release: {{ .Release.Name }}
