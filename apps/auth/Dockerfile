@@ -20,15 +20,6 @@ COPY apps/auth apps/auth
 # includes workspace dependencies, so @app/common/dist is produced too.
 RUN pnpm --filter "@kaj-bazar/auth..." run build
 
-# Compile the migration runner (drizzle/migrate.ts → dist-migration/)
-RUN pnpm --filter "@kaj-bazar/auth" run build:migrate
-
-# Generate migration files from the schema (no DB connection needed)
-RUN pnpm --filter "@kaj-bazar/auth" run db:generate
-
-# The migrate runner expects ./migrations but drizzle-kit outputs to drizzle/migrations/
-RUN cp -r apps/auth/drizzle/migrations apps/auth/migrations
-
 
 FROM node:alpine AS production
 
@@ -45,13 +36,9 @@ COPY apps/auth/package.json apps/auth/package.json
 
 RUN pnpm install --prod --filter "@kaj-bazar/auth..."
 
-# Compiled app + compiled shared package
+# Compiled app + the compiled shared package it requires at runtime
+# (@app/common is external; its dist/ — including dist/protos — must be present)
 COPY --from=development /usr/src/app/apps/auth/dist ./apps/auth/dist
 COPY --from=development /usr/src/app/packages/common/dist ./packages/common/dist
 
-# Compiled migration runner + generated migration files
-COPY --from=development /usr/src/app/apps/auth/dist-migration ./apps/auth/dist-migration
-COPY --from=development /usr/src/app/apps/auth/migrations ./apps/auth/migrations
-
-# Run pending migrations then start the server
-CMD ["sh", "-c", "cd apps/auth && node dist-migration/drizzle/migrate.js && node dist/main"]
+CMD ["node", "apps/auth/dist/main"]
