@@ -14,9 +14,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
+        // POSTGRES_USER: Joi.string().required(),
+        // POSTGRES_PASSWORD: Joi.string().required(),
+        // POSTGRES_DB: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
 
         ACCESS_TOKEN_SECRET: Joi.string().required(),
