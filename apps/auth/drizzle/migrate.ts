@@ -2,48 +2,47 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
 
+const MIGRATE_TIMEOUT = 120_000;
+
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error('DATABASE_URL is not set for migrations');
+  console.error('DATABASE_URL is not set for migrations');
+  process.exit(1);
 }
 
-// Use a separate pool for migration and ensure it is closed afterward
 const pool = new Pool({
-  connectionString: connectionString,
-  //   connectionString: config.DATABASE_URL,
+  connectionString,
+  connectionTimeoutMillis: 10_000,
+  idleTimeoutMillis: 30_000,
 });
 
 const db = drizzle(pool);
 
 async function runMigrations() {
-  console.log('--- Starting Drizzle Migrations (migrate.ts) ---');
+  console.log('--- Starting Drizzle Migrations ---');
+  console.log('Migrations folder: ./drizzle/migrations');
 
-  const [_, error] = await tryit(
-    migrate(db, { migrationsFolder: './drizzle/migrations' }),
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(
+      () => reject(new Error(`Migration timed out after ${MIGRATE_TIMEOUT / 1000}s`)),
+      MIGRATE_TIMEOUT,
+    ),
   );
 
-  if (error) {
-    console.error('@@@@@@@@@ Migration failed:', error);
+  try {
+    await Promise.race([
+      migrate(db, { migrationsFolder: './drizzle/migrations' }),
+      timeout,
+    ]);
+    console.log('--- Migrations finished successfully ---');
+  } catch (error) {
+    console.error('Migration failed:', error);
+    await pool.end().catch(() => {});
     process.exit(1);
   }
 
-  console.log('--- Migrations finished successfully ---');
-
   await pool.end();
 }
-
-export type TryItResult<T, E> = [T, null] | [null, E];
-
-export const tryit = async <T, E = Error>(
-  promise: Promise<T>,
-): Promise<TryItResult<T, E>> => {
-  try {
-    const data = await promise;
-    return [data, null];
-  } catch (error) {
-    return [null, error as E];
-  }
-};
 
 runMigrations();
