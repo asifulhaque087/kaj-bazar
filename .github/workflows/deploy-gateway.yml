@@ -2,14 +2,14 @@ name: Deploy Gateway
 
 on:
   push:
-    branches: [main]
+    branches: [nest-microservice]
     paths:
       - 'apps/gateway/**'
       - 'charts/gateway/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-gateway.yml'
   pull_request:
-    branches: [main]
+    branches: [nest-microservice]
     paths:
       - 'apps/gateway/**'
       - 'charts/gateway/**'
@@ -49,19 +49,59 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
 
-      - name: Deploy to Kubernetes
+      - name: Set up Kubeconfig
         run: |
-          helm upgrade --install gateway ./charts/gateway \
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Deploy to Kubernetes
+        env:
+          ACCESS_TOKEN_SECRET: ${{ secrets.GATEWAY_ACCESS_TOKEN_SECRET }}
+          ACCESS_TOKEN_EXPIRATION: ${{ secrets.GATEWAY_ACCESS_TOKEN_EXPIRATION }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.GATEWAY_REFRESH_TOKEN_SECRET }}
+          REFRESH_TOKEN_EXPIRATION: ${{ secrets.GATEWAY_REFRESH_TOKEN_EXPIRATION }}
+          AUTH_GATEWAY_SECRET: ${{ secrets.GATEWAY_AUTH_GATEWAY_SECRET }}
+          USER_GATEWAY_SECRET: ${{ secrets.GATEWAY_USER_GATEWAY_SECRET }}
+          GIG_GATEWAY_SECRET: ${{ secrets.GATEWAY_GIG_GATEWAY_SECRET }}
+          CHAT_GATEWAY_SECRET: ${{ secrets.GATEWAY_CHAT_GATEWAY_SECRET }}
+          ORDER_GATEWAY_SECRET: ${{ secrets.GATEWAY_ORDER_GATEWAY_SECRET }}
+          REVIEW_GATEWAY_SECRET: ${{ secrets.GATEWAY_REVIEW_GATEWAY_SECRET }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GATEWAY_GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GATEWAY_GOOGLE_CLIENT_SECRET }}
+          AUTH_GRPC_URL: ${{ secrets.GATEWAY_AUTH_GRPC_URL }}
+          USER_GRPC_URL: ${{ secrets.GATEWAY_USER_GRPC_URL }}
+          GIG_GRPC_URL: ${{ secrets.GATEWAY_GIG_GRPC_URL }}
+          CHAT_GRPC_URL: ${{ secrets.GATEWAY_CHAT_GRPC_URL }}
+          CLIENT_URL: ${{ secrets.GATEWAY_CLIENT_URL }}
+          GATEWAY_URL: ${{ secrets.GATEWAY_GATEWAY_URL }}
+        run: |
+          cat <<EOF > secrets.tmp.yaml
+          secrets:
+            ACCESS_TOKEN_SECRET: "$ACCESS_TOKEN_SECRET"
+            ACCESS_TOKEN_EXPIRATION: "$ACCESS_TOKEN_EXPIRATION"
+            REFRESH_TOKEN_SECRET: "$REFRESH_TOKEN_SECRET"
+            REFRESH_TOKEN_EXPIRATION: "$REFRESH_TOKEN_EXPIRATION"
+            AUTH_GATEWAY_SECRET: "$AUTH_GATEWAY_SECRET"
+            USER_GATEWAY_SECRET: "$USER_GATEWAY_SECRET"
+            GIG_GATEWAY_SECRET: "$GIG_GATEWAY_SECRET"
+            CHAT_GATEWAY_SECRET: "$CHAT_GATEWAY_SECRET"
+            ORDER_GATEWAY_SECRET: "$ORDER_GATEWAY_SECRET"
+            REVIEW_GATEWAY_SECRET: "$REVIEW_GATEWAY_SECRET"
+            GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
+            GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
+            AUTH_GRPC_URL: "$AUTH_GRPC_URL"
+            USER_GRPC_URL: "$USER_GRPC_URL"
+            GIG_GRPC_URL: "$GIG_GRPC_URL"
+            CHAT_GRPC_URL: "$CHAT_GRPC_URL"
+            CLIENT_URL: "$CLIENT_URL"
+            GATEWAY_URL: "$GATEWAY_URL"
+          EOF
+
+          helm upgrade --install kajbazar-gateway ./charts/gateway \
             --namespace kaj-bazar --create-namespace \
             --set image.tag=${{ steps.vars.outputs.sha_short }} \
-            --set secrets.ACCESS_TOKEN_SECRET="${{ secrets.ACCESS_TOKEN_SECRET }}" \
-            --set secrets.REFRESH_TOKEN_SECRET="${{ secrets.REFRESH_TOKEN_SECRET }}" \
-            --set secrets.AUTH_GATEWAY_SECRET="${{ secrets.AUTH_GATEWAY_SECRET }}" \
-            --set secrets.USER_GATEWAY_SECRET="${{ secrets.USER_GATEWAY_SECRET }}" \
-            --set secrets.GIG_GATEWAY_SECRET="${{ secrets.GIG_GATEWAY_SECRET }}" \
-            --set secrets.CHAT_GATEWAY_SECRET="${{ secrets.CHAT_GATEWAY_SECRET }}" \
-            --set secrets.ORDER_GATEWAY_SECRET="${{ secrets.ORDER_GATEWAY_SECRET }}" \
-            --set secrets.REVIEW_GATEWAY_SECRET="${{ secrets.REVIEW_GATEWAY_SECRET }}" \
-            --set secrets.GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}" \
-            --set secrets.GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" \
+            --values secrets.tmp.yaml \
             --wait
+
+          rm -f secrets.tmp.yaml
