@@ -1,0 +1,21 @@
+CREATE TABLE "auths_table" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"username" text NOT NULL,
+	"email" text NOT NULL,
+	"profilePicture" text,
+	"profilePublicId" text,
+	"password" text,
+	"refreshToken" text,
+	"country" text,
+	"emailVerificationToken" text,
+	"emailVerified" boolean DEFAULT false NOT NULL,
+	"provider" text DEFAULT 'local' NOT NULL,
+	"browserName" text,
+	"deviceType" text,
+	"otp" text,
+	"otpExpiration" timestamp,
+	"passwordResetToken" text,
+	"passwordResetExpires" timestamp,
+	CONSTRAINT "auths_table_username_unique" UNIQUE("username"),
+	CONSTRAINT "auths_table_email_unique" UNIQUE("email")
+);
