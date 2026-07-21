@@ -24,17 +24,6 @@ spec:
           ports:
             - containerPort: 3001
               protocol: TCP
-          env:
-            - name: AUTH_GRPC_URL
-              value: {{ .Values.env.AUTH_GRPC_URL | quote }}
-            - name: USER_GRPC_URL
-              value: {{ .Values.env.USER_GRPC_URL | quote }}
-            - name: GIG_GRPC_URL
-              value: {{ .Values.env.GIG_GRPC_URL | quote }}
-            - name: CHAT_GRPC_URL
-              value: {{ .Values.env.CHAT_GRPC_URL | quote }}
-            - name: CLIENT_URL
-              value: {{ .Values.env.CLIENT_URL | quote }}
           envFrom:
             - secretRef:
                 name: {{ include "gateway.fullname" . }}

@@ -30,10 +30,9 @@ secrets:
   REVIEW_GATEWAY_SECRET: ""
   GOOGLE_CLIENT_ID: ""
   GOOGLE_CLIENT_SECRET: ""
-
-env:
   AUTH_GRPC_URL: "auth:50051"
   USER_GRPC_URL: "user:50051"
   GIG_GRPC_URL: "gig:50051"
   CHAT_GRPC_URL: "chat:50051"
   CLIENT_URL: "https://kajbazar.asif-haque.com/"
+  GATEWAY_URL: ""
