@@ -9,23 +9,15 @@ service:
   type: ClusterIP
   port: 50051
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 300m
-    memory: 256Mi
-
 secrets:
-  DATABASE_URL: "postgresql://billu:password@auth-db:5432/auth"
+  DATABASE_URL: ""
   ACCESS_TOKEN_SECRET: ""
   ACCESS_TOKEN_EXPIRATION: "5m"
   REFRESH_TOKEN_SECRET: ""
   REFRESH_TOKEN_EXPIRATION: "7d"
   GATEWAY_SECRET: ""
-  RABBITMQ_URL: "amqp://user:pass@rabbitmq:5672"
-  CLIENT_URL: "http://localhost:3000"
+  RABBITMQ_URL: ""
+  CLIENT_URL: ""
 
 env:
   GRPC_PORT: "50051"

@@ -1,0 +1,42 @@
+ingress:
+  enabled: true
+  name: kajbazar-ingress
+  ingressClassName: nginx
+
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+  tls:
+    - secretName: kajbazar-ssl-secret
+      hosts:
+        - kajbazar.asif-haque.com
+        - www.kajbazar.asif-haque.com
+        - kajbazar-api.asif-haque.com
+        - www.kajbazar-api.asif-haque.com
+
+  hosts:
+    # - host: kajbazar.asif-haque.com
+    #   paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       serviceName: kajbazar-web-service
+    #       servicePort: 3000
+    # - host: www.kajbazar.asif-haque.com
+    #   paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       serviceName: kajbazar-web-service
+    #       servicePort: 3000
+    - host: kajbazar-api.asif-haque.com
+      paths:
+        - path: /
+          pathType: Prefix
+          serviceName: kajbazar-gateway
+          servicePort: 3001
+    - host: www.kajbazar-api.asif-haque.com
+      paths:
+        - path: /
+          pathType: Prefix
+          serviceName: kajbazar-gateway
+          servicePort: 3001

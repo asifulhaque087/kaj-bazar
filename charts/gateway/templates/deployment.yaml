@@ -38,5 +38,3 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "gateway.fullname" . }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}

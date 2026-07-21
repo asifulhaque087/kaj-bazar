@@ -33,7 +33,7 @@ secrets:
 
 env:
   AUTH_GRPC_URL: "auth:50051"
-  USER_GRPC_URL: "user:50052"
-  GIG_GRPC_URL: "gig:50053"
-  CHAT_GRPC_URL: "chat:50054"
-  CLIENT_URL: "http://localhost:3000"
+  USER_GRPC_URL: "user:50051"
+  GIG_GRPC_URL: "gig:50051"
+  CHAT_GRPC_URL: "chat:50051"
+  CLIENT_URL: "https://kajbazar.asif-haque.com/"

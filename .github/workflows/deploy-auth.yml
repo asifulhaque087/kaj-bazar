@@ -8,6 +8,7 @@ on:
       - 'charts/auth/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-auth.yml'
+      
   pull_request:
     branches: [main]
     paths:
@@ -49,15 +50,38 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
 
-      - name: Deploy to Kubernetes
+      - name: Set up Kubeconfig
         run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Deploy to Kubernetes
+        env:
+          DATABASE_URL: ${{ secrets.AUTH_DATABASE_URL }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+          GATEWAY_SECRET: ${{ secrets.AUTH_GATEWAY_SECRET }}
+          RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
+          CLIENT_URL: ${{ secrets.CLIENT_URL }}
+        run: |
+          # 1. Create temporary secrets values file
+          cat <<EOF > secrets.tmp.yaml
+          secrets:
+            DATABASE_URL: "$DATABASE_URL"
+            ACCESS_TOKEN_SECRET: "$ACCESS_TOKEN_SECRET"
+            REFRESH_TOKEN_SECRET: "$REFRESH_TOKEN_SECRET"
+            GATEWAY_SECRET: "$GATEWAY_SECRET"
+            RABBITMQ_URL: "$RABBITMQ_URL"
+            CLIENT_URL: "$CLIENT_URL"
+          EOF
+
+          # 2. Upgrade / Install Helm chart cleanly
           helm upgrade --install auth ./charts/auth \
             --namespace kaj-bazar --create-namespace \
             --set image.tag=${{ steps.vars.outputs.sha_short }} \
-            --set secrets.DATABASE_URL="${{ secrets.AUTH_DATABASE_URL }}" \
-            --set secrets.ACCESS_TOKEN_SECRET="${{ secrets.ACCESS_TOKEN_SECRET }}" \
-            --set secrets.REFRESH_TOKEN_SECRET="${{ secrets.REFRESH_TOKEN_SECRET }}" \
-            --set secrets.GATEWAY_SECRET="${{ secrets.AUTH_GATEWAY_SECRET }}" \
-            --set secrets.RABBITMQ_URL="${{ secrets.RABBITMQ_URL }}" \
-            --set secrets.CLIENT_URL="${{ secrets.CLIENT_URL }}" \
+            --values secrets.tmp.yaml \
             --wait
+
+          # 3. Securely delete the temporary file
+          rm -f secrets.tmp.yaml
