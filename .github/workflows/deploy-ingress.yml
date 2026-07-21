@@ -4,12 +4,12 @@ on:
   push:
     branches: [nest-microservice]
     paths:
-      - 'charts/ingress/**'
+      - 'charts/ingress-routes/**'
       - '.github/workflows/deploy-ingress.yml'
   pull_request:
     branches: [nest-microservice]
     paths:
-      - 'charts/ingress/**'
+      - 'charts/ingress-routes/**'
       - '.github/workflows/deploy-ingress.yml'
 
 jobs:
@@ -29,6 +29,6 @@ jobs:
 
       - name: Deploy Ingress to Kubernetes
         run: |
-          helm upgrade --install kajbazar-ingress ./charts/ingress \
+          helm upgrade --install kajbazar-ingress ./charts/ingress-routes \
             --namespace kaj-bazar --create-namespace \
             --wait
