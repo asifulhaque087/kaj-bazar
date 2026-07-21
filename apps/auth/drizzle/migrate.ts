@@ -1,52 +1,49 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
-import * as path from 'path';
-
-const MIGRATE_TIMEOUT = 120_000;
 
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  console.error('DATABASE_URL is not set for migrations');
-  process.exit(1);
+  throw new Error('DATABASE_URL is not set for migrations');
 }
 
+// Use a separate pool for migration and ensure it is closed afterward
 const pool = new Pool({
-  connectionString,
-  connectionTimeoutMillis: 10_000,
-  idleTimeoutMillis: 30_000,
+  connectionString: connectionString,
+  //   connectionString: config.DATABASE_URL,
 });
 
 const db = drizzle(pool);
 
-const migrationsFolder = path.join(__dirname, '../../drizzle/migrations');
-
 async function runMigrations() {
-  console.log('--- Starting Drizzle Migrations ---');
-  console.log('__dirname:', __dirname);
-  console.log('Migrations folder:', migrationsFolder);
+  console.log('--- Starting Drizzle Migrations (migrate.ts) ---');
 
-  const timeout = new Promise<never>((_, reject) =>
-    setTimeout(
-      () => reject(new Error(`Migration timed out after ${MIGRATE_TIMEOUT / 1000}s`)),
-      MIGRATE_TIMEOUT,
-    ),
+  const [_, error] = await tryit(
+    migrate(db, { migrationsFolder: './drizzle/migrations' }),
   );
 
-  try {
-    await Promise.race([
-      migrate(db, { migrationsFolder }),
-      timeout,
-    ]);
-    console.log('--- Migrations finished successfully ---');
-  } catch (error) {
-    console.error('Migration failed:', error);
-    await pool.end().catch(() => {});
+  if (error) {
+    console.error('@@@@@@@@@ Migration failed:', error);
     process.exit(1);
   }
 
+  console.log('--- Migrations finished successfully ---');
+
   await pool.end();
 }
+
+export type TryItResult<T, E> = [T, null] | [null, E];
+
+export const tryit = async <T, E = Error>(
+  promise: Promise<T>,
+): Promise<TryItResult<T, E>> => {
+  try {
+    const data = await promise;
+    return [data, null];
+  } catch (error) {
+    return [null, error as E];
+  }
+};
 
 runMigrations();
