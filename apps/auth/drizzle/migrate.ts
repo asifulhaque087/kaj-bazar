@@ -20,7 +20,7 @@ async function runMigrations() {
   console.log('--- Starting Drizzle Migrations (migrate.ts) ---');
 
   const [_, error] = await tryit(
-    migrate(db, { migrationsFolder: './migrations' }),
+    migrate(db, { migrationsFolder: './drizzle/migrations' }),
   );
 
   if (error) {

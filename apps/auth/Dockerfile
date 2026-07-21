@@ -20,6 +20,9 @@ COPY apps/auth apps/auth
 # includes workspace dependencies, so @app/common/dist is produced too.
 RUN pnpm --filter "@kaj-bazar/auth..." run build
 
+# Compile the migration runner (drizzle/migrate.ts → dist-migration/)
+RUN pnpm --filter "@kaj-bazar/auth" run build:migrate
+
 
 FROM node:alpine AS production
 
@@ -40,5 +43,9 @@ RUN pnpm install --prod --filter "@kaj-bazar/auth..."
 # (@app/common is external; its dist/ — including dist/protos — must be present)
 COPY --from=development /usr/src/app/apps/auth/dist ./apps/auth/dist
 COPY --from=development /usr/src/app/packages/common/dist ./packages/common/dist
+
+# Compiled migration runner + generated migration files
+COPY --from=development /usr/src/app/apps/auth/dist-migration ./apps/auth/dist-migration
+COPY --from=development /usr/src/app/apps/auth/drizzle/migrations ./apps/auth/drizzle/migrations
 
 CMD ["node", "apps/auth/dist/main"]
