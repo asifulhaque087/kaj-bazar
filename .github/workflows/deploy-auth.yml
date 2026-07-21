@@ -8,6 +8,7 @@ on:
       - 'charts/auth/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-auth.yml'
+      - '.github/secrets/.env.auth'
       
   pull_request:
     branches: [nest-microservice]
@@ -16,6 +17,7 @@ on:
       - 'charts/auth/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-auth.yml'
+      - '.github/secrets/.env.auth'
 
 jobs:
   build-and-deploy:

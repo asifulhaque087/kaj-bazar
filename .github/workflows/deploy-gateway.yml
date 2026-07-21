@@ -8,6 +8,7 @@ on:
       - 'charts/gateway/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-gateway.yml'
+      - '.github/secrets/.env.gateway'
   pull_request:
     branches: [nest-microservice]
     paths:
@@ -15,6 +16,7 @@ on:
       - 'charts/gateway/**'
       - 'packages/common/**'
       - '.github/workflows/deploy-gateway.yml'
+      - '.github/secrets/.env.gateway'
 
 jobs:
   build-and-deploy:
