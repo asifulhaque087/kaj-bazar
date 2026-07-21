@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
+import * as path from 'path';
 
 const MIGRATE_TIMEOUT = 120_000;
 
@@ -19,9 +20,12 @@ const pool = new Pool({
 
 const db = drizzle(pool);
 
+const migrationsFolder = path.join(__dirname, '../../drizzle/migrations');
+
 async function runMigrations() {
   console.log('--- Starting Drizzle Migrations ---');
-  console.log('Migrations folder: ./drizzle/migrations');
+  console.log('__dirname:', __dirname);
+  console.log('Migrations folder:', migrationsFolder);
 
   const timeout = new Promise<never>((_, reject) =>
     setTimeout(
@@ -32,7 +36,7 @@ async function runMigrations() {
 
   try {
     await Promise.race([
-      migrate(db, { migrationsFolder: './drizzle/migrations' }),
+      migrate(db, { migrationsFolder }),
       timeout,
     ]);
     console.log('--- Migrations finished successfully ---');

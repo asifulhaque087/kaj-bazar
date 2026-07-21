@@ -16,7 +16,7 @@
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
     "db:studio": "turbo run db:studio",
-    "db:migrate": "pnpm --filter @kaj-bazar/auth run db:migrate",
+    "db:migrate": "node apps/auth/dist-migration/drizzle/migrate",
     "clean": "rm -rf .turbo apps/web/.next apps/web/.turbo apps/api/.turbo apps/api/dist packages/common/dist && find . -name '*.tsbuildinfo' -not -path '*/node_modules/*' -delete",
     "clean:all": "pnpm clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules"
   },
