@@ -27,7 +27,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Kaj Bazar API')
-    .setDescription('Kaj Bazar marketplace API documentation')
+    .setDescription('Kaj Bazar marketplace API documentation. This application still in DEVELOPMENT phase')
     .setVersion('1.0')
     .addCookieAuth('access_token')
     .addCookieAuth('refresh_token')
