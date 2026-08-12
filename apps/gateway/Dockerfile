@@ -1,8 +1,9 @@
-FROM node:alpine AS development
+FROM node:24-alpine AS development
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm
+# Pin pnpm version to match local environment
+RUN npm install -g pnpm@9.0.0
 
 # Manifests first for cached, workspace-aware install
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
@@ -21,18 +22,22 @@ COPY apps/gateway apps/gateway
 RUN pnpm --filter "@kaj-bazar/gateway..." run build
 
 
-FROM node:alpine AS production
+FROM node:24-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm
+# Pin pnpm version to match local environment
+RUN npm install -g pnpm@9.0.0
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/common/package.json packages/common/package.json
 COPY apps/gateway/package.json apps/gateway/package.json
+
+# Bypass strict lockfile check for native pnpm binary in Docker
+ENV PNPM_VERIFY_NATIVE_BINARY_LOCKFILE=false
 
 RUN pnpm install --prod --filter "@kaj-bazar/gateway..."
 

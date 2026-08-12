@@ -12,6 +12,7 @@ on:
       - 'charts/ingress-routes/**'
       - '.github/workflows/deploy-ingress.yml'
 
+
 jobs:
   deploy-ingress:
     runs-on: ubuntu-latest
