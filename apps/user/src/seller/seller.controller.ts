@@ -8,11 +8,11 @@ import {
 import { Payload } from '@nestjs/microservices';
 import {
   type AuthGrpcRequest,
-  CreateSellerDto,
+  CreateSellerRequestDto,
   GrpcGuard,
-  SellerByIdDto,
-  SellerByNameDto,
-  UpdateSellerDto,
+  SellerByIdRequestDto,
+  SellerByNameRequestDto,
+  UpdateSellerRequestDto,
 } from '@app/common';
 
 @Controller()
@@ -20,11 +20,11 @@ import {
 export class SellerController implements SellerServiceController {
   constructor(private readonly sellerService: SellerService) {}
 
-  async findById(@Payload() data: SellerByIdDto) {
+  async findById(@Payload() data: SellerByIdRequestDto) {
     return this.sellerService.findById(data) as unknown as SellerResponse;
   }
 
-  async findByName(@Payload() data: SellerByNameDto) {
+  async findByName(@Payload() data: SellerByNameRequestDto) {
     return this.sellerService.findByName(data) as unknown as SellerResponse;
   }
 
@@ -34,12 +34,12 @@ export class SellerController implements SellerServiceController {
   }
 
   @UseGuards(GrpcGuard)
-  async create(@Payload() data: CreateSellerDto) {
+  async create(@Payload() data: CreateSellerRequestDto) {
     return this.sellerService.create(data);
   }
 
   @UseGuards(GrpcGuard)
-  async update(@Payload() data: UpdateSellerDto) {
+  async update(@Payload() data: UpdateSellerRequestDto) {
     return this.sellerService.update(data) as unknown as SellerResponse;
   }
 }

@@ -1,9 +1,9 @@
 import {
-  CreateGigDto,
-  GigByIdDto,
-  SearchGigDto,
-  SellerGigsDto,
-  UpdateGigDto,
+  CreateGigRequestDto,
+  GigByIdRequestDto,
+  SearchGigRequestDto,
+  SellerGigsRequestDto,
+  UpdateGigRequestDto,
 } from '@app/common';
 import { GIG_SERVICE_NAME, GigServiceClient } from '@app/common/generated/gig';
 import { Inject, Injectable } from '@nestjs/common';
@@ -21,23 +21,23 @@ export class GigService {
       this.client.getService<GigServiceClient>(GIG_SERVICE_NAME);
   }
 
-  async search(data: SearchGigDto) {
+  async search(data: SearchGigRequestDto) {
     return firstValueFrom(this.gigGrpcService.search(data));
   }
 
-  async create(data: CreateGigDto) {
+  async create(data: CreateGigRequestDto) {
     return firstValueFrom(this.gigGrpcService.create(data));
   }
 
-  async update(data: UpdateGigDto) {
+  async update(data: UpdateGigRequestDto) {
     return firstValueFrom(this.gigGrpcService.update(data));
   }
 
-  async sellerGigs(data: SellerGigsDto) {
+  async sellerGigs(data: SellerGigsRequestDto) {
     return firstValueFrom(this.gigGrpcService.sellerGigs(data));
   }
 
-  async findById(data: GigByIdDto) {
+  async findById(data: GigByIdRequestDto) {
     return firstValueFrom(this.gigGrpcService.findById(data));
   }
 }

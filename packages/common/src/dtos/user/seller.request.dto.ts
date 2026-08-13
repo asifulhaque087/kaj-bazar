@@ -18,20 +18,20 @@ import {
   Skill,
   SocialLink,
   UpdateSellerRequest,
-} from '../generated/user';
+} from '@app/common/generated/user';
 import { Type } from 'class-transformer';
 
-export class SellerByIdDto implements FindByIdRequest {
+export class SellerByIdRequestDto implements FindByIdRequest {
   @IsString()
   id!: string;
 }
 
-export class SellerByNameDto implements FindByNameRequest {
+export class SellerByNameRequestDto implements FindByNameRequest {
   @IsString()
   username!: string;
 }
 
-export class LanguageDto implements Language {
+export class LanguageRequestDto implements Language {
   @IsString()
   id!: string;
 
@@ -42,7 +42,7 @@ export class LanguageDto implements Language {
   level!: string;
 }
 
-export class SkillDto implements Skill {
+export class SkillRequestDto implements Skill {
   @IsString()
   id!: string;
 
@@ -50,7 +50,7 @@ export class SkillDto implements Skill {
   name!: string;
 }
 
-export class ExperienceDto implements Experience {
+export class ExperienceRequestDto implements Experience {
   @IsString()
   id!: string;
 
@@ -76,7 +76,7 @@ export class ExperienceDto implements Experience {
   currentlyWorkingHere!: boolean;
 }
 
-export class EducationDto implements Education {
+export class EducationRequestDto implements Education {
   @IsString()
   id!: string;
 
@@ -99,7 +99,7 @@ export class EducationDto implements Education {
   country?: string;
 }
 
-export class SocialLinkDto implements SocialLink {
+export class SocialLinkRequestDto implements SocialLink {
   @IsString()
   id!: string;
 
@@ -110,7 +110,7 @@ export class SocialLinkDto implements SocialLink {
   link!: string;
 }
 
-export class CertificateDto implements Certificate {
+export class CertificateRequestDto implements Certificate {
   @IsString()
   id!: string;
 
@@ -130,7 +130,7 @@ export class CertificateDto implements Certificate {
 // MAIN CREATE SELLER DTO
 // ==========================================
 
-export class CreateSellerDto implements CreateSellerRequest {
+export class CreateSellerRequestDto implements CreateSellerRequest {
   @IsString()
   id!: string;
 
@@ -161,41 +161,41 @@ export class CreateSellerDto implements CreateSellerRequest {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => LanguageDto)
-  languages!: LanguageDto[];
+  @Type(() => LanguageRequestDto)
+  languages!: LanguageRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SkillDto)
-  skills!: SkillDto[];
+  @Type(() => SkillRequestDto)
+  skills!: SkillRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ExperienceDto)
-  experience!: ExperienceDto[];
+  @Type(() => ExperienceRequestDto)
+  experience!: ExperienceRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => EducationDto)
-  education!: EducationDto[];
+  @Type(() => EducationRequestDto)
+  education!: EducationRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SocialLinkDto)
-  socialLinks!: SocialLinkDto[];
+  @Type(() => SocialLinkRequestDto)
+  socialLinks!: SocialLinkRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CertificateDto)
-  certificates!: CertificateDto[];
+  @Type(() => CertificateRequestDto)
+  certificates!: CertificateRequestDto[];
 }
 
-export class IdPayloadDto implements IdPayload {
+export class IdPayloadRequestDto implements IdPayload {
   @IsString()
   id!: string;
 }
 
-export class UpdateSellerDto implements UpdateSellerRequest {
+export class UpdateSellerRequestDto implements UpdateSellerRequest {
   @IsString()
   id!: string;
 
@@ -213,62 +213,62 @@ export class UpdateSellerDto implements UpdateSellerRequest {
   // Array payloads for records to create or update
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => LanguageDto)
-  languages!: LanguageDto[];
+  @Type(() => LanguageRequestDto)
+  languages!: LanguageRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SkillDto)
-  skills!: SkillDto[];
+  @Type(() => SkillRequestDto)
+  skills!: SkillRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ExperienceDto)
-  experience!: ExperienceDto[];
+  @Type(() => ExperienceRequestDto)
+  experience!: ExperienceRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => EducationDto)
-  education!: EducationDto[];
+  @Type(() => EducationRequestDto)
+  education!: EducationRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SocialLinkDto)
-  socialLinks!: SocialLinkDto[];
+  @Type(() => SocialLinkRequestDto)
+  socialLinks!: SocialLinkRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CertificateDto)
-  certificates!: CertificateDto[];
+  @Type(() => CertificateRequestDto)
+  certificates!: CertificateRequestDto[];
 
   // Tracking deletions required by your service's tx logic
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedLangIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedLangIds!: IdPayloadRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedSkillIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedSkillIds!: IdPayloadRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedExperienceIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedExperienceIds!: IdPayloadRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedEducationIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedEducationIds!: IdPayloadRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedSocialLinkIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedSocialLinkIds!: IdPayloadRequestDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => IdPayloadDto)
-  removedCertificateIds!: IdPayloadDto[];
+  @Type(() => IdPayloadRequestDto)
+  removedCertificateIds!: IdPayloadRequestDto[];
 }

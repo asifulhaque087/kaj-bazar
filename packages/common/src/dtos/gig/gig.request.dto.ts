@@ -7,7 +7,7 @@ import {
   SeedGigsRequest,
   SubCategory,
   Tag,
-} from '../generated/gig';
+} from '@app/common/generated/gig';
 import {
   IsOptional,
   IsString,
@@ -22,7 +22,7 @@ import {
 import { Type } from 'class-transformer';
 
 // Sub-messages nested structures
-export class SubCategoryDto implements SubCategory {
+export class SubCategoryRequestDto implements SubCategory {
   @IsString()
   @IsNotEmpty()
   title!: string;
@@ -35,7 +35,7 @@ export class TagDto implements Tag {
 }
 
 // 1. Search Method
-export class SearchGigDto implements SearchRequest {
+export class SearchGigRequestDto implements SearchRequest {
   @IsOptional()
   @IsString()
   minPrice?: string;
@@ -66,14 +66,14 @@ export class SearchGigDto implements SearchRequest {
 }
 
 // 2. FindById Method
-export class GigByIdDto implements FindByIdRequest {
+export class GigByIdRequestDto implements FindByIdRequest {
   @IsUUID()
   @IsNotEmpty()
   id!: string;
 }
 
 // 3. SellerGigs Method
-export class SellerGigsDto implements SellerGigsRequest {
+export class SellerGigsRequestDto implements SellerGigsRequest {
   @IsUUID()
   @IsNotEmpty()
   sellerId!: string;
@@ -85,7 +85,7 @@ export class SellerGigsDto implements SellerGigsRequest {
 }
 
 // 4. Create Method
-export class CreateGigDto implements CreateGigRequest {
+export class CreateGigRequestDto implements CreateGigRequest {
   @IsUUID()
   @IsNotEmpty()
   sellerId!: string;
@@ -124,8 +124,8 @@ export class CreateGigDto implements CreateGigRequest {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SubCategoryDto)
-  subCategories!: SubCategoryDto[];
+  @Type(() => SubCategoryRequestDto)
+  subCategories!: SubCategoryRequestDto[];
 
   @IsString()
   @IsNotEmpty()
@@ -147,7 +147,7 @@ export class CreateGigDto implements CreateGigRequest {
 }
 
 // 5. Update Method
-export class UpdateGigDto implements UpdateGigRequest {
+export class UpdateGigRequestDto implements UpdateGigRequest {
   @IsUUID()
   @IsNotEmpty()
   id!: string;
@@ -175,8 +175,8 @@ export class UpdateGigDto implements UpdateGigRequest {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SubCategoryDto)
-  subCategories!: SubCategoryDto[];
+  @Type(() => SubCategoryRequestDto)
+  subCategories!: SubCategoryRequestDto[];
 
   @IsOptional()
   @IsString()
@@ -202,7 +202,7 @@ export class UpdateGigDto implements UpdateGigRequest {
 }
 
 // 6. SeedGigs Method
-export class SeedGigsDto implements SeedGigsRequest {
+export class SeedGigsRequestDto implements SeedGigsRequest {
   @IsOptional()
   @IsString()
   count?: string;

@@ -325,7 +325,7 @@ that channel. This decouples message production from consumption entirely:
 
 ```ts
 // apps/chat/src/chat.service.ts — lines 36-105
-async createMessage(data: CreateMessageDto) {
+async createMessage(data: CreateMessageRequestDto) {
   const [message] = await tryit(
     this.db.insert(MessagesTable).values(messageData).returning()
       .then(res => ({ ...res[0], createdAt: res[0].createdAt.toISOString() })),
@@ -410,7 +410,7 @@ handler runs inside `this.db.transaction(...)`, which auto-rolls back on any rej
 
 ```ts
 // apps/user/src/seller/seller.service.ts — lines 203-478
-async update(formData: UpdateSellerDto) {
+async update(formData: UpdateSellerRequestDto) {
   const [result, err] = await tryit(
     this.db.transaction(async (tx) => {
       // 1. Update main seller fields
@@ -526,7 +526,7 @@ The email microservice is a RabbitMQ-only consumer — no gRPC, no HTTP. It send
 
 ```ts
 // apps/email/src/email.service.ts — lines 18-57
-async sendEmail(data: SendEmailEventDto) {
+async sendEmail(data: SendEmailEventRequestDto) {
   const [result, error] = await tryit(
     this.mailerService.sendMail({
       to: data.receiver,
@@ -571,7 +571,7 @@ The `BuyerController` listens for the event:
 ```ts
 // apps/user/src/buyer/buyer.controller.ts — line 39
 @EventPattern('user-created')
-async registerBuyer(data: RegisterBuyerDto) {
+async registerBuyer(data: RegisterBuyerRequestDto) {
   await this.buyerService.create(data);
 }
 ```
@@ -728,7 +728,7 @@ The same `AppModule` hosts both transports. The `BuyerController` handles gRPC c
 ```ts
 // apps/user/src/buyer/buyer.controller.ts — line 39
 @EventPattern('user-created')
-async registerBuyer(data: RegisterBuyerDto) {
+async registerBuyer(data: RegisterBuyerRequestDto) {
   await this.buyerService.create(data);
 }
 ```

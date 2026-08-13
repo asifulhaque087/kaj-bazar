@@ -5,7 +5,7 @@ import {
   ForgotPasswordRequestDto,
   LoginUserRequestDto,
   RefreshAccessTokenRequestDto,
-  RegisterBuyerDto,
+  RegisterBuyerRequestDto,
   RegisterUserRequestDto,
   ResendVerificationLinkRequestDto,
   ResetPasswordRequestDto,
@@ -80,7 +80,7 @@ export class AuthService {
 
     // todo : publish an event to add this user as buyer in user service
 
-    const buyerData: RegisterBuyerDto = newUser;
+    const buyerData: RegisterBuyerRequestDto = newUser;
 
     this.userRabbitClient.emit('user-created', buyerData);
 

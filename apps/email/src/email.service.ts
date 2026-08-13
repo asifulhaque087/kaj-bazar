@@ -1,4 +1,4 @@
-import { SendEmailEventDto, tryit } from '@app/common';
+import { SendEmailEventRequestDto, tryit } from '@app/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -10,7 +10,7 @@ export class EmailService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async sendEmail(data: SendEmailEventDto) {
+  async sendEmail(data: SendEmailEventRequestDto) {
     const {
       receiver,
       verifyLink,

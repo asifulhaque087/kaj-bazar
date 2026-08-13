@@ -13,9 +13,9 @@ import {
   ConversationRequest,
   StreamMessagesRequest,
   Offer as IOffer,
-} from '../generated/chat';
+} from '@app/common/generated/chat';
 
-export class OfferDto implements IOffer {
+export class OfferRequestDto implements IOffer {
   @IsString()
   gigTitle!: string;
 
@@ -50,7 +50,7 @@ export class OfferDto implements IOffer {
   cancelled?: boolean;
 }
 
-export class CreateMessageDto implements CreateMessageRequest {
+export class CreateMessageRequestDto implements CreateMessageRequest {
   @IsUUID('4', { message: 'conversationId must be a valid UUID v4' })
   conversationId!: string;
 
@@ -76,11 +76,11 @@ export class CreateMessageDto implements CreateMessageRequest {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => OfferDto)
-  offer?: OfferDto;
+  @Type(() => OfferRequestDto)
+  offer?: OfferRequestDto;
 }
 
-export class FindOrCreateConversationDto implements ConversationRequest {
+export class FindOrCreateConversationRequestDto implements ConversationRequest {
   @IsString()
   senderUsername!: string;
 
@@ -94,7 +94,7 @@ export class FindOrCreateConversationDto implements ConversationRequest {
   receiverProfilePhoto!: string;
 }
 
-export class StreamMessagesDto implements StreamMessagesRequest {
+export class StreamMessagesRequestDto implements StreamMessagesRequest {
   @IsString()
   username!: string;
 }

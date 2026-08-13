@@ -1,13 +1,13 @@
 import {
-  CreateGigDto,
+  CreateGigRequestDto,
   DRIZZLE,
-  GigByIdDto,
-  SearchGigDto,
-  SeedGigsDto,
-  SellerGigsDto,
+  GigByIdRequestDto,
+  SearchGigRequestDto,
+  SeedGigsRequestDto,
+  SellerGigsRequestDto,
   throwGrpcError,
   tryit,
-  UpdateGigDto,
+  UpdateGigRequestDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import type { DrizzleDB } from '../drizzle/drizzle';
@@ -18,7 +18,7 @@ import { and, ilike, or, count, gte, lte, eq } from 'drizzle-orm';
 export class GigService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async search(data: SearchGigDto) {
+  async search(data: SearchGigRequestDto) {
     let { minPrice, maxPrice, deliveryTime, category, searchKey, page, limit } =
       data;
 
@@ -90,7 +90,7 @@ export class GigService {
       limit: parsedLimit,
     };
   }
-  async findById(data: GigByIdDto) {
+  async findById(data: GigByIdRequestDto) {
     const [gig, gigErr] = await tryit(
       this.db.query.GigsTable.findFirst({
         where: eq(GigsTable.id, data.id),
@@ -102,7 +102,7 @@ export class GigService {
 
     return gig;
   }
-  async sellerGigs(data: SellerGigsDto) {
+  async sellerGigs(data: SellerGigsRequestDto) {
     const filters = [eq(GigsTable.sellerId, data.sellerId)];
 
     if (data.activeGigs)
@@ -121,7 +121,7 @@ export class GigService {
 
     return { gigs: gigs };
   }
-  async create(formData: CreateGigDto) {
+  async create(formData: CreateGigRequestDto) {
     const [newGig, newGigErr] = await tryit(
       this.db
         .insert(GigsTable)
@@ -134,7 +134,7 @@ export class GigService {
 
     return newGig;
   }
-  async update(data: UpdateGigDto) {
+  async update(data: UpdateGigRequestDto) {
     const [newGig, newGigErr] = await tryit(
       this.db
         .update(GigsTable)
@@ -148,7 +148,7 @@ export class GigService {
 
     return newGig;
   }
-  async seedGigs(data: SeedGigsDto) {
+  async seedGigs(data: SeedGigsRequestDto) {
     const { count = '10' } = data;
 
     const total = parseInt(count);

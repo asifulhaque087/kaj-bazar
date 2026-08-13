@@ -1,8 +1,8 @@
 import {
   AuthGrpcRequest,
-  BuyerByIdDto,
+  BuyerByIdRequestDto,
   DRIZZLE,
-  RegisterBuyerDto,
+  RegisterBuyerRequestDto,
   throwGrpcError,
   tryit,
 } from '@app/common';
@@ -15,7 +15,7 @@ import { eq, SQL } from 'drizzle-orm';
 export class BuyerService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async findById(data: BuyerByIdDto) {
+  async findById(data: BuyerByIdRequestDto) {
     const [buyer, buyerErr] = await tryit(
       this.db.query.BuyersTable.findFirst({
         where: eq(BuyersTable.id, data.id),
@@ -58,7 +58,7 @@ export class BuyerService {
     return buyer;
   }
 
-  async create(data: RegisterBuyerDto) {
+  async create(data: RegisterBuyerRequestDto) {
     const [buyer, err] = await tryit(
       this.db
         .insert(BuyersTable)

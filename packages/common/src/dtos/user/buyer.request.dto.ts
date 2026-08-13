@@ -1,17 +1,17 @@
 import { IsOptional, IsString } from 'class-validator';
-import { FindByIdRequest, FindByNameRequest } from '../generated/user';
+import { FindByIdRequest, FindByNameRequest } from '@app/common/generated/user';
 
-export class BuyerByIdDto implements FindByIdRequest {
+export class BuyerByIdRequestDto implements FindByIdRequest {
   @IsString()
   id!: string;
 }
 
-export class BuyerByNameDto implements FindByNameRequest {
+export class BuyerByNameRequestDto implements FindByNameRequest {
   @IsString()
   username!: string;
 }
 
-export class RegisterBuyerDto {
+export class RegisterBuyerRequestDto {
   @IsString()
   id!: string;
 

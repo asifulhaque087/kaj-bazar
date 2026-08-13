@@ -1,4 +1,4 @@
-import { CreateSellerDto, UpdateSellerDto } from '@app/common';
+import { CreateSellerRequestDto, UpdateSellerRequestDto } from '@app/common';
 import {
   FindByIdRequest,
   FindByNameRequest,
@@ -37,12 +37,12 @@ export class SellerService {
     return firstValueFrom(this.sellerGrpcService.findByName(data));
   }
 
-  async create(data: CreateSellerDto, authHeader: string) {
+  async create(data: CreateSellerRequestDto, authHeader: string) {
     const metadata = createAuthMetadata(authHeader);
     return firstValueFrom(this.sellerGrpcService.create(data, metadata));
   }
 
-  async update(data: UpdateSellerDto, authHeader: string) {
+  async update(data: UpdateSellerRequestDto, authHeader: string) {
     const metadata = createAuthMetadata(authHeader);
     return firstValueFrom(this.sellerGrpcService.update(data, metadata));
   }

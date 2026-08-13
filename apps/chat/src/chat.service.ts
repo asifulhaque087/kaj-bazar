@@ -1,8 +1,8 @@
 // apps/chat/src/chat.service.ts
 import {
-  CreateMessageDto,
+  CreateMessageRequestDto,
   DRIZZLE,
-  FindOrCreateConversationDto,
+  FindOrCreateConversationRequestDto,
   throwGrpcError,
   tryit,
 } from '@app/common';
@@ -33,7 +33,7 @@ export class ChatService implements OnModuleInit {
     await this.redisSubscriber.subscribe(CHAT_CHANNEL);
   }
 
-  async createMessage(data: CreateMessageDto) {
+  async createMessage(data: CreateMessageRequestDto) {
     const {
       conversationId,
       senderUsername,
@@ -104,7 +104,7 @@ export class ChatService implements OnModuleInit {
     );
   }
 
-  async findOrCreateConversation(data: FindOrCreateConversationDto) {
+  async findOrCreateConversation(data: FindOrCreateConversationRequestDto) {
     const {
       senderUsername = '',
       receiverUsername = '',
@@ -174,9 +174,9 @@ export class ChatService implements OnModuleInit {
 // new
 
 // import {
-//   CreateMessageDto,
+//   CreateMessageRequestDto,
 //   DRIZZLE,
-//   FindOrCreateConversationDto,
+//   FindOrCreateConversationRequestDto,
 //   throwGrpcError,
 //   tryit,
 // } from '@app/common';
@@ -193,7 +193,7 @@ export class ChatService implements OnModuleInit {
 
 //   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-//   async createMessage(data: CreateMessageDto) {
+//   async createMessage(data: CreateMessageRequestDto) {
 //     const [message, messageErr] = await tryit(
 //       this.db
 //         .insert(MessagesTable)
@@ -221,7 +221,7 @@ export class ChatService implements OnModuleInit {
 //       filter((message) => message.receiverUsername === username),
 //     );
 //   }
-//   async findOrCreateConversation(data: FindOrCreateConversationDto) {
+//   async findOrCreateConversation(data: FindOrCreateConversationRequestDto) {
 //     const {
 //       senderUsername = '',
 //       receiverUsername = '',

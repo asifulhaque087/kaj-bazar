@@ -1,12 +1,12 @@
 import {
   AuthGrpcRequest,
-  CreateSellerDto,
+  CreateSellerRequestDto,
   DRIZZLE,
-  SellerByIdDto,
-  SellerByNameDto,
+  SellerByIdRequestDto,
+  SellerByNameRequestDto,
   throwGrpcError,
   tryit,
-  UpdateSellerDto,
+  UpdateSellerRequestDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import type { DrizzleDB } from '../../drizzle/drizzle';
@@ -29,7 +29,7 @@ import { eq, inArray, or, sql } from 'drizzle-orm';
 export class SellerService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async findByName(data: SellerByNameDto) {
+  async findByName(data: SellerByNameRequestDto) {
     const [seller, sellerErr] = await tryit(
       this.db.query.SellersTable.findFirst({
         where: eq(SellersTable.username, data.username),
@@ -57,7 +57,7 @@ export class SellerService {
     return seller;
   }
 
-  async findById(data: SellerByIdDto) {
+  async findById(data: SellerByIdRequestDto) {
     const [seller, sellerErr] = await tryit(
       this.db.query.SellersTable.findFirst({
         where: eq(SellersTable.id, data.id),
@@ -71,7 +71,7 @@ export class SellerService {
     return seller;
   }
 
-  async create(formData: CreateSellerDto) {
+  async create(formData: CreateSellerRequestDto) {
     const [_, err] = await tryit(
       this.db.transaction(async (tx) => {
         // 2. Insert into the main 'sellers' table first
@@ -200,7 +200,7 @@ export class SellerService {
     return { message: 'Seller Created Successfully' };
   }
 
-  async update(formData: UpdateSellerDto) {
+  async update(formData: UpdateSellerRequestDto) {
     const [result, err] = await tryit(
       this.db.transaction(async (tx) => {
         // ** ---process seller---

@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { GigService } from './gig.service';
 import {
-  CreateGigDto,
-  GigByIdDto,
-  SearchGigDto,
-  SellerGigsDto,
-  UpdateGigDto,
+  CreateGigRequestDto,
+  GigByIdRequestDto,
+  SearchGigRequestDto,
+  SellerGigsRequestDto,
+  UpdateGigRequestDto,
 } from '@app/common';
 
 @Controller('gig')
@@ -13,7 +13,7 @@ export class GigController {
   constructor(private readonly gigService: GigService) {}
 
   @Post()
-  async create(@Body() data: CreateGigDto) {
+  async create(@Body() data: CreateGigRequestDto) {
     // try {
     //   const result = await this.gigService.create(data);
     //   return result
@@ -24,12 +24,12 @@ export class GigController {
     return this.gigService.create(data);
   }
 
-  async update(@Body() data: UpdateGigDto) {
+  async update(@Body() data: UpdateGigRequestDto) {
     return this.gigService.update(data);
   }
 
   @Get('search')
-  async searchGig(@Query() query: SearchGigDto) {
+  async searchGig(@Query() query: SearchGigRequestDto) {
     return this.gigService.search(query);
   }
 
@@ -38,7 +38,7 @@ export class GigController {
     @Param('sellerId') sellerId: string,
     @Query('activeGigs') activeGigs?: string,
   ) {
-    const payload: SellerGigsDto = {
+    const payload: SellerGigsRequestDto = {
       sellerId,
       activeGigs,
     };
@@ -47,7 +47,7 @@ export class GigController {
   }
 
   @Get(':id')
-  async findById(@Param() params: GigByIdDto) {
+  async findById(@Param() params: GigByIdRequestDto) {
     return this.gigService.findById(params);
   }
 }

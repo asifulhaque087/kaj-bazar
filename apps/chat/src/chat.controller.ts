@@ -9,9 +9,9 @@ import {
   MessageResponse,
 } from '@app/common/generated/chat';
 import {
-  CreateMessageDto,
-  FindOrCreateConversationDto,
-  StreamMessagesDto,
+  CreateMessageRequestDto,
+  FindOrCreateConversationRequestDto,
+  StreamMessagesRequestDto,
 } from '@app/common';
 
 @Controller()
@@ -19,18 +19,18 @@ import {
 export class ChatController implements ChatServiceController {
   constructor(private readonly chatService: ChatService) {}
 
-  async createMessage(@Payload() data: CreateMessageDto) {
+  async createMessage(@Payload() data: CreateMessageRequestDto) {
     return this.chatService.createMessage(data) as unknown as MessageResponse;
   }
 
-  async findOrCreateConversation(@Payload() data: FindOrCreateConversationDto) {
+  async findOrCreateConversation(@Payload() data: FindOrCreateConversationRequestDto) {
     return this.chatService.findOrCreateConversation(
       data,
     ) as unknown as ConversationResponse;
   }
 
   streamMessages(
-    @Payload() data: StreamMessagesDto,
+    @Payload() data: StreamMessagesRequestDto,
   ): Observable<MessageResponse> {
     return this.chatService.streamMessages(data.username);
   }

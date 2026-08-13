@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsUrl } from 'class-validator';
 
-export class SendEmailEventDto {
+export class SendEmailEventRequestDto {
   @IsString()
   receiver!: string;
 
