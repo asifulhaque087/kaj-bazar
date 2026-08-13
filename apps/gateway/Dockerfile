@@ -7,9 +7,10 @@ RUN npm install -g pnpm@9.0.0
 
 # Manifests first for cached, workspace-aware install
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY tsconfig.base.json tsconfig.json ./
 COPY packages/common/package.json packages/common/package.json
+# COPY packages/common/tsconfig.lib.json packages/common/tsconfig.lib.json
 COPY apps/gateway/package.json apps/gateway/package.json
+# COPY apps/gateway/tsconfig.app.json apps/gateway/tsconfig.app.json
 
 RUN pnpm install
 
@@ -32,9 +33,11 @@ WORKDIR /usr/src/app
 # Pin pnpm version to match local environment
 RUN npm install -g pnpm@9.0.0
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY packages/common/package.json packages/common/package.json
+# COPY packages/common/tsconfig.lib.json packages/common/tsconfig.lib.json
 COPY apps/gateway/package.json apps/gateway/package.json
+# COPY apps/gateway/tsconfig.app.json apps/gateway/tsconfig.app.json
 
 # Bypass strict lockfile check for native pnpm binary in Docker
 ENV PNPM_VERIFY_NATIVE_BINARY_LOCKFILE=false

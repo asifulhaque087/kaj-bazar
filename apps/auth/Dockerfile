@@ -7,7 +7,6 @@ RUN npm install -g pnpm@9.0.0
 
 # Manifests first for cached, workspace-aware install
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY tsconfig.base.json tsconfig.json ./
 COPY packages/common/package.json packages/common/package.json
 COPY apps/auth/package.json apps/auth/package.json
 
