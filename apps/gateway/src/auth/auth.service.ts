@@ -1,13 +1,13 @@
 import {
-  ChangePasswordDto,
-  ForgotPasswordDto,
-  LoginUserDto,
-  RefreshAccessTokenDto,
-  RegisterUserDto,
-  ResendVerificationLinkDto,
-  ResetPasswordDto,
-  ValidateSocialUserDto,
-  VerifyEmailDto,
+  ChangePasswordRequestDto,
+  ForgotPasswordRequestDto,
+  LoginUserRequestDto,
+  RefreshAccessTokenRequestDto,
+  RegisterUserRequestDto,
+  ResendVerificationLinkRequestDto,
+  ResetPasswordRequestDto,
+  ValidateSocialUserRequestDto,
+  VerifyEmailRequestDto,
 } from '@app/common';
 import {
   AUTH_SERVICE_NAME,
@@ -36,40 +36,40 @@ export class AuthService implements OnModuleInit {
       this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
   }
 
-  async register(data: RegisterUserDto) {
+  async register(data: RegisterUserRequestDto) {
     return firstValueFrom(this.authGrpcService.register(data));
   }
 
-  async resendVerificationLink(data: ResendVerificationLinkDto) {
+  async resendVerificationLink(data: ResendVerificationLinkRequestDto) {
     return firstValueFrom(this.authGrpcService.resendVerificationLink(data));
   }
 
-  async verifyEmail(data: VerifyEmailDto) {
+  async verifyEmail(data: VerifyEmailRequestDto) {
     return firstValueFrom(this.authGrpcService.verifyEmail(data));
   }
 
-  async login(data: LoginUserDto) {
+  async login(data: LoginUserRequestDto) {
     return firstValueFrom(this.authGrpcService.login(data));
   }
 
-  async validateSocialUser(data: ValidateSocialUserDto) {
+  async validateSocialUser(data: ValidateSocialUserRequestDto) {
     return firstValueFrom(this.authGrpcService.validateSocialUser(data));
   }
 
-  async forgotPassword(data: ForgotPasswordDto) {
+  async forgotPassword(data: ForgotPasswordRequestDto) {
     return firstValueFrom(this.authGrpcService.forgotPassword(data));
   }
 
-  async resetPassword(data: ResetPasswordDto) {
+  async resetPassword(data: ResetPasswordRequestDto) {
     return firstValueFrom(this.authGrpcService.resetPassword(data));
   }
 
-  async changePassword(data: ChangePasswordDto, authHeader: string) {
+  async changePassword(data: ChangePasswordRequestDto, authHeader: string) {
     const metadata = createAuthMetadata(authHeader);
     return firstValueFrom(this.authGrpcService.changePassword(data, metadata));
   }
 
-  async refreshAccessToken(data: RefreshAccessTokenDto) {
+  async refreshAccessToken(data: RefreshAccessTokenRequestDto) {
     return firstValueFrom(this.authGrpcService.refreshAccessToken(data));
   }
 

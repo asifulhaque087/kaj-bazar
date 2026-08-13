@@ -1,11 +1,11 @@
 import {
-  ChangePasswordDto,
-  ForgotPasswordDto,
-  LoginUserDto,
-  RegisterUserDto,
-  ResendVerificationLinkDto,
-  ResetPasswordDto,
-  VerifyEmailDto,
+  ChangePasswordRequestDto,
+  ForgotPasswordRequestDto,
+  LoginUserRequestDto,
+  RegisterUserRequestDto,
+  ResendVerificationLinkRequestDto,
+  ResetPasswordRequestDto,
+  VerifyEmailRequestDto,
 } from '@app/common';
 import {
   Body,
@@ -35,7 +35,7 @@ export class AuthController {
   @Post('register')
   async register(
     @Res({ passthrough: true }) res: Response,
-    @Body() body: RegisterUserDto,
+    @Body() body: RegisterUserRequestDto,
   ) {
     const user = await this.authService.register(body);
 
@@ -60,7 +60,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
-    @Body() body: LoginUserDto,
+    @Body() body: LoginUserRequestDto,
   ) {
     const user = await this.authService.login(body);
 
@@ -122,29 +122,29 @@ export class AuthController {
   }
 
   @Post('resend-verification-link')
-  async resendVerificationLink(@Body() body: ResendVerificationLinkDto) {
+  async resendVerificationLink(@Body() body: ResendVerificationLinkRequestDto) {
     return this.authService.resendVerificationLink(body);
   }
 
   @Put('verify-email')
-  async verifyEmail(@Body() body: VerifyEmailDto) {
+  async verifyEmail(@Body() body: VerifyEmailRequestDto) {
     return this.authService.verifyEmail(body);
   }
 
   @Put('forgot-password')
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: ForgotPasswordRequestDto) {
     return this.authService.forgotPassword(body);
   }
 
   @Put('reset-password')
-  async resetPassword(@Body() body: ResetPasswordDto) {
+  async resetPassword(@Body() body: ResetPasswordRequestDto) {
     return this.authService.resetPassword(body);
   }
 
   @UseGuards(AccessTokenGuard)
   @Put('change-password')
   async changePassword(
-    @Body() body: ChangePasswordDto,
+    @Body() body: ChangePasswordRequestDto,
     @BearerToken() token: string,
   ) {
     return this.authService.changePassword(body, token);

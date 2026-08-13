@@ -1,18 +1,18 @@
 import {
   AuthGrpcRequest,
-  ChangePasswordDto,
+  ChangePasswordRequestDto,
   DRIZZLE,
-  ForgotPasswordDto,
-  LoginUserDto,
-  RefreshAccessTokenDto,
+  ForgotPasswordRequestDto,
+  LoginUserRequestDto,
+  RefreshAccessTokenRequestDto,
   RegisterBuyerDto,
-  RegisterUserDto,
-  ResendVerificationLinkDto,
-  ResetPasswordDto,
+  RegisterUserRequestDto,
+  ResendVerificationLinkRequestDto,
+  ResetPasswordRequestDto,
   throwGrpcError,
   tryit,
-  ValidateSocialUserDto,
-  VerifyEmailDto,
+  ValidateSocialUserRequestDto,
+  VerifyEmailRequestDto,
 } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, gt } from 'drizzle-orm';
@@ -34,7 +34,7 @@ export class AuthService {
     @Inject('USER_SERVICE') private userRabbitClient: ClientProxy,
   ) {}
 
-  async register(data: RegisterUserDto) {
+  async register(data: RegisterUserRequestDto) {
     // find the user by email
     const [user, userErr] = await tryit(
       this.db
@@ -118,7 +118,7 @@ export class AuthService {
     };
   }
 
-  async resendVerificationLink(data: ResendVerificationLinkDto) {
+  async resendVerificationLink(data: ResendVerificationLinkRequestDto) {
     const { email } = data;
 
     // find user
@@ -165,7 +165,7 @@ export class AuthService {
     return { message: 'A verification link send to your email' };
   }
 
-  async verifyEmail(data: VerifyEmailDto) {
+  async verifyEmail(data: VerifyEmailRequestDto) {
     // Find user by token
     const [user, userErr] = await tryit(
       this.db
@@ -192,7 +192,7 @@ export class AuthService {
     return { message: 'Account verified successfully' };
   }
 
-  async login(data: LoginUserDto) {
+  async login(data: LoginUserRequestDto) {
     // find user
     const [user, userErr] = await tryit(
       this.db
@@ -240,7 +240,7 @@ export class AuthService {
     };
   }
 
-  async validateSocialUser(data: ValidateSocialUserDto) {
+  async validateSocialUser(data: ValidateSocialUserRequestDto) {
     const [user, userErr] = await tryit(
       this.db
         .insert(AuthTable)
@@ -274,7 +274,7 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(data: ForgotPasswordDto) {
+  async forgotPassword(data: ForgotPasswordRequestDto) {
     const { email } = data;
 
     const [user, userErr] = await tryit(
@@ -320,7 +320,7 @@ export class AuthService {
     return { message: 'Reset password link sent' };
   }
 
-  async resetPassword(data: ResetPasswordDto) {
+  async resetPassword(data: ResetPasswordRequestDto) {
     const [user, userErr] = await tryit(
       this.db.query.AuthTable.findFirst({
         where: and(
@@ -366,7 +366,7 @@ export class AuthService {
     return { message: 'Password reset successfully' };
   }
 
-  async changePassword(data: ChangePasswordDto) {
+  async changePassword(data: ChangePasswordRequestDto) {
     const [user, userErr] = await tryit(
       this.db
         .select()
@@ -432,7 +432,7 @@ export class AuthService {
     };
   }
 
-  async refreshAccessToken(data: RefreshAccessTokenDto) {
+  async refreshAccessToken(data: RefreshAccessTokenRequestDto) {
     // find the user with token
     const [user, userErr] = await tryit(
       this.db

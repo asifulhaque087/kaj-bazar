@@ -8,16 +8,16 @@ import {
 import { Payload } from '@nestjs/microservices';
 import {
   type AuthGrpcRequest,
-  ChangePasswordDto,
-  ForgotPasswordDto,
+  ChangePasswordRequestDto,
+  ForgotPasswordRequestDto,
   GrpcGuard,
-  LoginUserDto,
-  RefreshAccessTokenDto,
-  RegisterUserDto,
-  ResendVerificationLinkDto,
-  ResetPasswordDto,
-  ValidateSocialUserDto,
-  VerifyEmailDto,
+  LoginUserRequestDto,
+  RefreshAccessTokenRequestDto,
+  RegisterUserRequestDto,
+  ResendVerificationLinkRequestDto,
+  ResetPasswordRequestDto,
+  ValidateSocialUserRequestDto,
+  VerifyEmailRequestDto,
 } from '@app/common';
 
 @Controller()
@@ -25,23 +25,23 @@ import {
 export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 
-  async register(@Payload() data: RegisterUserDto) {
+  async register(@Payload() data: RegisterUserRequestDto) {
     return this.authService.register(data);
   }
 
-  async resendVerificationLink(@Payload() data: ResendVerificationLinkDto) {
+  async resendVerificationLink(@Payload() data: ResendVerificationLinkRequestDto) {
     return this.authService.resendVerificationLink(data);
   }
 
-  async verifyEmail(@Payload() data: VerifyEmailDto) {
+  async verifyEmail(@Payload() data: VerifyEmailRequestDto) {
     return this.authService.verifyEmail(data);
   }
 
-  async login(@Payload() data: LoginUserDto) {
+  async login(@Payload() data: LoginUserRequestDto) {
     return this.authService.login(data);
   }
 
-  async validateSocialUser(@Payload() data: ValidateSocialUserDto) {
+  async validateSocialUser(@Payload() data: ValidateSocialUserRequestDto) {
     // return this.authService.validateSocialUser(data);
     const user = this.authService.validateSocialUser(data);
 
@@ -52,16 +52,16 @@ export class AuthController implements AuthServiceController {
     return user;
   }
 
-  async forgotPassword(@Payload() data: ForgotPasswordDto) {
+  async forgotPassword(@Payload() data: ForgotPasswordRequestDto) {
     return this.authService.forgotPassword(data);
   }
 
-  async resetPassword(@Payload() data: ResetPasswordDto) {
+  async resetPassword(@Payload() data: ResetPasswordRequestDto) {
     return this.authService.resetPassword(data);
   }
 
   @UseGuards(GrpcGuard)
-  async changePassword(@Payload() data: ChangePasswordDto) {
+  async changePassword(@Payload() data: ChangePasswordRequestDto) {
     return this.authService.changePassword(data);
   }
 
@@ -70,7 +70,7 @@ export class AuthController implements AuthServiceController {
     return this.authService.whoAmI(data);
   }
 
-  async refreshAccessToken(data: RefreshAccessTokenDto) {
+  async refreshAccessToken(data: RefreshAccessTokenRequestDto) {
     return this.authService.refreshAccessToken(data);
   }
 }

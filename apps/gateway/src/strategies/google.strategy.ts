@@ -3,7 +3,7 @@ import { Profile, Strategy } from 'passport-google-oauth20';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../auth/auth.service';
-import { ValidateSocialUserDto } from '@app/common';
+import { ValidateSocialUserRequestDto } from '@app/common';
 
 export interface AuthTokens {
   accessToken: string;
@@ -44,7 +44,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     }
 
     // 3. Construct the DTO object
-    const socialUserDto: ValidateSocialUserDto = {
+    const socialUserDto: ValidateSocialUserRequestDto = {
       username: displayName || id,
       provider: provider,
       email: email,

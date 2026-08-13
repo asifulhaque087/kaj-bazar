@@ -220,7 +220,7 @@ DB on `generateTokens` and looks it up on `refreshAccessToken`:
 
 ```ts
 // apps/auth/src/auth.service.ts — lines 435-467
-async refreshAccessToken(data: RefreshAccessTokenDto) {
+async refreshAccessToken(data: RefreshAccessTokenRequestDto) {
   const [user] = await this.db.select().from(AuthTable)
     .where(eq(AuthTable.refreshToken, data.token)).limit(1).then(r => r[0]);
   if (!user) throwGrpcError('UNAUTHENTICATED', 'Unauthorized access');
