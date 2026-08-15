@@ -3,6 +3,7 @@ import {
   ForgotPasswordRequestDto,
   LoginUserRequestDto,
   RegisterUserRequestDto,
+  RegisterUserResponseDto,
   ResendVerificationLinkRequestDto,
   ResetPasswordRequestDto,
   VerifyEmailRequestDto,
@@ -18,6 +19,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { BearerToken } from '../decorators/bearer-token.decorator';
 import { GetUser } from '../decorators/get-user.decorator';
@@ -32,6 +34,7 @@ export class AuthController {
     private readonly authService: AuthService,
   ) {}
 
+  @ApiCreatedResponse({ type: RegisterUserResponseDto })
   @Post('register')
   async register(
     @Res({ passthrough: true }) res: Response,

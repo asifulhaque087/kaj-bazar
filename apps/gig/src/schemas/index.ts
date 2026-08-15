@@ -1,1 +1,1 @@
-export * from "./gig.schema";
+export * from './gig.schema';

@@ -53,7 +53,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'EMAIL_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL || 'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+          urls: [
+            process.env.RABBITMQ_URL ||
+              'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672',
+          ],
           queue: 'email-queue',
         },
       },
@@ -62,7 +65,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'USER_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL || 'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672'],
+          urls: [
+            process.env.RABBITMQ_URL ||
+              'amqp://kaj_bazar:kaj_bazarpass@rabbitmq:5672',
+          ],
           queue: 'user-queue',
         },
       },

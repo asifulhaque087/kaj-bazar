@@ -5,11 +5,11 @@
 // source: chat.proto
 
 /* eslint-disable */
-import type { Metadata } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import type { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "chat";
+export const protobufPackage = 'chat';
 
 export interface Offer {
   gigTitle: string;
@@ -72,43 +72,76 @@ export interface StreamMessagesRequest {
   username: string;
 }
 
-export const CHAT_PACKAGE_NAME = "chat";
+export const CHAT_PACKAGE_NAME = 'chat';
 
 export interface ChatServiceClient {
-  findOrCreateConversation(request: ConversationRequest, metadata?: Metadata): Observable<ConversationResponse>;
+  findOrCreateConversation(
+    request: ConversationRequest,
+    metadata?: Metadata,
+  ): Observable<ConversationResponse>;
 
-  createMessage(request: CreateMessageRequest, metadata?: Metadata): Observable<MessageResponse>;
+  createMessage(
+    request: CreateMessageRequest,
+    metadata?: Metadata,
+  ): Observable<MessageResponse>;
 
-  streamMessages(request: StreamMessagesRequest, metadata?: Metadata): Observable<MessageResponse>;
+  streamMessages(
+    request: StreamMessagesRequest,
+    metadata?: Metadata,
+  ): Observable<MessageResponse>;
 }
 
 export interface ChatServiceController {
   findOrCreateConversation(
     request: ConversationRequest,
     metadata?: Metadata,
-  ): Promise<ConversationResponse> | Observable<ConversationResponse> | ConversationResponse;
+  ):
+    | Promise<ConversationResponse>
+    | Observable<ConversationResponse>
+    | ConversationResponse;
 
   createMessage(
     request: CreateMessageRequest,
     metadata?: Metadata,
   ): Promise<MessageResponse> | Observable<MessageResponse> | MessageResponse;
 
-  streamMessages(request: StreamMessagesRequest, metadata?: Metadata): Observable<MessageResponse>;
+  streamMessages(
+    request: StreamMessagesRequest,
+    metadata?: Metadata,
+  ): Observable<MessageResponse>;
 }
 
 export function ChatServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findOrCreateConversation", "createMessage", "streamMessages"];
+    const grpcMethods: string[] = [
+      'findOrCreateConversation',
+      'createMessage',
+      'streamMessages',
+    ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("ChatService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('ChatService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("ChatService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('ChatService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const CHAT_SERVICE_NAME = "ChatService";
+export const CHAT_SERVICE_NAME = 'ChatService';

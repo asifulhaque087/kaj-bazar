@@ -25,13 +25,19 @@ export class SellerController {
 
   @UseGuards(AccessTokenGuard)
   @Post('create')
-  async create(@Body() body: CreateSellerRequestDto, @BearerToken() token: string) {
+  async create(
+    @Body() body: CreateSellerRequestDto,
+    @BearerToken() token: string,
+  ) {
     return this.sellerService.create(body, token);
   }
 
   @UseGuards(AccessTokenGuard)
   @Put('update')
-  async update(@Body() body: UpdateSellerRequestDto, @BearerToken() token: string) {
+  async update(
+    @Body() body: UpdateSellerRequestDto,
+    @BearerToken() token: string,
+  ) {
     return this.sellerService.update(body, token);
   }
 

@@ -5,12 +5,12 @@
 // source: gig.proto
 
 /* eslint-disable */
-import type { Metadata } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
-import { Timestamp } from "./google/protobuf/timestamp";
+import type { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
+import { Timestamp } from './google/protobuf/timestamp';
 
-export const protobufPackage = "gig";
+export const protobufPackage = 'gig';
 
 /** Nested types inside the Gig entity */
 export interface SubCategory {
@@ -133,58 +133,106 @@ export interface SeedGigsResponse {
   message: string;
 }
 
-export const GIG_PACKAGE_NAME = "gig";
+export const GIG_PACKAGE_NAME = 'gig';
 
 export interface GigServiceClient {
-  search(request: SearchRequest, metadata?: Metadata): Observable<SearchGigResponse>;
+  search(
+    request: SearchRequest,
+    metadata?: Metadata,
+  ): Observable<SearchGigResponse>;
 
   findById(request: FindByIdRequest, metadata?: Metadata): Observable<Gig>;
 
-  sellerGigs(request: SellerGigsRequest, metadata?: Metadata): Observable<SellerGigsResponse>;
+  sellerGigs(
+    request: SellerGigsRequest,
+    metadata?: Metadata,
+  ): Observable<SellerGigsResponse>;
 
   create(request: CreateGigRequest, metadata?: Metadata): Observable<Gig>;
 
   update(request: UpdateGigRequest, metadata?: Metadata): Observable<Gig>;
 
-  seedGigs(request: SeedGigsRequest, metadata?: Metadata): Observable<SeedGigsResponse>;
+  seedGigs(
+    request: SeedGigsRequest,
+    metadata?: Metadata,
+  ): Observable<SeedGigsResponse>;
 }
 
 export interface GigServiceController {
   search(
     request: SearchRequest,
     metadata?: Metadata,
-  ): Promise<SearchGigResponse> | Observable<SearchGigResponse> | SearchGigResponse;
+  ):
+    | Promise<SearchGigResponse>
+    | Observable<SearchGigResponse>
+    | SearchGigResponse;
 
-  findById(request: FindByIdRequest, metadata?: Metadata): Promise<Gig> | Observable<Gig> | Gig;
+  findById(
+    request: FindByIdRequest,
+    metadata?: Metadata,
+  ): Promise<Gig> | Observable<Gig> | Gig;
 
   sellerGigs(
     request: SellerGigsRequest,
     metadata?: Metadata,
-  ): Promise<SellerGigsResponse> | Observable<SellerGigsResponse> | SellerGigsResponse;
+  ):
+    | Promise<SellerGigsResponse>
+    | Observable<SellerGigsResponse>
+    | SellerGigsResponse;
 
-  create(request: CreateGigRequest, metadata?: Metadata): Promise<Gig> | Observable<Gig> | Gig;
+  create(
+    request: CreateGigRequest,
+    metadata?: Metadata,
+  ): Promise<Gig> | Observable<Gig> | Gig;
 
-  update(request: UpdateGigRequest, metadata?: Metadata): Promise<Gig> | Observable<Gig> | Gig;
+  update(
+    request: UpdateGigRequest,
+    metadata?: Metadata,
+  ): Promise<Gig> | Observable<Gig> | Gig;
 
   seedGigs(
     request: SeedGigsRequest,
     metadata?: Metadata,
-  ): Promise<SeedGigsResponse> | Observable<SeedGigsResponse> | SeedGigsResponse;
+  ):
+    | Promise<SeedGigsResponse>
+    | Observable<SeedGigsResponse>
+    | SeedGigsResponse;
 }
 
 export function GigServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["search", "findById", "sellerGigs", "create", "update", "seedGigs"];
+    const grpcMethods: string[] = [
+      'search',
+      'findById',
+      'sellerGigs',
+      'create',
+      'update',
+      'seedGigs',
+    ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("GigService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('GigService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("GigService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('GigService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const GIG_SERVICE_NAME = "GigService";
+export const GIG_SERVICE_NAME = 'GigService';

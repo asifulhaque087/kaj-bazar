@@ -4,8 +4,8 @@ export const AuthTable = pgTable('auths_table', {
   id: uuid('id').primaryKey().defaultRandom(),
 
   //   ** raw
-  username: text("username").notNull().unique(),
-  email: text("email").notNull().unique(),
+  username: text('username').notNull().unique(),
+  email: text('email').notNull().unique(),
 
   // ** Optional
   profilePicture: text('profilePicture'),

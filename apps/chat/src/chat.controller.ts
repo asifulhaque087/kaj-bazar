@@ -23,7 +23,9 @@ export class ChatController implements ChatServiceController {
     return this.chatService.createMessage(data) as unknown as MessageResponse;
   }
 
-  async findOrCreateConversation(@Payload() data: FindOrCreateConversationRequestDto) {
+  async findOrCreateConversation(
+    @Payload() data: FindOrCreateConversationRequestDto,
+  ) {
     return this.chatService.findOrCreateConversation(
       data,
     ) as unknown as ConversationResponse;

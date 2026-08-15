@@ -5,15 +5,14 @@
 // source: user.proto
 
 /* eslint-disable */
-import type { Metadata } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
-import { Timestamp } from "./google/protobuf/timestamp";
+import type { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
+import { Timestamp } from './google/protobuf/timestamp';
 
-export const protobufPackage = "user";
+export const protobufPackage = 'user';
 
-export interface EmptyRequest {
-}
+export interface EmptyRequest {}
 
 export interface FindByIdRequest {
   /** UUID mapped to string */
@@ -137,9 +136,7 @@ export interface UpdateSellerRequest {
   id: string;
   fullName: string;
   description?: string | undefined;
-  oneliner?:
-    | string
-    | undefined;
+  oneliner?: string | undefined;
   /** Array payloads for records to create or update */
   languages: Language[];
   skills: Skill[];
@@ -176,9 +173,7 @@ export interface SellerResponse {
   totalGigs: number;
   ratingsCount: number;
   ratingSum: number;
-  createdAt:
-    | Timestamp
-    | undefined;
+  createdAt: Timestamp | undefined;
   /** Populated when transaction completes with relations */
   languages: Language[];
   skills: Skill[];
@@ -188,14 +183,23 @@ export interface SellerResponse {
   certificates: Certificate[];
 }
 
-export const USER_PACKAGE_NAME = "user";
+export const USER_PACKAGE_NAME = 'user';
 
 export interface BuyerServiceClient {
-  findById(request: FindByIdRequest, metadata?: Metadata): Observable<BuyerResponse>;
+  findById(
+    request: FindByIdRequest,
+    metadata?: Metadata,
+  ): Observable<BuyerResponse>;
 
-  findByName(request: FindByNameRequest, metadata?: Metadata): Observable<BuyerResponse>;
+  findByName(
+    request: FindByNameRequest,
+    metadata?: Metadata,
+  ): Observable<BuyerResponse>;
 
-  currentBuyer(request: EmptyRequest, metadata?: Metadata): Observable<BuyerResponse>;
+  currentBuyer(
+    request: EmptyRequest,
+    metadata?: Metadata,
+  ): Observable<BuyerResponse>;
 }
 
 export interface BuyerServiceController {
@@ -217,31 +221,60 @@ export interface BuyerServiceController {
 
 export function BuyerServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findById", "findByName", "currentBuyer"];
+    const grpcMethods: string[] = ['findById', 'findByName', 'currentBuyer'];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("BuyerService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('BuyerService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("BuyerService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('BuyerService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const BUYER_SERVICE_NAME = "BuyerService";
+export const BUYER_SERVICE_NAME = 'BuyerService';
 
 export interface SellerServiceClient {
-  findByName(request: FindByNameRequest, metadata?: Metadata): Observable<SellerResponse>;
+  findByName(
+    request: FindByNameRequest,
+    metadata?: Metadata,
+  ): Observable<SellerResponse>;
 
-  currentSeller(request: EmptyRequest, metadata?: Metadata): Observable<SellerResponse>;
+  currentSeller(
+    request: EmptyRequest,
+    metadata?: Metadata,
+  ): Observable<SellerResponse>;
 
-  findById(request: FindByIdRequest, metadata?: Metadata): Observable<SellerResponse>;
+  findById(
+    request: FindByIdRequest,
+    metadata?: Metadata,
+  ): Observable<SellerResponse>;
 
-  create(request: CreateSellerRequest, metadata?: Metadata): Observable<CreateSellerResponse>;
+  create(
+    request: CreateSellerRequest,
+    metadata?: Metadata,
+  ): Observable<CreateSellerResponse>;
 
-  update(request: UpdateSellerRequest, metadata?: Metadata): Observable<SellerResponse>;
+  update(
+    request: UpdateSellerRequest,
+    metadata?: Metadata,
+  ): Observable<SellerResponse>;
 }
 
 export interface SellerServiceController {
@@ -263,7 +296,10 @@ export interface SellerServiceController {
   create(
     request: CreateSellerRequest,
     metadata?: Metadata,
-  ): Promise<CreateSellerResponse> | Observable<CreateSellerResponse> | CreateSellerResponse;
+  ):
+    | Promise<CreateSellerResponse>
+    | Observable<CreateSellerResponse>
+    | CreateSellerResponse;
 
   update(
     request: UpdateSellerRequest,
@@ -273,17 +309,37 @@ export interface SellerServiceController {
 
 export function SellerServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findByName", "currentSeller", "findById", "create", "update"];
+    const grpcMethods: string[] = [
+      'findByName',
+      'currentSeller',
+      'findById',
+      'create',
+      'update',
+    ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("SellerService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('SellerService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("SellerService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('SellerService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const SELLER_SERVICE_NAME = "SellerService";
+export const SELLER_SERVICE_NAME = 'SellerService';

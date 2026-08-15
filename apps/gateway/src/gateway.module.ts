@@ -11,11 +11,11 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-      	AUTH_GRPC_URL: Joi.string().required(),
-      	USER_GRPC_URL: Joi.string().required(),
-      	GIG_GRPC_URL: Joi.string().required(),
+        AUTH_GRPC_URL: Joi.string().required(),
+        USER_GRPC_URL: Joi.string().required(),
+        GIG_GRPC_URL: Joi.string().required(),
         CHAT_GRPC_URL: Joi.string().required(),
-        
+
         ACCESS_TOKEN_SECRET: Joi.string().required(),
         REFRESH_TOKEN_SECRET: Joi.string().required(),
         ACCESS_TOKEN_EXPIRATION: Joi.string().required(),

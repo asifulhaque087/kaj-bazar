@@ -8,11 +8,13 @@ import { REDIS_PUBLISHER, REDIS_SUBSCRIBER } from './redis.constants';
   providers: [
     {
       provide: REDIS_PUBLISHER,
-      useFactory: () => new Redis({ host: process.env.REDIS_HOST || 'localhost', port: 6379 }),
+      useFactory: () =>
+        new Redis({ host: process.env.REDIS_HOST || 'localhost', port: 6379 }),
     },
     {
       provide: REDIS_SUBSCRIBER,
-      useFactory: () => new Redis({ host: process.env.REDIS_HOST || 'localhost', port: 6379 }),
+      useFactory: () =>
+        new Redis({ host: process.env.REDIS_HOST || 'localhost', port: 6379 }),
     },
   ],
   exports: [REDIS_PUBLISHER, REDIS_SUBSCRIBER],

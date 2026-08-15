@@ -1,14 +1,14 @@
-import { SellersTable } from "./sellers.schema";
-import { relations } from "drizzle-orm";
-import { integer, pgTable, serial, uuid, varchar } from "drizzle-orm/pg-core";
+import { SellersTable } from './sellers.schema';
+import { relations } from 'drizzle-orm';
+import { integer, pgTable, serial, uuid, varchar } from 'drizzle-orm/pg-core';
 
 // ** --- Skills Table ---
-export const SkillsTable = pgTable("skills_table", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  sellerId: uuid("seller_id")
-    .references(() => SellersTable.id, { onDelete: "cascade" })
+export const SkillsTable = pgTable('skills_table', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  sellerId: uuid('seller_id')
+    .references(() => SellersTable.id, { onDelete: 'cascade' })
     .notNull(),
-  name: varchar("name", { length: 255 }).notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
 });
 
 // ** --- Relations for Drizzle ---

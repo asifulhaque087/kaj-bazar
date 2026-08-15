@@ -29,7 +29,9 @@ export class AuthController implements AuthServiceController {
     return this.authService.register(data);
   }
 
-  async resendVerificationLink(@Payload() data: ResendVerificationLinkRequestDto) {
+  async resendVerificationLink(
+    @Payload() data: ResendVerificationLinkRequestDto,
+  ) {
     return this.authService.resendVerificationLink(data);
   }
 

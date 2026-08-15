@@ -5,14 +5,13 @@
 // source: auth.proto
 
 /* eslint-disable */
-import type { Metadata } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import type { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "auth";
+export const protobufPackage = 'auth';
 
-export interface Empty {
-}
+export interface Empty {}
 
 export interface User {
   id: string;
@@ -109,35 +108,62 @@ export interface LoginResponse {
   refreshToken: string;
 }
 
-export const AUTH_PACKAGE_NAME = "auth";
+export const AUTH_PACKAGE_NAME = 'auth';
 
 export interface AuthServiceClient {
-  register(request: RegisterBody, metadata?: Metadata): Observable<RegisterResponse>;
+  register(
+    request: RegisterBody,
+    metadata?: Metadata,
+  ): Observable<RegisterResponse>;
 
-  resendVerificationLink(request: ResendVerificationLinkBody, metadata?: Metadata): Observable<CommonResponse>;
+  resendVerificationLink(
+    request: ResendVerificationLinkBody,
+    metadata?: Metadata,
+  ): Observable<CommonResponse>;
 
-  verifyEmail(request: VerifyEmailBody, metadata?: Metadata): Observable<CommonResponse>;
+  verifyEmail(
+    request: VerifyEmailBody,
+    metadata?: Metadata,
+  ): Observable<CommonResponse>;
 
   login(request: LoginBody, metadata?: Metadata): Observable<LoginResponse>;
 
-  validateSocialUser(request: ValidateSocialUserBody, metadata?: Metadata): Observable<ValidateSocialUserResponse>;
+  validateSocialUser(
+    request: ValidateSocialUserBody,
+    metadata?: Metadata,
+  ): Observable<ValidateSocialUserResponse>;
 
-  forgotPassword(request: ForgotPasswordBody, metadata?: Metadata): Observable<CommonResponse>;
+  forgotPassword(
+    request: ForgotPasswordBody,
+    metadata?: Metadata,
+  ): Observable<CommonResponse>;
 
-  resetPassword(request: ResetPasswordBody, metadata?: Metadata): Observable<CommonResponse>;
+  resetPassword(
+    request: ResetPasswordBody,
+    metadata?: Metadata,
+  ): Observable<CommonResponse>;
 
-  changePassword(request: ChangePasswordBody, metadata?: Metadata): Observable<CommonResponse>;
+  changePassword(
+    request: ChangePasswordBody,
+    metadata?: Metadata,
+  ): Observable<CommonResponse>;
 
   whoAmI(request: Empty, metadata?: Metadata): Observable<User>;
 
-  refreshAccessToken(request: RefreshAccessTokenBody, metadata?: Metadata): Observable<RefreshAccessTokenResponse>;
+  refreshAccessToken(
+    request: RefreshAccessTokenBody,
+    metadata?: Metadata,
+  ): Observable<RefreshAccessTokenResponse>;
 }
 
 export interface AuthServiceController {
   register(
     request: RegisterBody,
     metadata?: Metadata,
-  ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+  ):
+    | Promise<RegisterResponse>
+    | Observable<RegisterResponse>
+    | RegisterResponse;
 
   resendVerificationLink(
     request: ResendVerificationLinkBody,
@@ -149,12 +175,18 @@ export interface AuthServiceController {
     metadata?: Metadata,
   ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  login(request: LoginBody, metadata?: Metadata): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  login(
+    request: LoginBody,
+    metadata?: Metadata,
+  ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   validateSocialUser(
     request: ValidateSocialUserBody,
     metadata?: Metadata,
-  ): Promise<ValidateSocialUserResponse> | Observable<ValidateSocialUserResponse> | ValidateSocialUserResponse;
+  ):
+    | Promise<ValidateSocialUserResponse>
+    | Observable<ValidateSocialUserResponse>
+    | ValidateSocialUserResponse;
 
   forgotPassword(
     request: ForgotPasswordBody,
@@ -171,38 +203,58 @@ export interface AuthServiceController {
     metadata?: Metadata,
   ): Promise<CommonResponse> | Observable<CommonResponse> | CommonResponse;
 
-  whoAmI(request: Empty, metadata?: Metadata): Promise<User> | Observable<User> | User;
+  whoAmI(
+    request: Empty,
+    metadata?: Metadata,
+  ): Promise<User> | Observable<User> | User;
 
   refreshAccessToken(
     request: RefreshAccessTokenBody,
     metadata?: Metadata,
-  ): Promise<RefreshAccessTokenResponse> | Observable<RefreshAccessTokenResponse> | RefreshAccessTokenResponse;
+  ):
+    | Promise<RefreshAccessTokenResponse>
+    | Observable<RefreshAccessTokenResponse>
+    | RefreshAccessTokenResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      "register",
-      "resendVerificationLink",
-      "verifyEmail",
-      "login",
-      "validateSocialUser",
-      "forgotPassword",
-      "resetPassword",
-      "changePassword",
-      "whoAmI",
-      "refreshAccessToken",
+      'register',
+      'resendVerificationLink',
+      'verifyEmail',
+      'login',
+      'validateSocialUser',
+      'forgotPassword',
+      'resetPassword',
+      'changePassword',
+      'whoAmI',
+      'refreshAccessToken',
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('AuthService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('AuthService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const AUTH_SERVICE_NAME = "AuthService";
+export const AUTH_SERVICE_NAME = 'AuthService';
