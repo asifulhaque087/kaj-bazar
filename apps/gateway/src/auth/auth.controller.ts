@@ -1,12 +1,19 @@
 import {
   ChangePasswordRequestDto,
+  ChangePasswordResponseDto,
   ForgotPasswordRequestDto,
+  ForgotPasswordResponseDto,
   LoginUserRequestDto,
+  LoginUserResponseDto,
   RegisterUserRequestDto,
   RegisterUserResponseDto,
   ResendVerificationLinkRequestDto,
+  ResendVerificationLinkResponseDto,
   ResetPasswordRequestDto,
+  ResetPasswordResponseDto,
   VerifyEmailRequestDto,
+  VerifyEmailResponseDto,
+  WhoAmIResponseDto,
 } from '@app/common';
 import {
   Body,
@@ -19,7 +26,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { BearerToken } from '../decorators/bearer-token.decorator';
 import { GetUser } from '../decorators/get-user.decorator';
@@ -60,6 +67,7 @@ export class AuthController {
     return user;
   }
 
+  @ApiCreatedResponse({ type: LoginUserResponseDto })
   @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
@@ -118,32 +126,38 @@ export class AuthController {
     );
   }
 
+  @ApiOkResponse({ type: WhoAmIResponseDto })
   @UseGuards(AccessTokenGuard)
   @Get('who-am-i')
   whoAmI(@BearerToken() token: string) {
     return this.authService.whoAmI(token);
   }
 
+  @ApiCreatedResponse({ type: ResendVerificationLinkResponseDto })
   @Post('resend-verification-link')
   async resendVerificationLink(@Body() body: ResendVerificationLinkRequestDto) {
     return this.authService.resendVerificationLink(body);
   }
 
+  @ApiOkResponse({ type: VerifyEmailResponseDto })
   @Put('verify-email')
   async verifyEmail(@Body() body: VerifyEmailRequestDto) {
     return this.authService.verifyEmail(body);
   }
 
+  @ApiOkResponse({ type: ForgotPasswordResponseDto })
   @Put('forgot-password')
   async forgotPassword(@Body() body: ForgotPasswordRequestDto) {
     return this.authService.forgotPassword(body);
   }
 
+  @ApiOkResponse({ type: ResetPasswordResponseDto })
   @Put('reset-password')
   async resetPassword(@Body() body: ResetPasswordRequestDto) {
     return this.authService.resetPassword(body);
   }
 
+  @ApiOkResponse({ type: ChangePasswordResponseDto })
   @UseGuards(AccessTokenGuard)
   @Put('change-password')
   async changePassword(
